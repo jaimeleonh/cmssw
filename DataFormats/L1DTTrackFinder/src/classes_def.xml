@@ -12,7 +12,16 @@
   <version ClassVersion="11" checksum="3385104874"/>
   <version ClassVersion="10" checksum="3559343241"/>
  </class>
+=======
+ <class name="L1MuDTChambDigi"/>
+ <class name="edm::Wrapper<L1MuDTChambDigi>"/>
 
+ <class name="std::vector<L1MuDTChambDigi>"/>
+ <class name="edm::Wrapper<std::vector<L1MuDTChambDigi> >"/>
+	  
+ <class name="L1MuDTChambContainer"/>
+ <class name="edm::Wrapper<L1MuDTChambContainer>"/>
+>>>>>>> dtp2-tpg-am/AnalyticalMethod_dev
  <class name="L1Phase2MuDTPhDigi" ClassVersion="3">
   <version ClassVersion="3" checksum="851692670"/>
  </class>
@@ -31,6 +40,9 @@
  </class>
  <class name="L1MuDTTrackContainer" ClassVersion="10">
   <version ClassVersion="10" checksum="1310842826"/>
+ </class>
+ <class name="L1Phase2MuDTPhContainer" ClassVersion="3">
+  <version ClassVersion="3" checksum="2858706077"/>
  </class>
 
  <class name="L1Phase2MuDTPhContainer" ClassVersion="3">
