@@ -637,7 +637,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 						 0
 						 ));
 	    }
-	    else if(p2_pf==1){
+	    else if(p2_df==1){
 	      if(debug)std::cout<<"pushing back phase-2 dataformat agreement with Oscar for comparison with slice test"<<std::endl;
 	      outP2.push_back(L1MuDTChambDigi((int)round((*metaPrimitiveIt).t0/25.),   // ubx (m_bx) //bx en la orbita
 					      slId.wheel(),   // uwh (m_wheel) 
@@ -654,7 +654,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 					      -10    // urpc (m_rpcFlag)
 					      ));
 	    }
-	    else if (p2_pf==2){
+	    else if (p2_df==2){
 	      if (debug) std::cout<<"pushing back phase-2 dataformat carlo-federica dataformat"<<std::endl;
 	      
 	      outP2Ph.push_back(L1Phase2MuDTPhDigi((int)round((*metaPrimitiveIt).t0/25.),   // ubx (m_bx) //bx en la orbita
