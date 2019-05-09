@@ -32,7 +32,7 @@ DTPrimitive::DTPrimitive(DTPrimitive *ptr) {
     setLayerId      ( ptr->getLayerId()      );
     setCameraId     ( ptr->getCameraId()     );
     setSuperLayerId ( ptr->getSuperLayerId() );
-    setLaterality   ( ptr->getLaterality()   ); 
+    setLaterality   ( ptr->getLaterality()   );
 
     for (int i = 0; i < PAYLOAD_ENTRIES; i++) setPayload(ptr->getPayload(i), i);
 }

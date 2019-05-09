@@ -19,6 +19,7 @@
 
 #include "L1Trigger/DTTriggerPhase2/interface/MotherGrouping.h"
 #include "L1Trigger/DTTriggerPhase2/interface/InitialGrouping.h"
+#include "L1Trigger/DTTriggerPhase2/interface/HoughGrouping.h"
 
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzer.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzerPerSL.h"
