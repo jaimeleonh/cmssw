@@ -160,7 +160,7 @@ class HoughGrouping : public MotherGrouping {
     
     std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*> AssociateHits(const DTChamber* thechamb, Double_t m, Double_t n);
     
-    void OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*>> invector, std::vector<MuonPath*> *outMuonPath);
+    void OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*>> invector, std::vector<MuonPath*> *&outMuonPath);
     
     void   SetDifferenceBetweenSL(std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*> &tupl);
     Bool_t AreThereEnoughHits(std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*> tupl);

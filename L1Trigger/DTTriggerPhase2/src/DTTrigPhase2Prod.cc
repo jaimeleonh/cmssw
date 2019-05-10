@@ -500,9 +500,16 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
   digiMap.clear();
   // GROUPING ENDS
-
-  if (debug) cout << "MUON PATHS found: " << muonpaths.size() <<" in event"<<iEvent.id().event()<<endl;
-  if(pinta) Ngroups->Fill(muonpaths.size());
+  
+  for (UShort_t el = 0; el < muonpaths.size(); el++) {
+    cout << "muonpath num. " << el << endl;
+    for (UShort_t lay = 0; lay < 8; lay++) {
+      cout << "tiempu: " << muonpaths.at(el)->getPrimitive(lay)->getTDCTime() << endl;
+    }
+  }
+  
+  if (debug) cout << "DTp2::run - MUON PATHS found: " << muonpaths.size() << " in event " << iEvent.id().event() << endl;
+  if (pinta) Ngroups->Fill(muonpaths.size());
   
   //filtro por groupos de TDC times en las mismas celdas... corrobarar si sucede... esta implementacion no existe en software pero existe en firmware
   // loop over vector of muonpahts produced by grouping
