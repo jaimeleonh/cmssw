@@ -1,4 +1,4 @@
-#include "Phase2L1Trigger/DTTrigger/interface/MuonPathAnalyzerPerSL.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzerPerSL.h"
 
 using namespace edm;
 using namespace std;
@@ -82,10 +82,12 @@ void MuonPathAnalyzerPerSL::run(edm::Event& iEvent, const edm::EventSetup& iEven
   if (debug) cout <<"MuonPathAnalyzerPerSL: run" << endl;
   
   // fit per SL (need to allow for multiple outputs for a single mpath) 
-  MuonPath *outMPath = NULL; 
+  //  MuonPath *outMPath = NULL; 
   for(auto muonpath = muonpaths.begin();muonpath!=muonpaths.end();++muonpath) {
     if ((*muonpath)->getNPrimitives()==4) 
-      analyze(*muonpath, outMPath);   
+      analyze(*muonpath, outmuonpaths);
+  }
+  /*
     else if ((*muonpath)->getNPrimitives()==8) {
       if ((*muonpath)->getNPrimitivesDown() >= 3) analyze(*muonpath, *outMPath, 0);
       if ((*muonpath)->getNPrimitivesUp()   >= 3) analyze(*muonpath, *outMPath, 2);
@@ -93,21 +95,10 @@ void MuonPathAnalyzerPerSL::run(edm::Event& iEvent, const edm::EventSetup& iEven
     if (outMPath != NULL) 
       outmuonpaths.push_back(outMPath);
   }
-  
-  // Once we have the fit per SL, try to merge 
-  for (auto mpath = outmuonpaths.begin(); mpath!= outmuonpaths.end(); ++mpath) {
-    cout << " SFG mpath: "
-	 << (*mpath)->getBxTimeValue() << " " 
-	 << (*mpath)->getHorizPos() << " " 
-	 << (*mpath)->getTanPhi() << " " 
-	 << (*mpath)->getPhi() << " " 
-	 << (*mpath)->getPhiB() << " " 
-	 << (*mpath)->getQuality() << " " 
-	 << endl;
-	
+  */	
 //    if ((*mpath)->getNPrimitives() <= 4) continue; 
 //    associate(mpath);  
-  }
+//  }
 }
 
 void MuonPathAnalyzerPerSL::finish() {
@@ -1226,10 +1217,10 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath, std::vector<MuonPath*> &o
 	mPath->setLateralComb(lateralities[i]);
 	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" done settingLateralCombination"<<std::endl;
 	
-	if (!isCompatibleWithGrouping(mPath)) {
-	  std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" not accepted by grouping"<<std::endl;	  
-	  continue;
-	}
+//	if (!isCompatibleWithGrouping(mPath,SL)) {
+//	  std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" not accepted by grouping"<<std::endl;	  
+//	  continue;
+//	}
 	MuonPath *mpAux = new MuonPath(*mPath);
 //	cout << "SFG: second clone " << mPath << endl;
 //	for (int i=0; i<mpAux->getNPrimitives(); i++) 

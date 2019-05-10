@@ -15,12 +15,12 @@
 #include "DataFormats/MuonDetId/interface/DTLayerId.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"
 
-#include "Phase2L1Trigger/DTTrigger/src/muonpath.h"
-#include "Phase2L1Trigger/DTTrigger/src/analtypedefs.h"
-#include "Phase2L1Trigger/DTTrigger/src/constants.h"
+#include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
+#include "L1Trigger/DTPhase2Trigger/interface/analtypedefs.h"
+#include "L1Trigger/DTPhase2Trigger/interface/constants.h"
 
-#include "Phase2L1Trigger/DTTrigger/interface/MuonPathAnalyzer.h"
-#include "Phase2L1Trigger/DTTrigger/interface/InitialGrouping.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzer.h"
+#include "L1Trigger/DTPhase2Trigger/interface/InitialGrouping.h"
 
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
@@ -101,7 +101,7 @@ class MuonPathAnalyzerPerSL : public MuonPathAnalyzer {
   void setCellLayout(const int layout[4]);
   void buildLateralities(void);
   bool isStraightPath(LATERAL_CASES sideComb[4]);
-  bool isCompatibleWithGrouping(MuonPath *mp);
+  bool isCompatibleWithGrouping(MuonPath *mp, int SL);
 
   /* This determines whether the values of the 4 primitives make up a 
      trajectory. The values have to be placed in the layer order: 

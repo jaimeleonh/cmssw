@@ -1,5 +1,5 @@
-#ifndef Phase2L1Trigger_DTTrigger_MuonPathAssociator_cc
-#define Phase2L1Trigger_DTTrigger_MuonPathAssociator_cc
+#ifndef Phase2L1Trigger_DTTrigger_MuonPathFilter_cc
+#define Phase2L1Trigger_DTTrigger_MuonPathFilter_cc
 
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/Framework/interface/EDProducer.h"
@@ -15,14 +15,24 @@
 #include "DataFormats/MuonDetId/interface/DTLayerId.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"
 #include "DataFormats/DTDigi/interface/DTDigiCollection.h"
-//#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhContainer.h"
-//#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhDigi.h"
-//#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
-//#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThDigi.h"
-//
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhDigi.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThDigi.h"
+
 #include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
 #include "L1Trigger/DTPhase2Trigger/interface/analtypedefs.h"
 #include "L1Trigger/DTPhase2Trigger/interface/constants.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MuonPathFilter.h"
+
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambDigi.h"
+
+#include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
+#include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
+
+#include "L1Trigger/DTSectorCollector/interface/DTSectCollPhSegm.h"
+#include "L1Trigger/DTSectorCollector/interface/DTSectCollThSegm.h"
 
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
@@ -30,6 +40,7 @@
 
 #include <iostream>
 #include <fstream>
+
 
 // ===============================================================================
 // Previous definitions and declarations
@@ -39,37 +50,33 @@
 // Class declarations
 // ===============================================================================
 
-class MuonPathAssociator {
+class MuonPathFilter {
  public:
   // Constructors and destructor
-  MuonPathAssociator(const edm::ParameterSet& pset);
-  virtual ~MuonPathAssociator();
+  MuonPathFilter(const edm::ParameterSet& pset);
+  virtual ~MuonPathFilter();
     
   // Main methods
   void initialise(const edm::EventSetup& iEventSetup);
-//  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, DTDigiCollection digis, std::vector<metaPrimitive> &inMP, std::vector<metaPrimitive> &outMP);
-  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &mpaths);
-    
-void finish();
+  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<metaPrimitive> &inMPath, std::vector<metaPrimitive> &outMPath);
+  //  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMpath, std::vector<MuonPath*> &outMPath)=0;
+
+  void finish();
     
   // Other public methods
   
   // Public attributes
- edm::ESHandle<DTGeometry> dtGeo;  
+  int arePrimos(metaPrimitive mp1, metaPrimitive mp2);
+  //  int arePrimos(MuonPath mp1, MuonPath mp2)=0;
+  int rango(metaPrimitive mp);
 
-
-private:
-  
+ private:
   // Private methods
-  void associate(MuonPath *mpath);
-
-  //  void associate(metaPrimitive MP, std::vector<metaPrimitive> &outMP);
-
-  bool hasPosRF(int wh,int sec) {    return  wh>0 || (wh==0 && sec%4>1); }
   
   // Private attributes
-  double dT0_correlate_TP;
   Bool_t debug;
+  bool filter_primos;
+  double tanPhiTh;
 };
 
 

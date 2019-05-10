@@ -20,12 +20,12 @@
 #include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
 #include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThDigi.h"
 
-#include "Phase2L1Trigger/DTTrigger/src/muonpath.h"
-#include "Phase2L1Trigger/DTTrigger/src/analtypedefs.h"
-#include "Phase2L1Trigger/DTTrigger/src/constants.h"
+#include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
+#include "L1Trigger/DTPhase2Trigger/interface/analtypedefs.h"
+#include "L1Trigger/DTPhase2Trigger/interface/constants.h"
 
-#include "Phase2L1DTDigi/L1DTTrackFinder/interface/L1MuDTChambContainer.h"
-#include "Phase2L1DTDigi/L1DTTrackFinder/interface/L1MuDTChambDigi.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambDigi.h"
 
 #include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
 #include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"

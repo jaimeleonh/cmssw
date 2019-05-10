@@ -1,4 +1,4 @@
-#include "Phase2L1Trigger/DTTrigger/interface/MuonPathAnalyzer.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzer.h"
 
 using namespace edm;
 using namespace std;
