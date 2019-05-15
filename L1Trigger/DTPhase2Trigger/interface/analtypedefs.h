@@ -3,22 +3,18 @@
 #include "constants.h"
 #include <stdint.h>
 
-/* Quality of the trayectories: 
-   NOPATH => Not valid trayectory
-   LOWQGHOST => 3h (multiple lateralities)
-   LOWQ   => 3h
-   HIGHQGHOST => 4h (multiple lateralities)
-   HIGHQ  => 4h
-   CLOWQ  => 3h + 2h/1h
-   LOWLOWQ => 3h + 3h
-   CHIGHQ => 4h + 2h/1h
-   HIGHLOWQ => 4h + 3h
-   HIGHHIGHQ => 4h + 4h
+/* Posibles calidades de la trayectoria:
+   NOPATH => No es una trayectoria válida
+   LOWQGHOST => Igual que LOWQ con múltiples casos simultáneos
+   LOWQ   => Es una potencial trayectoria pero sólo formada por 3 puntos
+   HIGHQGHOST => Igual que HIGHQ con múltiples casos simultáneos
+   HIGHQ  => Es una trayectoria válida con 4 puntos alineados (4 celdas)
 */
-typedef enum {NOPATH = 0, LOWQGHOST, LOWQ, HIGHQGHOST, HIGHQ, CLOWQ, LOWLOWQ, CHIGHQ, HIGHLOWQ, HIGHHIGHQ} MP_QUALITY;
+typedef enum {NOPATH = 0, LOWQGHOST, LOWQ, HIGHQGHOST, HIGHQ} MP_QUALITY;
 // Tipos de lateralidad de traza de partícula al pasar por una celda
 typedef enum {LEFT=0, RIGHT, NONE} LATERAL_CASES;
-typedef struct {
+struct metaPrimitive
+{
   uint32_t rawId;
   double t0;
   double x;
@@ -43,5 +39,15 @@ typedef struct {
   int tdc7;
   int wi8;
   int tdc8;
-} metaPrimitive;
+};
+typedef struct {
+  bool latQValid;
+  int  bxValue;
+} PARTIAL_LATQ_TYPE;
+typedef struct {
+  bool valid;
+  int bxValue;
+  int invalidateHitIdx;
+  MP_QUALITY quality;
+} LATQ_TYPE;
 #endif

@@ -1,5 +1,5 @@
-#ifndef Phase2L1Trigger_DTTrigger_MuonPathAnalyzerPerSL_cc
-#define Phase2L1Trigger_DTTrigger_MuonPathAnalyzerPerSL_cc
+#ifndef L1Trigger_DTPhase2Trigger_MuonPathAnalyzerPerSL_cc
+#define L1Trigger_DTPhase2Trigger_MuonPathAnalyzerPerSL_cc
 
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/Framework/interface/EDProducer.h"
@@ -14,13 +14,25 @@
 #include "DataFormats/MuonDetId/interface/DTSuperLayerId.h"
 #include "DataFormats/MuonDetId/interface/DTLayerId.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"
+#include "DataFormats/DTDigi/interface/DTDigiCollection.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhDigi.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambThDigi.h"
 
 #include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
 #include "L1Trigger/DTPhase2Trigger/interface/analtypedefs.h"
 #include "L1Trigger/DTPhase2Trigger/interface/constants.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzer.h" 
 
-#include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzer.h"
-#include "L1Trigger/DTPhase2Trigger/interface/InitialGrouping.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambDigi.h"
+
+#include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
+#include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
+
+#include "L1Trigger/DTSectorCollector/interface/DTSectCollPhSegm.h"
+#include "L1Trigger/DTSectorCollector/interface/DTSectCollThSegm.h"
 
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
@@ -28,89 +40,91 @@
 
 #include <iostream>
 #include <fstream>
-#include <math.h>
+
 
 // ===============================================================================
 // Previous definitions and declarations
 // ===============================================================================
-//const Int_t CELL_HORIZONTAL_LAYOUTS[8][4] = {
-//  {0, -1, -2, -3}, {0, -1, -2, -1}, {0, -1, 0, -1}, {0, -1, 0, 1},
-//  {0,  1,  0, -1}, {0,  1,  0,  1}, {0,  1, 2,  1}, {0,  1, 2, 3}
-//};
 
-//const int MAX_VERT_ARRANG=4;
 // ===============================================================================
 // Class declarations
 // ===============================================================================
 
 class MuonPathAnalyzerPerSL : public MuonPathAnalyzer {
  public:
-   public:
-  typedef struct {
-    bool latQValid;
-    int  bxValue;
-  } PARTIAL_LATQ_TYPE;
-  
-  typedef struct {
-    bool valid;
-    int bxValue;
-    int invalidateHitIdx;
-    MP_QUALITY quality;
-  } LATQ_TYPE;
-  
   // Constructors and destructor
   MuonPathAnalyzerPerSL(const edm::ParameterSet& pset);
   virtual ~MuonPathAnalyzerPerSL();
   
   // Main methods
-  void initialise(const edm::EventSetup& iEventSetup) override;
-  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMpath, std::vector<metaPrimitive> &metaPrimitives) override;
-  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMpath, std::vector<MuonPath*> &outMPath) override;
-  void finish() override;
+  void initialise(const edm::EventSetup& iEventSetup);
+  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMpath, std::vector<metaPrimitive> &metaPrimitives);
+  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMpath, std::vector<MuonPath*> &outMPath) {};
+
+  void finish();
   
   // Other public methods
-  void setBXTolerance(int t) { bxTolerance = t; }
-  int  getBXTolerance(void)  { return bxTolerance; }
-  void setChiSquareThreshold(float ch2Thr) { chiSquareThreshold = ch2Thr; }
-  void setMinimumQuality(MP_QUALITY q) { if (minQuality >= LOWQGHOST) minQuality = q; }
-  MP_QUALITY getMinimumQuality(void) { return minQuality; }
+  void setBXTolerance(int t);
+  int getBXTolerance(void);
   
+  void setChiSquareThreshold(float ch2Thr);
+  
+  void setMinimumQuality(MP_QUALITY q);
+  MP_QUALITY getMinimumQuality(void);
+
+  bool hasPosRF(int wh,int sec) {    return  wh>0 || (wh==0 && sec%4>1);   };
+
   // Public attributes
+  edm::ESHandle<DTGeometry> dtGeo;
+
   //ttrig
   std::string ttrig_filename;
   std::map<int,float> ttriginfo;
   
-  //z
+  //z 
   std::string z_filename;
   std::map<int,float> zinfo;
   
   //shift
   std::string shift_filename;
   std::map<int,float> shiftinfo;
-
-  edm::ESHandle<DTGeometry> dtGeo;
   
-  bool hasPosRF(int wh,int sec);
+  int chosen_sl;
+  
  private:
-  
   // Private methods
-  void analyze(MuonPath *inMPath, std::vector<metaPrimitive> &metaPrimitives); 
-  void analyze(MuonPath *inMPath, std::vector<MuonPath*> &outMPath, int sl=-1); 
-  //  void analyze(MuonPath *inMPath, MuonPath *outMPath, int sl=-1);
-  
+  void analyze(MuonPath *inMPath, std::vector<metaPrimitive> &metaPrimitives);
+
   void setCellLayout(const int layout[4]);
   void buildLateralities(void);
   bool isStraightPath(LATERAL_CASES sideComb[4]);
-  bool isCompatibleWithGrouping(MuonPath *mp, int SL);
-
-  /* This determines whether the values of the 4 primitives make up a 
-     trajectory. The values have to be placed in the layer order: 
-     0    -> innermost layer 
-     1, 2 -> next layers
-     3    -> outermost layes  */
-  void evaluatePathQuality(MuonPath *mPath, int sl=-1);
-  void evaluateLateralQuality(int latIdx, MuonPath *mPath, LATQ_TYPE *latQuality);
-  void validate(LATERAL_CASES sideComb[3], int layerIndex[3], MuonPath* mPath, PARTIAL_LATQ_TYPE *latq);
+  
+ 
+  /* Determina si los valores de 4 primitivas forman una trayectoria
+     Los valores tienen que ir dispuestos en el orden de capa:
+     0    -> Capa más próxima al centro del detector,
+     1, 2 -> Siguientes capas
+     3    -> Capa más externa */
+  void evaluatePathQuality(MuonPath *mPath);
+  void evaluateLateralQuality(int latIdx, MuonPath *mPath,
+			      LATQ_TYPE *latQuality);
+  /* Función que evalua, mediante el criterio de mean-timer, la bondad
+     de una trayectoria. Involucra 3 celdas en 3 capas distintas, ordenadas
+     de abajo arriba siguiendo el índice del array.
+     Es decir:
+     0-> valor temporal de la capa inferior,
+     1-> valor temporal de la capa intermedia
+     2-> valor temporal de la capa superior
+     Internamente implementa diferentes funciones según el paso de la
+     partícula dependiendo de la lateralidad por la que atraviesa cada
+     celda (p. ej.: LLR => Left (inferior); Left (media); Right (superior))
+     
+     En FPGA debería aplicarse la combinación adecuada para cada caso,
+     haciendo uso de funciones que generen el código en tiempo de síntesis,
+     aunque la función software diseñada debería ser exportable directamente
+     a VHDL */
+  void validate(LATERAL_CASES sideComb[3], int layerIndex[3],
+		MuonPath* mPath, PARTIAL_LATQ_TYPE *latq);
   
   int eqMainBXTerm(LATERAL_CASES sideComb[2], int layerIdx[2],
 		   MuonPath* mPath);
@@ -121,34 +135,45 @@ class MuonPathAnalyzerPerSL : public MuonPathAnalyzer {
   void getLateralCoeficients(LATERAL_CASES sideComb[2], int *coefs);
   bool sameBXValue(PARTIAL_LATQ_TYPE *latq);
   
-  void calculatePathParameters(MuonPath *mPath, int sl=-1);
-  void calcTanPhiXPosChamber  (MuonPath *mPath, int sl=-1);
-  void calcCellDriftAndXcoor  (MuonPath *mPath, int sl=-1);
-  void calcChiSquare          (MuonPath *mPath, int sl=-1);
+  void calculatePathParameters(MuonPath *mPath);
+  void calcTanPhiXPosChamber  (MuonPath *mPath);
+  void calcCellDriftAndXcoor  (MuonPath *mPath);
+  void calcChiSquare          (MuonPath *mPath);
   
-  void calcTanPhiXPosChamber3Hits(MuonPath *mPath, int sl=-1);
-  void calcTanPhiXPosChamber4Hits(MuonPath *mPath, int sl=-1);
+  void calcTanPhiXPosChamber3Hits(MuonPath *mPath);
+  void calcTanPhiXPosChamber4Hits(MuonPath *mPath);
   
   int getOmittedHit(int idx);
   
- 
   // Private attributes
-  Bool_t debug;
-  
-  static const int LAYER_ARRANGEMENTS[MAX_VERT_ARRANG][3]; 
 
+  /* Combinaciones verticales de 3 celdas sobre las que se va a aplicar el
+     mean-timer */
+  static const int LAYER_ARRANGEMENTS[4][3];
+  
+  /* El máximo de combinaciones de lateralidad para 4 celdas es 16 grupos
+     Es feo reservar todo el posible bloque de memoria de golpe, puesto que
+     algunas combinaciones no serán válidas, desperdiciando parte de la
+     memoria de forma innecesaria, pero la alternativa es complicar el
+     código con vectores y reserva dinámica de memoria y, ¡bueno! ¡si hay
+     que ir se va, pero ir p'a n'á es tontería! */
   LATERAL_CASES lateralities[16][4];
   LATQ_TYPE latQuality[16];
   
-  int cellLayout[4];
+  int totalNumValLateralities;
+  /* Posiciones horizontales de cada celda (una por capa), en unidades de
+     semilongitud de celda, relativas a la celda de la capa inferior
+     (capa 0). Pese a que la celda de la capa 0 siempre está en posición
+     0 respecto de sí misma, se incluye en el array para que el código que
+     hace el procesamiento sea más homogéneo y sencillo */
+
+  Bool_t debug;
+  double chi2Th;
   int bxTolerance;
   MP_QUALITY minQuality;
-  
   float chiSquareThreshold;
-  int totalNumValLateralities;
+  int cellLayout[4];
   
-  int chosen_sl;
-  int dT0_correlate_TP;
 };
 
 

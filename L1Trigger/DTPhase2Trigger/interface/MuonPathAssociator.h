@@ -47,10 +47,11 @@ class MuonPathAssociator {
     
   // Main methods
   void initialise(const edm::EventSetup& iEventSetup);
-//  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, DTDigiCollection digis, std::vector<metaPrimitive> &inMP, std::vector<metaPrimitive> &outMP);
-  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &mpaths);
+  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, edm::Handle<DTDigiCollection> digis,
+	   std::vector<metaPrimitive> &inMPaths, std::vector<metaPrimitive> &outMPaths);
+  
     
-void finish();
+  void finish();
     
   // Other public methods
   
@@ -59,9 +60,9 @@ void finish();
 
 
 private:
-  
+ 
   // Private methods
-  void associate(MuonPath *mpath);
+ void correlateMPaths(edm::Handle<DTDigiCollection> digis, std::vector<metaPrimitive> &inMPaths, std::vector<metaPrimitive> &outMPaths);
 
   //  void associate(metaPrimitive MP, std::vector<metaPrimitive> &outMP);
 
@@ -69,7 +70,13 @@ private:
   
   // Private attributes
   double dT0_correlate_TP;
+  double minx_match_2digis;
   Bool_t debug;
+
+  //shift
+  std::string shift_filename;
+  std::map<int,float> shiftinfo;
+  
 };
 
 
