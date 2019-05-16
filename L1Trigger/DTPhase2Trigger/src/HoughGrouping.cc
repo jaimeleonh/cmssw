@@ -1,4 +1,4 @@
-#include "L1Trigger/DTTriggerPhase2/interface/HoughGrouping.h"
+#include "L1Trigger/DTPhase2Trigger/interface/HoughGrouping.h"
 
 using namespace std;
 using namespace edm;
@@ -178,7 +178,7 @@ void HoughGrouping::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
   cout << "HoughGrouping::run - now we have our muonpaths! It has " << outMpath->size() << " elements" << endl;
   for (UShort_t el = 0; el < outMpath->size(); el++) {
     cout << "Elemento num. " << el << endl;
-    for (UShort_t lay = 0; lay < 8; lay++) cout << "el cameraID pero ya fuera, nel run: " << outMpath->at(el)->getPrimitive(lay)->getCameraId() << endl;
+    for (UShort_t lay = 0; lay < 8; lay++) cout << "el cameraID de la abslay " << lay << ", pero ya fuera, nel run: " << outMpath->at(el)->getPrimitive(lay)->getCameraId() << endl;
   }
   return;
 }
@@ -653,10 +653,10 @@ void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Boo
   }
   
   if (invector.size() == 0) {
-    cout << "HoughGrouping::OrderAndFilter - We do not have candidates with the minimum hits required." << endl;
+    if (debug) cout << "HoughGrouping::OrderAndFilter - We do not have candidates with the minimum hits required." << endl;
     return;
   }
-  else cout << "HoughGrouping::OrderAndFilter - At the end, we have only " << invector.size() << " good paths!" << endl;
+  else if (debug) cout << "HoughGrouping::OrderAndFilter - At the end, we have only " << invector.size() << " good paths!" << endl;
   
   // Packing dt primitives
   for (UShort_t i = 0; i < invector.size(); i++) {

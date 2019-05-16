@@ -86,23 +86,20 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
     dtDigisToken = consumes< DTDigiCollection >(pset.getParameter<edm::InputTag>("digiTag"));
 
     rpcRecHitsLabel = consumes<RPCRecHitCollection>(pset.getUntrackedParameter < edm::InputTag > ("rpcRecHits"));
-  
     
     // Choosing grouping scheme:
     grcode = pset.getUntrackedParameter<Int_t>("grouping_code");
     
-    if (grcode == 0) grouping_obj = new InitialGrouping(pset);
+    if      (grcode == 0) grouping_obj = new InitialGrouping(pset);
+    else if (grcode == 1) grouping_obj = new HoughGrouping(pset);
     else {
-	if (debug) cout << "DTp2::constructor: Non-valid grouping code. Choosing InitialGrouping by default." << endl;
-	grouping_obj = new InitialGrouping(pset);
+      if (debug) cout << "DTp2::constructor: Non-valid grouping code. Choosing InitialGrouping by default." << endl;
+      grouping_obj = new InitialGrouping(pset);
     }
     
     mpathanalyzer   = new MuonPathAnalyzerPerSL(pset);
     mpathfilter     = new MuonPathFilter(pset);
     mpathassociator = new MuonPathAssociator(pset);
-      
-   
-    
 }
 
 DTTrigPhase2Prod::~DTTrigPhase2Prod(){

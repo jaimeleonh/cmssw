@@ -1,5 +1,5 @@
-#ifndef Phase2L1Trigger_DTTrigger_HoughGrouping_cc
-#define Phase2L1Trigger_DTTrigger_HoughGrouping_cc
+#ifndef L1Trigger_DTPhase2Trigger_HoughGrouping_cc
+#define L1Trigger_DTPhase2Trigger_HoughGrouping_cc
 
 // System / std headers
 #include <memory>
@@ -88,9 +88,9 @@
 #include "TMath.h"
 
 // Other headers
-#include "L1Trigger/DTTriggerPhase2/interface/muonpath.h"
-#include "L1Trigger/DTTriggerPhase2/interface/dtprimitive.h"
-#include "L1Trigger/DTTriggerPhase2/interface/MotherGrouping.h"
+#include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
+#include "L1Trigger/DTPhase2Trigger/interface/dtprimitive.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MotherGrouping.h"
 
 // ===============================================================================
 // Previous definitions and declarations
