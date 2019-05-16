@@ -20,6 +20,7 @@
 #include "L1Trigger/DTPhase2Trigger/interface/MotherGrouping.h"
 #include "L1Trigger/DTPhase2Trigger/interface/InitialGrouping.h"
 #include "L1Trigger/DTPhase2Trigger/interface/HoughGrouping.h"
+#include "L1Trigger/DTPhase2Trigger/interface/PseudoBayesGrouping.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzer.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzerPerSL.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathFilter.h"
@@ -45,7 +46,7 @@
 
 
 class DTTrigPhase2Prod: public edm::EDProducer{
-
+  
     typedef std::map< DTChamberId,DTDigiCollection,std::less<DTChamberId> > DTDigiMap;
     typedef DTDigiMap::iterator DTDigiMap_iterator;
     typedef DTDigiMap::const_iterator DTDigiMap_const_iterator;
