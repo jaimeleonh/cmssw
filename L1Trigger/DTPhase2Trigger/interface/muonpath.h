@@ -9,81 +9,71 @@
 class MuonPath {
 
   public:
-    MuonPath();
     MuonPath(DTPrimitive *ptrPrimitive[4]);
-    MuonPath(DTPrimitive *ptrPrimitive[8], short nprim);
+    MuonPath(DTPrimitive *ptrPrimitive[8], int nprimUp, int nprimDown);
     MuonPath(MuonPath *ptr);
     virtual ~MuonPath();
 
     void setPrimitive(DTPrimitive *ptr, int layer);
     DTPrimitive *getPrimitive(int layer);
     
-    short getNPrimitives(void) { return nprimitives; }
-    void setNPrimitives(short nprim) { nprimitives = nprim; }
+    short getNPrimitives(void)            { return nprimitives;     }
+    void  setNPrimitives(short nprim)     { nprimitives = nprim;    }
+    short getNPrimitivesUp(void)          { return nprimitivesUp;   }
+    void  setNPrimitivesUp(short nprim)   { nprimitives = nprim;    }
+    short getNPrimitivesDown(void)        { return nprimitivesDown; }
+    void  setNPrimitivesDown(short nprim) { nprimitives = nprim;    }
 
-    void setCellHorizontalLayout(int layout[4]);
+    void setCellHorizontalLayout(int layout[8]);
     void setCellHorizontalLayout(const int *layout);
     const int* getCellHorizontalLayout(void);
 
-    void setCellHorizontalLayout(int layout[4], short sl);
-    void setCellHorizontalLayout(const int *layout, short sl);
-    const int* getCellHorizontalLayout(short sl);
-
     int  getBaseChannelId(void);
     void setBaseChannelId(int bch);
-    int  getBaseChannelId(short sl);
-    void setBaseChannelId(int bch, short sl);
 
     void setQuality(MP_QUALITY qty);
     MP_QUALITY getQuality(void);
-    void setQuality(MP_QUALITY qty, short sl);
-    MP_QUALITY getQuality(short sl);
 
     bool isEqualTo(MuonPath *ptr);
     
     /* El MuonPath debe ser analizado si hay al menos 3 Primitivas válidas */
     bool isAnalyzable(void);
-    bool isAnalyzable(short sl);
     /* Indica que hay 4 Primitivas con dato válido */
     bool completeMP(void);
-    bool completeMP(short sl);
 
     void setBxTimeValue(int time);
     int  getBxTimeValue(void);
-    void setBxTimeValue(int time, short sl);
-    int  getBxTimeValue(short sl);
 
     int  getBxNumId(void);
-    int  getBxNumId(short sl);
 
-    void setLateralComb(LATERAL_CASES latComb[4]);
+    void setLateralComb(LATERAL_CASES latComb[8]);
     void setLateralComb(const LATERAL_CASES *latComb);
     const LATERAL_CASES* getLateralComb(void);
-    void setLateralComb(LATERAL_CASES latComb[4],short sl);
-    void setLateralComb(const LATERAL_CASES *latComb,short sl);
-    const LATERAL_CASES* getLateralComb(short sl);
     void setLateralCombFromPrimitives(void);
 
     void  setHorizPos(float pos);
     float getHorizPos(void);
-    void  setHorizPos(float pos, short sl);
-    float getHorizPos(short sl);
 
     void  setTanPhi(float tanPhi);
     float getTanPhi(void);
-    void  setTanPhi(float tanPhi, short sl);
-    float getTanPhi(short sl);
 
     void  setChiSq(float chi);
     float getChiSq(void);
-    void  setChiSq(float chi, short sl);
-    float getChiSq(short sl);
+
+    void  setPhi(float phi);
+    float getPhi(void);
+
+    void  setPhiB(float phib);
+    float getPhiB(void);
 
     void  setXCoorCell(float x, int cell);
     float getXCoorCell(int cell);
 
     void  setDriftDistance(float dx, int cell);
     float getDriftDistance(int cell);
+    
+    void setRawId(uint32_t id) { rawId=id; }
+    uint32_t getRawId() { return rawId;}
 
   private:
     //------------------------------------------------------------------
@@ -95,7 +85,9 @@ class MuonPath {
      */
     DTPrimitive *prim[8];
     short nprimitives;
-    
+    short nprimitivesUp;
+    short nprimitivesDown;
+
     /* Posiciones horizontales de cada celda (una por capa), en unidades de
        semilongitud de celda, relativas a la celda de la capa inferior
        (capa 0). Pese a que la celda de la capa 0 siempre está en posición
@@ -106,32 +98,37 @@ class MuonPath {
        que el 'PathAnalyzer' sea un único componente (y no uno por posible
        ruta, como en la versión original) y se puede disponer en arquitectura
        tipo pipe-line */
-    int cellLayout[3][4];  // SLX=0, SL1=1, SL3=2;
-    int baseChannelId[3];  // SLX=0, SL1=1, SL3=2;
+    int cellLayout[8];  
+    int baseChannelId;  
 
     //------------------------------------------------------------------
     //--- Resultados tras cálculos
     //------------------------------------------------------------------
     /* Calidad del path */
-    MP_QUALITY quality[3]; // SLX=0, SL1=1, SL3=2;
+    MP_QUALITY quality; // SLX=0, SL1=1, SL3=2;
     
     /* Combinación de lateralidad */
-    LATERAL_CASES lateralComb[3][4]; // SLX=0, SL1=1, SL3=2;
+    LATERAL_CASES lateralComb[8]; 
 
     /* Tiempo del BX respecto del BX0 de la órbita en curso */
-    int bxTimeValue[3]; // SLX=0, SL1=1, SL3=2;
+    int bxTimeValue; 
 
     /* Número del BX dentro de una órbita */
-    int bxNumId[3];  // SLX=0, SL1=1, SL3=2;
+    int bxNumId;  
 
     /* Parámetros de celda */
     float xCoorCell[8];         // Posicion horizontal del hit en la cámara
     float xDriftDistance[8];    // Distancia de deriva en la celda (sin signo)
 
-    float tanPhi[3];   // SLX=0, SL1=1, SL3=2;
-    float horizPos[3]; // SLX=0, SL1=1, SL3=2;
+    float tanPhi;   // SLX=0, SL1=1, SL3=2;
+    float horizPos; // SLX=0, SL1=1, SL3=2;
 
-    float chiSquare[3]; // SLX=0, SL1=1, SL3=2;
+    float chiSquare; // SLX=0, SL1=1, SL3=2;
+    
+    float Phi;
+    float PhiB;
+    
+    uint32_t rawId;
 };
 
 #endif
