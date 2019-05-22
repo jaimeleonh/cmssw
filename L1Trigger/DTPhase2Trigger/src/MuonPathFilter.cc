@@ -131,7 +131,7 @@ void MuonPathFilter::filterUnique(std::vector<metaPrimitive> &inMPaths,
   double t0Th = 0;
   for (size_t i=0; i<inMPaths.size();i++){
     bool visto = false; 
-    for (size_t j=0; j<inMPaths.size();j++){
+    for (size_t j=i+1; j<inMPaths.size();j++){
      if ((fabs(inMPaths[i].x-inMPaths[j].x)<=xTh)&&(fabs(inMPaths[i].tanPhi-inMPaths[j].tanPhi)<=tPhiTh)&&(fabs(inMPaths[i].t0-inMPaths[j].t0)<=t0Th)) visto = true; 
     }
   if (!visto) outMPaths.push_back(inMPaths[i]);
