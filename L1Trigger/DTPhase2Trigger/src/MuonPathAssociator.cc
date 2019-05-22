@@ -72,7 +72,10 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
   //Silvia's code for correlationg filteredMetaPrimitives
   
   if(debug) std::cout<<"starting correlation"<<std::endl;
-  
+ 
+  // Chi2 threshold to prevent bad correlated primitives
+  double chi2Th = 9999;
+ 
   
   for(int wh=-2;wh<=2;wh++){
     for(int st=1;st<=4;st++){
@@ -154,7 +157,9 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 	      double phi= jm_x_cmssw_global.phi()-0.5235988*(thisec-1);
 	      double psi=atan(NewSlope);
 	      double phiB=hasPosRF(ChId.wheel(),ChId.sector()) ? psi-phi :-psi-phi ;
-	      
+	     
+	      if (newChi2 > chi2Th) continue; 
+ 
 	      outMPaths.push_back(metaPrimitive({ChId.rawId(),MeanT0,MeanPos,NewSlope,phi,phiB,newChi2,quality,
 		      SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
 		      SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
@@ -163,7 +168,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		      SL3metaPrimitive->wi1,SL3metaPrimitive->tdc1,SL3metaPrimitive->lat1,
 		      SL3metaPrimitive->wi2,SL3metaPrimitive->tdc2,SL3metaPrimitive->lat2,
 		      SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,SL3metaPrimitive->lat3,
-		      SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
+		      SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,-1
 		      }));
 	      at_least_one_correlation=true;
 	    }
@@ -255,7 +260,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		      wi1,tdc1,lat1,
 		      wi2,tdc2,lat2,
 		      wi3,tdc3,lat3,
-		      wi4,tdc4,lat4
+		      wi4,tdc4,lat4,-1
 		      }));
 	      at_least_one_correlation=true;
 	    }
@@ -361,7 +366,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		      SL3metaPrimitive->wi1,SL3metaPrimitive->tdc1,SL3metaPrimitive->lat1,
 		      SL3metaPrimitive->wi2,SL3metaPrimitive->tdc2,SL3metaPrimitive->lat2,
 		      SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,SL3metaPrimitive->lat3,
-		      SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4
+		      SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,-1
 		      }));
 	      at_least_one_correlation=true;
 	    }
@@ -380,24 +385,24 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		    SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,
 		    SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,
 		    SL1metaPrimitive->wi4,SL1metaPrimitive->tdc4,
-		    -1,-1,
-		    -1,-1,
-		    -1,-1,
-		    -1,-1
+		    -1,-1,-1,
+		    -1,-1,-1,
+		    -1,-1,-1,
+		    -1,-1,-1,-1
 		    }));
 	  }
 	  for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
 	    DTSuperLayerId SLId(SL3metaPrimitive->rawId);
 	    DTChamberId(SLId.wheel(),SLId.station(),SLId.sector());
 	    outMPaths.push_back(metaPrimitive({ChId.rawId(),SL3metaPrimitive->t0,SL3metaPrimitive->x,SL3metaPrimitive->tanPhi,SL3metaPrimitive->phi,SL3metaPrimitive->phiB,SL3metaPrimitive->chi2,SL3metaPrimitive->quality,
-		    -1,-1,
-		    -1,-1,
-		    -1,-1,
-		    -1,-1,
+		    -1,-1,-1,
+		    -1,-1,-1,
+		    -1,-1,-1,
+		    -1,-1,-1,
 		    SL3metaPrimitive->wi1,SL3metaPrimitive->tdc1,
 		    SL3metaPrimitive->wi2,SL3metaPrimitive->tdc2,
 		    SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,
-		    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4
+		    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,-1
 		    }));
 	  }
 	}

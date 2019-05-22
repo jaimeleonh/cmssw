@@ -47,6 +47,7 @@ struct metaPrimitive
   int wi8;
   int tdc8;
   int lat8;
+  int index;
 };
 typedef struct {
   bool latQValid;

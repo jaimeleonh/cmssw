@@ -263,7 +263,9 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	     << endl;
       }
     }
-    
+   
+
+ 
     ////////////////////////////////////////////////////////////////////////////////////
     /// STORING RESULT: 
     //////////////////////////////////////////
@@ -271,9 +273,40 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     vector<L1MuDTChambDigi> outP2;
     vector<L1Phase2MuDTPhDigi> outP2Ph;
     
+    // First we asociate a new index to the metaprimitive depending on quality or phiB; 
+    uint32_t rawId = -1; 
+    int numP = -1;
+
+    for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
+      numP++;
+      rawId = (*metaPrimitiveIt).rawId;   
+
+      int inf = 0;
+      int numP2 = -1;  
+      for (auto metaPrimitiveItN = correlatedMetaPrimitives.begin(); metaPrimitiveItN != correlatedMetaPrimitives.end(); ++metaPrimitiveItN){
+	numP2++;
+	if (rawId != (*metaPrimitiveItN).rawId) continue; 
+	if (numP2 == numP) {
+	  (*metaPrimitiveIt).index = inf; 
+	  break;  
+	} else if ((*metaPrimitiveIt).quality < (*metaPrimitiveItN).quality) {
+	  inf++;
+	} else if ((*metaPrimitiveIt).quality > (*metaPrimitiveItN).quality) {
+	  (*metaPrimitiveItN).index++;
+	} else if ((*metaPrimitiveIt).quality == (*metaPrimitiveItN).quality) {
+	  if (fabs((*metaPrimitiveIt).phiB) >= fabs((*metaPrimitiveItN).phiB) ){
+	     inf++;
+	  } else if (fabs((*metaPrimitiveIt).phiB) < fabs((*metaPrimitiveItN).phiB) ){
+	     (*metaPrimitiveItN).index++;
+	  }
+        }
+      }
+
+    }
+
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
       DTChamberId chId((*metaPrimitiveIt).rawId);
-      if(debug) std::cout<<"looping in final vector: SuperLayerId"<<chId<<" x="<<(*metaPrimitiveIt).x<<" quality="<<(*metaPrimitiveIt).quality<<std::endl;
+      if(debug) std::cout<<"looping in final vector: SuperLayerId"<<chId<<" x="<<(*metaPrimitiveIt).x<<" quality="<<(*metaPrimitiveIt).quality <<" phiB " <<(*metaPrimitiveIt).phiB << " indice " << (*metaPrimitiveIt).index<<std::endl;
       
       int sectorTP=chId.sector();
       if(sectorTP==13) sectorTP=4;
@@ -303,7 +336,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 					0,   // uz (m_zCoordinate)
 					0,   // uzsl (m_zSlope)
 					(*metaPrimitiveIt).quality,  // uqua (m_qualityCode)
-					0,  // uind (m_segmentIndex)
+					(*metaPrimitiveIt).index,  // uind (m_segmentIndex)
 					(int)round((*metaPrimitiveIt).t0),  // ut0 (m_t0Segment)
 					(int)round((*metaPrimitiveIt).chi2),  // uchi2 (m_chi2Segment)
 					-10    // urpc (m_rpcFlag)
@@ -318,7 +351,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 					     (int)round((*metaPrimitiveIt).phi*65536./0.8), // uphi (_phiAngle)
 					     (int)round((*metaPrimitiveIt).phiB*2048./1.4), // uphib (m_phiBending)
 					     (*metaPrimitiveIt).quality,  // uqua (m_qualityCode)
-					     0,  // uind (m_segmentIndex)
+					     (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
 					     (int)round((*metaPrimitiveIt).t0),  // ut0 (m_t0Segment)
 					     (int)round((*metaPrimitiveIt).chi2),  // uchi2 (m_chi2Segment)
 					     -10    // urpc (m_rpcFlag)

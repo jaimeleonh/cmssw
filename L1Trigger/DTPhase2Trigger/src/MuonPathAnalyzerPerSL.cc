@@ -272,7 +272,7 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 		    wi[4],tdc[4],lat[4],
 		    wi[5],tdc[5],lat[5],
 		    wi[6],tdc[6],lat[6],
-		    wi[7],tdc[7],lat[7]
+		    wi[7],tdc[7],lat[7],-1
 		    }));
 	    if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  done pushing back metaprimitive no HIGHQ or HIGHQGHOST"<<std::endl;	
 	  }				
@@ -293,7 +293,7 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 	      wi[4],tdc[4],bestLat[4],
 	      wi[5],tdc[5],bestLat[5],
 	      wi[6],tdc[6],bestLat[6],
-	      wi[7],tdc[7],bestLat[7],
+	      wi[7],tdc[7],bestLat[7],-1
 	      }));
     }
   }
