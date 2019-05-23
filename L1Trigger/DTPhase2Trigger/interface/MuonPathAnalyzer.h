@@ -1,5 +1,5 @@
-#ifndef Phase2L1Trigger_DTTrigger_MotherGrouping_cc
-#define Phase2L1Trigger_DTTrigger_MotherGrouping_cc
+#ifndef Phase2L1Trigger_DTTrigger_MuonPathAnalyzer_cc
+#define Phase2L1Trigger_DTTrigger_MuonPathAnalyzer_cc
 
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/Framework/interface/EDProducer.h"
@@ -19,9 +19,6 @@
 #include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
 #include "L1Trigger/DTPhase2Trigger/interface/analtypedefs.h"
 #include "L1Trigger/DTPhase2Trigger/interface/constants.h"
-
-#include "L1Trigger/DTPhase2Trigger/interface/MotherGrouping.h"
-
 
 #include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
 #include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
@@ -45,15 +42,17 @@
 // Class declarations
 // ===============================================================================
 
-class MotherGrouping {
-  public:
-    // Constructors and destructor
-    MotherGrouping(const edm::ParameterSet& pset);
-    virtual ~MotherGrouping();
+class MuonPathAnalyzer {
+ public:
+  // Constructors and destructor
+  MuonPathAnalyzer(const edm::ParameterSet& pset);
+  virtual ~MuonPathAnalyzer();
     
     // Main methods
     virtual void initialise(const edm::EventSetup& iEventSetup);
-    virtual void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, DTDigiCollection digis, std::vector<MuonPath*> *outMpath);
+    virtual void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMpath, std::vector<metaPrimitive> &metaPrimitives)=0;
+    virtual void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMpath, std::vector<MuonPath*> &outMPath)=0;
+
     virtual void finish();
     
     // Other public methods

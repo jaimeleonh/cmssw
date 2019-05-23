@@ -4,6 +4,7 @@
 <use   name="FWCore/ParameterSet"/>
 <use   name="FWCore/MessageLogger"/>
 <use   name="Geometry/DTGeometry"/>
+<use   name="Geometry/RPCGeometry"/>
 <use   name="L1Trigger/DTUtilities"/>
 <use   name="L1Trigger/DTBti"/>
 <use   name="L1Trigger/DTTraco"/>
@@ -13,7 +14,6 @@
 <use   name="DataFormats/L1DTTrackFinder"/>
 <use   name="L1TriggerConfig/DTTPGConfig"/>
 <use   name="Utilities/General"/>
-<use   name="DataFormats/L1DTTrackFinder"/>
 <use   name="CLHEP"/>
 <use   name="root"/>
 <use   name="rootgraphics"/>

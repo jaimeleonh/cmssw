@@ -1,5 +1,5 @@
-#ifndef Phase2L1Trigger_DTTrigger_MotherGrouping_cc
-#define Phase2L1Trigger_DTTrigger_MotherGrouping_cc
+#ifndef Phase2L1Trigger_DTTrigger_MPQualityEnhancerFilter_cc
+#define Phase2L1Trigger_DTTrigger_MPQualityEnhancerFilter_cc
 
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/Framework/interface/EDProducer.h"
@@ -19,9 +19,7 @@
 #include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
 #include "L1Trigger/DTPhase2Trigger/interface/analtypedefs.h"
 #include "L1Trigger/DTPhase2Trigger/interface/constants.h"
-
-#include "L1Trigger/DTPhase2Trigger/interface/MotherGrouping.h"
-
+#include "L1Trigger/DTPhase2Trigger/interface/MPFilter.h"
 
 #include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
 #include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
@@ -45,26 +43,35 @@
 // Class declarations
 // ===============================================================================
 
-class MotherGrouping {
-  public:
-    // Constructors and destructor
-    MotherGrouping(const edm::ParameterSet& pset);
-    virtual ~MotherGrouping();
+class MPQualityEnhancerFilter : public MPFilter {
+ public:
+  // Constructors and destructor
+  MPQualityEnhancerFilter(const edm::ParameterSet& pset);
+  virtual ~MPQualityEnhancerFilter();
     
-    // Main methods
-    virtual void initialise(const edm::EventSetup& iEventSetup);
-    virtual void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, DTDigiCollection digis, std::vector<MuonPath*> *outMpath);
-    virtual void finish();
-    
-    // Other public methods
-    
-    // Public attributes
-    
-  private:
-    // Private methods
-    
-    // Private attributes
-    Bool_t debug;
+  // Main methods
+  void initialise(const edm::EventSetup& iEventSetup);
+  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<metaPrimitive> &inMPath, std::vector<metaPrimitive> &outMPath);
+  void run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &inMPath, std::vector<MuonPath*> &outMPath){};
+  
+  void finish();
+  
+  // Other public methods
+  
+  // Public attributes
+  int areCousins(metaPrimitive mp1, metaPrimitive mp2);
+  int rango(metaPrimitive mp);
+  void printmP(metaPrimitive mP);
+  
+ private:
+  // Private methods
+  void filterCousins(std::vector<metaPrimitive> &inMPath, std::vector<metaPrimitive> &outMPath);
+  void filterTanPhi(std::vector<metaPrimitive> &inMPath, std::vector<metaPrimitive> &outMPath);
+  void filterUnique(std::vector<metaPrimitive> &inMPath, std::vector<metaPrimitive> &outMPath);
+  
+  // Private attributes
+  Bool_t debug;
+  bool filter_cousins;
 };
 
 

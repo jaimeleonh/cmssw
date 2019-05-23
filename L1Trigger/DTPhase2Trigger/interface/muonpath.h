@@ -4,11 +4,12 @@
 #include "analtypedefs.h"
 
 
-#include "L1Trigger/DTPhase2Trigger/src/dtprimitive.h"
+#include "L1Trigger/DTPhase2Trigger/interface/dtprimitive.h"
 
 class MuonPath {
 
   public:
+    MuonPath();
     MuonPath(DTPrimitive *ptrPrimitive[4]);
     MuonPath(DTPrimitive *ptrPrimitive[8], short nprim);
     MuonPath(MuonPath *ptr);
