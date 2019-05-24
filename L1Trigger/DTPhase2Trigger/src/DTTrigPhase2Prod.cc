@@ -191,7 +191,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     
 	if (dmit !=digiMap.end()) grouping_obj->run(iEvent, iEventSetup, (*dmit).second, &muonpaths);  // New grouping implementation
     }
-    debug=true;
+
     if (debug && grcode == 2){
       for (std::vector<MuonPath*>::iterator itmPaths = muonpaths.begin(); itmPaths != muonpaths.end(); itmPaths++){
 	for (int i=0; i<(*itmPaths)->getNPrimitives(); i++) 
@@ -203,40 +203,33 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	std::cout << "---------------------------------------------------------------" << std::endl;
       }
     }
-    debug=false;
     digiMap.clear();
 
     // FILTER GROUPING
     if (dump) {
       for (unsigned int i=0; i<muonpaths.size(); i++){
-	cout << iEvent.id().event() << "      mpath " << i << ": "
-	     << muonpaths.at(i)->getPrimitive(0)->getChannelId() << " " 
-	     << muonpaths.at(i)->getPrimitive(1)->getChannelId() << " " 
-	     << muonpaths.at(i)->getPrimitive(2)->getChannelId() << " " 
-	     << muonpaths.at(i)->getPrimitive(3)->getChannelId() << " - " 
-	     << muonpaths.at(i)->getPrimitive(0)->getTDCTime() << " " 
-	     << muonpaths.at(i)->getPrimitive(1)->getTDCTime() << " " 
-	     << muonpaths.at(i)->getPrimitive(2)->getTDCTime() << " " 
-	     << muonpaths.at(i)->getPrimitive(3)->getTDCTime()
-	     << endl;
+	cout << iEvent.id().event() << "      mpath " << i << ": ";
+	for (int lay=0; lay<muonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << muonpaths.at(i)->getPrimitive(lay)->getChannelId() << " ";
+	for (int lay=0; lay<muonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << muonpaths.at(i)->getPrimitive(lay)->getTDCTime() << " ";
+	cout << endl;	
       }
+      cout << endl;
     }
     std::vector<MuonPath*> filteredmuonpaths;
     mpathredundantfilter->run(iEvent, iEventSetup, muonpaths,filteredmuonpaths);
     
     if (dump) {
       for (unsigned int i=0; i<filteredmuonpaths.size(); i++){
-	cout << iEvent.id().event() << " filt mpath " << i << ": "
-	     << filteredmuonpaths.at(i)->getPrimitive(0)->getChannelId() << " " 
-	     << filteredmuonpaths.at(i)->getPrimitive(1)->getChannelId() << " " 
-	     << filteredmuonpaths.at(i)->getPrimitive(2)->getChannelId() << " " 
-	     << filteredmuonpaths.at(i)->getPrimitive(3)->getChannelId() << " - " 
-	     << filteredmuonpaths.at(i)->getPrimitive(0)->getTDCTime() << " " 
-	     << filteredmuonpaths.at(i)->getPrimitive(1)->getTDCTime() << " " 
-	     << filteredmuonpaths.at(i)->getPrimitive(2)->getTDCTime() << " " 
-	     << filteredmuonpaths.at(i)->getPrimitive(3)->getTDCTime()
-	     << endl;
+	cout << iEvent.id().event() << " filt mpath " << i << ": ";
+	for (int lay=0; lay<filteredmuonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << filteredmuonpaths.at(i)->getPrimitive(lay)->getChannelId() << " ";
+	for (int lay=0; lay<filteredmuonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << filteredmuonpaths.at(i)->getPrimitive(lay)->getTDCTime() << " ";
+	cout << endl;	
       }
+      cout << endl;
     }
     // GROUPING ENDS
     
@@ -264,9 +257,20 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       delete filteredmuonpaths[i];
     }
     filteredmuonpaths.clear();
-    return;
 
     if (dump) {
+      for (unsigned int i=0; i<outmpaths.size(); i++){
+	cout << iEvent.id().event() << " mp " << i << ": "
+	     << outmpaths.at(i)->getBxTimeValue() << " "
+	     << outmpaths.at(i)->getHorizPos() << " "
+	     << outmpaths.at(i)->getTanPhi() << " "
+	     << outmpaths.at(i)->getPhi() << " "
+	     << outmpaths.at(i)->getPhiB() << " "
+	     << outmpaths.at(i)->getQuality() << " "
+	     << outmpaths.at(i)->getChiSq() << " "
+	     << endl;
+      }
+
       for (unsigned int i=0; i<metaPrimitives.size(); i++){
 	cout << iEvent.id().event() << " mp " << i << ": "
 	     << metaPrimitives.at(i).t0 << " "
@@ -275,6 +279,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	     << metaPrimitives.at(i).phi << " "
 	     << metaPrimitives.at(i).phiB << " "
 	     << metaPrimitives.at(i).quality << " "
+	     << metaPrimitives.at(i).chi2 << " "
 	     << endl;
       }
     }
@@ -289,7 +294,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     if(debug) std::cout<<"declaring new vector for filtered"<<std::endl;    
 
     std::vector<metaPrimitive> filteredMetaPrimitives;
-    mpathqualityenhancer->run(iEvent, iEventSetup, metaPrimitives, filteredMetaPrimitives);  // New grouping implementation
+    if (grcode==0) mpathqualityenhancer->run(iEvent, iEventSetup, metaPrimitives, filteredMetaPrimitives);  // New grouping implementation
     
     if (dump) {
       for (unsigned int i=0; i<filteredMetaPrimitives.size(); i++){
@@ -312,7 +317,26 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     
     //// CORRELATION: 
     std::vector<metaPrimitive> correlatedMetaPrimitives;
-    mpathassociator->run(iEvent, iEventSetup, dtdigis, filteredMetaPrimitives, correlatedMetaPrimitives);  
+    if (grcode==0) mpathassociator->run(iEvent, iEventSetup, dtdigis, filteredMetaPrimitives, correlatedMetaPrimitives);  
+    else {
+
+      for(auto muonpath = muonpaths.begin();muonpath!=muonpaths.end();++muonpath) {
+	
+	correlatedMetaPrimitives.push_back(metaPrimitive({(*muonpath)->getRawId(),(double)(*muonpath)->getBxTimeValue(),
+		(*muonpath)->getHorizPos(), (*muonpath)->getTanPhi(),
+		(*muonpath)->getPhi(), 	    (*muonpath)->getPhiB(),
+		(*muonpath)->getChiSq(),    (int)(*muonpath)->getQuality(),
+		(*muonpath)->getPrimitive(0)->getChannelId(),   (*muonpath)->getPrimitive(0)->getTDCTime(),
+		(*muonpath)->getPrimitive(1)->getChannelId(),   (*muonpath)->getPrimitive(1)->getTDCTime(),
+		(*muonpath)->getPrimitive(2)->getChannelId(),   (*muonpath)->getPrimitive(2)->getTDCTime(),
+		(*muonpath)->getPrimitive(3)->getChannelId(),   (*muonpath)->getPrimitive(3)->getTDCTime(),
+		(*muonpath)->getPrimitive(4)->getChannelId(),   (*muonpath)->getPrimitive(4)->getTDCTime(),
+		(*muonpath)->getPrimitive(5)->getChannelId(),   (*muonpath)->getPrimitive(5)->getTDCTime(),
+		(*muonpath)->getPrimitive(6)->getChannelId(),   (*muonpath)->getPrimitive(6)->getTDCTime(),
+		(*muonpath)->getPrimitive(7)->getChannelId(),   (*muonpath)->getPrimitive(7)->getTDCTime(),
+		}));
+      }
+    }
     
     filteredMetaPrimitives.clear();
     filteredMetaPrimitives.erase(filteredMetaPrimitives.begin(),filteredMetaPrimitives.end());

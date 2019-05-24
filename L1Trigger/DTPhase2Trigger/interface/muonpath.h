@@ -1,10 +1,14 @@
 #ifndef MUONPATH_H
 #define MUONPATH_H
 #include <iostream> 
+#include <cstring>  // Para función "memcpy"
+#include "math.h"
+#include <iostream>
+
 #include "analtypedefs.h"
 
-
 #include "L1Trigger/DTPhase2Trigger/interface/dtprimitive.h"
+
 
 class MuonPath {
 

@@ -103,7 +103,7 @@ MP_QUALITY MuonPathAnalyzerInChamber::getMinimumQuality(void) { return minQualit
 //--- Métodos privados
 //------------------------------------------------------------------
 void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>& outMPath) {
-  debug=true;
+
   if(debug) std::cout<<"DTp2:analyze \t\t\t\t starts"<<std::endl;
   
   // Clonamos el objeto analizado.
@@ -125,172 +125,64 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
   
   // first of all, get info from primitives, so we can reduce the number of latereralities:
   buildLateralities(mPath);
-  setCellLayout(mPath);  
+  //  setCellLayout(mPath);  
   setWirePosAndTimeInMP(mPath);
   
+  MuonPath *mpAux(NULL);
+  float best_chi2=99999.;
   for (int i = 0; i < totalNumValLateralities; i++) {// LOOP for all lateralities:   
     calculateFitParameters(mPath,lateralities[i]);
-  }
-  return; 
+    if ( mPath->getChiSq() > chiSquareThreshold ) return;
+    
 
-  if ( mPath->getQuality() < minQuality ) return;
-  
-  /*
-  // LOCATE MPATH (do we need this?) 
-  int selected_Id=0;
-  if     (inMPath->getPrimitive(0)->getTDCTime()!=-1) selected_Id= inMPath->getPrimitive(0)->getCameraId();
-  else if(inMPath->getPrimitive(1)->getTDCTime()!=-1) selected_Id= inMPath->getPrimitive(1)->getCameraId(); 
-  else if(inMPath->getPrimitive(2)->getTDCTime()!=-1) selected_Id= inMPath->getPrimitive(2)->getCameraId(); 
-  else if(inMPath->getPrimitive(3)->getTDCTime()!=-1) selected_Id= inMPath->getPrimitive(3)->getCameraId(); 
-  
-  DTLayerId thisLId(selected_Id);
-  if(debug) std::cout<<"Building up MuonPathSLId from rawId in the Primitive"<<std::endl;
-  DTSuperLayerId MuonPathSLId(thisLId.wheel(),thisLId.station(),thisLId.sector(),thisLId.superLayer());
-  if(debug) std::cout<<"The MuonPathSLId is"<<MuonPathSLId<<std::endl;
-  DTWireId wireId(MuonPathSLId,2,1);
-  /// END LOCATE MPATH
-
-  if ( mPath->getQuality() < minQuality ) return;
-  
-  if(debug) {
-    std::cout<<"DTp2:analyze \t\t\t\t min quality achievedCalidad: "<<mPath->getQuality()<<std::endl;
-    for (int i = 0; i <= 3; i++)
-      std::cout<<"DTp2:analyze \t\t\t\t  Capa: "<<mPath->getPrimitive(i)->getLayerId() <<" Canal: "<<mPath->getPrimitive(i)->getChannelId() <<" TDCTime: "<<mPath->getPrimitive(i)->getTDCTime()   <<std::endl;
-  
-    if(debug) std::cout<<"DTp2:analyze \t\t\t\t Starting lateralities loop, totalNumValLateralities: "<<totalNumValLateralities<<std::endl;
-  }
+    evaluateQuality(mPath);
+    if ( mPath->getQuality() < minQuality ) return;
     
-  
-  for (int i = 0; i < totalNumValLateralities; i++) {//here
-    if(debug) {
-      std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<std::endl;
-      std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" checking quality:"<<std::endl;
-      std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" checking mPath Quality="<<mPath->getQuality()<<std::endl;   
-      std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" latQuality[i].val="<<latQuality[i].valid<<std::endl;   
-      std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" before if:"<<std::endl;
+    int selected_Id=0;
+    for (int i=0; i<mPath->getNPrimitives(); i++) {
+      if (mPath->getPrimitive(i)->isValidTime()) {
+	selected_Id= mPath->getPrimitive(i)->getCameraId();
+	mPath->setRawId(selected_Id);
+	break;
+      }
     }
     
-    if (latQuality[i].valid and (((mPath->getQuality()==HIGHQ or mPath->getQuality()==HIGHQGHOST) and latQuality[i].quality==HIGHQ)
-				 or
-				 ((mPath->getQuality() == LOWQ or mPath->getQuality()==LOWQGHOST) and latQuality[i].quality==LOWQ))){
-      
-      if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" inside if"<<std::endl;
-      mPath->setBxTimeValue(latQuality[i].bxValue);
-      if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" settingLateralCombination"<<std::endl;
-      mPath->setLateralComb(lateralities[i]);
-      if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t laterality #- "<<i<<" done settingLateralCombination"<<std::endl;
-      
-      // Clonamos el objeto analizado.
-      MuonPath *mpAux = new MuonPath(mPath);
-      
-      int idxHitNotValid = latQuality[i].invalidateHitIdx;
-      if (idxHitNotValid >= 0) {
-	delete mpAux->getPrimitive(idxHitNotValid);
-	mpAux->setPrimitive(std::move(new DTPrimitive()), idxHitNotValid);
-      }
-      
-      if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  calculating parameters "<<std::endl;
-      calculatePathParameters(mpAux);
-      if ((mpAux->getQuality() == HIGHQ or mpAux->getQuality() == HIGHQGHOST) && mpAux->getChiSq() > chiSquareThreshold) {//check this if!!!
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  HIGHQ or HIGHQGHOST but min chi2 or Q test not satisfied "<<std::endl;
-      }				
-      else{
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  inside else, returning values: "<<std::endl;
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  BX Time = "<<mpAux->getBxTimeValue()<<std::endl;
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  BX Id   = "<<mpAux->getBxNumId()<<std::endl;
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  XCoor   = "<<mpAux->getHorizPos()<<std::endl;
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  tan(Phi)= "<<mpAux->getTanPhi()<<std::endl;
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  chi2= "<<mpAux->getChiSq()<<std::endl;
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t  lateralities = "
-			   <<" "<<mpAux->getLateralComb()[0]
-			   <<" "<<mpAux->getLateralComb()[1]
-			   <<" "<<mpAux->getLateralComb()[2]
-			   <<" "<<mpAux->getLateralComb()[3]
-			   <<std::endl;
-	
-	DTChamberId ChId(MuonPathSLId.wheel(),MuonPathSLId.station(),MuonPathSLId.sector());
-	
-	double jm_tanPhi=-1.*mpAux->getTanPhi(); //testing with this line
-	double jm_x=(mpAux->getHorizPos()/10.)+shiftinfo[wireId.rawId()]; 
-	//changing to chamber frame or reference:
-	double jm_t0=mpAux->getBxTimeValue();		      
-	//	  int quality= mpAux->getQuality();
-	
-	//computing phi and phiB
-	double z=0;
-	double z1=11.75;
-	double z3=-1.*z1;
-	if (ChId.station() == 3 or ChId.station() == 4){
-	  z1=9.95;
-	  z3=-13.55;
-	}
-	
-	if(MuonPathSLId.superLayer()==1) z=z1;
-	if(MuonPathSLId.superLayer()==3) z=z3;
-	
-	GlobalPoint jm_x_cmssw_global = dtGeo->chamber(MuonPathSLId)->toGlobal(LocalPoint(jm_x,0.,z));//jm_x is already extrapolated to the middle of the SL
-	int thisec = MuonPathSLId.sector();
-	if(thisec==13) thisec = 4;
-	if(thisec==14) thisec = 10;
-	double phi= jm_x_cmssw_global.phi()-0.5235988*(thisec-1);
-	double psi=atan(jm_tanPhi);
-	double phiB=hasPosRF(MuonPathSLId.wheel(),MuonPathSLId.sector()) ? psi-phi : -psi-phi ;
-	double chi2= mpAux->getChiSq()*0.01;//in cmssw we want cm, 1 cm^2 = 100 mm^2
-	
-	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  pushing back metaPrimitive at x="<<jm_x<<" tanPhi:"<<jm_tanPhi<<" t0:"<<jm_t0<<std::endl;
-	  
-	if(mpAux->getQuality() == HIGHQ or mpAux->getQuality() == HIGHQGHOST){//keep only the values with the best chi2 among lateralities
-	  if(chi2<best_chi2){
-	    chi2_jm_tanPhi=jm_tanPhi;
-	      chi2_jm_x=(mpAux->getHorizPos()/10.)+shiftinfo[wireId.rawId()]; 
-	      //chi2_jm_x=chi2_jm_x-(zinfo[wireId.rawId()]-0.65)*chi2_jm_tanPhi; //from SL to CH no needed for co
-	      chi2_jm_t0=mpAux->getBxTimeValue();		      
-	      chi2_phi=phi;
-	      chi2_phiB=phiB;
-	      chi2_chi2=chi2;
-	      chi2_quality= mpAux->getQuality();
-	  }
-	}else{//write the metaprimitive in case no HIGHQ or HIGHQGHOST
-	  if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  pushing back metaprimitive no HIGHQ or HIGHQGHOST"<<std::endl;
-	  metaPrimitives.push_back(metaPrimitive({MuonPathSLId.rawId(),jm_t0,jm_x,jm_tanPhi,phi,phiB,chi2,quality,
-		    wi[0],tdc[0],
-		    wi[1],tdc[1],
-		    wi[2],tdc[2],
-		    wi[3],tdc[3],
-		    wi[4],tdc[4],
-		    wi[5],tdc[5],
-		    wi[6],tdc[6],
-		    wi[7],tdc[7]
-		    }));
-	  if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  done pushing back metaprimitive no HIGHQ or HIGHQGHOST"<<std::endl;	
-	}				
-      }
-      delete mpAux;
+    DTLayerId thisLId(selected_Id);
+    DTSuperLayerId MuonPathSLId(thisLId.wheel(),thisLId.station(),thisLId.sector(),thisLId.superLayer());
+    DTChamberId ChId(MuonPathSLId.wheel(),MuonPathSLId.station(),MuonPathSLId.sector());
+    DTWireId wireId(MuonPathSLId,2,1);
+    
+    //computing phi and phiB
+    double z=0;
+    double z1=11.75;
+    double z3=-1.*z1;
+    if (ChId.station() == 3 or ChId.station() == 4){
+      z1=9.95;
+      z3=-13.55;
     }
-    else{
-      if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  latQuality[i].valid and (((mPath->getQuality()==HIGHQ or mPath->getQuality()==HIGHQGHOST) and latQuality[i].quality==HIGHQ) or  ((mPath->getQuality() == LOWQ or mPath->getQuality()==LOWQGHOST) and latQuality[i].quality==LOWQ)) not passed"<<std::endl;
+    
+    if(MuonPathSLId.superLayer()==1) z=z1;
+    if(MuonPathSLId.superLayer()==3) z=z3;
+    
+    double jm_x=(mPath->getHorizPos()/10.)+shiftinfo[wireId.rawId()]; 
+    GlobalPoint jm_x_cmssw_global = dtGeo->chamber(MuonPathSLId)->toGlobal(LocalPoint(jm_x,0.,z));//jm_x is already extrapolated to the middle of the SL
+    int thisec = MuonPathSLId.sector();
+    if(thisec==13) thisec = 4;
+    if(thisec==14) thisec = 10;
+    double phi= jm_x_cmssw_global.phi()-0.5235988*(thisec-1);
+    double psi=atan(mPath->getTanPhi());
+    mPath->setPhi(jm_x_cmssw_global.phi()-0.5235988*(thisec-1));
+    mPath->setPhiB(hasPosRF(MuonPathSLId.wheel(),MuonPathSLId.sector()) ? psi-phi : -psi-phi);
+    
+    if(mPath->getChiSq() < best_chi2){
+      mpAux = new MuonPath(mPath);
     }
   }
-  if(chi2_jm_tanPhi!=999){//
-    if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  pushing back best chi2 metaPrimitive"<<std::endl;
-     metaPrimitives.push_back(metaPrimitive({MuonPathSLId.rawId(),chi2_jm_t0,chi2_jm_x,chi2_jm_tanPhi,chi2_phi,chi2_phiB,chi2_chi2,chi2_quality,
-       wi[0],tdc[0],
-       wi[1],tdc[1],
-       wi[2],tdc[2],
-       wi[3],tdc[3],
-       wi[4],tdc[4],
-       wi[5],tdc[5],
-       wi[6],tdc[6],
-       wi[7],tdc[7]
-       }));
-    
-       }
-       }
-       delete mPath;
-       if(debug) std::cout<<"DTp2:analyze \t\t\t\t finishes"<<std::endl;
-  */
+  
+  if (mpAux!=NULL) 
+    outMPath.push_back(std::move(mpAux));
+ 
 }
-
 
 void MuonPathAnalyzerInChamber::setCellLayout(MuonPath *mpath) {
   
@@ -349,9 +241,9 @@ void MuonPathAnalyzerInChamber::buildLateralities(MuonPath *mpath) {
       auto ncurrentoptions = lateralities.size();
       
       // Duplicate them
-      std::cout << "[DEBUG]   - Duplicating " << ncurrentoptions << " lists..." << std::endl;
+      if (debug) std::cout << "[DEBUG]   - Duplicating " << ncurrentoptions << " lists..." << std::endl;
       copy(lateralities.begin(), lateralities.end(), back_inserter(lateralities));     
-      std::cout << "[DEBUG]   - Now we have " << lateralities.size() << " lists..." << std::endl;
+      if (debug) std::cout << "[DEBUG]   - Now we have " << lateralities.size() << " lists..." << std::endl;
 
       // Asign LEFT to first ncurrentoptions and RIGHT to the last
       for (unsigned int iall = 0; iall < ncurrentoptions; iall++) {
@@ -393,14 +285,21 @@ void MuonPathAnalyzerInChamber::buildLateralities(MuonPath *mpath) {
     } 
   }
 }
+void MuonPathAnalyzerInChamber::setLateralitiesInMP(MuonPath *mpath, TLateralities lat){
+  LATERAL_CASES tmp[8]; 
+  for (int i=0; i<8; i++)
+    tmp[i] = lat[i];
+    
+  mpath->setLateralComb(tmp);
+}
 void MuonPathAnalyzerInChamber::setWirePosAndTimeInMP(MuonPath *mpath){
   
   float delta = 42000; //um
-  float zwire[8]={-13.7, -12.4, -11.1, -9.8002, 9.79999, 11.1, 12.4, 13.7};
+  float zwire[8]={-13.7, -12.4, -11.1, -9.8002, 9.79999, 11.1, 12.4, 13.7}; // mm
   for (int i=0; i<mpath->getNPrimitives(); i++){ 
     if (mpath->getPrimitive(i)->isValidTime())  {
-      mpath->setXWirePos(mpath->getPrimitive(i)->getChannelId() +0.5*(double)(i%2) * delta,i);
-      mpath->setZWirePos(zwire[i],i);
+      mpath->setXWirePos((mpath->getPrimitive(i)->getChannelId() + 0.5*(double)(i%2)) * delta,i);
+      mpath->setZWirePos(zwire[i]*1000, i); // in um
       mpath->settWireTDC(mpath->getPrimitive(i)->getTDCTime()*DRIFT_SPEED,i);
     }
     else {
@@ -551,11 +450,11 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
     mpath->setTanPhi(recslope);
     mpath->setHorizPos(recpos);
     mpath->setChiSq(recchi2);
-    evaluateQuality(mpath);
+    setLateralitiesInMP(mpath,laterality);
     
     if(debug) cout << "In fitPerLat " << "t0 " <<  mpath->getBxTimeValue() <<" slope " << mpath->getTanPhi() <<" pos "<< mpath->getHorizPos() <<" chi2 "<< mpath->getChiSq() << endl;
   }
-    
+  
 }
 /**
  * Recorre las calidades calculadas para todas las combinaciones de lateralidad
@@ -564,47 +463,38 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
  */
 void MuonPathAnalyzerInChamber::evaluateQuality(MuonPath *mPath) {
   
-  // here
-  int totalHighQ = 0, totalLowQ = 0;
-    
-  if(debug) {
-    std::cout<<"DTp2:evaluatePathQuality \t\t\t\t\t En evaluatePathQuality Evaluando PathQ. Celda base: "<<mPath->getBaseChannelId()<<std::endl;
-    std::cout<<"DTp2:evaluatePathQuality \t\t\t\t\t Total lateralidades: "<<totalNumValLateralities<<std::endl;
-  }
-  
   // Por defecto.
   mPath->setQuality(NOPATH);
   
-  for (int latIdx = 0; latIdx < totalNumValLateralities; latIdx++) {
-    if(debug) {
-      std::cout<<"DTp2:evaluatePathQuality \t\t\t\t\t Analizando combinacion de lateralidad: " ;
-      for (int i=0; i<NLayers; i++)  std::cout <<lateralities[latIdx][i]<<" ";
-      std::cout << std::endl; 
-    }
-    
-    if (latQuality[latIdx].quality == HIGHQ) {
-      totalHighQ++;
-      if(debug) std::cout<<"DTp2:evaluatePathQuality \t\t\t\t\t\t Lateralidad HIGHQ"<<std::endl;
-    }
-    if (latQuality[latIdx].quality == LOWQ) {
-      totalLowQ++;
-      if(debug) std::cout<<"DTp2:evaluatePathQuality \t\t\t\t\t\t Lateralidad LOWQ"<<std::endl;
-    }
+  if      (mPath->getNPrimitivesUp() == 4 && mPath->getNPrimitivesDown() == 4) {
+    mPath->setQuality(HIGHHIGHQ);
   }
-  /*
-   * Establecimiento de la calidad.
-   */
-  if (totalHighQ == 1) {
-    mPath->setQuality(HIGHQ);
+  else if ((mPath->getNPrimitivesUp() == 4 && mPath->getNPrimitivesDown() == 3) || 
+	   (mPath->getNPrimitivesUp() == 3 && mPath->getNPrimitivesDown() == 4)
+	   ) {
+    mPath->setQuality(HIGHLOWQ);
+  } 
+  else if ((mPath->getNPrimitivesUp() == 4 && mPath->getNPrimitivesDown() <= 2) || 
+	   (mPath->getNPrimitivesUp() <= 2 && mPath->getNPrimitivesDown() == 4)
+	   ){
+    mPath->setQuality(CHIGHQ);
   }
-  else if (totalHighQ > 1) {
-    mPath->setQuality(HIGHQGHOST);
+  else if ((mPath->getNPrimitivesUp() == 3 && mPath->getNPrimitivesDown() == 3)
+	   ){
+    mPath->setQuality(LOWLOWQ);
   }
-  else if (totalLowQ == 1) {
-    mPath->setQuality(LOWQ);
+  else if ((mPath->getNPrimitivesUp() == 3 && mPath->getNPrimitivesDown() <= 2) || 
+	   (mPath->getNPrimitivesUp() <= 2 && mPath->getNPrimitivesDown() == 3) || 
+	   (mPath->getNPrimitivesUp() == 2 && mPath->getNPrimitivesDown() == 2)	   
+	   ){
+    mPath->setQuality(CLOWQ);
   }
-  else if (totalLowQ > 1) {
-    mPath->setQuality(LOWQGHOST);
+  else if (mPath->getNPrimitivesUp() == 4 || mPath->getNPrimitivesDown() == 4) {
+    mPath->setQuality(HIGHQ);    
   }
+  else if (mPath->getNPrimitivesUp() == 3 || mPath->getNPrimitivesDown() == 3) {
+    mPath->setQuality(LOWQ);    
+  }
+  
 }
 

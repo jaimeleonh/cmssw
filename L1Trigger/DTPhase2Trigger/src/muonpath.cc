@@ -1,9 +1,5 @@
 #include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
 
-#include <cstring>  // Para función "memcpy"
-#include "math.h"
-#include <iostream>
-
 
 MuonPath::MuonPath(DTPrimitive *ptrPrimitive[4]) {
   //    std::cout<<"Creando un 'MuonPath'"<<std::endl;
@@ -82,7 +78,8 @@ MuonPath::MuonPath(MuonPath *ptr) {
   setChiSq       ( ptr->getChiSq()       );
   setPhi         ( ptr->getPhi()         );
   setPhiB        ( ptr->getPhiB()        );
-  
+  setRawId       ( ptr->getRawId()       ); 
+
   for (int i = 0; i < ptr->getNPrimitives(); i++){ 
     setPrimitive( new DTPrimitive(ptr->getPrimitive(i)), i );
     

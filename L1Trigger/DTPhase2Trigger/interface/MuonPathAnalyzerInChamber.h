@@ -41,7 +41,6 @@
 #include <iostream>
 #include <fstream>
 
-
 // ===============================================================================
 // Previous definitions and declarations
 // ===============================================================================
@@ -101,6 +100,7 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   
   void setCellLayout(MuonPath *mpath);
   void buildLateralities(MuonPath *mpath);
+  void setLateralitiesInMP(MuonPath *mpath,TLateralities lat);
   void setWirePosAndTimeInMP(MuonPath *mpath);
   void calculateFitParameters(MuonPath *mpath, TLateralities lat);
  
