@@ -101,53 +101,15 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   
   void setCellLayout(MuonPath *mpath);
   void buildLateralities(MuonPath *mpath);
-  
+  void setWirePosAndTimeInMP(MuonPath *mpath);
+  void calculateFitParameters(MuonPath *mpath, TLateralities lat);
  
   /* Determina si los valores de 4 primitivas forman una trayectoria
      Los valores tienen que ir dispuestos en el orden de capa:
      0    -> Capa más próxima al centro del detector,
      1, 2 -> Siguientes capas
      3    -> Capa más externa */
-  void evaluatePathQuality(MuonPath *mPath);
-  void evaluateLateralQuality(int latIdx, MuonPath *mPath,
-			      LATQ_TYPE *latQuality);
-  /* Función que evalua, mediante el criterio de mean-timer, la bondad
-     de una trayectoria. Involucra 3 celdas en 3 capas distintas, ordenadas
-     de abajo arriba siguiendo el índice del array.
-     Es decir:
-     0-> valor temporal de la capa inferior,
-     1-> valor temporal de la capa intermedia
-     2-> valor temporal de la capa superior
-     Internamente implementa diferentes funciones según el paso de la
-     partícula dependiendo de la lateralidad por la que atraviesa cada
-     celda (p. ej.: LLR => Left (inferior); Left (media); Right (superior))
-     
-     En FPGA debería aplicarse la combinación adecuada para cada caso,
-     haciendo uso de funciones que generen el código en tiempo de síntesis,
-     aunque la función software diseñada debería ser exportable directamente
-     a VHDL */
-  void validate(LATERAL_CASES sideComb[3], int layerIndex[3],
-		MuonPath* mPath, PARTIAL_LATQ_TYPE *latq);
-  
-  int eqMainBXTerm(LATERAL_CASES sideComb[2], int layerIdx[2],
-		   MuonPath* mPath);
-  
-  int eqMainTerm(LATERAL_CASES sideComb[2], int layerIdx[2], MuonPath* mPath,
-		 int bxValue);
-  
-  void getLateralCoeficients(LATERAL_CASES sideComb[2], int *coefs);
-  bool sameBXValue(PARTIAL_LATQ_TYPE *latq);
-  
-  void calculatePathParameters(MuonPath *mPath);
-  void calcTanPhiXPosChamber  (MuonPath *mPath);
-  void calcCellDriftAndXcoor  (MuonPath *mPath);
-  void calcChiSquare          (MuonPath *mPath);
-  
-  void calcTanPhiXPosChamber3Hits(MuonPath *mPath);
-  void calcTanPhiXPosChamber4Hits(MuonPath *mPath);
-  
-  int getOmittedHit(int idx);
-  
+  void evaluateQuality(MuonPath *mPath);
   // Private attributes
 
   /* Combinaciones verticales de 3 celdas sobre las que se va a aplicar el

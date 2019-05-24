@@ -71,6 +71,13 @@ class MuonPath {
 
     void  setDriftDistance(float dx, int cell);
     float getDriftDistance(int cell);
+
+    void  setXWirePos(float x, int cell);
+    float getXWirePos(int cell);
+    void  setZWirePos(float z, int cell);
+    float getZWirePos(int cell);
+    void  settWireTDC(float t, int cell);
+    float gettWireTDC(int cell);
     
     void setRawId(uint32_t id) { rawId=id; }
     uint32_t getRawId() { return rawId;}
@@ -119,6 +126,9 @@ class MuonPath {
     /* Parámetros de celda */
     float xCoorCell[8];         // Posicion horizontal del hit en la cámara
     float xDriftDistance[8];    // Distancia de deriva en la celda (sin signo)
+    float xWirePos[8];
+    float zWirePos[8];
+    float tWireTDC[8];
 
     float tanPhi;   // SLX=0, SL1=1, SL3=2;
     float horizPos; // SLX=0, SL1=1, SL3=2;

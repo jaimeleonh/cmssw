@@ -96,12 +96,16 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
   else {
 	if (debug) cout << "DTp2::constructor: Non-valid grouping code. Choosing InitialGrouping by default." << endl;
 	grouping_obj = new InitialGrouping(pset);
-    }
-    
-    mpathanalyzer        = new MuonPathAnalyzerPerSL(pset);
-    mpathqualityenhancer = new MPQualityEnhancerFilter(pset);
-    mpathredundantfilter = new MPRedundantFilter(pset);
-    mpathassociator      = new MuonPathAssociator(pset);
+  }
+  
+  if (grcode == 0) 
+    mpathanalyzer = new MuonPathAnalyzerPerSL(pset);
+  else 
+    mpathanalyzer = new MuonPathAnalyzerInChamber(pset);
+  
+  mpathqualityenhancer = new MPQualityEnhancerFilter(pset);
+  mpathredundantfilter = new MPRedundantFilter(pset);
+  mpathassociator      = new MuonPathAssociator(pset);
       
    
     
@@ -187,22 +191,19 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     
 	if (dmit !=digiMap.end()) grouping_obj->run(iEvent, iEventSetup, (*dmit).second, &muonpaths);  // New grouping implementation
     }
-
+    debug=true;
     if (debug && grcode == 2){
       for (std::vector<MuonPath*>::iterator itmPaths = muonpaths.begin(); itmPaths != muonpaths.end(); itmPaths++){
-	std::cout << "---------------------------------------------------------------" << std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(0)->getLayerId() << " , " << (*itmPaths)->getPrimitive(0)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(0)->getChannelId() << " , " << (*itmPaths)->getPrimitive(0)->getLaterality() << std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(1)->getLayerId() << " , " << (*itmPaths)->getPrimitive(1)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(1)->getChannelId() << " , " << (*itmPaths)->getPrimitive(1)->getLaterality()<< std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(2)->getLayerId() << " , " << (*itmPaths)->getPrimitive(2)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(2)->getChannelId() << " , " << (*itmPaths)->getPrimitive(2)->getLaterality() << std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(3)->getLayerId() << " , " << (*itmPaths)->getPrimitive(3)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(3)->getChannelId() << " , " << (*itmPaths)->getPrimitive(3)->getLaterality() << std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(4)->getLayerId() << " , " << (*itmPaths)->getPrimitive(4)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(4)->getChannelId() << " , " << (*itmPaths)->getPrimitive(4)->getLaterality() << std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(5)->getLayerId() << " , " << (*itmPaths)->getPrimitive(5)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(5)->getChannelId() << " , " << (*itmPaths)->getPrimitive(5)->getLaterality() << std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(6)->getLayerId() << " , " << (*itmPaths)->getPrimitive(6)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(6)->getChannelId() << " , " << (*itmPaths)->getPrimitive(6)->getLaterality()  << std::endl;
-	std::cout << "DTTrigPhase2Prod DTTPath " << (*itmPaths)->getPrimitive(7)->getLayerId() << " , " << (*itmPaths)->getPrimitive(7)->getSuperLayerId() << " , " << (*itmPaths)->getPrimitive(7)->getChannelId() << " , " << (*itmPaths)->getPrimitive(7)->getLaterality() << std::endl;
+	for (int i=0; i<(*itmPaths)->getNPrimitives(); i++) 
+	  std::cout << "DTTrigPhase2Prod DTTPath " 
+		    << (*itmPaths)->getPrimitive(i)->getLayerId() << " , " 
+		    << (*itmPaths)->getPrimitive(i)->getSuperLayerId() << " , " 
+		    << (*itmPaths)->getPrimitive(i)->getChannelId() << " , " 
+		    << (*itmPaths)->getPrimitive(i)->getLaterality() << std::endl;
 	std::cout << "---------------------------------------------------------------" << std::endl;
       }
     }
-
+    debug=false;
     digiMap.clear();
 
     // FILTER GROUPING
@@ -237,21 +238,34 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	     << endl;
       }
     }
+    // GROUPING ENDS
+    
+    // FITTER BEGINS:
+    if (debug) cout << "MUON PATHS found: " << filteredmuonpaths.size() <<" in event"<<iEvent.id().event()<<endl;
+    if(debug) std::cout<<"filling NmetaPrimtives"<<std::endl;
+
+    std::vector<metaPrimitive> metaPrimitives;
+    std::vector<MuonPath*> outmpaths;
+    if (grcode==0) {
+      // Implementation for standard grouping
+      mpathanalyzer->run(iEvent, iEventSetup,  filteredmuonpaths, metaPrimitives);   
+    }
+    else { 
+      // implementation for advanced (2SL) grouping, no filter required..
+      mpathanalyzer->run(iEvent, iEventSetup,  muonpaths, outmpaths);   
+    }
 
     if(debug) std::cout<<"deleting muonpaths"<<std::endl;    
     for (unsigned int i=0; i<muonpaths.size(); i++){
       delete muonpaths[i];
     }
-    muonpaths.clear();
+    muonpaths.clear();    
+    for (unsigned int i=0; i<filteredmuonpaths.size(); i++){
+      delete filteredmuonpaths[i];
+    }
+    filteredmuonpaths.clear();
+    return;
 
-    // GROUPING ENDS
-    
-    
-    if (debug) cout << "MUON PATHS found: " << filteredmuonpaths.size() <<" in event"<<iEvent.id().event()<<endl;
-    if(debug) std::cout<<"filling NmetaPrimtives"<<std::endl;
-    std::vector<metaPrimitive> metaPrimitives;
-    mpathanalyzer->run(iEvent, iEventSetup,  filteredmuonpaths, metaPrimitives);  // New grouping implementation
-    
     if (dump) {
       for (unsigned int i=0; i<metaPrimitives.size(); i++){
 	cout << iEvent.id().event() << " mp " << i << ": "
@@ -265,11 +279,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       }
     }
 
-    for (unsigned int i=0; i<filteredmuonpaths.size(); i++){
-      delete filteredmuonpaths[i];
-    }
-    filteredmuonpaths.clear();
-    
+    // FITTER ENDS
     
     //FILTER SECTIONS:
     

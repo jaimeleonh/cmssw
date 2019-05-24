@@ -25,7 +25,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                #RPC
                                                rpcRecHits = cms.untracked.InputTag("rpcRecHits"),
                                                ### PseudoBayesPattern parameters ###
-                                               pattern_filename = cms.untracked.string("data/patterns.root"),
+                                               pattern_filename = cms.untracked.string("L1Trigger/DTPhase2Trigger/data/patterns.root"),
                                                #Minimum number of layers hit (total). Together with the two parameters under this it means 4+4, 4+3 or 3+3
                                                minNLayerHits   = cms.untracked.int32(6),
                                                #Minimum number of hits in the most hit superlayer
@@ -40,5 +40,4 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                setLateralities = cms.untracked.bool(True),
                                                #DTPrimitives are saved in the appropriate element of the muonPath array
                                                saveOnPlace = cms.untracked.bool(True),
-
-                                               )
+)

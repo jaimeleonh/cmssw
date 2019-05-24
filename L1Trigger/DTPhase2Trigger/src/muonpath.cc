@@ -65,8 +65,7 @@ MuonPath::MuonPath(DTPrimitive *ptrPrimitive[8], int nprimUp, int nprimDown) {
 }
 
 MuonPath::MuonPath(MuonPath *ptr) {
-  //  std::cout<<"Clonando un 'MuonPath'"<<std::endl;
-  
+  //  std::cout<<"Clonando un 'MuonPath'"<<std::endl;  
 
   setNPrimitives         ( ptr->getNPrimitives()          );
   setNPrimitivesUp       ( ptr->getNPrimitivesUp()        );
@@ -213,7 +212,7 @@ bool MuonPath::isAnalyzable(void) {
 
   short countValidHits(0);
   for (int i=0; i<nprimitives; i++) {
-    if (prim[i]->isValidTime())      countValidHits++;
+    if (this->getPrimitive(i)->isValidTime())      countValidHits++;
   }
   
   return ( (countValidHits>=3  && nprimitives <= 4) ||
@@ -254,10 +253,14 @@ int MuonPath::getBxNumId(void) { return bxNumId; }
    válida. Antes de ese momento, no tiene utilidad alguna */
 
 void MuonPath::setLateralCombFromPrimitives(void) {
+  
   for (int i=0; i<nprimitives; i++){
-    if (!this->getPrimitive(i)->isValidTime()) continue;
-    
-    lateralComb[i] = this->getPrimitive(i)->getLaterality();
+    if (this->getPrimitive(i)->isValidTime()) { 
+      lateralComb[i] = this->getPrimitive(i)->getLaterality();      
+    }
+    else { 
+      lateralComb[i] = NONE;
+    }
   }
 }
 
@@ -298,6 +301,14 @@ float MuonPath::getPhiB(void)      { return PhiB; }
 
 void  MuonPath::setXCoorCell(float x, int cell) { xCoorCell[cell] = x;    }
 float MuonPath::getXCoorCell(int cell)          { return xCoorCell[cell]; }
+
+void  MuonPath::setXWirePos(float x, int cell) { xWirePos[cell] = x;    }
+float MuonPath::getXWirePos(int cell)          { return xWirePos[cell]; }
+void  MuonPath::setZWirePos(float z, int cell) { zWirePos[cell] = z;    }
+float MuonPath::getZWirePos(int cell)          { return zWirePos[cell]; }
+void  MuonPath::settWireTDC(float t, int cell) { tWireTDC[cell] = t;    }
+float MuonPath::gettWireTDC(int cell)          { return tWireTDC[cell]; }
+
 
 void  MuonPath::setDriftDistance(float dx, int cell) {
     xDriftDistance[cell] = dx;
