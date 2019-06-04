@@ -95,7 +95,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
         grouping_obj = new InitialGrouping(pset);
     }
     
-    mpathanalyzer        = new MuonPathAnalyzerPerSL(pset);
+    if (grcode == 0) mpathanalyzer        = new MuonPathAnalyzerPerSL(pset);
+    else mpathanalyzer        = new MuonPathAnalyzerInChamber(pset);
     mpathqualityenhancer = new MPQualityEnhancerFilter(pset);
     mpathredundantfilter = new MPRedundantFilter(pset);
     mpathassociator      = new MuonPathAssociator(pset);
@@ -184,7 +185,20 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
         DTDigiMap_iterator dmit = digiMap.find(chid);
         
         if (dmit !=digiMap.end()) grouping_obj->run(iEvent, iEventSetup, (*dmit).second, &muonpaths);
-    }   
+    }  
+    if (debug && grcode == 2){
+      for (std::vector<MuonPath*>::iterator itmPaths = muonpaths.begin(); itmPaths != muonpaths.end(); itmPaths++){
+	for (int i=0; i<(*itmPaths)->getNPrimitives(); i++) 
+	  std::cout << "DTTrigPhase2Prod DTTPath " 
+		    << (*itmPaths)->getPrimitive(i)->getLayerId() << " , " 
+		    << (*itmPaths)->getPrimitive(i)->getSuperLayerId() << " , " 
+		    << (*itmPaths)->getPrimitive(i)->getChannelId() << " , " 
+		    << (*itmPaths)->getPrimitive(i)->getLaterality() << std::endl;
+	std::cout << "---------------------------------------------------------------" << std::endl;
+      }
+}
+
+ 
     digiMap.clear();
        
     

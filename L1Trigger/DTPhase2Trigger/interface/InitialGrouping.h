@@ -104,9 +104,6 @@ class InitialGrouping : public MotherGrouping {
     
     // Private attributes
     Bool_t debug;
-    Bool_t txt_ttrig_bc0;
-    std::string ttrig_filename;
-    std::map<Int_t, Float_t> ttriginfo;
     
     std::vector<DTPrimitive> muxInChannels[NUM_CELLS_PER_BLOCK];
     std::vector<DTPrimitive> channelIn[NUM_LAYERS][NUM_CH_PER_LAYER];

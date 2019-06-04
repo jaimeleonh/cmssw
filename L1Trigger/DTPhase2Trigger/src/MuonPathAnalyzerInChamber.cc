@@ -24,8 +24,8 @@ MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber(const ParameterSet& pset) :
 
   //z
   int rawId;
-  z_filename = pset.getUntrackedParameter<std::string>("z_filename");
-  std::ifstream ifin2(z_filename.c_str());
+  z_filename = pset.getParameter<edm::FileInPath>("z_filename");
+  std::ifstream ifin2(z_filename.fullPath());
   double z;
   while (ifin2.good()){
     ifin2 >> rawId >> z;
@@ -33,8 +33,8 @@ MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber(const ParameterSet& pset) :
   }
 
   //shift
-  shift_filename = pset.getUntrackedParameter<std::string>("shift_filename");
-  std::ifstream ifin3(shift_filename.c_str());
+  shift_filename = pset.getParameter<edm::FileInPath>("shift_filename");
+  std::ifstream ifin3(shift_filename.fullPath());
   double shift;
   while (ifin3.good()){
     ifin3 >> rawId >> shift;

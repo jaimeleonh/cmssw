@@ -17,7 +17,6 @@ InitialGrouping::InitialGrouping(const ParameterSet& pset):
   debug         = pset.getUntrackedParameter<Bool_t>("debug");
   if (debug) cout <<"InitialGrouping: constructor" << endl;
   
-  txt_ttrig_bc0 = pset.getUntrackedParameter<Bool_t>("apply_txt_ttrig_bc0");
   
   // Initialisation of channelIn array
   for (Int_t lay = 0; lay < NUM_LAYERS; lay++) {
@@ -28,16 +27,6 @@ InitialGrouping::InitialGrouping(const ParameterSet& pset):
   }
   
   // Initialisation of ttriginfo array
-  if (txt_ttrig_bc0) {
-    Int_t rawId;
-    ttrig_filename = pset.getUntrackedParameter<std::string>("ttrig_filename");
-    std::ifstream ifin(ttrig_filename.c_str());
-    Float_t ttrig;
-    while (ifin.good()) {
-      ifin >> rawId >> ttrig;
-      ttriginfo[rawId] = ttrig;
-    }
-  }
 }
 
 

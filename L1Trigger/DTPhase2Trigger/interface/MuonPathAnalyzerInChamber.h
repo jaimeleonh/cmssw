@@ -72,15 +72,15 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   edm::ESHandle<DTGeometry> dtGeo;
 
   //ttrig
-  std::string ttrig_filename;
+  edm::FileInPath ttrig_filename;
   std::map<int,float> ttriginfo;
   
   //z 
-  std::string z_filename;
+  edm::FileInPath z_filename;
   std::map<int,float> zinfo;
   
   //shift
-  std::string shift_filename;
+  edm::FileInPath shift_filename;
   std::map<int,float> shiftinfo;
   
   int chosen_sl;

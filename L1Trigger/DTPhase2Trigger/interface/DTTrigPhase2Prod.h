@@ -24,6 +24,7 @@
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzer.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzerPerSL.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAssociator.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzerInChamber.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MPFilter.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MPQualityEnhancerFilter.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MPRedundantFilter.h"
