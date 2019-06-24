@@ -31,6 +31,12 @@ process.out = cms.OutputModule("PoolOutputModule",
 
 from Phase2L1Trigger.CalibratedDigis.CalibratedDigis_cfi import CalibratedDigis as _CalibratedDigis
 
+process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring('file:/eos/cms/store/user/folguera/P2L1TUpgrade/digis_segments_Run2016BSingleMuonRAW-RECO_camilo.root'))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10))
+process.dtTriggerPhase2PrimitiveDigis.dump = True
+process.dtTriggerPhase2PrimitiveDigis.debug = False
+process.dtTriggerPhase2PrimitiveDigis.grouping_code = cms.untracked.int32(2)
+
 if doAging:
   from SimMuon.DTDigitizer.dtChamberMasker_cfi import dtChamberMasker as _dtChamberMasker
   print("[appendDTChamberMasker] : Found CalibratedDigis, appending producer for aged DTs and Our TriggerPrimitives producer dtPhase2Emulator\n")
