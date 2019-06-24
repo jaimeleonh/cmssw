@@ -264,7 +264,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     if (dump) {
       for (unsigned int i=0; i<correlatedMetaPrimitives.size(); i++){
 	  cout << iEvent.id().event() << " correlated mp " << i << ": ";
-	  printmP(correlatedMetaPrimitives.at(i));
+	  printmPC(correlatedMetaPrimitives.at(i));
 	  cout<<endl;
       }
     }
@@ -444,6 +444,33 @@ void DTTrigPhase2Prod::printmP(metaPrimitive mP){
              <<" "<<setw(13)<<left<<mP.chi2
              <<" r:"<<rango(mP);
 }
+
+void DTTrigPhase2Prod::printmPC(metaPrimitive mP){
+    DTChamberId chId(mP.rawId);
+    std::cout<<chId<<"\t"
+             <<" "<<setw(2)<<left<<mP.wi1
+             <<" "<<setw(2)<<left<<mP.wi2
+             <<" "<<setw(2)<<left<<mP.wi3
+             <<" "<<setw(2)<<left<<mP.wi4
+             <<" "<<setw(2)<<left<<mP.wi5
+             <<" "<<setw(2)<<left<<mP.wi6
+             <<" "<<setw(2)<<left<<mP.wi7
+             <<" "<<setw(2)<<left<<mP.wi8
+             <<" "<<setw(5)<<left<<mP.tdc1
+             <<" "<<setw(5)<<left<<mP.tdc2
+             <<" "<<setw(5)<<left<<mP.tdc3
+             <<" "<<setw(5)<<left<<mP.tdc4
+             <<" "<<setw(5)<<left<<mP.tdc5
+             <<" "<<setw(5)<<left<<mP.tdc6
+             <<" "<<setw(5)<<left<<mP.tdc7
+             <<" "<<setw(5)<<left<<mP.tdc8
+             <<" "<<setw(10)<<right<<mP.x
+             <<" "<<setw(9)<<left<<mP.tanPhi
+             <<" "<<setw(5)<<left<<mP.t0
+             <<" "<<setw(13)<<left<<mP.chi2
+             <<" r:"<<rango(mP);
+}
+
 
 int DTTrigPhase2Prod::rango(metaPrimitive mp) {
     if(mp.quality==1 or mp.quality==2) return 3;
