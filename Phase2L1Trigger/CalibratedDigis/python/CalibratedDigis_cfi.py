@@ -21,6 +21,7 @@ CalibratedDigis = cms.EDProducer("CalibratedDigis",
                                  tTrigMode = cms.string('DTTTrigSyncFromDB'),
                                  timeOffset = cms.int32(0),
                                  flat_calib = cms.int32(0),
+                                 scenario = cms.int32(1),
                                  dtDigiTag = cms.InputTag("muonDTDigis")
                                  )
 

@@ -64,6 +64,7 @@ public:
 private:
     int timeOffset_;
     int flat_calib_;
+    int scenario_;
 
     virtual void beginStream(edm::StreamID) override;
     virtual void produce(edm::Event&, const edm::EventSetup&) override;
@@ -110,6 +111,7 @@ CalibratedDigis::CalibratedDigis(const edm::ParameterSet& iConfig)
     std::cout<<"dtDigiTag found:"<<dtDigiTag<<std::endl;
     dtDigisToken = consumes< DTDigiCollection >( dtDigiTag );
     
+    scenario_ = iConfig.getParameter<int>("scenario");
     flat_calib_ = iConfig.getParameter<int>("flat_calib");
     timeOffset_ = iConfig.getParameter<int>("timeOffset");
     theSync = DTTTrigSyncFactory::get()->create(iConfig.getParameter<string>("tTrigMode"),
@@ -162,10 +164,12 @@ CalibratedDigis::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  if(flat_calib_!=0)
 	      newTime = digiTime - 325                     + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_);
 	  else {
-	      if (iEvent.eventAuxiliary().run() == 1) //FIX MC 
+	      if (scenario_ == 0) //mc 
 	          newTime = digiTime - theSync->offset(wireId) + 25.0*400 + float(timeOffset_);
-	      else 
+	      else if (scenario_ ==1)// data 
 	          newTime = digiTime - theSync->offset(wireId) + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_); 
+	      else if (scenario_ == 2) //slice test corrections to be done
+		  newTime = newTime;
 	  }
 	  DTDigi newDigi(wire, newTime, number);
 	  mydigis.insertDigi(layerId,newDigi);
