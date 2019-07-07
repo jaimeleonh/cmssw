@@ -3,6 +3,7 @@
 <use   name="EventFilter/Utilities"/>
 <use   name="DataFormats/FEDRawData"/>
 <use   name="DataFormats/DTDigi"/>
+<use   name="DataFormats/L1DTTrackFinder"/>
 <use   name="CondFormats/DTObjects"/>
 <use   name="CondFormats/DataRecord"/>
 <use   name="boost"/>
