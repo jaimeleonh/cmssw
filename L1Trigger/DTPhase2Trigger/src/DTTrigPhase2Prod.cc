@@ -518,6 +518,8 @@ void DTTrigPhase2Prod::printmPC(metaPrimitive mP){
              <<" "<<setw(2)<<left<<mP.lat8
              <<" "<<setw(10)<<right<<mP.x
              <<" "<<setw(9)<<left<<mP.tanPhi
+             <<" "<<setw(9)<<left<<mP.phi
+             <<" "<<setw(9)<<left<<mP.phiB
              <<" "<<setw(5)<<left<<mP.t0
              <<" "<<setw(13)<<left<<mP.chi2
              <<" r:"<<rango(mP);

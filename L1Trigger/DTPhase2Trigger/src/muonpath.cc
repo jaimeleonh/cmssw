@@ -106,6 +106,8 @@ MuonPath::MuonPath(MuonPath *ptr) {
   setLateralComb ( ptr->getLateralComb() );
   setBxTimeValue ( ptr->getBxTimeValue() );
   setTanPhi      ( ptr->getTanPhi()      );
+  setPhi         ( ptr->getPhi()         );
+  setPhiB        ( ptr->getPhiB()        );
   setHorizPos    ( ptr->getHorizPos()    );
   setChiSq       ( ptr->getChiSq()       );
 
