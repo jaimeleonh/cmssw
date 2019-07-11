@@ -165,9 +165,11 @@ class MuonPathAnalyzerPerSL : public MuonPathAnalyzer {
   float chiSquareThreshold;
   Bool_t debug;
   double chi2Th;
+  double drift_speed;
   double chi2corTh;
   double tanPhiTh;
   int cellLayout[4];
+  int scenario;
   
 };
 

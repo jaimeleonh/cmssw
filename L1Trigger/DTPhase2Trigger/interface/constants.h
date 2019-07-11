@@ -43,6 +43,7 @@ namespace CMS {
 #define CELL_SEMILENGTH 21
 // En milímetros / nanosegundo (velocidad de deriva)
 #define DRIFT_SPEED (CELL_SEMILENGTH/MAXDRIFT)
+#define DRIFT_SPEED_MC 0.0554
 /*
   This is the maximum value than internal time can take. This is because
   internal time is cyclical due to the limited size of the time counters and

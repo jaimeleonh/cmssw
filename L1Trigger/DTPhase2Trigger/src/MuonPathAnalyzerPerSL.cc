@@ -16,7 +16,8 @@ MuonPathAnalyzerPerSL::MuonPathAnalyzerPerSL(const ParameterSet& pset) :
     chiSquareThreshold(50),
     debug(pset.getUntrackedParameter<Bool_t>("debug")),
     chi2Th(pset.getUntrackedParameter<double>("chi2Th")),
-    tanPhiTh(pset.getUntrackedParameter<double>("tanPhiTh"))
+    tanPhiTh(pset.getUntrackedParameter<double>("tanPhiTh")),
+    scenario(pset.getUntrackedParameter<int>("scenario"))
 {
   
     if (debug) cout <<"MuonPathAnalyzer: constructor" << endl;
@@ -24,6 +25,8 @@ MuonPathAnalyzerPerSL::MuonPathAnalyzerPerSL(const ParameterSet& pset) :
 
     setChiSquareThreshold(chi2Th*100.); 
 
+    if (scenario == 0)  drift_speed = DRIFT_SPEED_MC; 
+    else drift_speed = DRIFT_SPEED; 
     
     //z
     int rawId;
@@ -940,7 +943,7 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber(MuonPath* mPath)
     /*--------------------- Phi angle calculation ---------------------*/
     /*-----------------------------------------------------------------*/
     float num = CELL_SEMILENGTH * dHoriz +
-      DRIFT_SPEED *
+      drift_speed *
       eqMainTerm(sideComb, layerIdx, mPath,
 		 mPath->getBxTimeValue()
 		 );
@@ -1019,7 +1022,7 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber3Hits(MuonPath* mPath) {
     /*-----------------------------------------------------------------*/
     /*--------------------- Phi angle calculation ---------------------*/
     /*-----------------------------------------------------------------*/
-    float num = CELL_SEMILENGTH * dHoriz + DRIFT_SPEED *eqMainTerm(sideComb, layerIdx, mPath, mPath->getBxTimeValue() );
+    float num = CELL_SEMILENGTH * dHoriz + drift_speed *eqMainTerm(sideComb, layerIdx, mPath, mPath->getBxTimeValue() );
 
     float denom = CELL_HEIGHT * dVert;
     float tanPhi = num / denom;
@@ -1055,7 +1058,7 @@ void MuonPathAnalyzerPerSL::calcCellDriftAndXcoor(MuonPath *mPath) {
     for (int i = 0; i <= 3; i++)
 	if (mPath->getPrimitive(i)->isValidTime()) {
 	    // Drift distance.
-	    driftDistance = DRIFT_SPEED *
+	    driftDistance = drift_speed *
 		( mPath->getPrimitive(i)->getTDCTimeNoOffset() -
 		  mPath->getBxTimeValue()
 		  );

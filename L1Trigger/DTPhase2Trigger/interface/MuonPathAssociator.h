@@ -69,9 +69,11 @@ private:
   bool hasPosRF(int wh,int sec) {    return  wh>0 || (wh==0 && sec%4>1); }
   
   // Private attributes
+  int scenario;
   double dT0_correlate_TP;
   double minx_match_2digis;
   double chi2corTh;
+  double drift_speed;
   Bool_t debug;
 
   //shift

@@ -16,6 +16,7 @@ MuonPathAssociator::MuonPathAssociator(const ParameterSet& pset) {
     dT0_correlate_TP = pset.getUntrackedParameter<double>("dT0_correlate_TP");
     minx_match_2digis = pset.getUntrackedParameter<double>("minx_match_2digis");
     chi2corTh = pset.getUntrackedParameter<double>("chi2corTh");
+    scenario = pset.getUntrackedParameter<int>("scenario");
 
     if (debug) cout <<"MuonPathAssociator: constructor" << endl;
 
@@ -33,6 +34,8 @@ MuonPathAssociator::MuonPathAssociator(const ParameterSet& pset) {
 	shiftinfo[rawId]=shift;
     }
 
+    if (scenario == 0)  drift_speed = DRIFT_SPEED_MC; 
+    else drift_speed = DRIFT_SPEED; 
 
 
 }
@@ -143,11 +146,11 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
            		    for (int i=0; i<4; i++){
 				if (wi[i]!=-1) {
 				    if (i%2==0){
-					 xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1.+2.*(double)lat[i]))/10;
+					 xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+ 21. + drift_speed*((double)tdc[i]-MeanT0)*(-1.+2.*(double)lat[i]))/10;
 					 xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
 				    }
 				    if (i%2!=0){
-					 xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
+					 xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+     + drift_speed*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
 					 xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
 			            }
 				}
@@ -155,11 +158,11 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
            		    for (int i=4; i<8; i++){
 				if (wi[i]!=-1) {
 				    if (i%2==0){
-					 xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
+					 xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+ 21. + drift_speed*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
 					 xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
 				    }
 				    if (i%2!=0){
-					 xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
+					 xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+     + drift_speed*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
 					 xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
 			            }
 				}

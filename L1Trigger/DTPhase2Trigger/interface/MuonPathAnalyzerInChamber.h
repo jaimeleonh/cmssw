@@ -135,7 +135,9 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   float chiSquareThreshold;
   short minHits4Fit;
   int cellLayout[8];
-  
+  int scenario;
+  double drift_speed;  
+ 
 };
 
 

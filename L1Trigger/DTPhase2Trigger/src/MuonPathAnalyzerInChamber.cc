@@ -18,7 +18,9 @@ MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber(const ParameterSet& pset) :
   bxTolerance(30),
   minQuality(LOWQGHOST),
   chiSquareThreshold(50),
-  minHits4Fit(pset.getUntrackedParameter<int>("minHits4Fit"))
+  minHits4Fit(pset.getUntrackedParameter<int>("minHits4Fit")),
+  scenario(pset.getUntrackedParameter<int>("scenario"))
+ 
 {
   // Obtention of parameters
   
@@ -26,6 +28,10 @@ MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber(const ParameterSet& pset) :
 
   
   setChiSquareThreshold(chi2Th*100.); 
+  
+  if (scenario == 0)  drift_speed =DRIFT_SPEED_MC;
+  else drift_speed = DRIFT_SPEED; 
+
 
   //z
   int rawId;
@@ -370,12 +376,12 @@ void MuonPathAnalyzerInChamber::setWirePosAndTimeInMP(MuonPath *mpath){
       if (i>=4)mpath->setXWirePos(10000*shiftinfo[wireId3.rawId()]+(mpath->getPrimitive(i)->getChannelId() + 0.5*(double)((i+1)%2)) * delta,i);
      // mpath->setXWirePos((mpath->getPrimitive(i)->getChannelId() + 0.5*(double)(i%2)) * delta,i);
       mpath->setZWirePos(zwire[i]*1000, i); // in um
-      mpath->settWireTDC(mpath->getPrimitive(i)->getTDCTime()*DRIFT_SPEED,i);
+      mpath->settWireTDC(mpath->getPrimitive(i)->getTDCTime()*drift_speed,i);
     }
     else {
       mpath->setXWirePos(0.,i);
       mpath->setZWirePos(0.,i);
-      mpath->settWireTDC(-1*DRIFT_SPEED,i);
+      mpath->settWireTDC(-1*drift_speed,i);
     }
     if (debug) cout << mpath->getPrimitive(i)->getTDCTime() << " ";
   }
@@ -483,7 +489,7 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
   recpos=xbtilde/btildebtilde;
   if(debug) {
     cout<< " In fitPerLat Reconstructed values per lat " << " rect0vdrift "<< rect0vdrift;
-    cout <<"rect0 "<< rect0vdrift/DRIFT_SPEED <<" recBX " << rect0vdrift/DRIFT_SPEED/25 << " recslope " << recslope << " recpos " << recpos  << endl;
+    cout <<"rect0 "<< rect0vdrift/drift_speed <<" recBX " << rect0vdrift/drift_speed/25 << " recslope " << recslope << " recpos " << recpos  << endl;
   }
   
   //Get t*v and residuals per layer, and chi2 per laterality
@@ -540,7 +546,7 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
   
   // LATERALITY IS VALID... 
   if(!(sign_tdriftvdrift==-1) && !(incell_tdriftvdrift==-1) && !(physical_slope==-1)){
-    mpath->setBxTimeValue((rect0vdrift/DRIFT_SPEED)/1000);
+    mpath->setBxTimeValue((rect0vdrift/drift_speed)/1000);
     mpath->setTanPhi(-1*recslope/10);
     mpath->setHorizPos(recpos/10000);
     mpath->setChiSq(recchi2/100000000);
