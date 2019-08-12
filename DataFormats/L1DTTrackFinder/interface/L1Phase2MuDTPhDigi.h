@@ -19,6 +19,16 @@
 
 #include <DataFormats/DTDigi/interface/DTDigiCollection.h>
 //#include <DataFormats/MuonData/interface/MuonDigiCollection.h>
+/*#include <DataFormats/MuonDetId/interface/DTLayerId.h>
+#include <DataFormats/DTDigi/interface/DTDigi.h>
+#include <DataFormats/MuonData/interface/MuonDigiCollection.h>
+#include "DataFormats/Common/interface/Ref.h"
+#include "DataFormats/Common/interface/Ptr.h"
+#include <vector>*/
+
+
+using namespace edm; 
+using namespace std; 
 
 //----------------------
 // Base Class Headers --
@@ -37,7 +47,6 @@
 
 class L1Phase2MuDTPhDigi 
 {
-
  
  public:
 
@@ -90,7 +99,9 @@ class L1Phase2MuDTPhDigi
   
   int m_rpcFlag;
 
-  RefDTDigis m_digis;
+//  edm::Ref <DTDigiCollection, DTDigi> m_digis;
+  //std::vector <edm::Ref <DTDigiCollection, DTDigi>> m_digis;
+   RefDTDigis m_digis;
 };
 
 #endif
