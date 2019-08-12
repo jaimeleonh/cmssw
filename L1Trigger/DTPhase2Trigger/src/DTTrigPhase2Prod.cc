@@ -14,6 +14,8 @@
 #include <Geometry/DTGeometry/interface/DTGeometry.h>
 #include "Geometry/DTGeometry/interface/DTLayer.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"
+#include "DataFormats/DTDigi/interface/DTDigiCollection.h"
+#include "DataFormats/MuonData/interface/MuonDigiCollection.h"
 
 
 // DT trigger GeomUtils
@@ -393,6 +395,22 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	  
       if(p2_df==2){
           if(debug)std::cout<<"pushing back phase-2 dataformat carlo-federica dataformat"<<std::endl;
+	    std::vector <RefDTDigi_t> DTDigis;
+            for (DTDigiCollection::DigiRangeIterator  dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){
+	     const DTLayerId& thisLayerId = (*dtLayerId_It).first;
+	      for (DTDigiCollection::const_iterator digiIt = ((*dtLayerId_It).second).first;digiIt!=((*dtLayerId_It).second).second; ++digiIt){
+                  //Int_t layer    = dtLId.layer() - 1;
+                  Int_t wire     = (*digiIt).wire() - 1;
+                  Int_t digiTIME = (*digiIt).time();
+                  Int_t digiTIMEPhase2 =  digiTIME;
+
+		  if (isDigiInPrimitive((*metaPrimitiveIt),wire,digiTIMEPhase2)) {
+		    RefDTDigi_t thisDigiRef = makeRefToMuons( dtdigis, thisLayerId, digiIt );
+		    DTDigis.push_back(thisDigiRef);
+  		  } 	
+                }
+              }
+
           outP2Ph.push_back(L1Phase2MuDTPhDigi((int)round((*metaPrimitiveIt).t0/25.)-shift_back,   // ubx (m_bx) //bx en la orbita
                                chId.wheel(),   // uwh (m_wheel)     // FIXME: It is not clear who provides this?
                                sectorTP,   // usc (m_sector)    // FIXME: It is not clear who provides this?
@@ -404,7 +422,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
                                (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
                                (int)round((*metaPrimitiveIt).t0)-shift_back*25,  // ut0 (m_t0Segment)
                                (int)round((*metaPrimitiveIt).chi2*1000000),  // uchi2 (m_chi2Segment)
-                               (*metaPrimitiveIt).rpcFlag    // urpc (m_rpcFlag)
+                               (*metaPrimitiveIt).rpcFlag    // urpc (m_rpcFlag),
+			       //DTDigis
                                ));
       }
     }
@@ -554,5 +573,18 @@ int DTTrigPhase2Prod::assignQualityOrder(metaPrimitive mP)
     if (mP.quality == 1) return 1;
     return -1; 
 }
+
+bool DTTrigPhase2Prod::isDigiInPrimitive(metaPrimitive mP, Int_t cellNum, Int_t time){
+    if ((mP.wi1 == cellNum) && (mP.tdc1 == time) ) return true; 
+    if ((mP.wi2 == cellNum) && (mP.tdc2 == time) ) return true; 
+    if ((mP.wi3 == cellNum) && (mP.tdc3 == time) ) return true; 
+    if ((mP.wi4 == cellNum) && (mP.tdc4 == time) ) return true; 
+    if ((mP.wi5 == cellNum) && (mP.tdc5 == time) ) return true; 
+    if ((mP.wi6 == cellNum) && (mP.tdc6 == time) ) return true; 
+    if ((mP.wi7 == cellNum) && (mP.tdc7 == time) ) return true; 
+    if ((mP.wi8 == cellNum) && (mP.tdc8 == time) ) return true; 
+    return false; 
+}
+
 
 

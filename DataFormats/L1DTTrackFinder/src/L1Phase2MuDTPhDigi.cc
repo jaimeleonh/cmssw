@@ -42,13 +42,21 @@ L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi() :
 
 
 L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
-					int qual, int idx, int t0, int chi2, int rpc) :
+					int qual, int idx, int t0, int chi2, int rpc): //, std::vector< RefDTDigi_t > DTDigis) :
   m_bx(bx), m_wheel(wh), m_sector(sc), m_station(st), m_superlayer(sl), m_phiAngle(phi), 
   m_phiBending(phib), m_qualityCode(qual), m_index(idx), m_t0(t0), m_chi2(chi2), m_rpcFlag(rpc)
 {
  
 }
-
+/*
+L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
+					int qual, int idx, int t0, int chi2, int rpc, std::vector< RefDTDigi_t > digis) :
+  m_bx(bx), m_wheel(wh), m_sector(sc), m_station(st), m_superlayer(sl), m_phiAngle(phi), 
+  m_phiBending(phib), m_qualityCode(qual), m_index(idx), m_t0(t0), m_chi2(chi2), m_rpcFlag(rpc), m_DTDigis(digis)
+{
+ 
+}
+*/
 
 //--------------
 // Operations --
@@ -112,3 +120,11 @@ int L1Phase2MuDTPhDigi::rpcFlag() const
 {
   return m_rpcFlag;
 }
+
+
+/*DTDigis L1Phase2MuDTPhDigi::digis() const 
+{
+  return m_digis;
+}*/
+
+
