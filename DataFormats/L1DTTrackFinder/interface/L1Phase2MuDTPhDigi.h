@@ -18,17 +18,8 @@
 //------------------------------------
 
 #include <DataFormats/DTDigi/interface/DTDigiCollection.h>
-//#include <DataFormats/MuonData/interface/MuonDigiCollection.h>
-/*#include <DataFormats/MuonDetId/interface/DTLayerId.h>
-#include <DataFormats/DTDigi/interface/DTDigi.h>
-#include <DataFormats/MuonData/interface/MuonDigiCollection.h>
-#include "DataFormats/Common/interface/Ref.h"
-#include "DataFormats/Common/interface/Ptr.h"
-#include <vector>*/
 
 
-using namespace edm; 
-using namespace std; 
 
 //----------------------
 // Base Class Headers --
@@ -56,8 +47,8 @@ class L1Phase2MuDTPhDigi
   L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
 		      int qual, int idx, int t0, int chi2, int rpc=-10);
 
-//  L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
-//		      int qual, int idx, int t0, int chi2, int rpc=-10, std::vector< RefDTDigi_t > digis);
+  L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
+		      int qual, int idx, int t0, int chi2, int rpc, RefDTDigis DTDigis);
   
   // Operations
   int bxNum()       const;
@@ -78,7 +69,7 @@ class L1Phase2MuDTPhDigi
 
   int rpcFlag()      const;
   
-  //RefDTDigis digis() const; 
+  RefDTDigis digis() const; 
 
  private:
 
@@ -99,9 +90,7 @@ class L1Phase2MuDTPhDigi
   
   int m_rpcFlag;
 
-//  edm::Ref <DTDigiCollection, DTDigi> m_digis;
-  //std::vector <edm::Ref <DTDigiCollection, DTDigi>> m_digis;
-   RefDTDigis m_digis;
+  RefDTDigis m_digis;
 };
 
 #endif

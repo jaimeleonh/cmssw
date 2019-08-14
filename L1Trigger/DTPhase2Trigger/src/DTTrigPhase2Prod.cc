@@ -395,9 +395,14 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	  
       if(p2_df==2){
           if(debug)std::cout<<"pushing back phase-2 dataformat carlo-federica dataformat"<<std::endl;
+	    //std::vector <edm::Ref <DTDigiCollection, DTDigi>> DTDigis;
 	    std::vector <RefDTDigi_t> DTDigis;
             for (DTDigiCollection::DigiRangeIterator  dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){
-	     const DTLayerId& thisLayerId = (*dtLayerId_It).first;
+	      const DTLayerId& thisLayerId = (*dtLayerId_It).first;
+	      const DTChamberId chambId = thisLayerId.superlayerId().chamberId();
+	      int mySector = chambId.sector(); if (mySector == 13) mySector = 4; if (mySector == 14) mySector = 10; mySector--;
+ 	      cout << "MPWheel" << chambId.wheel() << " DigiWheel" << chId.wheel() <<" MPSector" << sectorTP << " DigiSector" << mySector <<" MPStation" << chId.station() << " DigiStation" << chambId.station() << endl;  	
+	      if (chambId.wheel() != chId.wheel() || sectorTP != mySector || chambId.station() != chId.station()) continue;
 	      for (DTDigiCollection::const_iterator digiIt = ((*dtLayerId_It).second).first;digiIt!=((*dtLayerId_It).second).second; ++digiIt){
                   //Int_t layer    = dtLId.layer() - 1;
                   Int_t wire     = (*digiIt).wire() - 1;
@@ -405,6 +410,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
                   Int_t digiTIMEPhase2 =  digiTIME;
 
 		  if (isDigiInPrimitive((*metaPrimitiveIt),wire,digiTIMEPhase2)) {
+		    //edm::Ref <DTDigiCollection, DTDigi> thisDigiRef = makeRefToMuons( dtdigis, thisLayerId, digiIt );
 		    RefDTDigi_t thisDigiRef = makeRefToMuons( dtdigis, thisLayerId, digiIt );
 		    DTDigis.push_back(thisDigiRef);
   		  } 	
@@ -422,8 +428,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
                                (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
                                (int)round((*metaPrimitiveIt).t0)-shift_back*25,  // ut0 (m_t0Segment)
                                (int)round((*metaPrimitiveIt).chi2*1000000),  // uchi2 (m_chi2Segment)
-                               (*metaPrimitiveIt).rpcFlag    // urpc (m_rpcFlag),
-			       //DTDigis
+                               (*metaPrimitiveIt).rpcFlag,    // urpc (m_rpcFlag),
+			       DTDigis
                                ));
       }
     }

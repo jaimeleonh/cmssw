@@ -34,29 +34,30 @@
 // Constructors --
 //----------------
 L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi() :
-  m_bx(-100), m_wheel(0), m_sector(0), m_station(0), m_superlayer(0), m_phiAngle(0), 
+  m_bx(-100), m_wheel(0), m_sector(0), m_station(0), m_superlayer(0), m_phiAngle(0),
   m_phiBending(0), m_qualityCode(-1), m_index(0), m_t0(0), m_chi2(0), m_rpcFlag(-10)
 {
 
 }
 
 
-L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
-					int qual, int idx, int t0, int chi2, int rpc): //, std::vector< RefDTDigi_t > DTDigis) :
-  m_bx(bx), m_wheel(wh), m_sector(sc), m_station(st), m_superlayer(sl), m_phiAngle(phi), 
+L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi,
+ int phib, int qual, int idx, int t0, int chi2, int rpc): 
+  m_bx(bx), m_wheel(wh), m_sector(sc), m_station(st), m_superlayer(sl), m_phiAngle(phi),
   m_phiBending(phib), m_qualityCode(qual), m_index(idx), m_t0(t0), m_chi2(chi2), m_rpcFlag(rpc)
 {
  
 }
-/*
-L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
-					int qual, int idx, int t0, int chi2, int rpc, std::vector< RefDTDigi_t > digis) :
-  m_bx(bx), m_wheel(wh), m_sector(sc), m_station(st), m_superlayer(sl), m_phiAngle(phi), 
-  m_phiBending(phib), m_qualityCode(qual), m_index(idx), m_t0(t0), m_chi2(chi2), m_rpcFlag(rpc), m_DTDigis(digis)
+
+
+L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi,
+ int phib, int qual, int idx, int t0, int chi2, int rpc, RefDTDigis DTDigis) :
+  m_bx(bx), m_wheel(wh), m_sector(sc), m_station(st), m_superlayer(sl), m_phiAngle(phi),
+  m_phiBending(phib), m_qualityCode(qual), m_index(idx), m_t0(t0), m_chi2(chi2), m_rpcFlag(rpc) //, m_digis(DTDigis)
 {
- 
+  m_digis = DTDigis; 
 }
-*/
+
 
 //--------------
 // Operations --
@@ -122,9 +123,9 @@ int L1Phase2MuDTPhDigi::rpcFlag() const
 }
 
 
-/*DTDigis L1Phase2MuDTPhDigi::digis() const 
+RefDTDigis L1Phase2MuDTPhDigi::digis() const 
 {
   return m_digis;
-}*/
+}
 
 

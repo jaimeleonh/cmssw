@@ -13,9 +13,12 @@
   <version ClassVersion="10" checksum="3559343241"/>
  </class>
 
- <class name="L1Phase2MuDTPhDigi" ClassVersion="5">
-  <version ClassVersion="5" checksum="1236020577"/>
+ <class name="L1Phase2MuDTPhDigi" ClassVersion="8">
+  <version ClassVersion="8" checksum="1643695361"/>
  </class>
+ <class name="std::pair<DTLayerId,unsigned long>"/>
+ <class name="edm::Wrapper<std::pair<DTLayerId,unsigned long> >"/>
+
 
  <class name="std::vector<L1MuDTChambPhDigi>"/>
  <class name="std::vector<L1MuDTChambThDigi>"/>
