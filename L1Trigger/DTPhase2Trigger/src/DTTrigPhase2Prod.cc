@@ -401,7 +401,6 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	      const DTLayerId& thisLayerId = (*dtLayerId_It).first;
 	      const DTChamberId chambId = thisLayerId.superlayerId().chamberId();
 	      int mySector = chambId.sector(); if (mySector == 13) mySector = 4; if (mySector == 14) mySector = 10; mySector--;
- 	      cout << "MPWheel" << chambId.wheel() << " DigiWheel" << chId.wheel() <<" MPSector" << sectorTP << " DigiSector" << mySector <<" MPStation" << chId.station() << " DigiStation" << chambId.station() << endl;  	
 	      if (chambId.wheel() != chId.wheel() || sectorTP != mySector || chambId.station() != chId.station()) continue;
 	      for (DTDigiCollection::const_iterator digiIt = ((*dtLayerId_It).second).first;digiIt!=((*dtLayerId_It).second).second; ++digiIt){
                   //Int_t layer    = dtLId.layer() - 1;
