@@ -204,7 +204,8 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		    }
 	  
 		    if(at_least_one_correlation==false){//no correlation was found, trying with pairs of two digis in the other SL
-			int matched_digis=0;
+			// REMOVING CONFIRMATION FOR SLICE TEST    
+		 /*	int matched_digis=0;
 			double minx=minx_match_2digis;
 			double min2x=minx_match_2digis;
 			int best_tdc=-1;
@@ -292,22 +293,21 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    }));
 			    at_least_one_SL1_confirmation=true;
 			}
-		    }
+		   */ }
 		}
 	
 		//finish SL1-SL3
 
 		//SL3-SL1
+		//
+
+
+		//REMOVING CONFIRMATION FOR SLICE TEST 
+		/*
 		for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
-		    /*for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
-			if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) < dT0_correlate_TP){//time match
-			    //this comb was already filled up in the previous loop now we just want to know if there was at least one match
-			    at_least_one_correlation=true;
-			}
-		    } */
 	  
 		    if(at_least_one_correlation==false){//no correlation was found, trying with pairs of two digis in the other SL
-	    
+	  		
 			int matched_digis=0;
 			double minx=minx_match_2digis;
 			double min2x=minx_match_2digis;
@@ -398,7 +398,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			}
 		    }
 		}
-	
+	*/	
 		//finish SL3-SL1
 		if(at_least_one_correlation==false){
 		    if(debug) std::cout<<"correlation we found zero correlations, adding both collections as they are to the outMPaths"<<std::endl;
