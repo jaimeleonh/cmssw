@@ -14,6 +14,7 @@ MuonPathAssociator::MuonPathAssociator(const ParameterSet& pset) {
     // Obtention of parameters
     debug            = pset.getUntrackedParameter<Bool_t>("debug");
     dT0_correlate_TP = pset.getUntrackedParameter<double>("dT0_correlate_TP");
+    dTanPsi_correlate_TP = pset.getUntrackedParameter<double>("dTanPsi_correlate_TP");
     minx_match_2digis = pset.getUntrackedParameter<double>("minx_match_2digis");
     chi2corTh = pset.getUntrackedParameter<double>("chi2corTh");
 
@@ -114,6 +115,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 	
 		for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
 		    for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
+			if(fabs(SL1metaPrimitive->tanPhi-SL3metaPrimitive->tanPhi) < dTanPsi_correlate_TP) continue;//TanPsi match, SliceTest only
 			if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) < dT0_correlate_TP){//time match
 			    double PosSL1=SL1metaPrimitive->x;
 			    double PosSL3=SL3metaPrimitive->x;

@@ -7,11 +7,14 @@ from L1Trigger.DTPhase2Trigger.PseudoBayesGrouping_cfi            import PseudoB
 dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                digiTag = cms.InputTag("CalibratedDigis"),
                                                trigger_with_sl = cms.untracked.int32(4),
-                                               tanPhiTh = cms.untracked.double(1.),
-                                               chi2Th = cms.untracked.double(0.01), #in cm^2
+                                               tanPhiTh = cms.untracked.double(999.), #Removing TanPsi filter in SliceTest, as FW doesnt use it
+                                               #tanPhiTh = cms.untracked.double(1.),
+                                               chi2Th = cms.untracked.double(0.03), #in cm^2 SliceTest JM 
+                                               #chi2Th = cms.untracked.double(0.01), #in cm^2
                                                chi2corTh = cms.untracked.double(0.1), #in cm^2
                                                do_correlation = cms.untracked.bool(True),
                                                dT0_correlate_TP = cms.untracked.double(25.),
+                                               dTanPsi_correlate_TP = cms.untracked.double(620./4096.),
                                                #minx_match_2digis = cms.untracked.double(2.1),
                                                minx_match_2digis = cms.untracked.double(1.),
                                                p2_df = cms.untracked.int32(2), #0 for phase-1, 1 for slice-test, 2 for phase-2 carlo-federica
