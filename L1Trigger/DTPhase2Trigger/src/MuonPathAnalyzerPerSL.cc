@@ -262,17 +262,22 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 		    if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  pushing back metaPrimitive at x="<<jm_x<<" tanPhi:"<<jm_tanPhi<<" t0:"<<jm_t0<<std::endl;
 	  
 		    if(mpAux->getQuality() == HIGHQ or mpAux->getQuality() == HIGHQGHOST){//keep only the values with the best chi2 among lateralities
-			if((chi2<best_chi2)&&(jm_tanPhi<=tanPhiTh)){
-			    chi2_jm_tanPhi=jm_tanPhi;
-			    chi2_jm_x=(mpAux->getHorizPos()/10.)+shiftinfo[wireId.rawId()]; 
-			    chi2_jm_t0=mpAux->getBxTimeValue();		      
-			    chi2_phi=phi;
-			    chi2_phiB=phiB;
-			    chi2_chi2=chi2;
-			    chi2_quality= mpAux->getQuality();
-    			    for(int i=0;i<4;i++){bestLat[i]=lat[i];}
+			if(chi2<best_chi2 || fabs(chi2 - best_chi2)<1E-3){
+			    if(fabs(jm_tanPhi)<fabs(chi2_jm_tanPhi)){	
+			//if((chi2<best_chi2)&&(jm_tanPhi<=tanPhiTh)){
+			        chi2_jm_tanPhi=jm_tanPhi;
+			        chi2_jm_x=(mpAux->getHorizPos()/10.)+shiftinfo[wireId.rawId()]; 
+			        chi2_jm_t0=mpAux->getBxTimeValue();		      
+			        chi2_phi=phi;
+			        chi2_phiB=phiB;
+			        chi2_chi2=chi2;
+			        best_chi2=chi2;
+			        chi2_quality= mpAux->getQuality();
+    			        for(int i=0;i<4;i++){bestLat[i]=lat[i];}
+			    }
 			}
-		    }else if(fabs(jm_tanPhi)<=tanPhiTh){//write the metaprimitive in case no HIGHQ or HIGHQGHOST and tanPhi range
+		    //}else if(fabs(jm_tanPhi)<=tanPhiTh){//write the metaprimitive in case no HIGHQ or HIGHQGHOST and tanPhi range
+		    } else {
 			if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  pushing back metaprimitive no HIGHQ or HIGHQGHOST"<<std::endl;
 			metaPrimitives.push_back(metaPrimitive({MuonPathSLId.rawId(),jm_t0,jm_x,jm_tanPhi,phi,phiB,chi2,quality,
 					wi[0],tdc[0],lat[0],
