@@ -13,7 +13,9 @@ using namespace std;
 MuonPathAssociator::MuonPathAssociator(const ParameterSet& pset) {
     // Obtention of parameters
     debug            = pset.getUntrackedParameter<Bool_t>("debug");
+    useBX_correlation= pset.getUntrackedParameter<Bool_t>("useBX_correlation");
     dT0_correlate_TP = pset.getUntrackedParameter<double>("dT0_correlate_TP");
+    dBX_correlate_TP = pset.getUntrackedParameter<int>("dBX_correlate_TP");
     dTanPsi_correlate_TP = pset.getUntrackedParameter<double>("dTanPsi_correlate_TP");
     minx_match_2digis = pset.getUntrackedParameter<double>("minx_match_2digis");
     chi2corTh = pset.getUntrackedParameter<double>("chi2corTh");
@@ -116,81 +118,82 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
 		    for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
 			if(fabs(SL1metaPrimitive->tanPhi-SL3metaPrimitive->tanPhi) > dTanPsi_correlate_TP) continue;//TanPsi match, SliceTest only
-			if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) < dT0_correlate_TP){//time match
-			    double PosSL1=SL1metaPrimitive->x;
-			    double PosSL3=SL3metaPrimitive->x;
-			    double NewSlope=(PosSL1-PosSL3)/23.5;     
-			    double MeanT0=(SL1metaPrimitive->t0+SL3metaPrimitive->t0)/2;
-			    double MeanPos=(PosSL3+PosSL1)/2;
-			    //double newChi2=(SL1metaPrimitive->chi2+SL3metaPrimitive->chi2)*0.5;//to be recalculated
-			   
-			    DTSuperLayerId SLId1(SL1metaPrimitive->rawId);
-             		    DTSuperLayerId SLId3(SL3metaPrimitive->rawId);
+			if (useBX_correlation){
+			    if(abs(round(SL1metaPrimitive->t0/25.)-round(SL3metaPrimitive->t0/25.)) > dBX_correlate_TP) continue; //BX match
+			} else {
+		            if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) > dT0_correlate_TP) continue; //time match
+			}
+		        double PosSL1=SL1metaPrimitive->x;
+			double PosSL3=SL3metaPrimitive->x;
+			double NewSlope=(PosSL1-PosSL3)/23.5;     
+			double MeanT0=(SL1metaPrimitive->t0+SL3metaPrimitive->t0)/2;
+			double MeanPos=(PosSL3+PosSL1)/2;
+			 
+			DTSuperLayerId SLId1(SL1metaPrimitive->rawId);
+             		DTSuperLayerId SLId3(SL3metaPrimitive->rawId);
 
-           		    DTWireId wireId1(SLId1,2,1);
-           	     	    DTWireId wireId3(SLId3,2,1);
+           		DTWireId wireId1(SLId1,2,1);
+          	     	DTWireId wireId3(SLId3,2,1);
 
-			    double xH[8], xReco[8];
-			    int  wi[8], tdc[8], lat[8];
-			    for (int i = 0; i<8; i++){ xH[i]=0; xReco[i]=0;} 
-			    wi[0]=SL1metaPrimitive->wi1;tdc[0]=SL1metaPrimitive->tdc1; lat[0]=SL1metaPrimitive->lat1;  
-			    wi[1]=SL1metaPrimitive->wi2;tdc[1]=SL1metaPrimitive->tdc2; lat[1]=SL1metaPrimitive->lat2;  
-			    wi[2]=SL1metaPrimitive->wi3;tdc[2]=SL1metaPrimitive->tdc3; lat[2]=SL1metaPrimitive->lat3;  
-			    wi[3]=SL1metaPrimitive->wi4;tdc[3]=SL1metaPrimitive->tdc4; lat[3]=SL1metaPrimitive->lat4;  
-			    wi[4]=SL3metaPrimitive->wi1;tdc[4]=SL3metaPrimitive->tdc1; lat[4]=SL3metaPrimitive->lat1;  
-			    wi[5]=SL3metaPrimitive->wi2;tdc[5]=SL3metaPrimitive->tdc2; lat[5]=SL3metaPrimitive->lat2;  
-			    wi[6]=SL3metaPrimitive->wi3;tdc[6]=SL3metaPrimitive->tdc3; lat[6]=SL3metaPrimitive->lat3;  
-			    wi[7]=SL3metaPrimitive->wi4;tdc[7]=SL3metaPrimitive->tdc4; lat[7]=SL3metaPrimitive->lat4;  
+			double xH[8], xReco[8];
+			int  wi[8], tdc[8], lat[8];
+			for (int i = 0; i<8; i++){ xH[i]=0; xReco[i]=0;} 
+			wi[0]=SL1metaPrimitive->wi1;tdc[0]=SL1metaPrimitive->tdc1; lat[0]=SL1metaPrimitive->lat1;  
+			wi[1]=SL1metaPrimitive->wi2;tdc[1]=SL1metaPrimitive->tdc2; lat[1]=SL1metaPrimitive->lat2;  
+			wi[2]=SL1metaPrimitive->wi3;tdc[2]=SL1metaPrimitive->tdc3; lat[2]=SL1metaPrimitive->lat3;  
+			wi[3]=SL1metaPrimitive->wi4;tdc[3]=SL1metaPrimitive->tdc4; lat[3]=SL1metaPrimitive->lat4;  
+			wi[4]=SL3metaPrimitive->wi1;tdc[4]=SL3metaPrimitive->tdc1; lat[4]=SL3metaPrimitive->lat1;  
+			wi[5]=SL3metaPrimitive->wi2;tdc[5]=SL3metaPrimitive->tdc2; lat[5]=SL3metaPrimitive->lat2;  
+			wi[6]=SL3metaPrimitive->wi3;tdc[6]=SL3metaPrimitive->tdc3; lat[6]=SL3metaPrimitive->lat3;  
+			wi[7]=SL3metaPrimitive->wi4;tdc[7]=SL3metaPrimitive->tdc4; lat[7]=SL3metaPrimitive->lat4;  
 			
-           		    for (int i=0; i<4; i++){
-				if (wi[i]!=-1) {
-				    if (i%2==0){
-					 xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1.+2.*(double)lat[i]))/10;
-					 xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
-				    }
-				    if (i%2!=0){
-					 xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
-					 xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
-			            }
-				}
-			    } 
-           		    for (int i=4; i<8; i++){
-				if (wi[i]!=-1) {
-				    if (i%2==0){
-					 xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
-					 xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
-				    }
-				    if (i%2!=0){
-					 xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
-					 xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
-			            }
-				}
+           		for (int i=0; i<4; i++){
+			    if (wi[i]!=-1) {
+			        if (i%2==0){
+				    xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1.+2.*(double)lat[i]))/10;
+				    xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
+			        } else if (i%2!=0){
+				    xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
+				    xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
+			        }
+		            }
+			} 
+           		for (int i=4; i<8; i++){
+			    if (wi[i]!=-1) {
+			        if (i%2==0){
+			            xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
+				    xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
+			        } else if (i%2!=0){
+				    xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
+				    xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
+			        }
 			    }
-			    double newChi2 = 0; 
-			    for (int i = 0; i<8; i++){
-				newChi2 = newChi2 + (xH[i]-xReco[i])*(xH[i]-xReco[i]);
-			    } 
-			    if(newChi2>chi2corTh) continue;
+		        }
+			double newChi2 = 0; 
+			for (int i = 0; i<8; i++){
+			    newChi2 = newChi2 + (xH[i]-xReco[i])*(xH[i]-xReco[i]);
+			} 
+			if(newChi2>chi2corTh) continue;
 
-	                    int quality = 0;
-			    if(SL3metaPrimitive->quality <= 2 and SL1metaPrimitive->quality <=2) quality=6;
+	                int quality = 0;
+			if(SL3metaPrimitive->quality <= 2 and SL1metaPrimitive->quality <=2) quality=6;
 	      
-			    if((SL3metaPrimitive->quality >= 3 && SL1metaPrimitive->quality <=2)
+			if((SL3metaPrimitive->quality >= 3 && SL1metaPrimitive->quality <=2)
 			       or (SL1metaPrimitive->quality >= 3 && SL3metaPrimitive->quality <=2) ) quality=8;
 	      
-			    if(SL3metaPrimitive->quality >= 3 && SL1metaPrimitive->quality >=3) quality=9;
+			if(SL3metaPrimitive->quality >= 3 && SL1metaPrimitive->quality >=3) quality=9;
 			    
-			    double z=0;
-			    if(ChId.station()>=3)z=-1.8;
-			    GlobalPoint jm_x_cmssw_global = dtGeo->chamber(ChId)->toGlobal(LocalPoint(MeanPos,0.,z));//Jm_x is already extrapolated to the middle of the SL
-			    int thisec = ChId.sector();
-			    if(se==13) thisec = 4;
-			    if(se==14) thisec = 10;
-			    double phi= jm_x_cmssw_global.phi()-0.5235988*(thisec-1);
-			    double psi=atan(NewSlope);
-			    double phiB=hasPosRF(ChId.wheel(),ChId.sector()) ? psi-phi :-psi-phi ;
-			    
-			    outMPaths.push_back(metaPrimitive({ChId.rawId(),MeanT0,MeanPos,NewSlope,phi,phiB,newChi2,quality,
+			double z=0;
+			if(ChId.station()>=3)z=-1.8;
+			GlobalPoint jm_x_cmssw_global = dtGeo->chamber(ChId)->toGlobal(LocalPoint(MeanPos,0.,z));//Jm_x is already extrapolated to the middle of the SL
+			int thisec = ChId.sector();
+			if(se==13) thisec = 4;
+			if(se==14) thisec = 10;
+			double phi= jm_x_cmssw_global.phi()-0.5235988*(thisec-1);
+			double psi=atan(NewSlope);
+			double phiB=hasPosRF(ChId.wheel(),ChId.sector()) ? psi-phi :-psi-phi ;
+			  
+			outMPaths.push_back(metaPrimitive({ChId.rawId(),MeanT0,MeanPos,NewSlope,phi,phiB,newChi2,quality,
 					    SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
 					    SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
 					    SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,SL1metaPrimitive->lat3,
@@ -201,8 +204,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
 					    -1
 					    }));
-			    at_least_one_correlation=true;
-			}
+			at_least_one_correlation=true;
 		    }
 	  
 		    if(at_least_one_correlation==false){//no correlation was found, trying with pairs of two digis in the other SL

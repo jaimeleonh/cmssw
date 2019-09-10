@@ -69,7 +69,9 @@ private:
   bool hasPosRF(int wh,int sec) {    return  wh>0 || (wh==0 && sec%4>1); }
   
   // Private attributes
+  Bool_t useBX_correlation;
   double dT0_correlate_TP;
+  double dBX_correlate_TP;
   double dTanPsi_correlate_TP;
   double minx_match_2digis;
   double chi2corTh;
