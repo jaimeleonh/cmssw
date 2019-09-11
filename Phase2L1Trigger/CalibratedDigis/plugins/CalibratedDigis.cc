@@ -168,7 +168,7 @@ CalibratedDigis::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      if (scenario == 0) //FIX MC 
 	          newTime = digiTime + 25.0*400;
 	      else if (scenario == 2) //FIX SliceTest 
-	          newTime = digiTime + 25.0*400;
+	          newTime = digiTime;
 	      else 
 	          newTime = digiTime - theSync->offset(wireId) + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_); 
 	  }
