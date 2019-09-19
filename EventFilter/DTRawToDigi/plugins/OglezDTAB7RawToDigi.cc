@@ -489,7 +489,7 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_hitWord (long dataWord,int fedno, int s
     // We need to subtract 1 in the tdc_hit, because it goes from 1-30, due to some
     //            convention (Alvaro indicated so)
     int tdccounts = int(32*(bx+(tdc_hit_t-1)/30.)+0.5);
-    if (correctTPTimeToL1A_) time -= 32*bxCounter_;
+    if (correctTPTimeToL1A_) tdccounts -= 32*bxCounter_;
     while (tdccounts<0) tdccounts+=114048;// 32*3564;
 
     DTDigi digi(wire,tdccounts, hitOrder_[chCode]);
