@@ -3,7 +3,8 @@ import os
 
 dtAB7unpacker = cms.EDProducer("OglezDTAB7RawToDigi",
                                DTAB7_FED_Source = cms.InputTag("rawDataCollector"),
-                               feds = cms.untracked.vint32( 1368,),
+  			       correctTPTimeToL1A = cms.untracked.bool(True), 
+			       feds = cms.untracked.vint32( 1368,),
                                debug = cms.untracked.bool(False),
                                doHexDumping = cms.untracked.bool(False),
                                rawTPVars = cms.untracked.bool(False),

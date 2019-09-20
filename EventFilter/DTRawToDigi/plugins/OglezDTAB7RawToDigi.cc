@@ -68,7 +68,8 @@ OglezDTAB7RawToDigi::OglezDTAB7RawToDigi(const edm::ParameterSet& pset)
 
   rawTPVars_ = pset.getUntrackedParameter<bool>("rawTPVars", false);
 
-  correctTPTimeToL1A_ = pset.getUntrackedParameter<bool>("correctTPTimeToL1A",true);
+  correctTPTimeToL1A_ = pset.getUntrackedParameter<bool>("correctTPTimeToL1A");
+  //correctTPTimeToL1A_ = pset.getUntrackedParameter<bool>("correctTPTimeToL1A",true);
 
   feds_ = pset.getUntrackedParameter<std::vector<int> >("feds", std::vector<int>());
 
@@ -489,7 +490,7 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_hitWord (long dataWord,int fedno, int s
     // We need to subtract 1 in the tdc_hit, because it goes from 1-30, due to some
     //            convention (Alvaro indicated so)
     int tdccounts = int(32*(bx+(tdc_hit_t-1)/30.)+0.5);
-    if (correctTPTimeToL1A_) time -= 32*bxCounter_;
+    if (correctTPTimeToL1A_) tdccounts -= 32*bxCounter_;
     while (tdccounts<0) tdccounts+=114048;// 32*3564;
 
     DTDigi digi(wire,tdccounts, hitOrder_[chCode]);
@@ -514,7 +515,7 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
   if (correctTPTimeToL1A_) time -= 25*bxCounter_;
 
   int bx = (int) round(time/25.);   // Getting the associated bunch-crossing (as indicated by Jaime how they computed in the emulator).
-  if (bx<0) bx += 3564;  // BX in previous orbit!
+  //if (bx<0) bx += 3564;  // BX in previous orbit!
 
 //v4  int position = ((firstWord)&0xFFFF);   // Bits 0-15 (first word) is the position (phi or theta depending on SL)
   int position = ((firstWord)&0x7FFF);   // Bits 0-14 (first word) is the position (phi or theta depending on SL)
