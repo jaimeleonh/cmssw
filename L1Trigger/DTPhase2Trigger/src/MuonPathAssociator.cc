@@ -13,6 +13,9 @@ using namespace std;
 MuonPathAssociator::MuonPathAssociator(const ParameterSet& pset) {
     // Obtention of parameters
     debug            = pset.getUntrackedParameter<Bool_t>("debug");
+    use_LSB          = pset.getUntrackedParameter<Bool_t>("use_LSB");
+    tanPsi_precision = pset.getUntrackedParameter<double>("tanPsi_precision");
+    x_precision      = pset.getUntrackedParameter<double>("x_precision");
     useBX_correlation= pset.getUntrackedParameter<Bool_t>("useBX_correlation");
     dT0_correlate_TP = pset.getUntrackedParameter<double>("dT0_correlate_TP");
     dBX_correlate_TP = pset.getUntrackedParameter<int>("dBX_correlate_TP");
@@ -125,9 +128,11 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			}
 		        double PosSL1=SL1metaPrimitive->x;
 			double PosSL3=SL3metaPrimitive->x;
-			double NewSlope=(PosSL1-PosSL3)/23.5;     
+			double NewSlope=(PosSL1-PosSL3)/23.5;    
+		        if (use_LSB) NewSlope = round(NewSlope / tanPsi_precision)  * tanPsi_precision;   
 			double MeanT0=(SL1metaPrimitive->t0+SL3metaPrimitive->t0)/2;
 			double MeanPos=(PosSL3+PosSL1)/2;
+		        if (use_LSB) MeanPos = round(MeanPos / x_precision) * x_precision;   
 			 
 			DTSuperLayerId SLId1(SL1metaPrimitive->rawId);
              		DTSuperLayerId SLId3(SL3metaPrimitive->rawId);
