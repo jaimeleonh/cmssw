@@ -119,6 +119,11 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
 
     // txt ttrig flag
     bool txt_ttrig_bc0;
+    // shift
+    edm::FileInPath shift_filename;
+    std::map<int,float> shiftinfo;
+
+
 
     // ParameterSet
     edm::EDGetTokenT<DTRecSegment4DCollection> dt4DSegmentsToken;

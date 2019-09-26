@@ -83,6 +83,19 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
     useRPC = pset.getUntrackedParameter<bool>("useRPC");
   
 
+    uint32_t rawId;
+    shift_filename = pset.getParameter<edm::FileInPath>("shift_filename");
+    std::ifstream ifin3(shift_filename.fullPath());
+    double shift;
+    if (ifin3.fail()) {
+      throw cms::Exception("Missing Input File")
+        << "MuonPathAnalyzerPerSL::MuonPathAnalyzerPerSL() -  Cannot find " << shift_filename.fullPath();
+    }
+    while (ifin3.good()){
+        ifin3 >> rawId >> shift;
+        shiftinfo[rawId]=shift;
+    }
+
 
 
     
@@ -376,6 +389,26 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     // Assigning index value
 
     assignIndex(correlatedMetaPrimitives);
+    
+    bool printPython = true, printHits = false;  
+   
+
+    if (printPython) { 
+    for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
+
+      DTChamberId chId((metaPrimitiveIt)->rawId);
+      DTWireId wireId1(chId,1,2,1);
+      DTWireId wireId3(chId,3,2,1);
+
+
+      if (printHits) cout << (*metaPrimitiveIt).wi1 << "," <<(*metaPrimitiveIt).wi2 << "," <<(*metaPrimitiveIt).wi3 << "," <<(*metaPrimitiveIt).wi4 << "," <<(*metaPrimitiveIt).wi5 << "," <<(*metaPrimitiveIt).wi6 << "," <<(*metaPrimitiveIt).wi7 << "," <<(*metaPrimitiveIt).wi8 << "," << (*metaPrimitiveIt).tdc1 << "," <<(*metaPrimitiveIt).tdc2 << "," <<(*metaPrimitiveIt).tdc3 << "," <<(*metaPrimitiveIt).tdc4 << "," <<(*metaPrimitiveIt).tdc5 << "," <<(*metaPrimitiveIt).tdc6 << "," <<(*metaPrimitiveIt).tdc7 << "," <<(*metaPrimitiveIt).tdc8 << "," << - shiftinfo[wireId3.rawId()] + shiftinfo[wireId1.rawId()] << "," << wireId1.wheel() << "," << wireId1.sector() << "," << wireId1.station() << endl;
+      if (!printHits)   cout << (*metaPrimitiveIt).quality << "\t" << (*metaPrimitiveIt).x << "\t" << (*metaPrimitiveIt).tanPhi << "\t" << (*metaPrimitiveIt).t0  << "\t" << shiftinfo[wireId1.rawId()]<<"\t" <<  wireId1.wheel() << "\t" << wireId1.sector() << "\t" << wireId1.station() << endl;
+    }
+    if (printHits) cout << "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" << endl;
+    if (!printHits)  cout << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << endl;
+    } 
+
+
 
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
       DTChamberId chId((*metaPrimitiveIt).rawId);
