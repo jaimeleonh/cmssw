@@ -11,8 +11,16 @@
 #include <DataFormats/MuonDetId/interface/DTLayerId.h>
 #include <DataFormats/DTDigi/interface/DTDigi.h>
 #include <DataFormats/MuonData/interface/MuonDigiCollection.h>
+#include "DataFormats/Common/interface/Ref.h"
+#include "DataFormats/Common/interface/Ptr.h"
+
+using namespace edm;
+using namespace std;
 
 typedef MuonDigiCollection<DTLayerId, DTDigi> DTDigiCollection;
+typedef edm::Ref< DTDigiCollection, DTDigi > RefDTDigi_t;
+typedef std::vector< RefDTDigi_t > RefDTDigis ; 
+
+
 
 #endif
-
