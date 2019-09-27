@@ -73,6 +73,10 @@ private:
   double minx_match_2digis;
   double chi2corTh;
   Bool_t debug;
+  Bool_t use_LSB;
+  double tanPsi_precision;
+  double x_precision;
+
 
   //shift
   edm::FileInPath shift_filename;
