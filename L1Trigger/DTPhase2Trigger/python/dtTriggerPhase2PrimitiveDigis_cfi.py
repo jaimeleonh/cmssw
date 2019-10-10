@@ -7,6 +7,7 @@ from L1Trigger.DTPhase2Trigger.PseudoBayesGrouping_cfi            import PseudoB
 dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                digiTag = cms.InputTag("CalibratedDigis"),
                                                trigger_with_sl = cms.untracked.int32(4),
+                                               use_normal_chi2 = cms.untracked.bool(True),
                                                tanPhiTh = cms.untracked.double(999.), #Removing TanPsi filter in SliceTest, as FW doesnt use it
                                                #tanPhiTh = cms.untracked.double(1.),
                                                chi2Th = cms.untracked.double(0.03), #in cm^2 SliceTest JM 

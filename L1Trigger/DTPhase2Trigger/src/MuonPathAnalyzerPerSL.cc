@@ -15,6 +15,7 @@ MuonPathAnalyzerPerSL::MuonPathAnalyzerPerSL(const ParameterSet& pset) :
     minQuality(LOWQGHOST),
     chiSquareThreshold(50),
     debug(pset.getUntrackedParameter<Bool_t>("debug")),
+    use_normal_chi2(pset.getUntrackedParameter<Bool_t>("use_normal_chi2")),
     chi2Th(pset.getUntrackedParameter<double>("chi2Th")),
     tanPhiTh(pset.getUntrackedParameter<double>("tanPhiTh")),
     use_LSB(pset.getUntrackedParameter<Bool_t>("use_LSB")),
@@ -1101,7 +1102,8 @@ void MuonPathAnalyzerPerSL::calcChiSquare(MuonPath *mPath) {
 	    xi = mPath->getXCoorCell(i);
 
 	    factor = xi - mu*zi - b;
-	    chi += (factor * factor);
+	    if (use_normal_chi2) chi += (factor * factor);
+	    else chi += fabs(factor);
 	}
     mPath->setChiSq(chi);
 }
