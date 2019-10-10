@@ -111,6 +111,8 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     // Debug Flag
     bool debug;
     bool dump;
+    bool printHits;
+    bool printPython;
     double dT0_correlate_TP;
     int min_phinhits_match_segment;
     bool do_correlation;

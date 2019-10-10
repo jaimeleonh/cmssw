@@ -68,6 +68,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
     
     debug = pset.getUntrackedParameter<bool>("debug");
     dump = pset.getUntrackedParameter<bool>("dump");
+    printPython = pset.getUntrackedParameter<bool>("printPython");
+    printHits = pset.getUntrackedParameter<bool>("printHits");
     min_phinhits_match_segment = pset.getUntrackedParameter<int>("min_phinhits_match_segment");
 
     do_correlation = pset.getUntrackedParameter<bool>("do_correlation");
@@ -390,7 +392,6 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
     assignIndex(correlatedMetaPrimitives);
     
-    bool printPython = true, printHits = false;  
    
 
     if (printPython) { 
