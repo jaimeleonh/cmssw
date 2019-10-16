@@ -392,21 +392,56 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
     assignIndex(correlatedMetaPrimitives);
     
+
+   /*if (printPython && printHits)  { 
+      for (DTDigiCollection::DigiRangeIterator dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){ 
+        const DTLayerId& thisLayerId = (*dtLayerId_It).first;
+        const DTChamberId chId = thisLayerId.chamberId();
+	DTWireId wireId1(chId,1,2,1);
+        DTWireId wireId3(chId,3,2,1);
+        Int_t superLayer = thisLayerId.superlayerId().superLayer();
+	if (superLayer == 2) continue;  
+        Int_t layer = thisLayerId.layer();
+        float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
+
+        for (DTDigiCollection::const_iterator digiIt = ((*dtLayerId_It).second).first;digiIt!=((*dtLayerId_It).second).second; ++digiIt){ 
+           Int_t wire     = (*digiIt).wire() - 1; 
+           Int_t digiTIME = (*digiIt).time(); 
+           cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << superLayer-1 << " " << layer-1 << " " << wire << " " << digiTIME << endl;   
+        } 
+      } 
+      if (printHits)  cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
+    } */
+
+
    
 
     if (printPython) { 
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
 
+      if (metaPrimitiveIt->quality != 9) continue;
       DTChamberId chId((metaPrimitiveIt)->rawId);
       DTWireId wireId1(chId,1,2,1);
       DTWireId wireId3(chId,3,2,1);
 
 
-      if (printHits) cout << (*metaPrimitiveIt).wi1 << "," <<(*metaPrimitiveIt).wi2 << "," <<(*metaPrimitiveIt).wi3 << "," <<(*metaPrimitiveIt).wi4 << "," <<(*metaPrimitiveIt).wi5 << "," <<(*metaPrimitiveIt).wi6 << "," <<(*metaPrimitiveIt).wi7 << "," <<(*metaPrimitiveIt).wi8 << "," << (*metaPrimitiveIt).tdc1 << "," <<(*metaPrimitiveIt).tdc2 << "," <<(*metaPrimitiveIt).tdc3 << "," <<(*metaPrimitiveIt).tdc4 << "," <<(*metaPrimitiveIt).tdc5 << "," <<(*metaPrimitiveIt).tdc6 << "," <<(*metaPrimitiveIt).tdc7 << "," <<(*metaPrimitiveIt).tdc8 << "," << shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()] << "," << wireId1.wheel() << "," << wireId1.sector() << "," << wireId1.station() << endl;
-      if (!printHits)   cout << (*metaPrimitiveIt).quality << "\t" << (*metaPrimitiveIt).x << "\t" << (*metaPrimitiveIt).tanPhi << "\t" << (*metaPrimitiveIt).t0  << "\t" << shiftinfo[wireId1.rawId()]<<"\t" <<  wireId1.wheel() << "\t" << wireId1.sector() << "\t" << wireId1.station() << endl;
+      float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 0 << " " << metaPrimitiveIt->wi1 << " " << metaPrimitiveIt->tdc1 << endl;   
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 1 << " " << metaPrimitiveIt->wi2 << " " << metaPrimitiveIt->tdc2 << endl;   
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 2 << " " << metaPrimitiveIt->wi3 << " " << metaPrimitiveIt->tdc3 << endl;   
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 3 << " " << metaPrimitiveIt->wi4 << " " << metaPrimitiveIt->tdc4 << endl;   
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 0 << " " << metaPrimitiveIt->wi5 << " " << metaPrimitiveIt->tdc5 << endl;   
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 1 << " " << metaPrimitiveIt->wi6 << " " << metaPrimitiveIt->tdc6 << endl;   
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 2 << " " << metaPrimitiveIt->wi7 << " " << metaPrimitiveIt->tdc7 << endl;   
+      if (printHits) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 3 << " " << metaPrimitiveIt->wi8 << " " << metaPrimitiveIt->tdc8 << endl;   
+
+
+
+   //   if (printHits) cout << (*metaPrimitiveIt).wi1 << "," <<(*metaPrimitiveIt).wi2 << "," <<(*metaPrimitiveIt).wi3 << "," <<(*metaPrimitiveIt).wi4 << "," <<(*metaPrimitiveIt).wi5 << "," <<(*metaPrimitiveIt).wi6 << "," <<(*metaPrimitiveIt).wi7 << "," <<(*metaPrimitiveIt).wi8 << "," << (*metaPrimitiveIt).tdc1 << "," <<(*metaPrimitiveIt).tdc2 << "," <<(*metaPrimitiveIt).tdc3 << "," <<(*metaPrimitiveIt).tdc4 << "," <<(*metaPrimitiveIt).tdc5 << "," <<(*metaPrimitiveIt).tdc6 << "," <<(*metaPrimitiveIt).tdc7 << "," <<(*metaPrimitiveIt).tdc8 << "," << shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()] << "," << wireId1.wheel() << "," << wireId1.sector() << "," << wireId1.station() << endl;
+      if (!printHits)   cout << (*metaPrimitiveIt).quality << " " << (*metaPrimitiveIt).x << " " << (*metaPrimitiveIt).tanPhi << " " << (*metaPrimitiveIt).t0  << " " << shiftinfo[wireId1.rawId()]<<" " <<  wireId1.wheel() << " " << wireId1.sector() << " " << wireId1.station() << endl;
     }
-    if (printHits) cout << "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" << endl;
-    if (!printHits)  cout << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << "\t" << -1 << endl;
+    //if (printHits) cout << "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" << endl;
+    cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
     } 
 
 
