@@ -54,7 +54,16 @@ class MuonPathAssociator {
   void finish();
     
   // Other public methods
-  
+
+  bool shareFit (metaPrimitive first, metaPrimitive second); 
+  bool isNotAPrimo (metaPrimitive first, metaPrimitive second); 
+  void removeSharingFits (std::vector<metaPrimitive> &chamberMPaths,
+			  std::vector<metaPrimitive> &allMPaths);
+  void removeSharingHits (std::vector<metaPrimitive> &firstMPaths,
+			  std::vector<metaPrimitive> &secondMPaths,
+			  std::vector<metaPrimitive> &allMPaths);
+  void printmPC(metaPrimitive mP);
+ 
   // Public attributes
  edm::ESHandle<DTGeometry> dtGeo;  
 
@@ -69,14 +78,18 @@ private:
   bool hasPosRF(int wh,int sec) {    return  wh>0 || (wh==0 && sec%4>1); }
   
   // Private attributes
+  Bool_t debug;
+  Bool_t clean_chi2_correlation;
+  Bool_t useBX_correlation;
+  Bool_t allow_confirmation;
   double dT0_correlate_TP;
+  double dBX_correlate_TP;
+  double dTanPsi_correlate_TP;
   double minx_match_2digis;
   double chi2corTh;
-  Bool_t debug;
   Bool_t use_LSB;
-  double tanPsi_precision;
-  double x_precision;
-
+  double tanPsi_precision; 
+  double x_precision; 
 
   //shift
   edm::FileInPath shift_filename;
