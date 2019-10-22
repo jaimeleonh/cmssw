@@ -366,9 +366,12 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     // RPC integration
     if(useRPC) {
         if (debug) std::cout << "Start integrating RPC" << std::endl;
-        rpc_integrator->initialise(iEventSetup);
-        rpc_integrator->translateRPC(rpcRecHits);
-        rpc_integrator->confirmDT(correlatedMetaPrimitives, shift_back);
+        rpc_integrator->initialise(iEventSetup, shift_back);
+        rpc_integrator->prepareMetaPrimitives(rpcRecHits);
+        rpc_integrator->matchWithDTAndUseRPCTime(correlatedMetaPrimitives);
+        rpc_integrator->makeRPCOnlySegments();
+        rpc_integrator->storeRPCSingleHits();
+        rpc_integrator->removeRPCHitsUsed();
     }
 
     /// STORING RESULTs 
@@ -455,6 +458,7 @@ void DTTrigPhase2Prod::endRun(edm::Run const& iRun, const edm::EventSetup& iEven
   mpathqualityenhancer->finish();
   mpathredundantfilter->finish();
   mpathassociator->finish();
+  rpc_integrator->finish();
 };
 
 

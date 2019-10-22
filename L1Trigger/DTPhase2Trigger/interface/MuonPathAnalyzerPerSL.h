@@ -169,9 +169,9 @@ class MuonPathAnalyzerPerSL : public MuonPathAnalyzer {
   double tanPhiTh;
   int cellLayout[4];
   Bool_t use_LSB;
-  double tanPsi_precision;
-  double x_precision;
- 
+  double tanPsi_precision; 
+  double x_precision; 
+  
 };
 
 

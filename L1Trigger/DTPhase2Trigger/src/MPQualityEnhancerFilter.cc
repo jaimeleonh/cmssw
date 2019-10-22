@@ -236,16 +236,19 @@ void MPQualityEnhancerFilter::filterCousins(std::vector<metaPrimitive> &inMPaths
 
 
 } //End filterCousins
-
+/*
 void MPQualityEnhancerFilter::refilteringCousins(std::vector<metaPrimitive> &inMPaths, 
 				   std::vector<metaPrimitive> &outMPaths) 
 {
+
+    if(debug) std::cout<<"filtering: starting cousins refiltering"<<std::endl;    
     int bestI = -1; 
     double bestChi2 = 9999;
     bool oneOf4 = false; 
     bool enter = true; 
     if (inMPaths.size()>1){
       for (int i = 0; i<(int)inMPaths.size(); i++){
+	if (debug) { cout << "filtering: starting with mp " << i << ": "; printmP(inMPaths[i]); cout << endl; }
 	enter = true; 
 	if (rango(inMPaths[i])==4) {
 	  oneOf4 = true; 
@@ -255,14 +258,14 @@ void MPQualityEnhancerFilter::refilteringCousins(std::vector<metaPrimitive> &inM
         //for (int j = 0; j<(int)inMPaths.size(); j++){
         for (int j = i+1; j<(int)inMPaths.size(); j++){
           if (areCousins(inMPaths[i],inMPaths[j])==0){ //they arent cousins
-	    //cout << "mp"; printmP(inMPaths[i]); cout<< " is not cousin from mp"; printmP(inMPaths[j]); cout << endl; 
+	    if (debug) { cout << "filtering:          mp " << i << " is not cousin from mp " << j << ": "; printmP(inMPaths[j]); cout << endl; }
 	    enter = false; // We dont want to save them two times
 	    if (oneOf4 == false){
-	      //cout << "kept3 mp" << i << endl; ;  
+	      if (debug) cout << "kept3 mp" << i << endl; ;  
 	      outMPaths.push_back(inMPaths[i]);
 	    } else {
 	      outMPaths.push_back(inMPaths[bestI]);
-	      //cout << "kept4 mp" << bestI << endl;  
+	      if (debug) cout << "kept4 mp" << bestI << endl;  
 	      bestI = -1; 
 	      bestChi2 = 9999;
 	      oneOf4 = false; 
@@ -283,6 +286,63 @@ void MPQualityEnhancerFilter::refilteringCousins(std::vector<metaPrimitive> &inM
 	  }
         }
         if (enter == true) outMPaths.push_back(inMPaths[i]);
+      }
+    } else if (inMPaths.size() == 1) {
+      outMPaths.push_back(inMPaths[0]);
+    }
+
+
+} 
+*/
+
+
+void MPQualityEnhancerFilter::refilteringCousins(std::vector<metaPrimitive> &inMPaths, 
+				   std::vector<metaPrimitive> &outMPaths) 
+{
+
+    if(debug) std::cout<<"filtering: starting cousins refiltering"<<std::endl;    
+    int bestI = -1; 
+    double bestChi2 = 9999;
+    bool oneOf4 = false; 
+    int back = 0; 
+ 
+    if (inMPaths.size()>1){
+      for (unsigned int i = 0; i< inMPaths.size(); i++){
+	if (debug) { cout << "filtering: starting with mp " << i << ": "; printmP(inMPaths[i]); cout << endl; }
+	if (rango(inMPaths[i])==4 && bestChi2 > inMPaths[i].chi2) { // 4h prim with a smaller chi2
+          if (debug) { cout << "filtering: mp " << i << " is the best 4h primitive" << endl;}   
+          oneOf4 = true; 
+          bestI = i;
+	  bestChi2 = inMPaths[i].chi2; 
+	}
+        if (i == inMPaths.size() - 1) { //You can't compare the last one with the next one
+	  if (oneOf4) {
+	    outMPaths.push_back(inMPaths[bestI]);
+          } else {
+            for (unsigned int j = i - back; j <= i; j++ ){
+	      outMPaths.push_back(inMPaths[j]);
+            }
+          }
+        } else {
+          if (areCousins(inMPaths[i],inMPaths[i+1])==0){ //they arent cousins
+	    if (debug) { cout << "mp " << i << " and mp " << i + 1 << " are not cousins" << endl;  }
+	    if (oneOf4) {
+	      outMPaths.push_back(inMPaths[bestI]);
+	      if (debug) cout << "kept4 mp " << bestI << endl;  
+              oneOf4 = false; //reset 4h variables 
+              bestI = -1;
+	      bestChi2 = 9999; 
+            } else {
+              for (unsigned int j = i - back; j <= i; j++ ){
+	        outMPaths.push_back(inMPaths[j]);
+	        if (debug) cout << "kept3 mp " << j << endl;  
+              }
+            } 
+	    back = 0; 
+          } else { // they are cousins
+	    back++; 
+          }
+        }
       }
     } else if (inMPaths.size() == 1) {
       outMPaths.push_back(inMPaths[0]);
