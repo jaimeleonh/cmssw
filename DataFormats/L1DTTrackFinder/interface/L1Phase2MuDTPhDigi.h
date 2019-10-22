@@ -17,6 +17,9 @@
 // Collaborating Class Declarations --
 //------------------------------------
 
+#include <DataFormats/DTDigi/interface/DTDigiCollection.h>
+
+
 
 //----------------------
 // Base Class Headers --
@@ -32,9 +35,10 @@
 //              -- Class Interface --
 //              ---------------------
 
+
 class L1Phase2MuDTPhDigi 
 {
-
+ 
  public:
 
   //  Constructors
@@ -42,6 +46,9 @@ class L1Phase2MuDTPhDigi
   
   L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
 		      int qual, int idx, int t0, int chi2, int rpc=-10);
+
+  L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
+		      int qual, int idx, int t0, int chi2, int rpc, RefDTDigis DTDigis);
   
   // Operations
   int bxNum()       const;
@@ -62,6 +69,7 @@ class L1Phase2MuDTPhDigi
 
   int rpcFlag()      const;
   
+  RefDTDigis digis() const; 
 
  private:
 
@@ -81,6 +89,8 @@ class L1Phase2MuDTPhDigi
   int m_chi2;
   
   int m_rpcFlag;
+
+  RefDTDigis m_digis;
 };
 
 #endif

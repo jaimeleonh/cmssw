@@ -139,6 +139,7 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
 
     void assignIndex(std::vector<metaPrimitive> &inMPaths);
     int assignQualityOrder(metaPrimitive mP);
+    bool isDigiInPrimitive(metaPrimitive mP, Int_t cellNum, Int_t time);
 };
 
 

@@ -240,7 +240,8 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 		    if (use_LSB) jm_tanPhi = round(jm_tanPhi / tanPsi_precision)  * tanPsi_precision;   
 		    double jm_x=(mpAux->getHorizPos()/10.)+shiftinfo[wireId.rawId()];
 		    if (use_LSB) jm_x = round(jm_x / x_precision)  * x_precision;   
-		    //changing to chamber frame or reference:
+		    
+                    //changing to chamber frame or reference:
 		    double jm_t0=mpAux->getBxTimeValue();		      
 		    int quality= mpAux->getQuality();
 	  
@@ -274,7 +275,7 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 			    chi2_phi=phi;
 			    chi2_phiB=phiB;
 			    chi2_chi2=chi2;
-			    best_chi2=chi2;
+		            best_chi2=chi2;
 			    chi2_quality= mpAux->getQuality();
     			    for(int i=0;i<4;i++){bestLat[i]=lat[i];}
 			}
