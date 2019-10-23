@@ -74,7 +74,10 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
     p2_df = pset.getUntrackedParameter<int>("p2_df");
     
     scenario = pset.getUntrackedParameter<int>("scenario");
-    
+    printPython = pset.getUntrackedParameter<bool>("printPython");
+    printHits = pset.getUntrackedParameter<bool>("printHits");
+   
+ 
     txt_ttrig_bc0 = pset.getUntrackedParameter<bool>("apply_txt_ttrig_bc0");
     
     dtDigisToken = consumes< DTDigiCollection >(pset.getParameter<edm::InputTag>("digiTag"));
