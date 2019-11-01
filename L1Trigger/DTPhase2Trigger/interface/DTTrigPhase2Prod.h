@@ -118,7 +118,7 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     int scenario;
     bool printHits;
     bool printPython;
-
+    int eventBX;
 
 
     // txt ttrig flag
