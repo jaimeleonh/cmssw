@@ -35,14 +35,17 @@ namespace CMS {
 #define MAX_BX_IDX 3564
 
 // En nanosegundos (tiempo de deriva en la celda)
-#define MAXDRIFT ((float)(386.74))
+//#define MAXDRIFT ((float)(391.75))
+#define MAXDRIFT ((float)(386.75))
 // En milímetros (dimensiones de la celda)
 #define CELL_HEIGHT     13
 #define CELL_SEMIHEIGHT 6.5
 #define CELL_LENGTH     42
 #define CELL_SEMILENGTH 21
 // En milímetros / nanosegundo (velocidad de deriva)
-#define DRIFT_SPEED (CELL_SEMILENGTH/MAXDRIFT)
+//#define DRIFT_SPEED (CELL_SEMILENGTH/MAXDRIFT)
+#define DRIFT_SPEED ((float) 0.0542)
+//#define DRIFT_SPEED ((float) 0.0555)
 /*
   This is the maximum value than internal time can take. This is because
   internal time is cyclical due to the limited size of the time counters and

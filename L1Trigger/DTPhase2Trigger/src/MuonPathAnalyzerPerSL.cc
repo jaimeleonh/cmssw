@@ -237,9 +237,9 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 		    DTChamberId ChId(MuonPathSLId.wheel(),MuonPathSLId.station(),MuonPathSLId.sector());
 	  
 		    double jm_tanPhi=-1.*mpAux->getTanPhi(); //testing with this line
-		    if (use_LSB) jm_tanPhi = round(jm_tanPhi / tanPsi_precision)  * tanPsi_precision;   
+		    if (use_LSB) jm_tanPhi = floor(jm_tanPhi / tanPsi_precision)  * tanPsi_precision;   
 		    double jm_x=(mpAux->getHorizPos()/10.)+shiftinfo[wireId.rawId()];
-		    if (use_LSB) jm_x = round(jm_x / x_precision)  * x_precision;   
+		    if (use_LSB) jm_x = floor(jm_x / x_precision)  * x_precision;   
 		    //changing to chamber frame or reference:
 		    double jm_t0=mpAux->getBxTimeValue();		      
 		    int quality= mpAux->getQuality();
@@ -549,6 +549,7 @@ void MuonPathAnalyzerPerSL::evaluateLateralQuality(int latIdx, MuonPath *mPath,L
 		for (int i = 0; i < 4; i++)
 		    if (latQResult[i].latQValid) {
 			latQuality->bxValue = latQResult[i].bxValue;
+			//latQuality->bxValue = floor ( latQResult[i].bxValue * (pow(2,15)-1) / (pow(2,15)) );
 			/*
 			 * En los casos que haya una combinación de 4 hits válidos pero
 			 * sólo 3 de ellos formen traza (calidad 2), esto permite detectar
@@ -654,7 +655,7 @@ void MuonPathAnalyzerPerSL::validate(LATERAL_CASES sideComb[3], int layerIndex[3
   
     memcpy(miSides, &sideComb[0], 2 * sizeof(LATERAL_CASES));
   
-    float bxValue = 0;
+    double bxValue = 0;
     int coefsAB[2] = {0, 0}, coefsCD[2] = {0, 0};
     /* It's neccesary to be careful with that pointer's indirection. We need to
        retrieve the lateral coeficientes (+-1) from the lower/middle and
@@ -686,10 +687,26 @@ void MuonPathAnalyzerPerSL::validate(LATERAL_CASES sideComb[3], int layerIndex[3
     /* Esta ecuación ha de ser optimizada, especialmente en su implementación
        en FPGA. El 'denominator' toma siempre valores múltiplo de 2 o nulo, por lo
        habría que evitar el cociente y reemplazarlo por desplazamientos de bits */
-    bxValue = (
+     /*bxValue = (
 	       dVertMI*(dHorzSM*MAXDRIFT + eqMainBXTerm(smSides, layPairSM, mPath)) -
 	       dVertSM*(dHorzMI*MAXDRIFT + eqMainBXTerm(miSides, layPairMI, mPath))
 	       ) / denominator;
+   */ //MODIFIED BY ALVARO
+     long int numerator = ( (int) floor(MAXDRIFT * (dVertMI*dHorzSM - dVertSM*dHorzMI))
+			+ dVertMI*eqMainBXTerm(smSides, layPairSM, mPath) - dVertSM*eqMainBXTerm(miSides, layPairMI, mPath));
+     //long int numerator = ( dVertMI*(dHorzSM*MAXDRIFT + eqMainBXTerm(smSides, layPairSM, mPath)) -
+//	       dVertSM*(dHorzMI*MAXDRIFT + eqMainBXTerm(miSides, layPairMI, mPath)));
+     if (denominator == -6)      bxValue = (numerator * (-5461 ) ) / std::pow(2,15);
+     else if (denominator == -4) bxValue = (numerator * (-8192 ) ) / std::pow(2,15);
+     else if (denominator == -2) bxValue = (numerator * (-16384) ) / std::pow(2,15);
+     else if (denominator == 2)  bxValue = (numerator * ( 16384) ) / std::pow(2,15);
+     else if (denominator == 4)  bxValue = (numerator * ( 8192 ) ) / std::pow(2,15);
+     else if (denominator == 6)  bxValue = (numerator * ( 5461 ) ) / std::pow(2,15);
+     else cout << "Distinto!" << endl; 
+     //cout << numerator * 5461 << " " << std::pow(2,15) << " "; printf("%f\n",bxValue); 
+     bxValue = floor (bxValue);
+     cout << "bxValue " << bxValue << endl; 
+    //cout << bxValue << " numerator: " << numerator << " denominator: " << denominator << endl;  
 
     if(bxValue < 0) {
 	if(debug) std::cout<<"DTp2:validate \t\t\t\t\t\t\t Combinacion no valida. BX Negativo."<<std::endl;
@@ -697,8 +714,8 @@ void MuonPathAnalyzerPerSL::validate(LATERAL_CASES sideComb[3], int layerIndex[3
     }
 
     // Redondeo del valor del tiempo de BX al nanosegundo
-    if ( (bxValue - int(bxValue)) >= 0.5 ) bxValue = float(int(bxValue + 1));
-    else bxValue = float(int(bxValue));
+    //if ( (bxValue - int(bxValue)) >= 0.5 ) bxValue = float(int(bxValue + 1));
+    //else bxValue = float(int(bxValue));
 
     /* Ciertos valores del tiempo de BX, siendo positivos pero objetivamente no
        válidos, pueden dar lugar a que el discriminador de traza asociado de un
@@ -769,10 +786,10 @@ int MuonPathAnalyzerPerSL::eqMainTerm(LATERAL_CASES sideComb[2], int layerIdx[2]
 
     getLateralCoeficients(sideComb, coefs);
     
-    eqTerm = coefs[0] * (mPath->getPrimitive(layerIdx[0])->getTDCTimeNoOffset() -
-			 bxValue) +
-	coefs[1] * (mPath->getPrimitive(layerIdx[1])->getTDCTimeNoOffset() -
-		    bxValue);
+    if (!use_LSB) eqTerm = coefs[0] * (mPath->getPrimitive(layerIdx[0])->getTDCTimeNoOffset() - bxValue) +
+	                   coefs[1] * (mPath->getPrimitive(layerIdx[1])->getTDCTimeNoOffset() - bxValue);
+    else          eqTerm = coefs[0] * floor((DRIFT_SPEED / (10*x_precision)) *(mPath->getPrimitive(layerIdx[0])->getTDCTimeNoOffset() - bxValue)) +
+	                   coefs[1] * floor((DRIFT_SPEED / (10*x_precision)) *(mPath->getPrimitive(layerIdx[1])->getTDCTimeNoOffset() - bxValue));
     
     if(debug) std::cout<<"DTp2:\t\t\t\t\t EQTerm(Main): "<<eqTerm<<std::endl;
     
@@ -1025,12 +1042,17 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber3Hits(MuonPath* mPath) {
     /*-----------------------------------------------------------------*/
     /*--------------------- Phi angle calculation ---------------------*/
     /*-----------------------------------------------------------------*/
-    float num = CELL_SEMILENGTH * dHoriz + DRIFT_SPEED *eqMainTerm(sideComb, layerIdx, mPath, mPath->getBxTimeValue() );
+    float num;
+    if (!use_LSB) num = CELL_SEMILENGTH * dHoriz + DRIFT_SPEED *eqMainTerm(sideComb, layerIdx, mPath, mPath->getBxTimeValue() );
+    else num = floor(CELL_SEMILENGTH * dHoriz / (10*x_precision)) + eqMainTerm(sideComb, layerIdx, mPath, mPath->getBxTimeValue());
 
     float denom = CELL_HEIGHT * dVert;
-    float tanPhi = num / denom;
+    float tanPhi;
+    if (!use_LSB) tanPhi = num / denom;
+    if (use_LSB) tanPhi = (floor(1024*num / denom)) / 4096.;  
 
     mPath->setTanPhi(tanPhi);
+    //cout << tanPhi << endl; 
 
     /*-----------------------------------------------------------------*/
     /*----------------- Horizontal coord. calculation -----------------*/
@@ -1038,11 +1060,12 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber3Hits(MuonPath* mPath) {
     float XPos = 0;
     if (mPath->getPrimitive(0)->isValidTime() and
 	mPath->getPrimitive(3)->isValidTime())
-	XPos = (mPath->getXCoorCell(0) + mPath->getXCoorCell(3)) / 2;
+	XPos = floor(floor (mPath->getXCoorCell(0) / (10*x_precision)) + floor (mPath->getXCoorCell(3) / (10*x_precision))) / 2;
     else
-	XPos = (mPath->getXCoorCell(1) + mPath->getXCoorCell(2)) / 2;
+	XPos = floor(floor (mPath->getXCoorCell(1) / (10*x_precision)) + floor (mPath->getXCoorCell(2) / (10*x_precision))) / 2;
 
-    mPath->setHorizPos( XPos );
+    mPath->setHorizPos( XPos * x_precision*10);
+    //cout << XPos << endl; 
 }
 
 /**
@@ -1061,20 +1084,21 @@ void MuonPathAnalyzerPerSL::calcCellDriftAndXcoor(MuonPath *mPath) {
     for (int i = 0; i <= 3; i++)
 	if (mPath->getPrimitive(i)->isValidTime()) {
 	    // Drift distance.
-	    driftDistance = DRIFT_SPEED *
+	    driftDistance = floor (DRIFT_SPEED *
 		( mPath->getPrimitive(i)->getTDCTimeNoOffset() -
 		  mPath->getBxTimeValue()
-		  );
+		  ) / x_precision);
+	    cout << mPath->getPrimitive(i)->getTDCTimeNoOffset() << " " << driftDistance*x_precision << endl; 
 
 	    wireHorizPos = mPath->getPrimitive(i)->getWireHorizPos();
 
 	    if ( (mPath->getLateralComb())[ i ] == LEFT )
-		hitHorizPos = wireHorizPos - driftDistance;
+		hitHorizPos = wireHorizPos - x_precision*driftDistance;
 	    else
-		hitHorizPos = wireHorizPos + driftDistance;
+		hitHorizPos = wireHorizPos + x_precision*driftDistance;
 
 	    mPath->setXCoorCell(hitHorizPos, i);
-	    mPath->setDriftDistance(driftDistance, i);
+	    mPath->setDriftDistance(x_precision*driftDistance, i);
 	}
 }
 
