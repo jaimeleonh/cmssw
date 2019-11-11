@@ -329,12 +329,13 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     
     if(debug) std::cout<<"DTp2 in event:"<<iEvent.id().event()<<" we found "<<filteredMetaPrimitives.size()<<" filteredMetaPrimitives (superlayer)"<<std::endl;
     if(debug) std::cout<<"filteredMetaPrimitives: starting correlations"<<std::endl;    
-   
+  
+    
     ////// PRINT FILTERED METAPRIM
     if (printPython) { 
     for (auto metaPrimitiveIt = filteredMetaPrimitives.begin(); metaPrimitiveIt != filteredMetaPrimitives.end(); ++metaPrimitiveIt){
 
-      if (metaPrimitiveIt->quality != 1 && metaPrimitiveIt->quality != 2) continue;
+      if (metaPrimitiveIt->quality != 3 && metaPrimitiveIt->quality != 4) continue;
       DTSuperLayerId slId((metaPrimitiveIt)->rawId);
       
       DTChamberId chId((metaPrimitiveIt)->rawId);
@@ -346,7 +347,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       else continue; 
 
       int nhits = (metaPrimitiveIt->tdc1 != -1) + (metaPrimitiveIt->tdc2 != -1) + (metaPrimitiveIt->tdc3 != -1) + (metaPrimitiveIt->tdc4 != -1);
-      if (nhits >= 4) continue; 
+      //if (nhits >= 4) continue; 
 
       float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
       if (printHits && metaPrimitiveIt->wi1!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << sl << " " << 0 << " " << metaPrimitiveIt->wi1 << " " << metaPrimitiveIt->tdc1 << endl;   
@@ -436,7 +437,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
     assignIndex(correlatedMetaPrimitives);
 
-   /*if (printPython && printHits)  { 
+    /*if (printPython && printHits)  { 
       for (DTDigiCollection::DigiRangeIterator dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){ 
         const DTLayerId& thisLayerId = (*dtLayerId_It).first;
         const DTChamberId chId = thisLayerId.chamberId();
@@ -462,7 +463,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     if (printPython) { 
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
 
-//      if (metaPrimitiveIt->quality != 3 && metaPrimitiveIt->quality != 4) continue;
+      if (metaPrimitiveIt->quality != 8 && metaPrimitiveIt->quality != 8) continue;
       DTChamberId chId((metaPrimitiveIt)->rawId);
       DTWireId wireId1(chId,1,2,1);
       DTWireId wireId3(chId,3,2,1);

@@ -237,9 +237,10 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 		    DTChamberId ChId(MuonPathSLId.wheel(),MuonPathSLId.station(),MuonPathSLId.sector());
 	  
 		    double jm_tanPhi=-1.*mpAux->getTanPhi(); //testing with this line
+		    //printf ("jm_tanPhi=%f jm_tanPhi / tanPsi_precision=%f floor(jm_tanPhi / tanPsi_precision=%f \n", jm_tanPhi, jm_tanPhi / tanPsi_precision, floor(jm_tanPhi / tanPsi_precision));
 		    if (use_LSB) jm_tanPhi = floor(jm_tanPhi / tanPsi_precision)  * tanPsi_precision;   
 		    //if (use_LSB) jm_tanPhi = floor(jm_tanPhi / tanPsi_precision)  * tanPsi_precision;   
-		    double jm_x=(((double) mpAux->getHorizPos())/10.)+((double)shiftinfo[wireId.rawId()]);
+		    double jm_x=(((double) mpAux->getHorizPos())/10.)+x_precision * ( round ( shiftinfo[wireId.rawId()] / x_precision ) );
 		    //cout << (((double) mpAux->getHorizPos())/10.) <<" "<<((double)shiftinfo[wireId.rawId()]) << " " << jm_x / x_precision << " " << round(jm_x / x_precision) << endl;
 		    if (use_LSB) jm_x = ((double) round( ((double) jm_x )/ x_precision))  * x_precision;   
 		    //if (use_LSB) jm_x = floor(jm_x / x_precision)  * x_precision;   
@@ -529,15 +530,23 @@ void MuonPathAnalyzerPerSL::evaluateLateralQuality(int latIdx, MuonPath *mPath,L
 	     * capas: 0,2,3, y combinación L/L/L) no se podría aplicar, dando un
 	     * valor parcial de BX = 0.
 	     */
-	    int sumBX = 0, numValid = 0;
+	    long int sumBX = 0, numValid = 0;
 	    for (int i = 0; i <= 3; i++) {
 		if (latQResult[i].latQValid) {
 		    sumBX += latQResult[i].bxValue;
+	//	    cout <<  " BX:" << latQResult[i].bxValue << " tdc" << mPath->getPrimitive(i)->getTDCTime() << endl; 
 		    numValid++;
 		}
 	    }
 
-	    latQuality->bxValue = sumBX / numValid;
+            if (numValid == 1)      latQuality->bxValue = sumBX; 
+            else if (numValid == 2) latQuality->bxValue = (sumBX * (16384) ) / std::pow(2,15);
+            else if (numValid == 3) latQuality->bxValue = (sumBX * (10922) ) / std::pow(2,15);
+            else if (numValid == 4) latQuality->bxValue = (sumBX * (8192 ) ) / std::pow(2,15);
+	   
+	   // cout << "MEDIA BX:" << latQuality->bxValue << " Validos:" << numValid << endl;
+ 
+            //latQuality->bxValue = sumBX / numValid;
 	    latQuality->quality = HIGHQ;
 
 	    if(debug) std::cout<<"DTp2:evaluateLateralQuality \t\t\t\t\t Lateralidad ACEPTADA. HIGHQ."<<std::endl;
@@ -710,11 +719,15 @@ void MuonPathAnalyzerPerSL::validate(LATERAL_CASES sideComb[3], int layerIndex[3
      bxValue = floor (bxValue);
      //cout << "bxValue " << bxValue << endl; 
     //cout << bxValue << " numerator: " << numerator << " denominator: " << denominator << endl;  
-
     if(bxValue < 0) {
 	if(debug) std::cout<<"DTp2:validate \t\t\t\t\t\t\t Combinacion no valida. BX Negativo."<<std::endl;
 	return;
     }
+    /*std::cout<<"Valores de TDC: "
+                       <<mPath->getPrimitive(layerIndex[0])->getTDCTime()<<"/"
+                       <<mPath->getPrimitive(layerIndex[1])->getTDCTime()<<"/"
+                       <<mPath->getPrimitive(layerIndex[2])->getTDCTime()<<"."
+                      << " BXvalue " << bxValue << std::endl; */
 
     // Redondeo del valor del tiempo de BX al nanosegundo
     //if ( (bxValue - int(bxValue)) >= 0.5 ) bxValue = float(int(bxValue + 1));
@@ -739,8 +752,10 @@ void MuonPathAnalyzerPerSL::validate(LATERAL_CASES sideComb[3], int layerIndex[3
 	if (mPath->getPrimitive(layerIndex[i])->isValidTime()) {
 	    int diffTime =
 		mPath->getPrimitive(layerIndex[i])->getTDCTimeNoOffset() - bxValue;
+	        //cout << bxValue  <<  " " << mPath->getPrimitive(layerIndex[i])->getTDCTimeNoOffset() << endl;
 
-	    if (diffTime < 0 or diffTime > MAXDRIFT) {
+	    if (diffTime <= 0 or diffTime > round(MAXDRIFT)) {
+	    //if (diffTime < 0 or diffTime > MAXDRIFT) {
 		if(debug) std::cout<<"DTp2:validate \t\t\t\t\t\t\t Valor de BX inválido. Al menos un tiempo de TDC sin sentido"<<std::endl;
 		return;
 	    }
@@ -1009,14 +1024,18 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber4Hits(MuonPath* mPath) {
 		    mPath->getXCoorCell(1) -
 		    3 * mPath->getXCoorCell(0)) / (10 * CELL_HEIGHT);
 
+    //cout << tanPhi << endl; 
     mPath->setTanPhi(tanPhi);
 
+    /*float XPos = (mPath->getXCoorCell(0) +
+		  mPath->getXCoorCell(3)) / 2;*/
     float XPos = (mPath->getXCoorCell(0) +
 		  mPath->getXCoorCell(1) +
 		  mPath->getXCoorCell(2) +
 		  mPath->getXCoorCell(3)) / 4;
-
-    mPath->setHorizPos( XPos );
+    //cout << XPos << endl; 
+    mPath->setHorizPos( floor( XPos / (10*x_precision) ) * 10 * x_precision  );
+    //mPath->setHorizPos( XPos );
 }
 
 /**
@@ -1032,9 +1051,9 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber3Hits(MuonPath* mPath) {
     else layerIdx[1] = 2;
 
     /* We identify along which cells' sides the muon travels */
-    LATERAL_CASES sideComb[2];
-    sideComb[0] = (mPath->getLateralComb())[ layerIdx[0] ];
-    sideComb[1] = (mPath->getLateralComb())[ layerIdx[1] ];
+    //LATERAL_CASES sideComb[2];
+    //sideComb[0] = (mPath->getLateralComb())[ layerIdx[0] ];
+    //sideComb[1] = (mPath->getLateralComb())[ layerIdx[1] ];
 
     /* Horizontal gap between cells in cell's semi-length units */
     int dHoriz = (mPath->getCellHorizontalLayout())[ layerIdx[1] ] - (mPath->getCellHorizontalLayout())[ layerIdx[0] ];
@@ -1045,6 +1064,9 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber3Hits(MuonPath* mPath) {
     /*-----------------------------------------------------------------*/
     /*--------------------- Phi angle calculation ---------------------*/
     /*-----------------------------------------------------------------*/
+    
+
+/*
     float num;
     if (!use_LSB) num = CELL_SEMILENGTH * dHoriz + DRIFT_SPEED *eqMainTerm(sideComb, layerIdx, mPath, mPath->getBxTimeValue() );
     else num = floor(CELL_SEMILENGTH * dHoriz / (10*x_precision)) + eqMainTerm(sideComb, layerIdx, mPath, mPath->getBxTimeValue());
@@ -1053,6 +1075,22 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber3Hits(MuonPath* mPath) {
     float tanPhi;
     if (!use_LSB) tanPhi = num / denom;
     if (use_LSB) tanPhi = (floor(1024*num / denom)) / 4096.;  
+*/
+
+    int x_prec_inv =  (int) (1. / (10.*  x_precision) );
+    int tan_division_denominator_bits = 16;
+   
+   // printf ("%f-%f\n", x_prec_inv*mPath->getXCoorCell(layerIdx[1]), x_prec_inv*mPath->getXCoorCell(layerIdx[0]));
+  
+    int num =  ( (int) (  (int) (  x_prec_inv*mPath->getXCoorCell(layerIdx[1])) - (int) ( x_prec_inv*mPath->getXCoorCell(layerIdx[0]) ) ) << 10 ); 
+    int denominator = ( layerIdx[1] - layerIdx[0] ) * CELL_HEIGHT;
+    //printf("%f\n", ((float) denominator)); 
+ 
+    //int denominator_inv = {26:2251,39:1680}[denominator];
+    int denominator_inv = ((int) (0.5 + pow(2, tan_division_denominator_bits) / float(denominator) )) ;
+
+    float tanPhi = ( (num * denominator_inv) >>  tan_division_denominator_bits  ) /  ( (1./tanPsi_precision) );
+
 
     mPath->setTanPhi(tanPhi);
     //cout << tanPhi << endl; 
@@ -1093,6 +1131,7 @@ void MuonPathAnalyzerPerSL::calcCellDriftAndXcoor(MuonPath *mPath) {
     long int wireHorizPos_x4; 
     //long int hitHorizPos_x4; 
     long int pos_mm_x4;
+    int x_prec_inv =  (int) (1. / (10.*  x_precision) );
 
 
     for (int i = 0; i <= 3; i++)
@@ -1108,7 +1147,7 @@ void MuonPathAnalyzerPerSL::calcCellDriftAndXcoor(MuonPath *mPath) {
 	    //cout << mPath->getPrimitive(i)->getTDCTimeNoOffset() << " " << driftDistance*x_precision*10 << endl; 
 
 	    wireHorizPos = mPath->getPrimitive(i)->getWireHorizPos();
-            wireHorizPos_x4 = (long) (wireHorizPos * 4); 
+            wireHorizPos_x4 = (long) (wireHorizPos * x_prec_inv); 
 
 	    if ( (mPath->getLateralComb())[ i ] == LEFT )
 		//hitHorizPos = wireHorizPos - 10*x_precision*driftDistance;
@@ -1118,7 +1157,7 @@ void MuonPathAnalyzerPerSL::calcCellDriftAndXcoor(MuonPath *mPath) {
 		pos_mm_x4 = wireHorizPos_x4 + (drift_dist_um_x4>>10);
 
             hitHorizPos = ( (float) pos_mm_x4 ) / 4;
-	    //cout << mPath->getPrimitive(i)->getTDCTimeNoOffset() << " drift*4="<<drift_dist_um_x4 << " wireHorizPos_x4=" << wireHorizPos_x4 << " pos_mm_x4=" << pos_mm_x4 << " hitHorizPos=" << hitHorizPos<< endl; 
+	    //printf ("%d hitHorizPos=%f\n", mPath->getPrimitive(i)->getTDCTimeNoOffset(), hitHorizPos); 
 
 
 	    //cout << mPath->getPrimitive(i)->getTDCTimeNoOffset() << " " << hitHorizPos << endl; 

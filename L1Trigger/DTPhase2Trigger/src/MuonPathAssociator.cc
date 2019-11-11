@@ -140,11 +140,38 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			}
 		        double PosSL1=SL1metaPrimitive->x;
 			double PosSL3=SL3metaPrimitive->x;
-			double NewSlope=(PosSL1-PosSL3)/23.5;    
-		        if (use_LSB) NewSlope = round(NewSlope / tanPsi_precision)  * tanPsi_precision;   
+			// double NewSlope=(PosSL1-PosSL3)/23.5
+			double NewSlope;    
+			if (use_LSB) {
+			  //cout << "NewSlope:"<< (PosSL1-PosSL3)/23.5;
+			  //cout << "PosSL1: " << PosSL1 << " PosSL3:" << PosSL3 <<endl;
+			  //printf ("PosSL1: %f PosSL3: %f", PosSL1, PosSL3); 
+			  double difTime_mm_x4 = ( round ( 10. * ((PosSL1-PosSL3) / (x_precision * 10.) ) ) );
+			  //cout << "difTime_mm_x4 " << difTime_mm_x4;
+			  double tanPsi_x4096_x128 = (difTime_mm_x4 * 139.5 ) / (10.*x_precision);
+			  //cout << " tanPsi_x4096_x128 " << tanPsi_x4096_x128;
+			  double tanPsi_x4096 = floor (tanPsi_x4096_x128 / 128.);
+			  //cout << " tanPsi_x4096 " << tanPsi_x4096;
+			  NewSlope = tanPsi_x4096 * tanPsi_precision;
+			  //cout << " NewSlope " << NewSlope << endl; 
+			} 
+		        //if (use_LSB) NewSlope =  ( (float) ( (floor) (NewSlope / tanPsi_precision) )  * tanPsi_precision );   
 			double MeanT0=(SL1metaPrimitive->t0+SL3metaPrimitive->t0)/2;
 			double MeanPos=(PosSL3+PosSL1)/2;
-		        if (use_LSB) MeanPos = round(MeanPos / x_precision) * x_precision;   
+			
+
+			//cout <<"MeanT0:" << MeanT0 << " PosSL1:"<< PosSL1 << " PosSL3:" << PosSL3 << " MeanPos:"  << MeanPos << " MeanPos / x_precision:";
+			//printf("%f\n", (MeanPos / x_precision)); 
+			//printf(" 10 times -> %f\n", 10*(MeanPos / x_precision)); 
+			//printf(" round (10 times) -> %f\n", round (10*(MeanPos / x_precision))); 
+			//printf(" floor (round (10 times)) / 10 -> %f\n", floor (round (10*(MeanPos / x_precision)) )); 
+			//cout << " floor(MeanPos / x_precision)" <<  floor(MeanPos / x_precision); 
+		        if (use_LSB) { 
+			  MeanPos =  MeanPos / x_precision; // get the precision
+			  MeanPos = round (10. * MeanPos) / 10. ; //avoid rounding effects   
+			  MeanPos =  floor(MeanPos) * x_precision; // return to the normal value
+			}
+			//cout << " NewMeanPos:"<< MeanPos << endl; 
 			   
 			DTSuperLayerId SLId1(SL1metaPrimitive->rawId);
              		DTSuperLayerId SLId3(SL3metaPrimitive->rawId);
