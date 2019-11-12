@@ -1019,13 +1019,23 @@ void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber(MuonPath* mPath)
  * Cálculos de coordenada y ángulo para un caso de 4 HITS de alta calidad.
  */
 void MuonPathAnalyzerPerSL::calcTanPhiXPosChamber4Hits(MuonPath* mPath) {
-    float tanPhi = (3 * mPath->getXCoorCell(3) +
+    /*float tanPhi = (3 * mPath->getXCoorCell(3) +
 		    mPath->getXCoorCell(2) -
 		    mPath->getXCoorCell(1) -
-		    3 * mPath->getXCoorCell(0)) / (10 * CELL_HEIGHT);
+		    3 * mPath->getXCoorCell(0)) / (10 * CELL_HEIGHT);*/
+    int numerator = 3 * (int)round(mPath->getXCoorCell(3) / (10*x_precision)) +
+		    (int) round (mPath->getXCoorCell(2) / (10*x_precision)) -
+		    (int) round (mPath->getXCoorCell(1) / (10*x_precision)) -
+		    3 * (int) round(mPath->getXCoorCell(0) / (10*x_precision));
 
-    //cout << tanPhi << endl; 
-    mPath->setTanPhi(tanPhi);
+//    cout << "numerator: " << numerator << endl;
+    int CELL_HEIGHT_JM =  pow(2,15) / ( (int) (10 * CELL_HEIGHT));
+    int tanPhi_x4096 = (numerator * CELL_HEIGHT_JM)  >> 5 ;
+
+  //  cout << "tanPhi: " <<tanPhi_x4096 << endl;
+   // cout << "with precision " << ( (float) tanPhi_x4096) * tanPsi_precision << endl; 
+    mPath->setTanPhi( tanPhi_x4096 * tanPsi_precision); 
+    //mPath->setTanPhi( ( (float) tanPhi_x4096) * tanPsi_precision); 
 
     /*float XPos = (mPath->getXCoorCell(0) +
 		  mPath->getXCoorCell(3)) / 2;*/
@@ -1144,10 +1154,11 @@ void MuonPathAnalyzerPerSL::calcCellDriftAndXcoor(MuonPath *mPath) {
 	    drift_dist_um_x4= 222 *  
 		( mPath->getPrimitive(i)->getTDCTimeNoOffset() -
 		  mPath->getBxTimeValue() );
-	    //cout << mPath->getPrimitive(i)->getTDCTimeNoOffset() << " " << driftDistance*x_precision*10 << endl; 
+	    //cout << mPath->getPrimitive(i)->getTDCTimeNoOffset() << " " << drift_dist_um_x4 << endl; 
 
 	    wireHorizPos = mPath->getPrimitive(i)->getWireHorizPos();
             wireHorizPos_x4 = (long) (wireHorizPos * x_prec_inv); 
+	    //cout << wireHorizPos_x4 << endl; 
 
 	    if ( (mPath->getLateralComb())[ i ] == LEFT )
 		//hitHorizPos = wireHorizPos - 10*x_precision*driftDistance;
@@ -1171,7 +1182,7 @@ void MuonPathAnalyzerPerSL::calcCellDriftAndXcoor(MuonPath *mPath) {
  * Calcula el estimador de calidad de la trayectoria.
  */
 void MuonPathAnalyzerPerSL::calcChiSquare(MuonPath *mPath) {
-
+/*
     float xi, zi, factor;
 
     float chi = 0;
@@ -1188,7 +1199,26 @@ void MuonPathAnalyzerPerSL::calcChiSquare(MuonPath *mPath) {
 	    factor = xi - mu*zi - b;
 	    chi += (factor * factor);
 	}
-    mPath->setChiSq(chi);
+*/
+    long int Z_FACTOR[4] = {-6,-2,2,6};
+    for (int i = 0; i<4; i++) {
+      Z_FACTOR[i] = Z_FACTOR[i] * (long int) CELL_HEIGHT; 
+    }
+    long int sum_A = 0, sum_B = 0;
+    long int chi2_mm2_x1024 = 0; 
+    for (int i = 0; i < 4; i++){
+      if ( mPath->getPrimitive(i)->isValidTime() ) {
+        sum_A = ( ( (int) (mPath->getXCoorCell(i) / (10*x_precision) ) ) - ( (int) (mPath->getHorizPos() / (10*x_precision) ) ) ) << 12;
+	sum_B = Z_FACTOR[i] * ((int) (mPath->getTanPhi() / tanPsi_precision));
+	chi2_mm2_x1024 += (sum_A - sum_B)*(sum_A - sum_B);
+	//cout << "sum_A=" << sum_A << " sum_B=" << sum_B << " pow((sum_A - sum_B),2)=" << pow((sum_A - sum_B),2) << " chi2_mm2_x1024=" << chi2_mm2_x1024 << endl; 
+      }
+    } 
+    chi2_mm2_x1024 = chi2_mm2_x1024 >> 18;
+    //cout << "chi2_mm2_x1024=" << chi2_mm2_x1024 << " chi2_mm2_x1024 / 1024.=" << chi2_mm2_x1024 / 1024. << endl; 
+     
+    mPath->setChiSq(( (double) chi2_mm2_x1024 / 1024. ));
+    //mPath->setChiSq(chi);
 }
 
 

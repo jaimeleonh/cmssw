@@ -138,27 +138,33 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			} else {
 		            if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) >= dT0_correlate_TP) continue; //time match
 			}
-		        double PosSL1=SL1metaPrimitive->x;
-			double PosSL3=SL3metaPrimitive->x;
+		        //double PosSL1=SL1metaPrimitive->x;
+			//double PosSL3=SL3metaPrimitive->x;
+		        long int PosSL1= (int) round (10 * SL1metaPrimitive->x / (10*x_precision)) ;
+		        long int PosSL3= (int) round (10 * SL3metaPrimitive->x / (10*x_precision)) ;
 			// double NewSlope=(PosSL1-PosSL3)/23.5
 			double NewSlope;    
 			if (use_LSB) {
-			  //cout << "NewSlope:"<< (PosSL1-PosSL3)/23.5;
+			  long int newConstant = (int) ( 139.5 / (10. * x_precision) );
+			  //cout << "NewSlope:"<< (PosSL1-PosSL3)/(4.*235.);
 			  //cout << "PosSL1: " << PosSL1 << " PosSL3:" << PosSL3 <<endl;
 			  //printf ("PosSL1: %f PosSL3: %f", PosSL1, PosSL3); 
-			  double difTime_mm_x4 = ( round ( 10. * ((PosSL1-PosSL3) / (x_precision * 10.) ) ) );
+			  long int difTime_mm_x4 = PosSL1 - PosSL3;
+			  //printf ("PosSL1: %d PosSL3: %d",  (int) (PosSL1 / (x_precision) ), 10 * (int) (PosSL3 / (x_precision)) ); 
 			  //cout << "difTime_mm_x4 " << difTime_mm_x4;
-			  double tanPsi_x4096_x128 = (difTime_mm_x4 * 139.5 ) / (10.*x_precision);
+			  long int tanPsi_x4096_x128 = (difTime_mm_x4)  * newConstant;
 			  //cout << " tanPsi_x4096_x128 " << tanPsi_x4096_x128;
-			  double tanPsi_x4096 = floor (tanPsi_x4096_x128 / 128.);
+			  long int tanPsi_x4096 = tanPsi_x4096_x128 / 128;
 			  //cout << " tanPsi_x4096 " << tanPsi_x4096;
 			  NewSlope = tanPsi_x4096 * tanPsi_precision;
 			  //cout << " NewSlope " << NewSlope << endl; 
 			} 
 		        //if (use_LSB) NewSlope =  ( (float) ( (floor) (NewSlope / tanPsi_precision) )  * tanPsi_precision );   
 			double MeanT0=(SL1metaPrimitive->t0+SL3metaPrimitive->t0)/2;
-			double MeanPos=(PosSL3+PosSL1)/2;
-			
+			double MeanPos=(PosSL3+PosSL1)/80.;
+			//double MeanPos=(PosSL3+PosSL1)/2;
+		        
+                        //NewSlope = (PosSL1-PosSL3)/(4.*235.);	
 
 			//cout <<"MeanT0:" << MeanT0 << " PosSL1:"<< PosSL1 << " PosSL3:" << PosSL3 << " MeanPos:"  << MeanPos << " MeanPos / x_precision:";
 			//printf("%f\n", (MeanPos / x_precision)); 
