@@ -149,10 +149,10 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			  //cout << "NewSlope:"<< (PosSL1-PosSL3)/(4.*235.);
 			  //cout << "PosSL1: " << PosSL1 << " PosSL3:" << PosSL3 <<endl;
 			  //printf ("PosSL1: %f PosSL3: %f", PosSL1, PosSL3); 
-			  long int difTime_mm_x4 = PosSL1 - PosSL3;
+			  long int difPos_mm_x4 = PosSL1 - PosSL3;
 			  //printf ("PosSL1: %d PosSL3: %d",  (int) (PosSL1 / (x_precision) ), 10 * (int) (PosSL3 / (x_precision)) ); 
-			  //cout << "difTime_mm_x4 " << difTime_mm_x4;
-			  long int tanPsi_x4096_x128 = (difTime_mm_x4)  * newConstant;
+			  //cout << "difPos_mm_x4 " << difPos_mm_x4;
+			  long int tanPsi_x4096_x128 = (difPos_mm_x4)  * newConstant;
 			  //cout << " tanPsi_x4096_x128 " << tanPsi_x4096_x128;
 			  long int tanPsi_x4096 = tanPsi_x4096_x128 / 128;
 			  //cout << " tanPsi_x4096 " << tanPsi_x4096;
