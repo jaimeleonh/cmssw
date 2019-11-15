@@ -436,7 +436,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     // Assigning index value
 
     assignIndex(correlatedMetaPrimitives);
-/*
+
     if (printPython && printHits)  { 
       for (DTDigiCollection::DigiRangeIterator dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){ 
         const DTLayerId& thisLayerId = (*dtLayerId_It).first;
@@ -456,8 +456,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       } 
       if (printHits)  cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
     } 
-*/
-   
+
+  
 
     //if (true == false) { 
     if (printPython) { 
