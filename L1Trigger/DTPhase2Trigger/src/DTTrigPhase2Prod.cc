@@ -401,8 +401,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
                                sectorTP,   // usc (m_sector)    // FIXME: It is not clear who provides this?
                                chId.station(),   // ust (m_station)
                                sl,   // ust (m_station)
-                               (int)round((*metaPrimitiveIt).phi*65536./0.8), // uphi (_phiAngle)
-                               (int)round((*metaPrimitiveIt).phiB*2048./1.4), // uphib (m_phiBending)
+                               (int)round((*metaPrimitiveIt).x*1000000), // uphi (_phiAngle)
+                               (int)round((*metaPrimitiveIt).tanPhi*1000000), // uphib (m_phiBending)
                                (*metaPrimitiveIt).quality,  // uqua (m_qualityCode)
                                (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
                                (int)round((*metaPrimitiveIt).t0)-shift_back*25,  // ut0 (m_t0Segment)
