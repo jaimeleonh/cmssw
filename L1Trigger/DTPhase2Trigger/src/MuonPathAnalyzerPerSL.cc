@@ -530,8 +530,11 @@ void MuonPathAnalyzerPerSL::evaluateLateralQuality(int latIdx, MuonPath *mPath,L
 	     * capas: 0,2,3, y combinación L/L/L) no se podría aplicar, dando un
 	     * valor parcial de BX = 0.
 	     */
+	    if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t Valid BXs"<<std::endl;
 	    long int sumBX = 0, numValid = 0;
 	    for (int i = 0; i <= 3; i++) {
+                if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t "
+			<< "[" << latQResult[i].bxValue << "," << latQResult[i].latQValid <<"]" <<endl; 
 		if (latQResult[i].latQValid) {
 		    sumBX += latQResult[i].bxValue;
 //		    cout <<  " BX:" << latQResult[i].bxValue << " tdc" << mPath->getPrimitive(i)->getTDCTime() << endl; 
@@ -541,7 +544,8 @@ void MuonPathAnalyzerPerSL::evaluateLateralQuality(int latIdx, MuonPath *mPath,L
 
             if (numValid == 1)      latQuality->bxValue = sumBX; 
             else if (numValid == 2) latQuality->bxValue = (sumBX * (16384) ) / std::pow(2,15);
-            else if (numValid == 3) latQuality->bxValue = (sumBX * (10922) ) / std::pow(2,15);
+            else if (numValid == 3) latQuality->bxValue = (sumBX * (10923) ) / std::pow(2,15);
+            //else if (numValid == 3) latQuality->bxValue = (sumBX * (10922) ) / std::pow(2,15);
             else if (numValid == 4) latQuality->bxValue = (sumBX * (8192 ) ) / std::pow(2,15);
 	   
 //	    cout << "MEDIA BX:" << latQuality->bxValue << " Validos:" << numValid << endl;
@@ -711,12 +715,18 @@ void MuonPathAnalyzerPerSL::validate(LATERAL_CASES sideComb[3], int layerIndex[3
 
      //long int numerator = ( dVertMI*(dHorzSM*MAXDRIFT + eqMainBXTerm(smSides, layPairSM, mPath)) -
 //	       dVertSM*(dHorzMI*MAXDRIFT + eqMainBXTerm(miSides, layPairMI, mPath)));
-     if (denominator == -6)      bxValue = (numerator * (-5461 ) ) / std::pow(2,15);
-     else if (denominator == -4) bxValue = (numerator * (-8192 ) ) / std::pow(2,15);
-     else if (denominator == -2) bxValue = (numerator * (-16384) ) / std::pow(2,15);
-     else if (denominator == 2)  bxValue = (numerator * ( 16384) ) / std::pow(2,15);
-     else if (denominator == 4)  bxValue = (numerator * ( 8192 ) ) / std::pow(2,15);
-     else if (denominator == 6)  bxValue = (numerator * ( 5461 ) ) / std::pow(2,15);
+     //if (denominator == -6)      bxValue = (numerator * (-5461 ) ) / std::pow(2,15);
+     //else if (denominator == -4) bxValue = (numerator * (-8192 ) ) / std::pow(2,15);
+     //else if (denominator == -2) bxValue = (numerator * (-16384) ) / std::pow(2,15);
+     //else if (denominator == 2)  bxValue = (numerator * ( 16384) ) / std::pow(2,15);
+     //else if (denominator == 4)  bxValue = (numerator * ( 8192 ) ) / std::pow(2,15);
+     //else if (denominator == 6)  bxValue = (numerator * ( 5461 ) ) / std::pow(2,15);
+     if (denominator == -6)      bxValue = (numerator * (-43691 ) ) / std::pow(2,18);
+     else if (denominator == -4) bxValue = (numerator * (-65536 ) ) / std::pow(2,18);
+     else if (denominator == -2) bxValue = (numerator * (-131072) ) / std::pow(2,18);
+     else if (denominator == 2)  bxValue = (numerator * ( 131072) ) / std::pow(2,18);
+     else if (denominator == 4)  bxValue = (numerator * ( 65536 ) ) / std::pow(2,18);
+     else if (denominator == 6)  bxValue = (numerator * ( 43691 ) ) / std::pow(2,18);
      else cout << "Distinto!" << endl; 
      //cout << numerator * 5461 << " " << std::pow(2,15) << " "; printf("%f\n",bxValue); 
      bxValue = floor (bxValue);
@@ -761,8 +771,12 @@ void MuonPathAnalyzerPerSL::validate(LATERAL_CASES sideComb[3], int layerIndex[3
 	    //if (diffTime < 0 or diffTime > MAXDRIFT) {
 		if(debug) std::cout<<"DTp2:validate \t\t\t\t\t\t\t Valor de BX inválido. Al menos un tiempo de TDC sin sentido"<<std::endl;
 		return;
-	    }
+            }
 	}
+    if(debug) std::cout<<"DTp2:validate \t\t\t\t\t\t\t Valor de BX: "
+		       <<bxValue
+		       <<std::endl;
+	
 
     /* Si se llega a este punto, el valor de BX y la lateralidad parcial se dan
      * por válidas.
