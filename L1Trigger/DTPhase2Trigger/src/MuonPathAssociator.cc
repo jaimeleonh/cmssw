@@ -259,11 +259,12 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			    shift = round(shiftinfo[wireId3.rawId()] / x_precision);
 			    slTime = SL3metaPrimitive->t0;
 			  }
-
+			 // if (debug) cout << slTime << endl;
 			  if (wi[i]!=-1){
 
                             long int drift_speed_new = 889; 
                             //long int drift_speed_new = (long int) (round (DRIFT_SPEED * 1000 * 10.24) / (10*x_precision*10) ); 
+	                    //long int drift_dist_um_x4= drift_speed_new * ( ((long int) tdc[i]) - (long int) MeanT0  ) ;
 	                    long int drift_dist_um_x4= drift_speed_new * ( ((long int) tdc[i]) - slTime  ) ;
 	                    //long int drift_dist_um_x4= 222 * ( ((long int) tdc[i]) - slTime  ) ;
 	                    //long int drift_dist_um_x4= 222 * ( ((long int) tdc[i]) - ((long int) MeanT0 )) ;
@@ -283,14 +284,23 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
                             sum_A = shift + pos_mm_x4 - (long int) round (MeanPos / x_precision);
 			    sum_A = sum_A<<(14-numberOfBits);
 			    sum_B = Z_FACTOR_CORR[i] * (long int) round (-NewSlope / tanPsi_precision);
+			//    cout << tdc[i] <<" " << sum_A << " " << sum_B << endl;
 			    chi2 += ( (sum_A - sum_B)*(sum_A - sum_B) ) >> 2;	 
 			    //cout << " sum_A= " << sum_A << " sum_B=" << sum_B << " chi2=" << chi2 << endl;  
 			  }
 			}
 
 			//double newChi2 = 0.;
-			double newChi2 = (double) ( chi2 >> 16 ) / (1024.*100.);
+			double newChi2 = (double) ( chi2 >> 18 ) / (256.*100.);
 			//cout << "newChi2=" << newChi2 << endl; 
+		 
+			if (debug) {	
+			  for (int deb = 0; deb < 8; deb++) {
+			    cout << wi[deb] << " ";
+			  }
+			  cout << newChi2 << endl; 
+			}
+
 			if(newChi2>chi2corTh) continue;
 
 			// Fill the used vectors			    
