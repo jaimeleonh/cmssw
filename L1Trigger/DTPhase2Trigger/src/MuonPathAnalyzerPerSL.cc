@@ -202,7 +202,15 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 		lat[1] = mpAux->getLateralComb()[1]; 
     		lat[2] = mpAux->getLateralComb()[2]; 
     		lat[3] = mpAux->getLateralComb()[3]; 
+	
 		
+		int wiOk[4], tdcOk[4], latOk[4];
+		for (int lay = 0; lay < 4; lay++){
+		  if (latQuality[i].invalidateHitIdx == lay) {wiOk[lay]=-1; tdcOk[lay]=-1; latOk[lay]=-1;}
+		  else { wiOk[lay]=wi[lay]; tdcOk[lay]=tdc[lay]; latOk[lay]=lat[lay];}
+		}
+		
+	
 		int idxHitNotValid = latQuality[i].invalidateHitIdx;
 		if (idxHitNotValid >= 0) {
 		    delete mpAux->getPrimitive(idxHitNotValid);
@@ -285,10 +293,14 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 		    }else if(fabs(jm_tanPhi)<=tanPhiTh){//write the metaprimitive in case no HIGHQ or HIGHQGHOST and tanPhi range
 			if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t\t\t\t  pushing back metaprimitive no HIGHQ or HIGHQGHOST"<<std::endl;
 			metaPrimitives.push_back(metaPrimitive({MuonPathSLId.rawId(),jm_t0,jm_x,jm_tanPhi,phi,phiB,chi2,quality,
-					wi[0],tdc[0],lat[0],
-					wi[1],tdc[1],lat[1],
-					wi[2],tdc[2],lat[2],
-					wi[3],tdc[3],lat[3],
+					//wi[0],tdc[0],lat[0],
+					//wi[1],tdc[1],lat[1],
+					//wi[2],tdc[2],lat[2],
+					//wi[3],tdc[3],lat[3],
+					wiOk[0],tdcOk[0],latOk[0],
+					wiOk[1],tdcOk[1],latOk[1],
+					wiOk[2],tdcOk[2],latOk[2],
+					wiOk[3],tdcOk[3],latOk[3],
 					wi[4],tdc[4],lat[4],
 					wi[5],tdc[5],lat[5],
 					wi[6],tdc[6],lat[6],

@@ -291,7 +291,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			}
 
 			//double newChi2 = 0.;
-			double newChi2 = (double) ( chi2 >> 18 ) / (256.*100.);
+			double newChi2 = (double) ( chi2 >> 16 ) / (1024.*100.);
 			//cout << "newChi2=" << newChi2 << endl; 
 		 
 			if (debug) {	
