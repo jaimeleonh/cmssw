@@ -4,6 +4,29 @@ using namespace std;
 using namespace edm;
 using namespace cms;
 
+
+struct {
+  Bool_t operator()(std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*> a, std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*> b) const {
+
+    UShort_t sumhqa    = 0; UShort_t sumhqb    = 0;
+    UShort_t sumlqa    = 0; UShort_t sumlqb    = 0;
+    Double_t sumdista  = 0; Double_t sumdistb  = 0;
+
+    for (UShort_t lay = 0; lay < 8; lay++) {
+      sumhqa   += (UShort_t)get<1>(a)[lay]; sumhqb   += (UShort_t)get<1>(b)[lay];
+      sumlqa   += (UShort_t)get<2>(a)[lay]; sumlqb   += (UShort_t)get<2>(b)[lay];
+      sumdista += get<4>(a)[lay];           sumdistb += get<4>(b)[lay];
+    }
+
+    if      (get<0>(a) != get<0>(b)) return (get<0>(a) > get<0>(b)); // number of layers with hits
+    else if (sumhqa    != sumhqb)    return (sumhqa    > sumhqb);    // number of hq hits
+    else if (sumlqa    != sumlqb)    return (sumlqa    > sumlqb);    // number of lq hits
+    else if (get<3>(a) != get<3>(b)) return (get<3>(a) < get<3>(b)); // abs. diff. between SL1 & SL3 hits
+    else                             return (sumdista < sumdistb);   // abs. dist. to digis
+  }
+} HoughOrdering;
+
+
 // ============================================================================
 // Constructors and destructor
 // ============================================================================
@@ -710,8 +733,14 @@ void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Boo
     UShort_t tmplowfill = 0; UShort_t tmpupfill = 0;
     for (UShort_t lay = 0; lay < 8; lay++) {
       ptrPrimitive[lay] = new DTPrimitive(get<5>(invector.at(i))[lay]);
-      if (debug) cout << "\nHoughGrouping::OrderAndFilter - cameraid: " << ptrPrimitive[lay]->getCameraId() << endl;
-      if (debug) cout << "HoughGrouping::OrderAndFilter - channelid: "  << ptrPrimitive[lay]->getChannelId() << endl;
+      if (debug) {
+        cout << "\nHoughGrouping::OrderAndFilter - cameraid: "       << ptrPrimitive[lay]->getCameraId() << endl;
+        cout << "HoughGrouping::OrderAndFilter - channelid (GOOD): " << ptrPrimitive[lay]->getChannelId() << endl;
+        cout << "HoughGrouping::OrderAndFilter - channelid (AM):   " << ptrPrimitive[lay]->getChannelId() - 1 << endl;
+      }
+      // Fixing channel ID to AM conventions...
+      if (ptrPrimitive[lay]->getChannelId() != -1) ptrPrimitive[lay]->setChannelId(ptrPrimitive[lay]->getChannelId() - 1);
+
       if (ptrPrimitive[lay]->getCameraId() > 0) {
         if (lay < 4) tmplowfill++;
         else         tmpupfill++;
