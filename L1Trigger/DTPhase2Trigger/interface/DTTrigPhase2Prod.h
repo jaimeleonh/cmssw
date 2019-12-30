@@ -116,10 +116,17 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     bool do_correlation;
     int p2_df;
     int scenario;
+    bool printHits;
+    bool printPython;
+    int eventBX;
+
 
     // txt ttrig flag
     bool txt_ttrig_bc0;
-
+    // shift
+    edm::FileInPath shift_filename;
+    std::map<int,float> shiftinfo;
+            
     // ParameterSet
     edm::EDGetTokenT<DTRecSegment4DCollection> dt4DSegmentsToken;
     edm::EDGetTokenT<DTDigiCollection> dtDigisToken;

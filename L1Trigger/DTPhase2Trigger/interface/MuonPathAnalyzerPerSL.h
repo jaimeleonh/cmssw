@@ -164,10 +164,14 @@ class MuonPathAnalyzerPerSL : public MuonPathAnalyzer {
   MP_QUALITY minQuality;
   float chiSquareThreshold;
   Bool_t debug;
+  Bool_t printMPaths;
   double chi2Th;
   double chi2corTh;
   double tanPhiTh;
   int cellLayout[4];
+  Bool_t use_LSB;
+  double tanPsi_precision; 
+  double x_precision; 
   
 };
 
