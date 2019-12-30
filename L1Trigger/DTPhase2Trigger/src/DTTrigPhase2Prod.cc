@@ -76,7 +76,7 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
     scenario = pset.getUntrackedParameter<int>("scenario");
     printPython = pset.getUntrackedParameter<bool>("printPython");
     printHits = pset.getUntrackedParameter<bool>("printHits");
-   
+       
  
     txt_ttrig_bc0 = pset.getUntrackedParameter<bool>("apply_txt_ttrig_bc0");
     
@@ -332,11 +332,11 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
   
     
     ////// PRINT FILTERED METAPRIM
-    //if (printPython) { 
-    if (true == false) { 
+    if (printPython) { 
+    //if (true == false) { 
     for (auto metaPrimitiveIt = filteredMetaPrimitives.begin(); metaPrimitiveIt != filteredMetaPrimitives.end(); ++metaPrimitiveIt){
 
-      if (metaPrimitiveIt->quality != 3 && metaPrimitiveIt->quality != 4) continue;
+      //if (metaPrimitiveIt->quality != 3 && metaPrimitiveIt->quality != 4) continue;
       DTSuperLayerId slId((metaPrimitiveIt)->rawId);
       
       DTChamberId chId((metaPrimitiveIt)->rawId);
@@ -347,8 +347,11 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       else if (slId.superlayer() == 3) sl=2;
       else continue; 
 
-      int nhits = (metaPrimitiveIt->tdc1 != -1) + (metaPrimitiveIt->tdc2 != -1) + (metaPrimitiveIt->tdc3 != -1) + (metaPrimitiveIt->tdc4 != -1);
-      //if (nhits >= 4) continue; 
+      if (sl!=0) continue;
+
+      //int nhits = (metaPrimitiveIt->tdc1 != -1) + (metaPrimitiveIt->tdc2 != -1) + (metaPrimitiveIt->tdc3 != -1) + (metaPrimitiveIt->tdc4 != -1);
+      //if (nhits == 4 && metaPrimitiveIt->quality<3) continue; 
+
 
       float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
       if (printHits && metaPrimitiveIt->wi1!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << sl << " " << 0 << " " << metaPrimitiveIt->wi1 << " " << metaPrimitiveIt->tdc1 << endl;   
@@ -364,8 +367,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     //if (printHits) cout << "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" << endl;
     if (printHits) cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
     if (!printHits) cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1<< " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
-  }
-
+    }
 
  
     /////////////////////////////////////
@@ -437,6 +439,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
     assignIndex(correlatedMetaPrimitives);
 
+   // if (true == false) { 
     if (printPython && printHits)  { 
       for (DTDigiCollection::DigiRangeIterator dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){ 
         const DTLayerId& thisLayerId = (*dtLayerId_It).first;
@@ -459,8 +462,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
   
 
-    //if (true == false) { 
-    if (printPython) { 
+    if (true == false) { 
+    //if (printPython) { 
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
 
       //if (metaPrimitiveIt->quality != 9 && metaPrimitiveIt->quality != 9) continue;
@@ -469,7 +472,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       DTWireId wireId3(chId,3,2,1);
 
 
-      float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
+      //float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
       /*if (printHits && metaPrimitiveIt->wi1!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 0 << " " << metaPrimitiveIt->wi1 << " " << metaPrimitiveIt->tdc1 << endl;   
       if (printHits && metaPrimitiveIt->wi2!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 1 << " " << metaPrimitiveIt->wi2 << " " << metaPrimitiveIt->tdc2 << endl;   
       if (printHits && metaPrimitiveIt->wi3!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 2 << " " << metaPrimitiveIt->wi3 << " " << metaPrimitiveIt->tdc3 << endl;   

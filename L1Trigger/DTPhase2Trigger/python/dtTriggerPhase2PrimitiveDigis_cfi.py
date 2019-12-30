@@ -15,11 +15,11 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                dT0_correlate_TP = cms.untracked.double(25.), 
                                                dBX_correlate_TP = cms.untracked.int32(0), 
                                                dTanPsi_correlate_TP = cms.untracked.double(99999.),
-					       clean_chi2_correlation = cms.untracked.bool(True),
+                    					       clean_chi2_correlation = cms.untracked.bool(True),
                                                allow_confirmation = cms.untracked.bool(True),
-					       use_LSB = cms.untracked.bool(True),
-					       tanPsi_precision = cms.untracked.double(1./4096.),
-					       x_precision = cms.untracked.double(0.004),
+					                           use_LSB = cms.untracked.bool(True),
+					                           tanPsi_precision = cms.untracked.double(1./4096.),
+					                           x_precision = cms.untracked.double(0.004),
                                                minx_match_2digis = cms.untracked.double(1.),
                                                p2_df = cms.untracked.int32(2), #0 for phase-1, 1 for slice-test, 2 for phase-2 carlo-federica
                                                scenario = cms.untracked.int32(0), #0 for mc, 1 for data, 2 for slice test
@@ -40,6 +40,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
 					       #Print hits and prims for tecno30
                                                printPython  = cms.untracked.bool(False),
                                                printHits  = cms.untracked.bool(False),
+                                               printMPaths  = cms.untracked.bool(False),
 
                                                #RPC
                                                rpcRecHits = cms.untracked.InputTag("rpcRecHits"),
