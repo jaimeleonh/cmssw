@@ -44,6 +44,8 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                max_quality_to_overwrite_t0 = cms.untracked.int32(9), # will use RPC  to set 't0' for TP with quality < 'max_quality_to_overwrite_t0'
                                                storeAllRPCHits = cms.untracked.bool(False),
                                                activateBuffer  = cms.untracked.bool(False),
+                                               superCelltimewidth = cms.untracked.double(400), # in nanoseconds
+                                               superCellspacewidth = cms.untracked.int32(20), # in number of cells: IT MUST BE AN EVEN NUMBER
                                                )
 
 dtTriggerPhase2PrimitiveDigis.HoughGrouping      = HoughGrouping

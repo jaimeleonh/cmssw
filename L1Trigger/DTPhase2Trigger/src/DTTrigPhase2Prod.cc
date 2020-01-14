@@ -88,7 +88,9 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset) {
   }
 
   // Getting buffer option
-  activateBuffer = pset.getUntrackedParameter<Bool_t>("activateBuffer");
+  activateBuffer          = pset.getUntrackedParameter<Bool_t>("activateBuffer");
+  superCellhalfspacewidth = pset.getUntrackedParameter<Int_t>("superCellspacewidth")/2;
+  superCelltimewidth      = pset.getUntrackedParameter<Double_t>("superCelltimewidth");
 
   mpathqualityenhancer = new MPQualityEnhancerFilter(pset);
   mpathredundantfilter = new MPRedundantFilter(pset);
@@ -625,14 +627,10 @@ std::vector<DTDigiCollection*> DTTrigPhase2Prod::distribDigis(std::queue<std::pa
 void DTTrigPhase2Prod::processDigi(std::queue<std::pair<DTLayerId*, DTDigi*>>& inQ, std::vector<std::queue<std::pair<DTLayerId*, DTDigi*>>*>& vec) {
   Bool_t classified = false;
   if (vec.size() != 0) {
-//     cout << "El tamaño del vector no es nulo. En particular, es: " << vec.size() << ". Comenzando for sobre las distintas colas" << endl;
-    for (auto & sC : vec) { // Conditions for entering a super cell. TODO: add geometric requirements.
-//       cout << "comprobando uno de los elementos. Tiempo + 400: " << sC->front().second->time() + 400 << ", tiempo del otro: " << inQ.front().second->time() << endl;
-      if ((sC->front().second->time() + 400) > inQ.front().second->time()) { // Time requirement
-        if (TMath::Abs(sC->front().second->wire() - inQ.front().second->wire()) <= 10) { // Spatial requirement
-//           cout << "¡aceptado! Tamaño antes de la cola central: " << inQ.size() << " tamaño antes de la cola donde se meterá: " << sC->size() << endl;
+    for (auto & sC : vec) { // Conditions for entering a super cell.
+      if ((sC->front().second->time() + superCelltimewidth) > inQ.front().second->time()) { // Time requirement
+        if (TMath::Abs(sC->front().second->wire() - inQ.front().second->wire()) <= superCellhalfspacewidth) { // Spatial requirement
           sC->push(std::move(inQ.front()));
-//           cout << "¡aceptado! Tamaño luego de la cola central: " << inQ.size() << " tamaño luego de la cola donde se meterá: " << sC->size() << endl;
           classified = true;
         }
       }

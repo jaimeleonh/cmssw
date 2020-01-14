@@ -152,7 +152,9 @@ class DTTrigPhase2Prod: public edm::EDProducer {
     MuonPathAssociator* mpathassociator;
 
     // Buffering
-    Bool_t activateBuffer;
+    Bool_t  activateBuffer;
+    Int_t   superCellhalfspacewidth;
+    Float_t superCelltimewidth;
     std::vector<DTDigiCollection*> distribDigis(std::queue<std::pair<DTLayerId*, DTDigi*>>& inQ);
     void processDigi(std::queue<std::pair<DTLayerId*, DTDigi*>>& inQ, std::vector<std::queue<std::pair<DTLayerId*, DTDigi*>>*>& vec);
 
