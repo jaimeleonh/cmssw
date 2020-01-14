@@ -169,8 +169,8 @@ void HoughGrouping::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
       
       if (debug) {
         cout << "HoughGrouping::run - X position of the cell (chamber frame of reference): " << wirePosInChamber.x() << endl;
-        cout << "HoughGrouping::run - Y position of the cell (chamber frame of reference)" << wirePosInChamber.y() << endl;
-        cout << "HoughGrouping::run - Z position of the cell (chamber frame of reference)" << wirePosInChamber.z() << endl;
+        cout << "HoughGrouping::run - Y position of the cell (chamber frame of reference): " << wirePosInChamber.y() << endl;
+        cout << "HoughGrouping::run - Z position of the cell (chamber frame of reference): " << wirePosInChamber.z() << endl;
       }
       
       hitvec.push_back( {wirePosInChamber.x() - 1.05, wirePosInChamber.z()} );
