@@ -151,7 +151,7 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
         present_layer[ii]=1;
       }
     }
-
+    
     while (NTotalHits >= minHits4Fit){
       mPath->setChiSq(0); 
       calculateFitParameters(mPath,lateralities[i], present_layer);
@@ -162,7 +162,9 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
     
 
     evaluateQuality(mPath);
+    
     if ( mPath->getQuality() < minQuality ) continue;
+    
    /* 
     int selected_Id=0;
     for (int i=0; i<mPath->getNPrimitives(); i++) {
@@ -192,7 +194,6 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
     
     double jm_x=(mPath->getHorizPos()/10.)+shiftinfo[wireId.rawId()]; 
 */   
-
     double z=0;
     double jm_x=(mPath->getHorizPos());
     int selected_Id=0;
@@ -222,7 +223,6 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
       best_chi2 = mPath->getChiSq();
     }
   }
-  
   if (mpAux!=NULL){ 
     outMPath.push_back(std::move(mpAux));
     if (debug) std::cout<<"DTp2:analize \t\t\t\t\t Laterality "<< bestI << " is the one with smaller chi2"<<std::endl;
@@ -503,7 +503,7 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
     rectdriftvdrift[lay]= tTDCvdrift[lay]- rect0vdrift/1000;
     if (debug) cout << rectdriftvdrift[lay] << endl; 
     recres[lay]=xhit[lay]-zwire[lay]*recslope-b[lay]*recpos-(-1+2*laterality[lay])*rect0vdrift;
-    // if (debug) cout << recres[lay] << endl;  
+     //if (debug) cout <<"Pr14 "<< recres[lay] << endl;  
     if ((present_layer[lay]==1)&&(rectdriftvdrift[lay] <-0.1)){
       sign_tdriftvdrift=-1;
       if (-0.1 - rectdriftvdrift[lay] > maxDif) {
@@ -545,9 +545,9 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
     mpath->setHorizPos(recpos/10000);
     mpath->setChiSq(recchi2/100000000);
     setLateralitiesInMP(mpath,laterality);
-    
     if(debug) cout << "In fitPerLat " << "t0 " <<  mpath->getBxTimeValue() <<" slope " << mpath->getTanPhi() <<" pos "<< mpath->getHorizPos() <<" chi2 "<< mpath->getChiSq() << " rawId " << mpath->getRawId() << endl;
   }
+  //std::cout<<"Pr 1 " <<mpath->getChiSq() << endl;
   
 }
 /**
@@ -560,7 +560,7 @@ void MuonPathAnalyzerInChamber::evaluateQuality(MuonPath *mPath) {
   // Por defecto.
   mPath->setQuality(NOPATH);
   
-  if      (mPath->getNPrimitivesUp() == 4 && mPath->getNPrimitivesDown() == 4) {
+  if (mPath->getNPrimitivesUp() >= 4 && mPath->getNPrimitivesDown() >= 4) {
     mPath->setQuality(HIGHHIGHQ);
   }
   else if ((mPath->getNPrimitivesUp() == 4 && mPath->getNPrimitivesDown() == 3) || 
@@ -568,27 +568,27 @@ void MuonPathAnalyzerInChamber::evaluateQuality(MuonPath *mPath) {
 	   ) {
     mPath->setQuality(HIGHLOWQ);
   } 
-  else if ((mPath->getNPrimitivesUp() == 4 && mPath->getNPrimitivesDown() <= 2) || 
-	   (mPath->getNPrimitivesUp() <= 2 && mPath->getNPrimitivesDown() == 4)
+  else if ((mPath->getNPrimitivesUp() == 4 && mPath->getNPrimitivesDown() <= 2 && mPath->getNPrimitivesDown()>0) || 
+	   (mPath->getNPrimitivesUp() <= 2 && mPath->getNPrimitivesUp()>0 && mPath->getNPrimitivesDown() == 4)
 	   ){
-    mPath->setQuality(CHIGHQ);
+    mPath->setQuality(CHIGHQ); //Falta añadir que el 4+0 no esta aqui
   }
   else if ((mPath->getNPrimitivesUp() == 3 && mPath->getNPrimitivesDown() == 3)
 	   ){
     mPath->setQuality(LOWLOWQ);
   }
-  else if ((mPath->getNPrimitivesUp() == 3 && mPath->getNPrimitivesDown() <= 2) || 
-	   (mPath->getNPrimitivesUp() <= 2 && mPath->getNPrimitivesDown() == 3) || 
+  else if ((mPath->getNPrimitivesUp() == 3 && mPath->getNPrimitivesDown() <= 2 && mPath->getNPrimitivesDown()>0) || 
+	   (mPath->getNPrimitivesUp() <= 2 &&  mPath->getNPrimitivesUp()>0 && mPath->getNPrimitivesDown() == 3) || 
 	   (mPath->getNPrimitivesUp() == 2 && mPath->getNPrimitivesDown() == 2)	   
 	   ){
-    mPath->setQuality(CLOWQ);
-  }
-  else if (mPath->getNPrimitivesUp() == 4 || mPath->getNPrimitivesDown() == 4) {
+    mPath->setQuality(CLOWQ); //Falta añadir que el 3+0 no esta aqui
+  }  
+  else if (mPath->getNPrimitivesUp() >= 4 || mPath->getNPrimitivesDown() >= 4) {
     mPath->setQuality(HIGHQ);    
   }
   else if (mPath->getNPrimitivesUp() == 3 || mPath->getNPrimitivesDown() == 3) {
     mPath->setQuality(LOWQ);    
   }
-  
+  //std::cout<<mPath->getNPrimitivesUp()<<'+'<<mPath->getNPrimitivesDown()<<'='<<mPath->getQuality()<<endl;
 }
 
