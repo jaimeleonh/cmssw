@@ -168,7 +168,6 @@ void DTTrigPhase2Prod::beginRun(edm::Run const& iRun, const edm::EventSetup& iEv
 
 
 void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
-<<<<<<< HEAD
   if(debug) cout << "DTTrigPhase2Prod::produce" << endl;
   edm::Handle<DTDigiCollection> dtdigis;
   iEvent.getByToken(dtDigisToken, dtdigis);
@@ -212,30 +211,6 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
           tmpvec.push_back({tmplayer, tmpdigi});
         }
       }
-=======
-
-    eventBX = iEvent.eventAuxiliary().bunchCrossing();
-
-    if(debug) cout << "DTTrigPhase2Prod::produce " << endl;
-    edm::Handle<DTDigiCollection> dtdigis;
-    iEvent.getByToken(dtDigisToken, dtdigis);
-    
-    if(debug) std::cout <<"\t Getting the RPC RecHits"<<std::endl;
-    edm::Handle<RPCRecHitCollection> rpcRecHits;
-    iEvent.getByToken(rpcRecHitsLabel,rpcRecHits);
-    
-    ///////////////////////////////////
-    // GROUPING CODE: 
-    ////////////////////////////////
-    DTDigiMap digiMap;
-    DTDigiCollection::DigiRangeIterator detUnitIt;
-    for (detUnitIt=dtdigis->begin(); detUnitIt!=dtdigis->end(); ++detUnitIt) {
-	const DTLayerId& layId               = (*detUnitIt).first;
-	const DTChamberId chambId            = layId.superlayerId().chamberId();
-	const DTDigiCollection::Range& range = (*detUnitIt).second; 
-	digiMap[chambId].put(range,layId);
-    }
->>>>>>> my-cmssw/AM_106X_Unified
 
       // Check to enhance CPU time usage
       if (tmpvec.size() == 0) continue;
