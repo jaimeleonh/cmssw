@@ -5,10 +5,15 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Framework/interface/Run.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h"
-#include "DataFormats/DTRecHit/interface/DTRecSegment2DCollection.h"
+
+#include "Geometry/Records/interface/MuonGeometryRecord.h"
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
+#include "Geometry/DTGeometry/interface/DTLayer.h"
+
 #include "TFile.h"
 #include "TH1F.h"
 #include "TH2F.h"
@@ -29,6 +34,12 @@
 #include "L1Trigger/DTPhase2Trigger/interface/MPQualityEnhancerFilter.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MPRedundantFilter.h"
 
+#include "L1Trigger/DTSectorCollector/interface/DTSectCollPhSegm.h"
+#include "L1Trigger/DTSectorCollector/interface/DTSectCollThSegm.h"
+
+#include "L1TriggerConfig/DTTPGConfig/interface/DTConfigManagerRcd.h"
+#include "L1TriggerConfig/DTTPGConfig/interface/DTConfigManager.h"
+
 #include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
 #include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
 
@@ -37,7 +48,12 @@
 #include "DataFormats/MuonDetId/interface/DTLayerId.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"
 #include "DataFormats/DTDigi/interface/DTDigiCollection.h"
+#include "DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h"
+#include "DataFormats/DTRecHit/interface/DTRecSegment2DCollection.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1Phase2MuDTPhContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1Phase2MuDTPhDigi.h"
 
+// DT trigger GeomUtils
 #include "DQM/DTMonitorModule/interface/DTTrigGeomUtils.h"
 
 //RPC TP
@@ -48,18 +64,20 @@
 
 
 #include <fstream>
+#include <iostream>
+#include <queue>
+#include <cmath>
 
 
-class DTTrigPhase2Prod: public edm::EDProducer{
-  
-    typedef std::map< DTChamberId,DTDigiCollection,std::less<DTChamberId> > DTDigiMap;
-    typedef DTDigiMap::iterator DTDigiMap_iterator;
-    typedef DTDigiMap::const_iterator DTDigiMap_const_iterator;
+class DTTrigPhase2Prod: public edm::EDProducer {
+  typedef std::map< DTChamberId,DTDigiCollection,std::less<DTChamberId> > DTDigiMap;
+  typedef DTDigiMap::iterator DTDigiMap_iterator;
+  typedef DTDigiMap::const_iterator DTDigiMap_const_iterator;
 
- public:
+  public:
     //! Constructor
     DTTrigPhase2Prod(const edm::ParameterSet& pset);
-   
+
     //! Destructor
     ~DTTrigPhase2Prod() override;
     
@@ -70,8 +88,8 @@ class DTTrigPhase2Prod: public edm::EDProducer{
     //! Producer: process every event and generates trigger data
     void produce(edm::Event & iEvent, const edm::EventSetup& iEventSetup) override;
     
-//! endRun: finish things
-void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
+    //! endRun: finish things
+    void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     
     edm::ESHandle<DTGeometry> dtGeo;
 
@@ -101,7 +119,7 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
 
     DTTrigGeomUtils *trigGeomUtils;
 
- private:
+  private:
     // Trigger Configuration Manager CCB validity flag
     bool my_CCBValid;
 
@@ -124,14 +142,21 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     edm::EDGetTokenT<DTRecSegment4DCollection> dt4DSegmentsToken;
     edm::EDGetTokenT<DTDigiCollection> dtDigisToken;
     edm::EDGetTokenT<RPCRecHitCollection> rpcRecHitsLabel;
-               
+
     // Grouping attributes and methods
     Int_t grcode; // Grouping code
     MotherGrouping* grouping_obj;
     MuonPathAnalyzer* mpathanalyzer;
-    MPFilter*   mpathqualityenhancer;
-    MPFilter*   mpathredundantfilter;
+    MPFilter* mpathqualityenhancer;
+    MPFilter* mpathredundantfilter;
     MuonPathAssociator* mpathassociator;
+
+    // Buffering
+    Bool_t  activateBuffer;
+    Int_t   superCellhalfspacewidth;
+    Float_t superCelltimewidth;
+    std::vector<DTDigiCollection*> distribDigis(std::queue<std::pair<DTLayerId*, DTDigi*>>& inQ);
+    void processDigi(std::queue<std::pair<DTLayerId*, DTDigi*>>& inQ, std::vector<std::queue<std::pair<DTLayerId*, DTDigi*>>*>& vec);
 
     // RPC
     RPCIntegrator* rpc_integrator;
@@ -144,4 +169,3 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
 
 
 #endif
-
