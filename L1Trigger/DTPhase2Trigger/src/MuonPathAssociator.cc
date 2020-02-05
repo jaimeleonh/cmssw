@@ -82,6 +82,10 @@ void MuonPathAssociator::finish() {
 void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					 std::vector<metaPrimitive> &inMPaths, 
 					 std::vector<metaPrimitive> &outMPaths) {
+    
+
+    int x_prec_inv =  (int) (1. / (10.*  x_precision) );
+    int numberOfBits = (int) (round (std::log (x_prec_inv) / std::log (2.)) );
 
   
     //Silvia's code for correlationg filteredMetaPrimitives
@@ -131,29 +135,39 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive, sl1++, sl3 = -1){
 		    if (clean_chi2_correlation) at_least_one_correlation=false;
 		    for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive, sl3++){
-			//std::cout << "Correlating " << sl1 << " with " << sl3 << std::endl;
 			if(fabs(SL1metaPrimitive->tanPhi-SL3metaPrimitive->tanPhi) > dTanPsi_correlate_TP) continue;//TanPsi match, SliceTest only
 			if (useBX_correlation){
 			    if(abs(round(SL1metaPrimitive->t0/25.)-round(SL3metaPrimitive->t0/25.)) > dBX_correlate_TP) continue; //BX match
 			} else {
 		            if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) >= dT0_correlate_TP) continue; //time match
 			}
-		        double PosSL1=SL1metaPrimitive->x;
-			double PosSL3=SL3metaPrimitive->x;
-			double NewSlope=(PosSL1-PosSL3)/23.5;    
-		        if (use_LSB) NewSlope = round(NewSlope / tanPsi_precision)  * tanPsi_precision;   
+		    long int PosSL1= (int) round (10 * SL1metaPrimitive->x / (10*x_precision)) ;
+		    long int PosSL3= (int) round (10 * SL3metaPrimitive->x / (10*x_precision)) ;
+			double NewSlope = -999.;    
+			if (use_LSB) {
+			  long int newConstant = (int) ( 139.5 * 4 );
+			  long int difPos_mm_x4 = PosSL3 - PosSL1;
+			  long int tanPsi_x4096_x128 = (difPos_mm_x4) * newConstant;
+			  long int tanPsi_x4096 =  tanPsi_x4096_x128 / ((long int) pow(2,5+numberOfBits)) ;
+			  if (tanPsi_x4096 < 0 && tanPsi_x4096_x128 % ((long int) pow(2,5+numberOfBits)) != 0) tanPsi_x4096--;
+			  NewSlope = -tanPsi_x4096 * tanPsi_precision;
+			} 
 			double MeanT0=(SL1metaPrimitive->t0+SL3metaPrimitive->t0)/2;
-			double MeanPos=(PosSL3+PosSL1)/2;
-		        if (use_LSB) MeanPos = round(MeanPos / x_precision) * x_precision;   
+			double MeanPos=(PosSL3+PosSL1)/(2./(x_precision));
+		    if (use_LSB) { 
+			  MeanPos = MeanPos / x_precision; // get the precision
+			  MeanPos = round (10. * MeanPos) / 10. ; //avoid rounding effects   
+			  MeanPos = floor(MeanPos) * x_precision; // return to the normal value
+			}
 			   
 			DTSuperLayerId SLId1(SL1metaPrimitive->rawId);
-             		DTSuperLayerId SLId3(SL3metaPrimitive->rawId);
-           		DTWireId wireId1(SLId1,2,1);
-        	     	DTWireId wireId3(SLId3,2,1);
+            DTSuperLayerId SLId3(SL3metaPrimitive->rawId);
+           	DTWireId wireId1(SLId1,2,1);
+        	DTWireId wireId3(SLId3,2,1);
 
-			double xH[8], xReco[8];
+			//double xH[8], xReco[8];
 			int  wi[8], tdc[8], lat[8];
-			for (int i = 0; i<8; i++){ xH[i]=0; xReco[i]=0;} 
+			//for (int i = 0; i<8; i++){ xH[i]=0; xReco[i]=0;} 
 			wi[0]=SL1metaPrimitive->wi1;tdc[0]=SL1metaPrimitive->tdc1; lat[0]=SL1metaPrimitive->lat1;  
 			wi[1]=SL1metaPrimitive->wi2;tdc[1]=SL1metaPrimitive->tdc2; lat[1]=SL1metaPrimitive->lat2;  
 			wi[2]=SL1metaPrimitive->wi3;tdc[2]=SL1metaPrimitive->tdc3; lat[2]=SL1metaPrimitive->lat3;  
@@ -163,42 +177,55 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			wi[6]=SL3metaPrimitive->wi3;tdc[6]=SL3metaPrimitive->tdc3; lat[6]=SL3metaPrimitive->lat3;  
 			wi[7]=SL3metaPrimitive->wi4;tdc[7]=SL3metaPrimitive->tdc4; lat[7]=SL3metaPrimitive->lat4;  
 			
-           		for (int i=0; i<4; i++){
-			  if (wi[i]!=-1) {
-			    if (i%2==0){
-			      xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1.+2.*(double)lat[i]))/10;
-			      xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
-			    }
-			    if (i%2!=0){
-			      xH[i] = shiftinfo[wireId1.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
-			      xReco[i] = MeanPos + (23.5/2 - ((double)i-1.5)*1.3)*NewSlope;
-			    }
+            long int chi2 = 0;
+			
+			long int CH_CENTER_TO_MID_SL_P = (long int) (117.5*4); 			
+			long int Z_FACTOR_CORR[8] = {-6,-2,2,6,-6,-2,2,6};
+				
+			for (int i = 0; i < 8; i++){
+			  int sign = 2*(i/4)-1;
+			  Z_FACTOR_CORR[i] = Z_FACTOR_CORR[i]*CELL_HEIGHT + CH_CENTER_TO_MID_SL_P * sign;
+			}
+			long int sum_A, sum_B; 
+			for (int i = 0; i < 8; i++){
+			  long int shift, slTime;  
+			  if (i/4 == 0){
+			    shift = round(shiftinfo[wireId1.rawId()] / x_precision);
+			    slTime = SL1metaPrimitive->t0;
 			  }
-		        } 
-           		for (int i=4; i<8; i++){
-			  if (wi[i]!=-1) {
-			    if (i%2==0){
-			      xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+ 21. + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
-			      xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
-			    }
-			    if (i%2!=0){
-			      xH[i] = shiftinfo[wireId3.rawId()]+(42.*(double)wi[i]+     + DRIFT_SPEED*((double)tdc[i]-MeanT0)*(-1+2*(double)lat[i]))/10;
-			      xReco[i] = MeanPos + (-23.5/2 - ((double)i-4-1.5)*1.3)*NewSlope;
-			    }
+			  else {
+			    shift = round(shiftinfo[wireId3.rawId()] / x_precision);
+			    slTime = SL3metaPrimitive->t0;
 			  }
-		        }
-			double newChi2 = 0; 
-			for (int i = 0; i<8; i++){
-			  newChi2 = newChi2 + (xH[i]-xReco[i])*(xH[i]-xReco[i]);
-			} 
+			  if (wi[i]!=-1){
+                long int drift_speed_new = 889; 
+	            long int drift_dist_um_x4= drift_speed_new * ( ((long int) tdc[i]) - slTime  ) ;
+			    long int wireHorizPos_x4 = (42*wi[i] + ((i+1)%2)*21) / (10*x_precision);
+			    long int pos_mm_x4; 
+	
+  			    if (lat[i] == 0) {
+		          pos_mm_x4 = wireHorizPos_x4 - (drift_dist_um_x4>>10);
+			    } else {
+		          pos_mm_x4 = wireHorizPos_x4 + (drift_dist_um_x4>>10);
+			    }
+                sum_A = shift + pos_mm_x4 - (long int) round (MeanPos / x_precision);
+			    sum_A = sum_A<<(14-numberOfBits);
+			    sum_B = Z_FACTOR_CORR[i] * (long int) round (-NewSlope / tanPsi_precision);
+			    chi2 += ( (sum_A - sum_B)*(sum_A - sum_B) ) >> 2;	 
+			  }
+			}
+
+			double newChi2 = (double) ( chi2 >> 16 ) / (1024.*100.);
+		 
+
 			if(newChi2>chi2corTh) continue;
 
 			// Fill the used vectors			    
-  		        useFitSL1 [sl1] = true;
-  		        useFitSL3 [sl3] = true;
+            useFitSL1 [sl1] = true;
+  	        useFitSL3 [sl3] = true;
 
 
-	                int quality = 0;
+	        int quality = 0;
 			if(SL3metaPrimitive->quality <= 2 and SL1metaPrimitive->quality <=2) quality=6;
 	      
 			if((SL3metaPrimitive->quality >= 3 && SL1metaPrimitive->quality <=2)
