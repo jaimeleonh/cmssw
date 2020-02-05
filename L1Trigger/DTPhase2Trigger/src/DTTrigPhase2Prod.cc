@@ -50,32 +50,15 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset) {
 
   do_correlation = pset.getUntrackedParameter<bool>("do_correlation");
   p2_df = pset.getUntrackedParameter<int>("p2_df");
-    
+
   scenario = pset.getUntrackedParameter<int>("scenario");
-  printPython = pset.getUntrackedParameter<bool>("printPython");
-  printHits = pset.getUntrackedParameter<bool>("printHits");
-       
- 
+
   txt_ttrig_bc0 = pset.getUntrackedParameter<bool>("apply_txt_ttrig_bc0");
-    
+
   dtDigisToken = consumes< DTDigiCollection >(pset.getParameter<edm::InputTag>("digiTag"));
 
   rpcRecHitsLabel = consumes<RPCRecHitCollection>(pset.getUntrackedParameter < edm::InputTag > ("rpcRecHits"));
   useRPC = pset.getUntrackedParameter<bool>("useRPC");
-  
-  uint32_t rawId;
-  shift_filename = pset.getParameter<edm::FileInPath>("shift_filename");
-  std::ifstream ifin3(shift_filename.fullPath());
-  double shift;
-  if (ifin3.fail()) {
-    throw cms::Exception("Missing Input File")
-      << "MuonPathAnalyzerPerSL::MuonPathAnalyzerPerSL() -  Cannot find " << shift_filename.fullPath();
-  }
-  while (ifin3.good()){
-    ifin3 >> rawId >> shift;
-    shiftinfo[rawId]=shift;
-  }
-
 
 
   // Choosing grouping scheme:
@@ -168,7 +151,6 @@ void DTTrigPhase2Prod::beginRun(edm::Run const& iRun, const edm::EventSetup& iEv
 
 
 void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
-<<<<<<< HEAD
   if(debug) cout << "DTTrigPhase2Prod::produce" << endl;
   edm::Handle<DTDigiCollection> dtdigis;
   iEvent.getByToken(dtDigisToken, dtdigis);
@@ -212,30 +194,6 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
           tmpvec.push_back({tmplayer, tmpdigi});
         }
       }
-=======
-
-    eventBX = iEvent.eventAuxiliary().bunchCrossing();
-
-    if(debug) cout << "DTTrigPhase2Prod::produce " << endl;
-    edm::Handle<DTDigiCollection> dtdigis;
-    iEvent.getByToken(dtDigisToken, dtdigis);
-    
-    if(debug) std::cout <<"\t Getting the RPC RecHits"<<std::endl;
-    edm::Handle<RPCRecHitCollection> rpcRecHits;
-    iEvent.getByToken(rpcRecHitsLabel,rpcRecHits);
-    
-    ///////////////////////////////////
-    // GROUPING CODE: 
-    ////////////////////////////////
-    DTDigiMap digiMap;
-    DTDigiCollection::DigiRangeIterator detUnitIt;
-    for (detUnitIt=dtdigis->begin(); detUnitIt!=dtdigis->end(); ++detUnitIt) {
-	const DTLayerId& layId               = (*detUnitIt).first;
-	const DTChamberId chambId            = layId.superlayerId().chamberId();
-	const DTDigiCollection::Range& range = (*detUnitIt).second; 
-	digiMap[chambId].put(range,layId);
-    }
->>>>>>> my-cmssw/AM_106X_Unified
 
       // Check to enhance CPU time usage
       if (tmpvec.size() == 0) continue;
@@ -370,47 +328,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     
     if(debug) std::cout<<"DTp2 in event:"<<iEvent.id().event()<<" we found "<<filteredMetaPrimitives.size()<<" filteredMetaPrimitives (superlayer)"<<std::endl;
     if(debug) std::cout<<"filteredMetaPrimitives: starting correlations"<<std::endl;    
-  
     
-    ////// PRINT FILTERED METAPRIM
-    if (printPython) { 
-    //if (true == false) { 
-    for (auto metaPrimitiveIt = filteredMetaPrimitives.begin(); metaPrimitiveIt != filteredMetaPrimitives.end(); ++metaPrimitiveIt){
-
-      //if (metaPrimitiveIt->quality != 3 && metaPrimitiveIt->quality != 4) continue;
-      DTSuperLayerId slId((metaPrimitiveIt)->rawId);
-      
-      DTChamberId chId((metaPrimitiveIt)->rawId);
-      DTWireId wireId1(chId,1,2,1);
-      DTWireId wireId3(chId,3,2,1);
-      int sl = -1; 
-      if(slId.superlayer() == 1) sl = 0;
-      else if (slId.superlayer() == 3) sl=2;
-      else continue; 
-
-      if (sl!=0) continue;
-
-      //int nhits = (metaPrimitiveIt->tdc1 != -1) + (metaPrimitiveIt->tdc2 != -1) + (metaPrimitiveIt->tdc3 != -1) + (metaPrimitiveIt->tdc4 != -1);
-      //if (nhits == 4 && metaPrimitiveIt->quality<3) continue; 
-
-
-      float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
-      if (printHits && metaPrimitiveIt->wi1!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << sl << " " << 0 << " " << metaPrimitiveIt->wi1 << " " << metaPrimitiveIt->tdc1 << endl;   
-      if (printHits && metaPrimitiveIt->wi2!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << sl << " " << 1 << " " << metaPrimitiveIt->wi2 << " " << metaPrimitiveIt->tdc2 << endl;   
-      if (printHits && metaPrimitiveIt->wi3!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << sl << " " << 2 << " " << metaPrimitiveIt->wi3 << " " << metaPrimitiveIt->tdc3 << endl;   
-      if (printHits && metaPrimitiveIt->wi4!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << sl << " " << 3 << " " << metaPrimitiveIt->wi4 << " " << metaPrimitiveIt->tdc4 << endl;   
-
-
-   //   if (printHits) cout << (*metaPrimitiveIt).wi1 << "," <<(*metaPrimitiveIt).wi2 << "," <<(*metaPrimitiveIt).wi3 << "," <<(*metaPrimitiveIt).wi4 << "," <<(*metaPrimitiveIt).wi5 << "," <<(*metaPrimitiveIt).wi6 << "," <<(*metaPrimitiveIt).wi7 << "," <<(*metaPrimitiveIt).wi8 << "," << (*metaPrimitiveIt).tdc1 << "," <<(*metaPrimitiveIt).tdc2 << "," <<(*metaPrimitiveIt).tdc3 << "," <<(*metaPrimitiveIt).tdc4 << "," <<(*metaPrimitiveIt).tdc5 << "," <<(*metaPrimitiveIt).tdc6 << "," <<(*metaPrimitiveIt).tdc7 << "," <<(*metaPrimitiveIt).tdc8 << "," << shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()] << "," << wireId1.wheel() << "," << wireId1.sector() << "," << wireId1.station() << endl;
-      if (!printHits && sl==0)   cout << (*metaPrimitiveIt).quality << " " << (*metaPrimitiveIt).x << " " << (*metaPrimitiveIt).tanPhi << " " << (int) (*metaPrimitiveIt).t0 << " " << (*metaPrimitiveIt).chi2  << " " << shiftinfo[wireId1.rawId()]<<" " <<  wireId1.wheel() << " " << wireId1.sector() << " " << wireId1.station() << " " << (*metaPrimitiveIt).wi1<< " " << (*metaPrimitiveIt).wi2<< " " << (*metaPrimitiveIt).wi3<< " " << (*metaPrimitiveIt).wi4<< " " << -1<< " " <<-1<< " " << -1<< " " << -1<< " " << (*metaPrimitiveIt).tdc1<< " " << (*metaPrimitiveIt).tdc2<< " " << (*metaPrimitiveIt).tdc3<< " " << (*metaPrimitiveIt).tdc4<< " " << -1<< " " << -1 << " " << -1<< " " << -1 << " " << (*metaPrimitiveIt).lat1<< " " << (*metaPrimitiveIt).lat2<< " " << (*metaPrimitiveIt).lat3<< " " << (*metaPrimitiveIt).lat4<< " " << -1 << " " << -1 << " " << -1 << " " << -1  << " " << eventBX<< endl;
-      if (!printHits && sl==2)   cout << (*metaPrimitiveIt).quality << " " << (*metaPrimitiveIt).x << " " << (*metaPrimitiveIt).tanPhi << " " << (int) (*metaPrimitiveIt).t0 << " " << (*metaPrimitiveIt).chi2 << " " << shiftinfo[wireId1.rawId()]<<" " <<  wireId1.wheel() << " " << wireId1.sector() << " " << wireId1.station() << " " <<-1 << " " << -1<< " " << -1<< " " << -1<< " " << (*metaPrimitiveIt).wi1<< " " << (*metaPrimitiveIt).wi2<< " " << (*metaPrimitiveIt).wi3<< " " << (*metaPrimitiveIt).wi4<< " " << -1 << " " << -1 << " " << -1 << " " << -1<< " " << (*metaPrimitiveIt).tdc1<< " " << (*metaPrimitiveIt).tdc2<< " " << (*metaPrimitiveIt).tdc3<< " " << (*metaPrimitiveIt).tdc4<< " " << -1<< " " <<-1<< " " << -1 << " " << -1 << " " << (*metaPrimitiveIt).lat1<< " " << (*metaPrimitiveIt).lat2<< " " << (*metaPrimitiveIt).lat3<< " " << (*metaPrimitiveIt).lat4  << " " << eventBX <<endl;
-    }
-    //if (printHits) cout << "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" << endl;
-    if (printHits) cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
-    if (!printHits) cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1<< " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
-    }
-
- 
     /////////////////////////////////////
     //// CORRELATION: 
     /////////////////////////////////////
@@ -480,61 +398,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
     assignIndex(correlatedMetaPrimitives);
 
-   // if (true == false) { 
-    if (printPython && printHits)  { 
-      for (DTDigiCollection::DigiRangeIterator dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){ 
-        const DTLayerId& thisLayerId = (*dtLayerId_It).first;
-        const DTChamberId chId = thisLayerId.chamberId();
-	DTWireId wireId1(chId,1,2,1);
-        DTWireId wireId3(chId,3,2,1);
-        Int_t superLayer = thisLayerId.superlayerId().superLayer();
-	if (superLayer == 2) continue;  
-        Int_t layer = thisLayerId.layer();
-        float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
-
-        for (DTDigiCollection::const_iterator digiIt = ((*dtLayerId_It).second).first;digiIt!=((*dtLayerId_It).second).second; ++digiIt){ 
-           Int_t wire     = (*digiIt).wire() - 1; 
-           Int_t digiTIME = (*digiIt).time(); 
-           if (abs (digiTIME) < 200000) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << superLayer-1 << " " << layer-1 << " " << wire << " " << digiTIME << endl;   
-        } 
-      } 
-      if (printHits)  cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
-    } 
-
-  
-
-    if (true == false) { 
-    //if (printPython) { 
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
-
-      //if (metaPrimitiveIt->quality != 9 && metaPrimitiveIt->quality != 9) continue;
-      DTChamberId chId((metaPrimitiveIt)->rawId);
-      DTWireId wireId1(chId,1,2,1);
-      DTWireId wireId3(chId,3,2,1);
-
-
-      //float shift = shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()]; 
-      /*if (printHits && metaPrimitiveIt->wi1!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 0 << " " << metaPrimitiveIt->wi1 << " " << metaPrimitiveIt->tdc1 << endl;   
-      if (printHits && metaPrimitiveIt->wi2!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 1 << " " << metaPrimitiveIt->wi2 << " " << metaPrimitiveIt->tdc2 << endl;   
-      if (printHits && metaPrimitiveIt->wi3!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 2 << " " << metaPrimitiveIt->wi3 << " " << metaPrimitiveIt->tdc3 << endl;   
-      if (printHits && metaPrimitiveIt->wi4!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 0 << " " << 3 << " " << metaPrimitiveIt->wi4 << " " << metaPrimitiveIt->tdc4 << endl;   
-      if (printHits && metaPrimitiveIt->wi5!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 0 << " " << metaPrimitiveIt->wi5 << " " << metaPrimitiveIt->tdc5 << endl;   
-      if (printHits && metaPrimitiveIt->wi6!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 1 << " " << metaPrimitiveIt->wi6 << " " << metaPrimitiveIt->tdc6 << endl;   
-      if (printHits && metaPrimitiveIt->wi7!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 2 << " " << metaPrimitiveIt->wi7 << " " << metaPrimitiveIt->tdc7 << endl;   
-      if (printHits && metaPrimitiveIt->wi8!=-1) cout << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " " << 2 << " " << 3 << " " << metaPrimitiveIt->wi8 << " " << metaPrimitiveIt->tdc8 << endl;   
-*/
-
-
-   //   if (printHits) cout << (*metaPrimitiveIt).wi1 << "," <<(*metaPrimitiveIt).wi2 << "," <<(*metaPrimitiveIt).wi3 << "," <<(*metaPrimitiveIt).wi4 << "," <<(*metaPrimitiveIt).wi5 << "," <<(*metaPrimitiveIt).wi6 << "," <<(*metaPrimitiveIt).wi7 << "," <<(*metaPrimitiveIt).wi8 << "," << (*metaPrimitiveIt).tdc1 << "," <<(*metaPrimitiveIt).tdc2 << "," <<(*metaPrimitiveIt).tdc3 << "," <<(*metaPrimitiveIt).tdc4 << "," <<(*metaPrimitiveIt).tdc5 << "," <<(*metaPrimitiveIt).tdc6 << "," <<(*metaPrimitiveIt).tdc7 << "," <<(*metaPrimitiveIt).tdc8 << "," << shiftinfo[wireId3.rawId()] - shiftinfo[wireId1.rawId()] << "," << wireId1.wheel() << "," << wireId1.sector() << "," << wireId1.station() << endl;
-      if (!printHits)   cout << (*metaPrimitiveIt).quality << " " << (*metaPrimitiveIt).x << " " << (*metaPrimitiveIt).tanPhi << " " << (int) (*metaPrimitiveIt).t0  << " "<< (*metaPrimitiveIt).chi2  << " "  << shiftinfo[wireId1.rawId()]<<" " <<  wireId1.wheel() << " " << wireId1.sector() << " " << wireId1.station() << " " << (*metaPrimitiveIt).wi1<< " " << (*metaPrimitiveIt).wi2<< " " << (*metaPrimitiveIt).wi3<< " " << (*metaPrimitiveIt).wi4<< " " << (*metaPrimitiveIt).wi5<< " " << (*metaPrimitiveIt).wi6<< " " << (*metaPrimitiveIt).wi7<< " " << (*metaPrimitiveIt).wi8<< " " << (*metaPrimitiveIt).tdc1<< " " << (*metaPrimitiveIt).tdc2<< " " << (*metaPrimitiveIt).tdc3<< " " << (*metaPrimitiveIt).tdc4<< " " << (*metaPrimitiveIt).tdc5<< " " << (*metaPrimitiveIt).tdc6<< " " << (*metaPrimitiveIt).tdc7<< " " << (*metaPrimitiveIt).tdc8<< " " << (*metaPrimitiveIt).lat1<< " " << (*metaPrimitiveIt).lat2<< " " << (*metaPrimitiveIt).lat3<< " " << (*metaPrimitiveIt).lat4<< " " << (*metaPrimitiveIt).lat5<< " " << (*metaPrimitiveIt).lat6<< " " << (*metaPrimitiveIt).lat7<< " " << (*metaPrimitiveIt).lat8  << " " << eventBX << endl;
-    }
-    //if (printHits) cout << "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" << endl;
-    //if (printHits) cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
-    if (!printHits) cout << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1<< " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << " " << -1 << endl;
-  }
-
-    for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
-
       DTChamberId chId((*metaPrimitiveIt).rawId);
       if(debug) std::cout<<"looping in final vector: SuperLayerId"<<chId<<" x="<<(*metaPrimitiveIt).x<<" quality="<<(*metaPrimitiveIt).quality << " BX="<< round((*metaPrimitiveIt).t0 / 25.) << " index=" << (*metaPrimitiveIt).index <<std::endl;
       
