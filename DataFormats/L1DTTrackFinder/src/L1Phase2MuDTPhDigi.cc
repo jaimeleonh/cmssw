@@ -27,19 +27,16 @@
 
 //-------------------
 // Initializations --
-//-------------------
 
 
-//----------------
 // Constructors --
 //----------------
 L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi() :
   m_bx(-100), m_wheel(0), m_sector(0), m_station(0), m_superlayer(0), m_phiAngle(0), 
-  m_phiBending(0), m_qualityCode(-1), m_index(0), m_t0(0), m_chi2(0), m_rpcFlag(-10)
+  m_phiBending(0), m_qualityCode(-1), m_index(0), m_t0(0), m_chi2(0), m_rpcFlag(-10), m_arrivalBX(0)
 {
 
 }
-
 
 L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
 					int qual, int idx, int t0, int chi2, int rpc) :
@@ -49,6 +46,13 @@ L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, 
  
 }
 
+L1Phase2MuDTPhDigi::L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
+					int qual, int idx, int t0, int chi2, int rpc, int arrivalbx) :
+  m_bx(bx), m_wheel(wh), m_sector(sc), m_station(st), m_superlayer(sl), m_phiAngle(phi), 
+  m_phiBending(phib), m_qualityCode(qual), m_index(idx), m_t0(t0), m_chi2(chi2), m_rpcFlag(rpc)
+{
+  m_arrivalBX = arrivalbx;
+}
 
 //--------------
 // Operations --
@@ -111,4 +115,9 @@ int L1Phase2MuDTPhDigi::chi2() const
 int L1Phase2MuDTPhDigi::rpcFlag() const 
 {
   return m_rpcFlag;
+}
+
+int L1Phase2MuDTPhDigi::arrivalBX() const 
+{
+  return m_arrivalBX;
 }

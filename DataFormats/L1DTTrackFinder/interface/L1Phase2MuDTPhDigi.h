@@ -43,6 +43,9 @@ class L1Phase2MuDTPhDigi
   L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
 		      int qual, int idx, int t0, int chi2, int rpc=-10);
   
+  L1Phase2MuDTPhDigi( int bx, int wh, int sc, int st, int sl, int phi, int phib,
+		      int qual, int idx, int t0, int chi2, int rpc, int arrivalBX);
+  
   // Operations
   int bxNum()       const;
 
@@ -60,7 +63,8 @@ class L1Phase2MuDTPhDigi
   int t0()          const;
   int chi2()        const;
 
-  int rpcFlag()      const;
+  int rpcFlag()     const;
+  int arrivalBX()   const;
   
 
  private:
@@ -81,6 +85,7 @@ class L1Phase2MuDTPhDigi
   int m_chi2;
   
   int m_rpcFlag;
+  int m_arrivalBX;
 };
 
 #endif
