@@ -541,6 +541,7 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
   int position = ((firstWord)&0x01FFFF);   // Bits 0-16 (first word) is the position (phi or theta depending on SL)
   int jmTanPhi = ((firstWord>>17)&0x7FFF); // Bits 17-31 (first word) is the slope (phi or theta depending on SL)
   int chi2=0;  // No information in V9 in the first word
+  int arrivalBX=0;  // No information in V9 in the first word
 
   if (!isV9_) {
     //v4  int position = ((firstWord)&0xFFFF);   // Bits 0-15 (first word) is the position (phi or theta depending on SL)
@@ -562,6 +563,7 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
   // In v8 they put a third word with the complete chi2... when it is there.
   if (thirdWord!=0) {
     chi2 = ((thirdWord)&0xFFFFFF);   // Bits 0-23 is the full chi2
+    arrivalBX = ((thirdWord) >> 24) & 0xFFF;   // Bits 24-35 is the full arrivalBX
   }
   //else std::cout<<"OGDT-ERROR: We were expecting something in the third word of the TP!"<<std::endl;
 
@@ -631,7 +633,8 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
 // v4 tpindex,  // uind (m_segmentIndex)
                               time,  // ut0 (m_t0Segment)
                               chi2,  // uchi2 (m_chi2Segment)
-                              -10);  // urpc (m_rpcFlag)
+                              -10,  // urpc (m_rpcFlag)
+                              arrivalBX);  // urpc (m_arrivalBX)
 
   // Storing the primitive
   primitives_.push_back(trigprim);
