@@ -499,6 +499,7 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_hitWord (long dataWord,int fedno, int s
 
     DTDigi digi(wire,tdccounts, hitOrder_[chCode],30);   // Now using 30 instead of 32 tdc per BX
 
+
     if (doHexDumping_) std::cout<<" wheel: "<<wheelId<<" sector: "<<sectorId<<" St: "<<stationId
                                 <<" SL: "<<slId<<" Layer: "<<layerId<<" wire: "<<wire<<" TDC counts: "
                                 <<tdccounts<<" time: "<<digi.time()<<std::endl;
