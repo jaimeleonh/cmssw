@@ -494,7 +494,9 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_hitWord (long dataWord,int fedno, int s
     // }
 
     // From 2020_02_03 we could just use directly the 30 TDC/BX when building the DIGIs...
-    int tdccounts = 30*bx+(tdc_hit_t-1) - 30*bxCounter_;  // 30 TDC/BX
+    //int tdccounts = 30*bx+(tdc_hit_t-1) - 30*bxCounter_;  // 30 TDC/BX
+    int tdccounts = 30*bx+(tdc_hit_t-1); // 30 TDC/BX
+    if (correctTPTimeToL1A_) tdccounts -= 30*bxCounter_;  //                                                 
     while (tdccounts<0) tdccounts+=106920;// 30*3564;
 
     DTDigi digi(wire,tdccounts, hitOrder_[chCode],30);   // Now using 30 instead of 32 tdc per BX
