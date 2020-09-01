@@ -52,6 +52,9 @@ OglezDTAB7RawToDigi::OglezDTAB7RawToDigi(const edm::ParameterSet& pset)
   rawTPVars_ = pset.getUntrackedParameter<bool>("rawTPVars", false);
 
   correctTPTimeToL1A_ = pset.getUntrackedParameter<bool>("correctTPTimeToL1A",true);
+  print_prims_ = pset.getUntrackedParameter<bool>("print_prims",true);
+  
+  file_to_print_ = pset.getUntrackedParameter<std::string>("file_to_print", "debug.txt");  
 
   feds_ = pset.getUntrackedParameter<std::vector<int> >("feds", std::vector<int>());
 
@@ -367,7 +370,12 @@ void OglezDTAB7RawToDigi::process(int DTAB7FED,
     // Trailer word of the AMC information
     readLine(&dataWord,1);
   }
-
+  if (print_prims_){
+    std::ofstream f;
+    f.open(file_to_print_,std::fstream::app);
+    f << -1 << std::endl;
+    f.close(); 
+  }
   // Trailer words for checks
 
   readLine(&dataWord,1);   // First trailer word (for the block) is not used, but it has some check information
@@ -573,15 +581,19 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
 
 //  std::cout<<"OGDTINFO Control version: "<<((firstWord>>31)&0xF)<<" "<<((secondWord>>52)&0x3FF)<<" "<<superlayer<<std::endl;
 
-
   // Getting the hits per layer (adapted to v6):
-//  for (int i=0;i<4;++i) {  // Scanning layer number (inverted with respect to usual? Alvaro claims 4 is bottom...)
-//    int lat = ((secondWord>>(3-i))&1);  // Laterality (1 is right, 0 is left)
-//    int use = ((secondWord>>(7-i))&1);  // Was digi used in the primitive?
-//    int driftime = ((secondWord>>(20-4*i))&0xF);  // 1/32 of Drift time in ns (?), 15 means greater than 14, calculated as hit_time-primitive time
-//    int chan = ((secondWord>>(45-7*i))&0x3F);  // channel number inside its layer
-//    std::cout<<"                 - Layer: "<<(i+1)<<" "<<lat<<" "<<use<<" "<<driftime<<" "<<chan<<std::endl;
-//  }
+  int lat[4], use[4], driftime[4], chan[4];
+  for (int i=3; i>=0; i--) {  // Scanning layer number (inverted with respect to usual? Alvaro claims 4 is bottom...)
+    lat[3-i] = ((secondWord>>(3-i))&1);  // Laterality (1 is right, 0 is left)
+    use[3-i] = ((secondWord>>(7-i))&1);  // Was digi used in the primitive?
+    driftime[3-i] = ((secondWord>>(20-4*i))&0xF);  // 1/32 of Drift time in ns (?), 15 means greater than 14, calculated as hit_time-primitive time
+    chan[3-i] = ((secondWord>>(45-7*i))&0x3F);  // channel number inside its layer
+    if (use[3-i] == 0){
+        lat[3-i] = -1;
+        driftime[3-i] = -1;
+        chan[3-i] = -1;
+    }
+  }
 
   // Processing the position of the trigger primitive to change the parameters
   // to the global reference system:
@@ -607,6 +619,18 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
     OglezTransformJMSystem::instance()->getPhiAndPhiBending(slId,dtGeo_,position/4.,  // Using mm as this argument (JM uses mm as metric)
                                                             jmTanPhi/4096.,quality,&phiAngle,&phiBending);
 
+//print in file
+  if (print_prims_){
+      std::ofstream f;
+      f.open(file_to_print_,std::fstream::app);
+      f << wheel << " " << sector << " " << stationId << " " << superlayer << " " << quality << " ";
+      f << position/16. << " " <<  jmTanPhi/4096. << " " << time << " " << phiAngle << " " << phiBending << " ";
+      f << chan[0] << " " << chan[1] << " " << chan[2] << " " << chan[3] << " ";
+      f << driftime[0] << " " << driftime[1] << " " << driftime[2] << " " << driftime[3] << " ";
+      f << lat[0] << " " << lat[1] << " " << lat[2] << " " << lat[3] << " ";
+      f << std::endl;
+      f.close(); 
+  }
   // Adding the trigger primitive, perhaps with some information modified
   int uind = 0;
   int uphi = (int) round(phiAngle*65536./0.8);  // phiAngle

@@ -74,6 +74,10 @@ private:
   /// to the L1A time reference (if not, using the information from the fed,
   /// which is the start of the orbit).
   bool correctTPTimeToL1A_;
+  
+  bool print_prims_;
+  
+  std::string file_to_print_;
 
 
   /// Feds that should be read in the task.
