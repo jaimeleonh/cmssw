@@ -115,8 +115,6 @@ private:
   bool do_correlation_;
   int scenario_;    
   bool print_prims_;
-  bool printPython;
-  bool printHits;
   std::string file_to_print_;
 
 
@@ -181,7 +179,7 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
   // Choosing grouping scheme:
   algo_ = pset.getParameter<int>("algo");
   
-  print_prims_ = pset.getUntrackedParameter<bool>("print_prims",true);
+  print_prims_ = pset.getUntrackedParameter<bool>("print_prims", true);
   file_to_print_ = pset.getUntrackedParameter<std::string>("file_to_print", "debug.txt");
   
   uint32_t rawId;
@@ -196,9 +194,6 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
     ifin3 >> rawId >> shift;
     shiftinfo_[rawId]=shift;
   }
-
-  printPython = pset.getUntrackedParameter<bool>("printPython");
-  printHits = pset.getUntrackedParameter<bool>("printHits");
 
   edm::ConsumesCollector consumesColl(consumesCollector());
 
@@ -515,7 +510,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   vector<L1Phase2MuDTPhDigi> outP2Ph;
 
     //if (true == false) { 
-  if (printPython){ 
+  if (print_prims_){ 
     std::ofstream f;
     f.open(file_to_print_,std::fstream::app);
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
@@ -531,12 +526,11 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
         else sl=3;
       }
         
-      if (!printHits)   f << (*metaPrimitiveIt).quality << " " << (*metaPrimitiveIt).x << " " << (*metaPrimitiveIt).tanPhi << " " << (int) (*metaPrimitiveIt).t0 << " " << (*metaPrimitiveIt).phi << " " << (*metaPrimitiveIt).phiB << " "<< (*metaPrimitiveIt).chi2  << " "  << shiftinfo_[wireId1.rawId()]<<" " <<  wireId1.wheel() << " " << wireId1.sector() << " " << wireId1.station() << " " << sl << " " << (*metaPrimitiveIt).wi1<< " " << (*metaPrimitiveIt).wi2<< " " << (*metaPrimitiveIt).wi3<< " " << (*metaPrimitiveIt).wi4<< " " << (*metaPrimitiveIt).wi5<< " " << (*metaPrimitiveIt).wi6<< " " << (*metaPrimitiveIt).wi7<< " " << (*metaPrimitiveIt).wi8<< " " << (*metaPrimitiveIt).tdc1<< " " << (*metaPrimitiveIt).tdc2<< " " << (*metaPrimitiveIt).tdc3<< " " << (*metaPrimitiveIt).tdc4<< " " << (*metaPrimitiveIt).tdc5<< " " << (*metaPrimitiveIt).tdc6<< " " << (*metaPrimitiveIt).tdc7<< " " << (*metaPrimitiveIt).tdc8<< " " << (*metaPrimitiveIt).lat1<< " " << (*metaPrimitiveIt).lat2<< " " << (*metaPrimitiveIt).lat3<< " " << (*metaPrimitiveIt).lat4<< " " << (*metaPrimitiveIt).lat5<< " " << (*metaPrimitiveIt).lat6<< " " << (*metaPrimitiveIt).lat7<< " " << (*metaPrimitiveIt).lat8  << endl;
+      f << (*metaPrimitiveIt).quality << " " << (*metaPrimitiveIt).x << " " << (*metaPrimitiveIt).tanPhi << " " << (int) (*metaPrimitiveIt).t0 << " " << (*metaPrimitiveIt).phi << " " << (*metaPrimitiveIt).phiB << " "<< (*metaPrimitiveIt).chi2  << " "  << shiftinfo_[wireId1.rawId()]<<" " <<  wireId1.wheel() << " " << wireId1.sector() << " " << wireId1.station() << " " << sl << " " << (*metaPrimitiveIt).wi1<< " " << (*metaPrimitiveIt).wi2<< " " << (*metaPrimitiveIt).wi3<< " " << (*metaPrimitiveIt).wi4<< " " << (*metaPrimitiveIt).wi5<< " " << (*metaPrimitiveIt).wi6<< " " << (*metaPrimitiveIt).wi7<< " " << (*metaPrimitiveIt).wi8<< " " << (*metaPrimitiveIt).tdc1<< " " << (*metaPrimitiveIt).tdc2<< " " << (*metaPrimitiveIt).tdc3<< " " << (*metaPrimitiveIt).tdc4<< " " << (*metaPrimitiveIt).tdc5<< " " << (*metaPrimitiveIt).tdc6<< " " << (*metaPrimitiveIt).tdc7<< " " << (*metaPrimitiveIt).tdc8<< " " << (*metaPrimitiveIt).lat1<< " " << (*metaPrimitiveIt).lat2<< " " << (*metaPrimitiveIt).lat3<< " " << (*metaPrimitiveIt).lat4<< " " << (*metaPrimitiveIt).lat5<< " " << (*metaPrimitiveIt).lat6<< " " << (*metaPrimitiveIt).lat7<< " " << (*metaPrimitiveIt).lat8  << endl;
     }
     f << -1 << endl;      
     f.close(); 
   }
-  if (printPython) 
 
   // Assigning index value
   assignIndex(correlatedMetaPrimitives);
