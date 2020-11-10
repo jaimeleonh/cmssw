@@ -555,7 +555,7 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
   }
   while (bx<-1781) {
 	bx += 3564;
-	time -= 3564*25;
+	time += 3564*25;
   }
 
   // Position, slope and chi2 are different in the "V9" payload
