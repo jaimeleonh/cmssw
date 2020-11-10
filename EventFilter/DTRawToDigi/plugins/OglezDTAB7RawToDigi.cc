@@ -505,8 +505,11 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_hitWord (long dataWord,int fedno, int s
 
     // From 2020_02_03 we could just use directly the 30 TDC/BX when building the DIGIs...
     //int tdccounts = 30*bx+(tdc_hit_t-1) - 30*bxCounter_;  // 30 TDC/BX
-    int tdccounts = 30*bx+(tdc_hit_t-1); // 30 TDC/BX
-    if (correctTPTimeToL1A_) tdccounts -= 30*bxCounter_;  //                                                 
+    int bxcorr = (bx - bxCounter_);
+    while (bxcorr>1782) bxcorr-=3564;
+    while (bxcorr<-1781) bxcorr+=3564;
+    int tdccounts = 30*bxcorr+(tdc_hit_t-1);  // 30 TDC/BX
+    if (!correctTPTimeToL1A_) tdccounts += 30*bxCounter_;  //                                                 
     // while (tdccounts<0) tdccounts+=106920;// 30*3564;
 
     DTDigi digi(wire,tdccounts, hitOrder_[chCode],30);   // Now using 30 instead of 32 tdc per BX
@@ -545,7 +548,15 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
   // crossing (that Jaime tells me it is on "0" because it is when the
   // collisions happens).
 
-  if (bx<0) bx += 3564;  // BX in previous orbit!
+  // if (bx<0) bx += 3564;  // BX in previous orbit!
+  while (bx>1782) { 
+	bx -= 3564;
+	time -= 3564*25;
+  }
+  while (bx<-1781) {
+	bx += 3564;
+	time -= 3564*25;
+  }
 
   // Position, slope and chi2 are different in the "V9" payload
 
