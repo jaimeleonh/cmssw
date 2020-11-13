@@ -53,7 +53,7 @@ OglezDTAB7RawToDigi::OglezDTAB7RawToDigi(const edm::ParameterSet& pset)
 
   rawTPVars_ = pset.getUntrackedParameter<bool>("rawTPVars", false);
 
-  correctTPTimeToL1A_ = pset.getUntrackedParameter<bool>("correctTPTimeToL1A",true);
+  correctTPTimeToL1A_ = pset.getUntrackedParameter<bool>("correctTPTimeToL1A", true);
   print_prims_ = pset.getUntrackedParameter<bool>("print_prims",true);
   
   file_to_print_ = pset.getUntrackedParameter<std::string>("file_to_print", "debug.txt");
@@ -549,14 +549,15 @@ void OglezDTAB7RawToDigi::readAB7PayLoad_triggerPrimitive (long firstWord,long s
   // collisions happens).
 
   // if (bx<0) bx += 3564;  // BX in previous orbit!
-  while (bx>1782) { 
-	bx -= 3564;
-	time -= 3564*25;
-  }
-  while (bx<-1781) {
-	bx += 3564;
-	time += 3564*25;
-  }
+  // while (bx>1782) { 
+	// bx -= 3564;
+	// time -= 3564*25;
+  // }
+  // while (bx<-1781) {
+	// bx += 3564;
+	// time += 3564*25;
+  // }
+  // if (!correctTPTimeToL1A_) time += 25*bxCounter_;
 
   // Position, slope and chi2 are different in the "V9" payload
 
