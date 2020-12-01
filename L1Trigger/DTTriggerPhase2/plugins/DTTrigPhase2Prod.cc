@@ -116,6 +116,8 @@ private:
   int scenario_;    
   bool print_prims_;
   std::string file_to_print_;
+  bool print_digis_;
+  std::string digi_file_to_print_;
 
 
   // shift
@@ -181,6 +183,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
   
   print_prims_ = pset.getUntrackedParameter<bool>("print_prims", true);
   file_to_print_ = pset.getUntrackedParameter<std::string>("file_to_print", "debug.txt");
+  print_digis_ = pset.getUntrackedParameter<bool>("print_digis", true);
+  digi_file_to_print_ = pset.getUntrackedParameter<std::string>("digi_file_to_print", "digis.txt");
   
   uint32_t rawId;
   shift_filename_ = pset.getParameter<edm::FileInPath>("shift_filename");
@@ -509,6 +513,29 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   /// STORING RESULTs
   vector<L1Phase2MuDTPhDigi> outP2Ph;
 
+
+  if (print_digis_) {
+    std::ofstream f;
+    f.open(digi_file_to_print_,std::fstream::app);
+    for (DTDigiCollection::DigiRangeIterator dtLayerId_It=dtdigis->begin(); dtLayerId_It!=dtdigis->end(); ++dtLayerId_It){ 
+      const DTLayerId& thisLayerId = (*dtLayerId_It).first;
+      const DTChamberId chId = thisLayerId.chamberId();
+      DTWireId wireId1(chId,1,2,1);
+      DTWireId wireId3(chId,3,2,1);
+      Int_t superLayer = thisLayerId.superlayerId().superLayer();
+      if (superLayer == 2) continue;
+      Int_t layer = thisLayerId.layer();
+      float shift = shiftinfo_[wireId3.rawId()] - shiftinfo_[wireId1.rawId()];
+      for (DTDigiCollection::const_iterator digiIt = ((*dtLayerId_It).second).first;digiIt!=((*dtLayerId_It).second).second; ++digiIt) {
+        Int_t wire     = (*digiIt).wire() - 1;
+        Int_t digiTIME = (*digiIt).time();
+        f << chId.wheel() << " " << chId.sector() << " " << chId.station() << " " << shift << " "
+          << superLayer-1 << " " << layer-1 << " " << wire << " " << digiTIME << endl;
+      }
+    }
+    f << -1 << endl;
+    f.close();
+  }
     //if (true == false) { 
   if (print_prims_){ 
     std::ofstream f;
