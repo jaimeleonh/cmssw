@@ -215,11 +215,22 @@ void TriggerObjectTableProducer::produce(edm::Event &iEvent, const edm::EventSet
     l1Objects.emplace_back(l1obj, it->hwIso());
   }
 
+  unsigned int nobj = l1Jet->size() + l1Tau->size();
+  std::vector<int> l1iso(nobj, 0), l1type(nobj, 0);
+  std::vector<float> l1pt(nobj, 0), l1eta(nobj, 0), l1phi(nobj, 0);
+  unsigned int iobj = 0;
   for (l1t::JetBxCollection::const_iterator it = l1Jet->begin(0); it != l1Jet->end(0); it++) {
     pat::TriggerObjectStandAlone l1obj(it->p4());
     l1obj.setCollection("L1Jet");
     l1obj.addTriggerObjectType(trigger::TriggerL1Jet);
     l1Objects.emplace_back(l1obj, it->hwIso());
+
+    l1pt[iobj] = l1obj.pt();
+    l1eta[iobj] = l1obj.eta();
+    l1phi[iobj] = l1obj.phi();
+    l1iso[iobj] = it->hwIso();
+    l1type[iobj] = 0;
+    iobj++;
   }
 
   for (l1t::MuonBxCollection::const_iterator it = l1Muon->begin(0); it != l1Muon->end(0); it++) {
@@ -235,67 +246,83 @@ void TriggerObjectTableProducer::produce(edm::Event &iEvent, const edm::EventSet
     l1obj.setCollection("L1Tau");
     l1obj.addTriggerObjectType(trigger::TriggerL1Tau);
     l1Objects.emplace_back(l1obj, it->hwIso());
+
+    l1pt[iobj] = l1obj.pt();
+    l1eta[iobj] = l1obj.eta();
+    l1phi[iobj] = l1obj.phi();
+    l1iso[iobj] = it->hwIso();
+    l1type[iobj] = 1;
+    iobj++;
   }
 
-  unsigned int nobj = selected.size();
-  std::vector<float> pt(nobj, 0), eta(nobj, 0), phi(nobj, 0), l1pt(nobj, 0), l1pt_2(nobj, 0), l2pt(nobj, 0);
-  std::vector<int> id(nobj, 0), bits(nobj, 0), l1iso(nobj, 0), l1charge(nobj, 0);
-  for (unsigned int i = 0; i < nobj; ++i) {
-    const auto &obj = *selected[i].first;
-    const auto &sel = *selected[i].second;
-    pt[i] = obj.pt();
-    eta[i] = obj.eta();
-    phi[i] = obj.phi();
-    id[i] = sel.id;
-    bits[i] = selected_bits[&obj];
-    if (sel.l1DR2 > 0) {
-      float best = sel.l1DR2;
-      for (const auto &l1obj : l1Objects) {
-        const auto &seed = l1obj.first;
-        float dr2 = deltaR2(seed, obj);
-        if (dr2 < best && sel.l1cut(seed)) {
-          l1pt[i] = seed.pt();
-          l1iso[i] = l1obj.second;
-          l1charge[i] = seed.charge();
-        }
-      }
-    }
-    if (sel.l1DR2_2 > 0) {
-      float best = sel.l1DR2_2;
-      for (const auto &l1obj : l1Objects) {
-        const auto &seed = l1obj.first;
-        float dr2 = deltaR2(seed, obj);
-        if (dr2 < best && sel.l1cut_2(seed)) {
-          l1pt_2[i] = seed.pt();
-        }
-      }
-    }
-    if (sel.l2DR2 > 0) {
-      float best = sel.l2DR2;
-      for (const auto &seed : *src) {
-        float dr2 = deltaR2(seed, obj);
-        if (dr2 < best && sel.l2cut(seed)) {
-          l2pt[i] = seed.pt();
-        }
-      }
-    }
-  }
+  auto objtab = std::make_unique<nanoaod::FlatTable>(nobj, "L1Obj", false, false);
+  objtab->addColumn<float>("pt", l1pt, "pt", nanoaod::FlatTable::FloatColumn, 12);
+  objtab->addColumn<float>("eta", l1eta, "eta", nanoaod::FlatTable::FloatColumn, 12);
+  objtab->addColumn<float>("phi", l1phi, "phi", nanoaod::FlatTable::FloatColumn, 12);
+  objtab->addColumn<int>("iso", l1iso, "iso", nanoaod::FlatTable::IntColumn);
+  objtab->addColumn<int>("type", l1type, "type", nanoaod::FlatTable::IntColumn);
+  iEvent.put(std::move(objtab));
 
-  auto tab = std::make_unique<nanoaod::FlatTable>(nobj, name_, false, false);
-  tab->addColumn<int>("id", id, idDoc_, nanoaod::FlatTable::IntColumn);
-  tab->addColumn<float>("pt", pt, "pt", nanoaod::FlatTable::FloatColumn, 12);
-  tab->addColumn<float>("eta", eta, "eta", nanoaod::FlatTable::FloatColumn, 12);
-  tab->addColumn<float>("phi", phi, "phi", nanoaod::FlatTable::FloatColumn, 12);
-  tab->addColumn<float>("l1pt", l1pt, "pt of associated L1 seed", nanoaod::FlatTable::FloatColumn, 8);
-  tab->addColumn<int>("l1iso", l1iso, "iso of associated L1 seed", nanoaod::FlatTable::IntColumn);
-  tab->addColumn<int>("l1charge", l1charge, "charge of associated L1 seed", nanoaod::FlatTable::IntColumn);
-  tab->addColumn<float>("l1pt_2", l1pt_2, "pt of associated secondary L1 seed", nanoaod::FlatTable::FloatColumn, 8);
-  tab->addColumn<float>(
-      "l2pt", l2pt, "pt of associated 'L2' seed (i.e. HLT before tracking/PF)", nanoaod::FlatTable::FloatColumn, 10);
-  tab->addColumn<int>(
-      "filterBits", bits, "extra bits of associated information: " + bitsDoc_, nanoaod::FlatTable::IntColumn);
-  iEvent.put(std::move(tab));
+
+  // unsigned int nobj = selected.size();
+  // std::vector<float> pt(nobj, 0), eta(nobj, 0), phi(nobj, 0), l1pt(nobj, 0), l1pt_2(nobj, 0), l2pt(nobj, 0);
+  // std::vector<int> id(nobj, 0), bits(nobj, 0), l1iso(nobj, 0), l1charge(nobj, 0);
+  // for (unsigned int i = 0; i < nobj; ++i) {
+    // const auto &obj = *selected[i].first;
+    // const auto &sel = *selected[i].second;
+    // pt[i] = obj.pt();
+    // eta[i] = obj.eta();
+    // phi[i] = obj.phi();
+    // id[i] = sel.id;
+    // bits[i] = selected_bits[&obj];
+    // if (sel.l1DR2 > 0) {
+      // float best = sel.l1DR2;
+      // for (const auto &l1obj : l1Objects) {
+        // const auto &seed = l1obj.first;
+        // float dr2 = deltaR2(seed, obj);
+        // if (dr2 < best && sel.l1cut(seed)) {
+          // l1pt[i] = seed.pt();
+          // l1iso[i] = l1obj.second;
+          // l1charge[i] = seed.charge();
+        // }
+      // }
+    // }
+    // if (sel.l1DR2_2 > 0) {
+      // float best = sel.l1DR2_2;
+      // for (const auto &l1obj : l1Objects) {
+        // const auto &seed = l1obj.first;
+        // float dr2 = deltaR2(seed, obj);
+        // if (dr2 < best && sel.l1cut_2(seed)) {
+          // l1pt_2[i] = seed.pt();
+        // }
+      // }
+    // }
+    // if (sel.l2DR2 > 0) {
+      // float best = sel.l2DR2;
+      // for (const auto &seed : *src) {
+        // float dr2 = deltaR2(seed, obj);
+        // if (dr2 < best && sel.l2cut(seed)) {
+          // l2pt[i] = seed.pt();
+        // }
+      // }
+    // }
+  // }
+
+  // auto tab = std::make_unique<nanoaod::FlatTable>(nobj, name_, false, false);
+  // tab->addColumn<int>("id", id, idDoc_, nanoaod::FlatTable::IntColumn);
+  // tab->addColumn<float>("pt", pt, "pt", nanoaod::FlatTable::FloatColumn, 12);
+  // tab->addColumn<float>("eta", eta, "eta", nanoaod::FlatTable::FloatColumn, 12);
+  // tab->addColumn<float>("phi", phi, "phi", nanoaod::FlatTable::FloatColumn, 12);
+  // tab->addColumn<float>("l1pt", l1pt, "pt of associated L1 seed", nanoaod::FlatTable::FloatColumn, 8);
+  // tab->addColumn<int>("l1iso", l1iso, "iso of associated L1 seed", nanoaod::FlatTable::IntColumn);
+  // tab->addColumn<int>("l1charge", l1charge, "charge of associated L1 seed", nanoaod::FlatTable::IntColumn);
+  // tab->addColumn<float>("l1pt_2", l1pt_2, "pt of associated secondary L1 seed", nanoaod::FlatTable::FloatColumn, 8);
+  // tab->addColumn<float>(
+      // "l2pt", l2pt, "pt of associated 'L2' seed (i.e. HLT before tracking/PF)", nanoaod::FlatTable::FloatColumn, 10);
+  // tab->addColumn<int>(
+      // "filterBits", bits, "extra bits of associated information: " + bitsDoc_, nanoaod::FlatTable::IntColumn);
+  // iEvent.put(std::move(tab));
+// }
 }
-
 //define this as a plug-in
 DEFINE_FWK_MODULE(TriggerObjectTableProducer);

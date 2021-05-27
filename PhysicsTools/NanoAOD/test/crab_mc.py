@@ -1,4 +1,4 @@
-from CRABClient.UserUtilities import config, getUsernameFromSiteDB
+from CRABClient.UserUtilities import config
 config = config()
 
 config.General.requestName = 'nano6'
@@ -7,16 +7,22 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'nano_80x_cfg.py'
+config.JobType.psetName = 'NANO_NANO.py'
+config.JobType.allowUndistributedCMSSW = True
 #config.JobType.outputFiles = ['lzma.root']
 
-config.Data.inputDataset = '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM'
+#config.Data.inputDataset = '/GluGluToHHTo2B2Tau_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM'
+#config.Data.inputDataset = '/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM'
+#config.Data.inputDataset = '/GluGluToHHTo2B2Tau_node_SM_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM'
+config.Data.inputDataset = '/VBFHToTauTau_M125_13TeV_powheg_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v1/MINIAODSIM'
 config.Data.inputDBS = 'global'
-config.Data.splitting = 'EventAwareLumiBased'
-config.Data.unitsPerJob = 2000
-config.Data.totalUnits = 6000
-config.Data.outLFNDirBase = '/store/user/%s/NanoTest/' % (getUsernameFromSiteDB())
-config.Data.publication = True
-config.Data.outputDatasetTag = 'NanoTest2'
+config.Data.splitting = 'FileBased'
+config.Data.unitsPerJob = 1
+#config.Data.totalUnits = 1000000
+config.Data.outLFNDirBase = '/store/user/jleonhol/NanoTest/' 
+config.Data.publication = False
+config.Data.outputDatasetTag = 'NanoTestFullDis'
 
-config.Site.storageSite = 'T2_IT_Pisa'
+
+
+config.Site.storageSite = 'T2_ES_CIEMAT'
