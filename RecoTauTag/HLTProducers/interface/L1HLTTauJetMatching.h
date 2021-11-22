@@ -24,7 +24,7 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/global/EDProducer.h"
+#include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -47,11 +47,11 @@
 #include <map>
 #include <vector>
 
-class L1HLTTauJetMatching : public edm::global::EDProducer<> {
+class L1HLTTauJetMatching : public edm::EDProducer {
 public:
   explicit L1HLTTauJetMatching(const edm::ParameterSet&);
   ~L1HLTTauJetMatching() override;
-  void produce(edm::StreamID, edm::Event&, const edm::EventSetup&) const override;
+  void produce(edm::Event&, const edm::EventSetup&) override;
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 private:

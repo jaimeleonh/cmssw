@@ -20,7 +20,7 @@ L1HLTTauJetMatching::L1HLTTauJetMatching(const edm::ParameterSet& iConfig)
 
 L1HLTTauJetMatching::~L1HLTTauJetMatching() {}
 
-void L1HLTTauJetMatching::produce(edm::StreamID iSId, edm::Event& iEvent, const edm::EventSetup& iES) const {
+void L1HLTTauJetMatching::produce(edm::Event& iEvent, const edm::EventSetup& iES) {
   std::unique_ptr<reco::PFTauCollection> L1TmatchedPFTau(new reco::PFTauCollection);
   std::unique_ptr<reco::PFJetCollection> L1TmatchedPFJet(new reco::PFJetCollection);
 
@@ -123,3 +123,6 @@ void L1HLTTauJetMatching::fillDescriptions(edm::ConfigurationDescriptions& descr
     "This module produces a collection of PFTaus and a collection of PFJets matched to the L1 jets.");
   descriptions.add("L1HLTTauJetMatching", desc);
 }
+//define this as a plug-in
+#include "FWCore/Framework/interface/MakerMacros.h"
+DEFINE_FWK_MODULE(L1HLTTauJetMatching);
