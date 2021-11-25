@@ -20,7 +20,7 @@ L1HLTTauJetMatching::L1HLTTauJetMatching(const edm::ParameterSet& iConfig)
 
 L1HLTTauJetMatching::~L1HLTTauJetMatching() {}
 
-void L1HLTTauJetMatching::produce(edm::Event& iEvent, const edm::EventSetup& iES) {
+void L1HLTTauJetMatching::produce(edm::StreamID iSId, edm::Event& iEvent, const edm::EventSetup& iES) const {
   std::unique_ptr<reco::PFTauCollection> L1TmatchedPFTau(new reco::PFTauCollection);
   std::unique_ptr<reco::PFJetCollection> L1TmatchedPFJet(new reco::PFJetCollection);
 
@@ -33,8 +33,14 @@ void L1HLTTauJetMatching::produce(edm::Event& iEvent, const edm::EventSetup& iES
   edm::Handle<trigger::TriggerFilterObjectWithRefs> L1Jets;
   iEvent.getByToken(L1JetSrc_, L1Jets);
 
+  l1t::JetVectorRef tauCandRefVec;
+  L1Jets->getObjects(trigger::TriggerL1Tau, tauCandRefVec);
+
   l1t::JetVectorRef jetCandRefVec;
   L1Jets->getObjects(trigger::TriggerL1Jet, jetCandRefVec);
+  
+  l1t::JetVectorRef cenjetCandRefVec;
+  L1Jets->getObjects(trigger::TriggerL1CenJet, cenjetCandRefVec);
 
   /* Loop over taus that must pass a certain minTauPt_ cut */
   /* then loop over L1T jets and check whether they match, */
@@ -43,18 +49,44 @@ void L1HLTTauJetMatching::produce(edm::Event& iEvent, const edm::EventSetup& iES
 
   std::vector<int> iMatchedTaus = {-1, -1};
   std::vector<double> ptMatchedTaus = {-1., -1.};
+  
+  for (unsigned int iL1Jet = 0; iL1Jet < jetCandRefVec.size(); iL1Jet++) {
+    std::cout << "L1 Jet: " << iL1Jet << ": " <<  jetCandRefVec[iL1Jet]->pt() << " " << jetCandRefVec[iL1Jet]->eta() << " " << jetCandRefVec[iL1Jet]->phi() << std::endl;
+  }
+  
+  for (unsigned int iL1Jet = 0; iL1Jet < cenjetCandRefVec.size(); iL1Jet++) {
+    std::cout << "L1 CenJet: " << iL1Jet << ": " <<  cenjetCandRefVec[iL1Jet]->pt() << " " << cenjetCandRefVec[iL1Jet]->eta() << " " << cenjetCandRefVec[iL1Jet]->phi() << std::endl;
+  }
+
+  for (unsigned int iL1Tau = 0; iL1Tau < tauCandRefVec.size(); iL1Tau++) {
+      std::cout << "L1 L1TauJet: " << iL1Tau << ": " <<  tauCandRefVec[iL1Tau]->pt() << " " << tauCandRefVec[iL1Tau]->eta() << " " << tauCandRefVec[iL1Tau]->phi() << std::endl;
+  }
+  
+  for (unsigned int iTau = 0; iTau < taus->size(); iTau++) {
+     std::cout << "0) Reco Tau: " << iTau << ": " <<  (*taus)[iTau].pt() << " " << (*taus)[iTau].eta() << " " << (*taus)[iTau].phi() << std::endl;
+  }
+  
+  for (unsigned int iJet = 0; iJet < jets->size(); iJet++) {
+    std::cout << "Reco Jet: " << iJet << ": " <<  (*jets)[iJet].pt() << " " << (*jets)[iJet].eta() << " " << (*jets)[iJet].phi() << std::endl;
+  }
 
   for (unsigned int iTau = 0; iTau < taus->size(); iTau++) {
     bool isMatched = false;
     if ((*taus)[iTau].pt() > minTauPt_) {
-      for (unsigned int iL1Jet = 0; iL1Jet < jetCandRefVec.size(); iL1Jet++) {
-        if (reco::deltaR2((*taus)[iTau].p4(), jetCandRefVec[iL1Jet]->p4()) < matchingL1HLTR2_) {
+      
+      // std::cout << "0) Reco Tau: " << iTau << ": " <<  (*taus)[iTau].pt() << " " << (*taus)[iTau].eta() << " " << (*taus)[iTau].phi() << std::endl;
+      for (unsigned int iL1Tau = 0; iL1Tau < tauCandRefVec.size(); iL1Tau++) {
+        // std::cout << "0) L1 Tau: " << iL1Tau << ": " <<  tauCandRefVec[iL1Tau]->pt() << " " << tauCandRefVec[iL1Tau]->eta() << " " << tauCandRefVec[iL1Tau]->phi() << std::endl;
+        if (reco::deltaR2((*taus)[iTau].p4(), tauCandRefVec[iL1Tau]->p4()) < matchingL1HLTR2_) {
+          // std::cout << "1) Reco Tau: " << iTau << ": " <<  (*taus)[iTau].pt() << " " << (*taus)[iTau].eta() << " " << (*taus)[iTau].phi() << std::endl;
+          // std::cout << "1) L1 Tau: " << iL1Tau << ": " <<  tauCandRefVec[iL1Tau]->pt() << " " << tauCandRefVec[iL1Tau]->eta() << " " << tauCandRefVec[iL1Tau]->phi() << std::endl;
           isMatched = true;
           break;
         }
       }
     }
     if (isMatched) {
+      std::cout << "2) Reco Tau: " << iTau << ": " <<  (*taus)[iTau].pt() << " " << (*taus)[iTau].eta() << " " << (*taus)[iTau].phi() << std::endl;
       if ((*taus)[iTau].pt() > ptMatchedTaus[0]) {
         ptMatchedTaus[1] = ptMatchedTaus[0];
         iMatchedTaus[1] = iMatchedTaus[0];
@@ -80,10 +112,12 @@ void L1HLTTauJetMatching::produce(edm::Event& iEvent, const edm::EventSetup& iES
   int iMatchedJet = -1;
   double ptMatchedJet = -1.;
   for (unsigned int iJet = 0; iJet < jets->size(); iJet++) {
+    // std::cout << "Reco Jet: " << iJet << ": " <<  (*jets)[iJet].pt() << " " << (*jets)[iJet].eta() << " " << (*jets)[iJet].phi() << std::endl;
     bool isMatched = false;
     if ((*jets)[iJet].pt() > minJetPt_) {
       for (unsigned int iL1Jet = 0; iL1Jet < jetCandRefVec.size(); iL1Jet++) {
         if (reco::deltaR2((*jets)[iJet].p4(), jetCandRefVec[iL1Jet]->p4()) < matchingL1HLTR2_) {
+          // std::cout << "L1 Jet: " << iL1Jet << ": " <<  jetCandRefVec[iL1Jet]->pt() << " " << jetCandRefVec[iL1Jet]->eta() << " " << jetCandRefVec[iL1Jet]->phi() << std::endl;
           for (unsigned int iMatchedTau = 0; iMatchedTau < L1TmatchedPFTau->size(); iMatchedTau++) {
             if (reco::deltaR2((*jets)[iJet].p4(), (L1TmatchedPFTau->at(iMatchedTau)).p4()) > matchingTauJetR2_) {
               isMatched = true;
@@ -102,6 +136,16 @@ void L1HLTTauJetMatching::produce(edm::Event& iEvent, const edm::EventSetup& iES
   }
   if (iMatchedJet != -1)
     L1TmatchedPFJet->push_back((*jets)[iMatchedJet]);
+  
+  // std::cout << "Taus: " << L1TmatchedPFTau->size() << std::endl;
+  // for (unsigned int iMatchedTau = 0; iMatchedTau < L1TmatchedPFTau->size(); iMatchedTau++) {
+    // std::cout << "Reco Tau: " << iMatchedTau << ": " <<  (L1TmatchedPFTau->at(iMatchedTau)).pt() << " " << (L1TmatchedPFTau->at(iMatchedTau)).eta() << " " << (L1TmatchedPFTau->at(iMatchedTau)).phi() << std::endl;
+  // }
+  
+  // std::cout << "Jets: " << L1TmatchedPFJet->size() << std::endl;
+  // for (unsigned int iMatchedJet = 0; iMatchedJet < L1TmatchedPFJet->size(); iMatchedJet++) {
+    // std::cout << "Reco Tau: " << iMatchedJet << ": " <<  (L1TmatchedPFJet->at(iMatchedJet)).pt() << " " << (L1TmatchedPFJet->at(iMatchedJet)).eta() << " " << (L1TmatchedPFJet->at(iMatchedJet)).phi() << std::endl;
+  // }
 
   iEvent.put(std::move(L1TmatchedPFTau), "taus");
   iEvent.put(std::move(L1TmatchedPFJet), "jets");

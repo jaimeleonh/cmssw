@@ -24,7 +24,7 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDProducer.h"
+#include "FWCore/Framework/interface/global/EDProducer.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -36,22 +36,22 @@
 #include "DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h"
 
 #include "Math/GenVector/VectorUtil.h"
-#include "DataFormats/HLTReco/interface/TriggerTypeDefs.h"
+// #include "DataFormats/HLTReco/interface/TriggerTypeDefs.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
 
-#include "HLTrigger/HLTcore/interface/defaultModuleLabel.h"
+// #include "HLTrigger/HLTcore/interface/defaultModuleLabel.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include <map>
 #include <vector>
 
-class L1HLTTauJetMatching : public edm::EDProducer {
+class L1HLTTauJetMatching : public edm::global::EDProducer<> {
 public:
   explicit L1HLTTauJetMatching(const edm::ParameterSet&);
   ~L1HLTTauJetMatching() override;
-  void produce(edm::Event&, const edm::EventSetup&) override;
+  void produce(edm::StreamID, edm::Event&, const edm::EventSetup&) const override;
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 private:
