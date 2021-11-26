@@ -319,42 +319,40 @@ void l1t::TriggerMenuParser::parseCondFormats(const L1TUtmTriggerMenu* utmMenu) 
         } else if (condition.getType() == esConditionType::Externals) {
           parseExternal(condition, chipNr);
 
+	  //parse CorrelationWithOverlapRemoval
+        } else if (condition.getType() == esConditionType::CaloCaloCorrelationOvRm ||
+                   condition.getType() == esConditionType::InvariantMassOvRm ||
+                   condition.getType() == esConditionType::TransverseMassOvRm ||
+		   condition.getType() == esConditionType::DoubleJetOvRm ||
+                   condition.getType() == esConditionType::DoubleTauOvRm ||
+		   condition.getType() == esConditionType::SingleJetOvRm) {
+          parseCorrelationWithOverlapRemoval(condition, chipNr);
+
         } else if (condition.getType() == esConditionType::SingleEgammaOvRm ||
                    condition.getType() == esConditionType::DoubleEgammaOvRm ||
                    condition.getType() == esConditionType::TripleEgammaOvRm ||
                    condition.getType() == esConditionType::QuadEgammaOvRm ||
                    condition.getType() == esConditionType::SingleTauOvRm ||
-                   condition.getType() == esConditionType::DoubleTauOvRm ||
                    condition.getType() == esConditionType::TripleTauOvRm ||
                    condition.getType() == esConditionType::QuadTauOvRm ||
                    condition.getType() == esConditionType::SingleJetOvRm ||
-                   condition.getType() == esConditionType::DoubleJetOvRm ||
                    condition.getType() == esConditionType::TripleJetOvRm ||
-                   condition.getType() == esConditionType::QuadJetOvRm) {
+                   condition.getType() == esConditionType::QuadJetOvRm ) {
           edm::LogError("TriggerMenuParser")
               << std::endl
-              << "SingleEgammaOvRm" << std::endl
-              << "DoubleEgammaOvRm" << std::endl
-              << "TripleEgammaOvRm" << std::endl
-              << "QuadEgammaOvRm" << std::endl
-              << "SingleTauOvRm" << std::endl
-              << "DoubleTauOvRm" << std::endl
-              << "TripleTauOvRm" << std::endl
-              << "QuadTauOvRm" << std::endl
-              << "SingleJetOvRm" << std::endl
-              << "DoubleJetOvRm" << std::endl
-              << "TripleJetOvRm" << std::endl
-              << "QuadJetOvRm" << std::endl
-              << "The above conditions types OvRm are not implemented yet in the parser. Please remove alogrithms that "
-                 "use this type of condtion from L1T Menu!"
+              << "\n SingleEgammaOvRm" 
+              << "\n DoubleEgammaOvRm" 
+              << "\n TripleEgammaOvRm" 
+              << "\n QuadEgammaOvRm" 
+              << "\n SingleTauOvRm" 
+              << "\n TripleTauOvRm" 
+              << "\n QuadTauOvRm" 
+              << "\n SingleJetOvRm" 
+              << "\n TripleJetOvRm" 
+              << "\n QuadJetOvRm" 
+              << "\n The above conditions types OvRm are not implemented yet in the parser. Please remove algorithms that "
+                 "use this type of condition from L1T Menu!"
               << std::endl;
-
-        }
-        //parse CorrelationWithOverlapRemoval
-        else if (condition.getType() == esConditionType::CaloCaloCorrelationOvRm ||
-                 condition.getType() == esConditionType::InvariantMassOvRm ||
-                 condition.getType() == esConditionType::TransverseMassOvRm) {
-          parseCorrelationWithOverlapRemoval(condition, chipNr);
         }
 
       }  //if condition is a new one
@@ -1450,11 +1448,11 @@ bool l1t::TriggerMenuParser::parseMuonCorr(const tmeventsetup::esObject* corrMu,
   }  //end loop over cuts
 
   // Set the parameter cuts
-  objParameter[0].unconstrainedPtHigh = upperUnconstrainedPtInd;  // Added for displacd muons
-  objParameter[0].unconstrainedPtLow = lowerUnconstrainedPtInd;   // Added for displacd muons
-  objParameter[0].impactParameterHigh = upperImpactParameterInd;  // Added for displacd muons
-  objParameter[0].impactParameterLow = lowerImpactParameterInd;   // Added for displacd muons
-  objParameter[0].impactParameterLUT = impactParameterLUT;        // Added for displacd muons
+  objParameter[0].unconstrainedPtHigh = upperUnconstrainedPtInd;  // Added for displaced muons
+  objParameter[0].unconstrainedPtLow = lowerUnconstrainedPtInd;   // Added for displaced muons
+  objParameter[0].impactParameterHigh = upperImpactParameterInd;  // Added for displaced muons
+  objParameter[0].impactParameterLow = lowerImpactParameterInd;   // Added for displaced muons
+  objParameter[0].impactParameterLUT = impactParameterLUT;        // Added for displaced muons
 
   objParameter[0].ptHighThreshold = upperThresholdInd;
   objParameter[0].ptLowThreshold = lowerThresholdInd;
@@ -2719,7 +2717,7 @@ bool l1t::TriggerMenuParser::parseCorrelation(tmeventsetup::esCondition corrCond
       parseMuonCorr(&object, chipNr);
       corrIndexVal[jj] = (m_corMuonTemplate[chipNr]).size() - 1;
 
-      //Now set some flags for this subCondition
+      //Now set some flags for this subcondition
       intGEq[jj] = (object.getComparisonOperator() == esComparisonOperator::GE);
       objType[jj] = gtMu;
       condCateg[jj] = CondMuon;
@@ -2730,7 +2728,7 @@ bool l1t::TriggerMenuParser::parseCorrelation(tmeventsetup::esCondition corrCond
       parseCaloCorr(&object, chipNr);
       corrIndexVal[jj] = (m_corCaloTemplate[chipNr]).size() - 1;
 
-      //Now set some flags for this subCondition
+      //Now set some flags for this subcondition
       intGEq[jj] = (object.getComparisonOperator() == esComparisonOperator::GE);
       switch (object.getType()) {
         case esObjectType::Egamma: {
@@ -2753,7 +2751,7 @@ bool l1t::TriggerMenuParser::parseCorrelation(tmeventsetup::esCondition corrCond
       parseEnergySumCorr(&object, chipNr);
       corrIndexVal[jj] = (m_corEnergySumTemplate[chipNr]).size() - 1;
 
-      //Now set some flags for this subCondition
+      //Now set some flags for this subcondition
       intGEq[jj] = (object.getComparisonOperator() == esComparisonOperator::GE);
       switch (object.getType()) {
         case esObjectType::ETM: {
@@ -2925,7 +2923,7 @@ bool l1t::TriggerMenuParser::parseCorrelationThreeBody(tmeventsetup::esCondition
       parseMuonCorr(&object, chipNr);
       corrIndexVal[lll] = (m_corMuonTemplate[chipNr]).size() - 1;
 
-      //Now set some flags for this subCondition
+      //Now set some flags for this subcondition
       objType[lll] = gtMu;
       condCateg[lll] = CondMuon;
 
@@ -3154,18 +3152,18 @@ bool l1t::TriggerMenuParser::parseCorrelationWithOverlapRemoval(const tmeventset
       parseMuonCorr(&object, chipNr);
       corrIndexVal[jj] = (m_corMuonTemplate[chipNr]).size() - 1;
 
-      //Now set some flags for this subCondition
+      //Now set some flags for this subcondition
       intGEq[jj] = (object.getComparisonOperator() == esComparisonOperator::GE);
       objType[jj] = gtMu;
       condCateg[jj] = CondMuon;
 
     } else if (object.getType() == esObjectType::Egamma || object.getType() == esObjectType::Jet ||
                object.getType() == esObjectType::Tau) {
-      // we have an Calo object
+      // we have a Calo object
       parseCaloCorr(&object, chipNr);
       corrIndexVal[jj] = (m_corCaloTemplate[chipNr]).size() - 1;
 
-      //Now set some flags for this subCondition
+      //Now set some flags for this subcondition
       intGEq[jj] = (object.getComparisonOperator() == esComparisonOperator::GE);
       switch (object.getType()) {
         case esObjectType::Egamma: {
@@ -3188,7 +3186,7 @@ bool l1t::TriggerMenuParser::parseCorrelationWithOverlapRemoval(const tmeventset
       parseEnergySumCorr(&object, chipNr);
       corrIndexVal[jj] = (m_corEnergySumTemplate[chipNr]).size() - 1;
 
-      //Now set some flags for this subCondition
+      //Now set some flags for this subcondition
       intGEq[jj] = (object.getComparisonOperator() == esComparisonOperator::GE);
       switch (object.getType()) {
         case esObjectType::ETM: {
