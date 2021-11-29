@@ -24,6 +24,9 @@ void L1HLTTauJetMatching::produce(edm::StreamID iSId, edm::Event& iEvent, const 
   std::unique_ptr<reco::PFTauCollection> L1TmatchedPFTau(new reco::PFTauCollection);
   std::unique_ptr<reco::PFJetCollection> L1TmatchedPFJet(new reco::PFJetCollection);
 
+  // L1TmatchedPFTau->clear();
+  // L1TmatchedPFJet->clear();
+
   edm::Handle<reco::PFTauCollection> taus;
   iEvent.getByToken(tauSrc_, taus);
 
@@ -51,20 +54,12 @@ void L1HLTTauJetMatching::produce(edm::StreamID iSId, edm::Event& iEvent, const 
     // std::cout << "L1 Jet " << iL1Jet << ": " <<  jetCandRefVec[iL1Jet]->pt() << " " << jetCandRefVec[iL1Jet]->eta() << " " << jetCandRefVec[iL1Jet]->phi() << std::endl;
   // }
   
-  // for (unsigned int iL1Jet = 0; iL1Jet < cenjetCandRefVec.size(); iL1Jet++) {
-    // std::cout << "L1 CenJet " << iL1Jet << ": " <<  cenjetCandRefVec[iL1Jet]->pt() << " " << cenjetCandRefVec[iL1Jet]->eta() << " " << cenjetCandRefVec[iL1Jet]->phi() << std::endl;
-  // }
-
   // for (unsigned int iL1Tau = 0; iL1Tau < tauCandRefVec.size(); iL1Tau++) {
       // std::cout << "L1 Tau " << iL1Tau << ": " <<  tauCandRefVec[iL1Tau]->pt() << " " << tauCandRefVec[iL1Tau]->eta() << " " << tauCandRefVec[iL1Tau]->phi() << std::endl;
   // }
   
-  // for (unsigned int iL1Tau = 0; iL1Tau < tauJetCandRefVec.size(); iL1Tau++) {
-      // std::cout << "L1 TauJet " << iL1Tau << ": " <<  tauJetCandRefVec[iL1Tau]->pt() << " " << tauJetCandRefVec[iL1Tau]->eta() << " " << tauJetCandRefVec[iL1Tau]->phi() << std::endl;
-  // }
-  
   // for (unsigned int iTau = 0; iTau < taus->size(); iTau++) {
-     // std::cout << "0) Reco Tau: " << iTau << ": " <<  (*taus)[iTau].pt() << " " << (*taus)[iTau].eta() << " " << (*taus)[iTau].phi() << std::endl;
+     // std::cout << "Reco Tau: " << iTau << ": " <<  (*taus)[iTau].pt() << " " << (*taus)[iTau].eta() << " " << (*taus)[iTau].phi() << std::endl;
   // }
   
   // for (unsigned int iJet = 0; iJet < jets->size(); iJet++) {
@@ -75,7 +70,7 @@ void L1HLTTauJetMatching::produce(edm::StreamID iSId, edm::Event& iEvent, const 
     bool isMatched = false;
     if ((*taus)[iTau].pt() > minTauPt_) {
       for (unsigned int iL1Tau = 0; iL1Tau < tauCandRefVec.size(); iL1Tau++) {
-        if (reco::deltaR2((*taus)[iTau].p4(), jetCandRefVec[iL1Tau]->p4()) < matchingL1HLTR2_) {
+        if (reco::deltaR2((*taus)[iTau].p4(), tauCandRefVec[iL1Tau]->p4()) < matchingL1HLTR2_) {
           isMatched = true;
           break;
         }
@@ -130,6 +125,7 @@ void L1HLTTauJetMatching::produce(edm::StreamID iSId, edm::Event& iEvent, const 
   if (iMatchedJet != -1)
     L1TmatchedPFJet->push_back((*jets)[iMatchedJet]);
 
+  // std::cout << "Taus: " << L1TmatchedPFTau->size() << " , Jets: " << L1TmatchedPFJet->size() << std::endl;
   iEvent.put(std::move(L1TmatchedPFTau), "taus");
   iEvent.put(std::move(L1TmatchedPFJet), "jets");
 }

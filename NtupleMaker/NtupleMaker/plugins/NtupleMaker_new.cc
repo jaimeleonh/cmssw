@@ -30,7 +30,7 @@ NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig) :
 {
 
     edm::Service<TFileService> fs;
-    tree_ = fs->make<TTree>("vbf", "vbf");
+    tree_ = fs->make<TTree>("hltdev", "hltdev");
 
     if(fillingTriggers) branchesTriggers(tree_);
     if(fillingEventInfo) branchesEventInfo(tree_);

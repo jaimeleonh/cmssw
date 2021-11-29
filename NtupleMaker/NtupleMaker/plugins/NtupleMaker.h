@@ -83,30 +83,30 @@
 using namespace std;
 
 class NtupleMaker : public edm::one::EDAnalyzer<edm::one::SharedResources> {
-    public:
-        explicit NtupleMaker(const edm::ParameterSet&);
-	~NtupleMaker();
+  public:
+    explicit NtupleMaker(const edm::ParameterSet&);
+    ~NtupleMaker();
 
 	static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
-    private:
-	//virtual void beginJob() override;
-	virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
-	//virtual void endJob() override;
-	
-	void branchesTriggers(TTree*);
-	void branchesEventInfo(TTree*);
-	void branchesL1Taus(TTree*);
-	void branchesL1Jets(TTree*);
-        void branchesTaus(TTree*);
-        void branchesJets(TTree*);
+  private:
+    //virtual void beginJob() override;
+    virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
+    //virtual void endJob() override;
 
-	void fillTriggers(const edm::Event&);
-	void fillEventInfo(const edm::Event&);
-	void fillL1Taus(const edm::Event&);
-	void fillL1Jets(const edm::Event&);
-        void fillTaus(const edm::Event&);
-	void fillJets(const edm::Event&, const edm::EventSetup&);
+    void branchesTriggers(TTree*);
+    void branchesEventInfo(TTree*);
+    void branchesL1Taus(TTree*);
+    void branchesL1Jets(TTree*);
+    void branchesTaus(TTree*);
+    void branchesJets(TTree*);
+
+    void fillTriggers(const edm::Event&);
+    void fillEventInfo(const edm::Event&);
+    void fillL1Taus(const edm::Event&);
+    void fillL1Jets(const edm::Event&);
+    void fillTaus(const edm::Event&);
+    void fillJets(const edm::Event&, const edm::EventSetup&);
 
 	//-------------member data----------------//
 	TTree* tree_; 

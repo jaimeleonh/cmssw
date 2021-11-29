@@ -62,8 +62,6 @@ using namespace std; // I think best practice is to include <vector> explicitly 
 // int passVBFPlusTwoTauHLT;
 // int passVBFPlusOneTauHLT;
 int passDoubleTauJetHLT;
-int passDoubleTau32HLT;
-int passDoubleTau35HLT;
 
 float 	pt_;
 float 	eta_;
@@ -102,37 +100,18 @@ int	nEvents;
 // vector<float>	hltL1VBFDiJetIsoTau_tauEta;
 // vector<float>	hltL1VBFDiJetIsoTau_tauPhi;
 // vector<float>	hltL1VBFDiJetIsoTau_tauEnergy;
-
-//hltL1DoubleTau32
-int	passhltL1DoubleTau32;
-int	hltL1DoubleTau32_nTaus;
-vector<float>	hltL1DoubleTau32_tauPt;
-vector<float>	hltL1DoubleTau32_tauEta;
-vector<float>	hltL1DoubleTau32_tauPhi;
-vector<float>	hltL1DoubleTau32_tauEnergy;
-
-//hltL1DoubleTau35
-int	passhltL1DoubleTau35;
-int	hltL1DoubleTau35_nTaus;
-vector<float>	hltL1DoubleTau35_tauPt;
-vector<float>	hltL1DoubleTau35_tauEta;
-vector<float>	hltL1DoubleTau35_tauPhi;
-vector<float>	hltL1DoubleTau35_tauEnergy;
-
 //hltL1DoubleTauJet
 int	passhltL1DoubleTauJet;
-int	hltL1DoubleTauJet_nJets;
+vector<int>	hltL1DoubleTauJet_nJets;
 vector<float>	hltL1DoubleTauJet_jetPt;
 vector<float>	hltL1DoubleTauJet_jetEta;
 vector<float>	hltL1DoubleTauJet_jetPhi;
 vector<float>	hltL1DoubleTauJet_jetEnergy;
-int	hltL1DoubleTauJet_nTaus;
+vector<int>	hltL1DoubleTauJet_nTaus;
 vector<float>	hltL1DoubleTauJet_tauPt;
 vector<float>	hltL1DoubleTauJet_tauEta;
 vector<float>	hltL1DoubleTauJet_tauPhi;
 vector<float>	hltL1DoubleTauJet_tauEnergy;
-
-
 // //hltHpsDoublePFTau20
 // int	passhltHpsDoublePFTau20;
 // vector<float> 	hltHpsDoublePFTau20_pt;
@@ -195,14 +174,12 @@ vector<float>	hltL1DoubleTauJet_tauEnergy;
 // vector<float> hltHpsSinglePFTau20TrackTightChargedIsoAgainstMuon_energy;
 //hltMatchedVBFIsoTauTwoPFJets2CrossCleanedFromSingleTightChargedIsoPFTauHPS20
 int passhltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg;
-int hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_nTaus;
 vector<float> hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_pt;
 vector<float> hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_eta;
 vector<float> hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_phi;
 vector<float> hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_energy;
 
 int passHLT1PFJetFilter;
-int HLT1PFJetFilter_nJets;
 vector<float> HLT1PFJetFilter_pt;
 vector<float> HLT1PFJetFilter_eta;
 vector<float> HLT1PFJetFilter_phi;
@@ -219,8 +196,6 @@ void NtupleMaker::branchesTriggers(TTree* tree){
     // tree->Branch("passVBFPlusTwoTauHLT", &passVBFPlusTwoTauHLT);
     
     tree->Branch("passDoubleTauJetHLT", &passDoubleTauJetHLT);
-    tree->Branch("passDoubleTau32HLT", &passDoubleTau32HLT);
-    tree->Branch("passDoubleTau35HLT", &passDoubleTau35HLT);
     // tree->Branch("passVBFPlusOneTauHLT", &passVBFPlusOneTauHLT);
     
     // tree->Branch("passhltL1sDoubleTauBigOR", &passhltL1sDoubleTauBigOR);
@@ -241,20 +216,6 @@ void NtupleMaker::branchesTriggers(TTree* tree){
     // tree->Branch("hltL1VBFDiJetOR_eta", &hltL1VBFDiJetOR_eta);
     // tree->Branch("hltL1VBFDiJetOR_phi", &hltL1VBFDiJetOR_phi);
     // tree->Branch("hltL1VBFDiJetOR_energy", &hltL1VBFDiJetOR_energy);
-    
-    tree->Branch("passhltL1DoubleTau32", &passhltL1DoubleTauJet);
-    tree->Branch("hltL1DoubleTau32_nTaus", &hltL1DoubleTauJet_nTaus);
-    tree->Branch("hltL1DoubleTau32_tauPt", &hltL1DoubleTauJet_tauPt);
-    tree->Branch("hltL1DoubleTau32_tauEta", &hltL1DoubleTauJet_tauEta);
-    tree->Branch("hltL1DoubleTau32_tauPhi", &hltL1DoubleTauJet_tauPhi);
-    tree->Branch("hltL1DoubleTau32_tauEnergy", &hltL1DoubleTauJet_tauEnergy);
-    
-    tree->Branch("passhltL1DoubleTau35", &passhltL1DoubleTauJet);
-    tree->Branch("hltL1DoubleTau35_nTaus", &hltL1DoubleTauJet_nTaus);
-    tree->Branch("hltL1DoubleTau35_tauPt", &hltL1DoubleTauJet_tauPt);
-    tree->Branch("hltL1DoubleTau35_tauEta", &hltL1DoubleTauJet_tauEta);
-    tree->Branch("hltL1DoubleTau35_tauPhi", &hltL1DoubleTauJet_tauPhi);
-    tree->Branch("hltL1DoubleTau35_tauEnergy", &hltL1DoubleTauJet_tauEnergy);
     
     tree->Branch("passhltL1DoubleTauJet", &passhltL1DoubleTauJet);
     tree->Branch("hltL1DoubleTauJet_nJets", &hltL1DoubleTauJet_nJets);
@@ -335,14 +296,12 @@ void NtupleMaker::branchesTriggers(TTree* tree){
     // tree->Branch("hltMatchedVBFIsoTauTwoPFJets2CrossCleanedFromSingleTightChargedIsoPFTauHPS20_energy", &hltMatchedVBFIsoTauTwoPFJets2CrossCleanedFromSingleTightChargedIsoPFTauHPS20_energy);
     
     tree->Branch("passhltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg", &passhltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg);
-    tree->Branch("hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_nTaus", &hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_nTaus);
     tree->Branch("hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_pt", &hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_pt);
     tree->Branch("hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_eta", &hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_eta);
     tree->Branch("hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_phi", &hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_phi);
     tree->Branch("hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_energy", &hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_energy);
     
     tree->Branch("passHLT1PFJetFilter", &passHLT1PFJetFilter);
-    tree->Branch("HLT1PFJetFilter_nJets", &HLT1PFJetFilter_nJets);
     tree->Branch("HLT1PFJetFilter_eta", &HLT1PFJetFilter_eta);
     tree->Branch("HLT1PFJetFilter_phi", &HLT1PFJetFilter_phi);
     tree->Branch("HLT1PFJetFilter_phi", &HLT1PFJetFilter_phi);
@@ -362,54 +321,19 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
     // passVBFPlusTwoTauHLT = 0;
     // passVBFPlusOneTauHLT = 0;
     passDoubleTauJetHLT = 0;
-    passDoubleTau32HLT = 0;
-    passDoubleTau35HLT = 0;
-    
-    //L1 branches 
-    passhltL1DoubleTau32 = 0;
-    hltL1DoubleTau32_nTaus = 0;
-    hltL1DoubleTau32_tauPt.clear();
-    hltL1DoubleTau32_tauEta.clear();
-    hltL1DoubleTau32_tauPhi.clear();
-    hltL1DoubleTau32_tauEnergy.clear();
-
-    //hltL1DoubleTau35
-    passhltL1DoubleTau35 = 0;
-    hltL1DoubleTau35_nTaus = 0;
-    hltL1DoubleTau35_tauPt.clear();
-    hltL1DoubleTau35_tauEta.clear();
-    hltL1DoubleTau35_tauPhi.clear();
-    hltL1DoubleTau35_tauEnergy.clear();
-
-    //hltL1DoubleTauJet
-    passhltL1DoubleTauJet = 0;
-    hltL1DoubleTauJet_nJets = 0;
-    hltL1DoubleTauJet_jetPt.clear();
-    hltL1DoubleTauJet_jetEta.clear();
-    hltL1DoubleTauJet_jetPhi.clear();
-    hltL1DoubleTauJet_jetEnergy.clear();
-    hltL1DoubleTauJet_nTaus = 0;
-    hltL1DoubleTauJet_tauPt.clear();
-    hltL1DoubleTauJet_tauEta.clear();
-    hltL1DoubleTauJet_tauPhi.clear();
-    hltL1DoubleTauJet_tauEnergy.clear();
-
     
     passhltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg = 0;
-    hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_nTaus = 0;
     hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_pt.clear();
     hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_eta.clear();
     hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_phi.clear();
     hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_energy.clear();
     
     passHLT1PFJetFilter = 0;
-    HLT1PFJetFilter_nJets = 0;
     HLT1PFJetFilter_pt.clear();
     HLT1PFJetFilter_eta.clear();
     HLT1PFJetFilter_phi.clear();
     HLT1PFJetFilter_energy.clear();
     
-
     // DiTau 32 L1 branches (there's a big OR with multiple DiTaus, but 32 is the lowest)
     // passhltL1sDoubleTauBigOR = 0;
     // hltL1sDoubleTauBigOR_pt.clear();
@@ -534,20 +458,12 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
     
     
     // 2 Tau + Jet
-    std::string pathNameDoubleTauJet = "HLT_DoubleMediumChargedIsoPFTauHPS35_Trk1_TightID_eta2p1_Reg_PFJet60";
+    std::string pathNameDoubleTauJet = "HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60";
     passDoubleTauJetHLT = triggerResults->accept(triggerNames_.triggerIndex(pathNameDoubleTauJet));
-    
-    // 2 Tau, L1 32
-    std::string pathNameDoubleTau32 = "HLT_DoubleMediumChargedIsoPFTauHPS40_Trk1_TightID_eta2p1_Reg_v1";
-    passDoubleTau32HLT = triggerResults->accept(triggerNames_.triggerIndex(pathNameDoubleTau32));
-    
-    // 2 Tau, L1 35
-    std::string pathNameDoubleTau35 = "HLT_DoubleMediumChargedIsoPFTauHPS40_Trk1_TightID_eta2p1_Reg_L135";
-    passDoubleTau35HLT = triggerResults->accept(triggerNames_.triggerIndex(pathNameDoubleTau35));
     
     // filling branches with triggerObjs information, hltL1VBFDiJetIsoTau object info filled separately since it's a weird L1
     
-    // getting trigger refs for hltL1DoubleTauJet filter's tau/jet splitting
+    // getting trigger refs for hltL1VBFDiJetIsoTau filter's tau/jet splitting
     edm::Handle<trigger::TriggerEventWithRefs> triggerEventWithRefsHandle_;
     iEvent.getByToken(triggerEventWithRefsToken_, triggerEventWithRefsHandle_);
     const unsigned int filterIndex(triggerEventWithRefsHandle_->filterIndex(InputTag("hltL1DoubleTauJet", "", "MYHLT")));
@@ -561,8 +477,8 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
     triggerEventWithRefsHandle_->getObjects(filterIndex, tvids, tauCandRefVec);
 
     const unsigned int nJets(jvids.size());
-    hltL1DoubleTauJet_nJets = nJets;
     if (nJets > 0) {
+        hltL1DoubleTauJet_nJets.push_back(nJets);
         for (unsigned int i = 0; i != nJets; ++i) {
             hltL1DoubleTauJet_jetPt.push_back(jetCandRefVec[i]->pt());
             hltL1DoubleTauJet_jetEta.push_back(jetCandRefVec[i]->eta());
@@ -571,8 +487,8 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
         }
     }
     const unsigned int nTaus(tvids.size());
-    hltL1DoubleTauJet_nTaus = nTaus;
     if (nTaus > 0) {
+        hltL1DoubleTauJet_nTaus.push_back(nTaus);
         for (unsigned int i = 0; i != nTaus; ++i) {
             hltL1DoubleTauJet_tauPt.push_back(tauCandRefVec[i]->pt());
             hltL1DoubleTauJet_tauEta.push_back(tauCandRefVec[i]->eta());
@@ -580,48 +496,12 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
             hltL1DoubleTauJet_tauEnergy.push_back(tauCandRefVec[i]->energy());
         }
     }
-    
-    
-    // getting trigger refs for hltL1sDoubleTauBigOR filter's tau/jet splitting
-    const unsigned int filterIndex32(triggerEventWithRefsHandle_->filterIndex(InputTag("hltL1sDoubleTauBigOR", "", "MYHLT")));
-    //making tau object and filling vector
-    triggerEventWithRefsHandle_->getObjects(filterIndex32, tvids, tauCandRefVec);
-
-    const unsigned int nTaus32(tvids.size());
-    hltL1DoubleTau32_nTaus = nTaus32;
-    if (nTaus > 0) {
-        for (unsigned int i = 0; i != nTaus32; ++i) {
-            hltL1DoubleTau32_tauPt.push_back(tauCandRefVec[i]->pt());
-            hltL1DoubleTau32_tauEta.push_back(tauCandRefVec[i]->eta());
-            hltL1DoubleTau32_tauPhi.push_back(tauCandRefVec[i]->phi());
-            hltL1DoubleTau32_tauEnergy.push_back(tauCandRefVec[i]->energy());
-        }
-    }
-    
-    // getting trigger refs for hltL1DoubleTau35 filter's tau/jet splitting
-    const unsigned int filterIndex35(triggerEventWithRefsHandle_->filterIndex(InputTag("hltL1DoubleTau35", "", "MYHLT")));
-    //making tau object and filling vector
-    triggerEventWithRefsHandle_->getObjects(filterIndex35, tvids, tauCandRefVec);
-
-    const unsigned int nTaus35(tvids.size());
-    hltL1DoubleTau35_nTaus = nTaus35;
-    if (nTaus > 0) {
-        for (unsigned int i = 0; i != nTaus35; ++i) {
-            hltL1DoubleTau35_tauPt.push_back(tauCandRefVec[i]->pt());
-            hltL1DoubleTau35_tauEta.push_back(tauCandRefVec[i]->eta());
-            hltL1DoubleTau35_tauPhi.push_back(tauCandRefVec[i]->phi());
-            hltL1DoubleTau35_tauEnergy.push_back(tauCandRefVec[i]->energy());
-        }
-    }    
-
     //filling the rest, as well as passFilter branches
     const trigger::size_type nFilters(triggerEvent->sizeFilters());
     // std::string hltL1sDoubleTauBigOR_Tag = "hltL1sDoubleTauBigOR::MYHLT"; // ditau L1
     // std::string hltL1VBFDiJetOR_Tag = "hltL1VBFDiJetOR::MYHLT";		  // inclusive L1
     // std::string hltL1VBFDiJetIsoTau_Tag = "hltL1VBFDiJetIsoTau::MYHLT";	  // proposed L1
     std::string hltL1DoubleTauJet_Tag = "hltL1DoubleTauJet::MYHLT";	  // proposed L1
-    std::string hltL1DoubleTau32_Tag = "hltL1sDoubleTauBigOR::MYHLT";	  // ditau32 L1
-    std::string hltL1DoubleTau35_Tag = "hltL1DoubleTau35::MYHLT";	  // ditau35 L1
     
     // std::string hltHpsDoublePFTau20_Tag = "hltHpsDoublePFTau20::MYHLT";
     // std::string hltHpsDoublePFTau20TrackTightChargedIso_Tag = "hltHpsDoublePFTau20TrackTightChargedIso::MYHLT";
@@ -657,9 +537,6 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
         // && hltL1VBFDiJetIsoTau_jetPt.size() >= 2) passhltL1VBFDiJetIsoTau = 1;
         if (filterTag == hltL1DoubleTauJet_Tag && hltL1DoubleTauJet_tauPt.size() >= 2
             && hltL1DoubleTauJet_jetPt.size() >= 1) passhltL1DoubleTauJet = 1;
-        
-        if (filterTag == hltL1DoubleTau32_Tag && hltL1DoubleTau32_tauPt.size() >= 2) passhltL1DoubleTau32 = 1;
-        if (filterTag == hltL1DoubleTau35_Tag && hltL1DoubleTau35_tauPt.size() >= 2) passhltL1DoubleTau35 = 1;
         
         // // Inclusive/VBFPlusTwoTau Modules
         // if (filterTag == hltHpsDoublePFTau20_Tag && nObjKeys >= 2) passhltHpsDoublePFTau20 = 1; 
@@ -810,7 +687,7 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
                 hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg_energy.push_back(energy_);
             }
             else if (filterTag == HLT1PFJetFilter_Tag && passHLT1PFJetFilter && pt_>0) {
-                HLT1PFJetFilter_pt.push_back(pt_);
+                HLT1PFJetFilter_eta.push_back(pt_);
                 HLT1PFJetFilter_eta.push_back(eta_);
                 HLT1PFJetFilter_phi.push_back(phi_);
                 HLT1PFJetFilter_energy.push_back(energy_);

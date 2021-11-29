@@ -1,4 +1,4 @@
-# hltGetConfiguration /users/jleonhol/HLT_full/V5 --setup /dev/CMSSW_12_2_0/GRun --globaltag auto:phase1_2021_realistic --path HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60 --input root://cms-xrd-global.cern.ch///store/mc/Run3Winter21DRMiniAOD/VBFHToTauTau_M125_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v1/270000/005b56c1-0107-46b3-9740-1c6efc559295.root --data --process MYHLT --full --offline --l1-emulator uGT --prescale none --max-events 10 --output none --l1Xml L1Menu_Collisions2022_v0_1_1_OR_bis.xml
+# hltGetConfiguration /users/jleonhol/HLT_full/V5 --setup /dev/CMSSW_12_2_0/GRun --globaltag auto:phase1_2021_realistic --path HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60 --input root://cms-xrd-global.cern.ch///store/mc/Run3Winter21DRMiniAOD/VBFHToTauTau_M125_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v1/270000/005b56c1-0107-46b3-9740-1c6efc559295.root --mc --process MYHLT --full --offline --l1-emulator uGT --prescale none --max-events 10 --output none --l1Xml L1Menu_Collisions2022_v0_1_1_modified.xml
 
 # /users/jleonhol/HLT_full/V5 (CMSSW_12_2_0_pre2)
 
@@ -5857,8 +5857,7 @@ process.hltOnlineBeamSpot = cms.EDProducer( "BeamSpotOnlineProducer",
 )
 process.hltL1DoubleTauJet = cms.EDFilter( "HLTL1TSeed",
     saveTags = cms.bool( True ),
-    #L1SeedsLogicalExpression = cms.string( "L1_DoubleIsoTau35er2p1" ),
-    L1SeedsLogicalExpression = cms.string( "L1_DoubleIsoTau26er2p1_Jet55_RmOvlp" ),
+    L1SeedsLogicalExpression = cms.string( "L1_DoubleIsoTau26er2p1Jet60" ),
     L1ObjectMapInputTag = cms.InputTag( "hltGtStage2ObjectMap" ),
     L1GlobalInputTag = cms.InputTag( "hltGtStage2Digis" ),
     L1MuonInputTag = cms.InputTag( 'hltGtStage2Digis','Muon' ),
@@ -14516,33 +14515,13 @@ process.HLTAK4PFJetsSequence = cms.Sequence( process.HLTPreAK4PFJetsRecoSequence
 process.HLTEndSequence = cms.Sequence( process.hltBoolEnd )
 
 process.HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60 = cms.Path( process.HLTBeginSequence + process.hltL1DoubleTauJet + process.hltPreDoubleMediumChargedIsoPFTauHPS30Trk1eta2p1RegPFJet60 + process.HLTL2TauJetsL1TauSeededSequence + process.hltDoubleL2Tau26eta2p2 + process.HLTL2p5IsoTauL1TauSeededSequence + process.hltDoubleL2IsoTau26eta2p2 + process.HLTRegionalPFTauHPSSequence + process.HLTHPSDoublePFTauPt35Eta2p1Trk1Reg + process.HLTHPSMediumChargedIsoTightOOSCPhotonsPFTauSequenceReg + process.hltHpsSelectedPFTausTrackPt1MediumChargedIsolationAndTightOOSCPhotonsReg + process.hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsReg + process.HLTAK4PFJetsSequence + process.MatchingModule + process.hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsL1HLTMatchedReg + process.hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg + process.HLT1PFJetFilter + process.HLTEndSequence )
-#process.HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60 = cms.Path( process.HLTBeginSequence + process.hltL1DoubleTauJet + process.hltPreDoubleMediumChargedIsoPFTauHPS30Trk1eta2p1RegPFJet60 + process.HLTL2TauJetsL1TauSeededSequence + process.hltDoubleL2Tau26eta2p2 + process.HLTL2p5IsoTauL1TauSeededSequence + process.hltDoubleL2IsoTau26eta2p2 + process.HLTRegionalPFTauHPSSequence + process.HLTHPSDoublePFTauPt35Eta2p1Trk1Reg + process.HLTHPSMediumChargedIsoTightOOSCPhotonsPFTauSequenceReg + process.hltHpsSelectedPFTausTrackPt1MediumChargedIsolationAndTightOOSCPhotonsReg + process.hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsReg + process.HLTAK4PFJetsSequence + process.MatchingModule + process.hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsL1HLTMatchedReg + process.HLTEndSequence )
-# process.HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60 = cms.Path( process.HLTBeginSequence + process.hltL1DoubleTauJet + process.hltPreDoubleMediumChargedIsoPFTauHPS30Trk1eta2p1RegPFJet60 + process.HLTL2TauJetsL1TauSeededSequence + process.hltDoubleL2Tau26eta2p2 + process.HLTL2p5IsoTauL1TauSeededSequence + process.hltDoubleL2IsoTau26eta2p2 + process.HLTRegionalPFTauHPSSequence + process.HLTHPSDoublePFTauPt35Eta2p1Trk1Reg + process.HLTHPSMediumChargedIsoTightOOSCPhotonsPFTauSequenceReg + process.hltHpsSelectedPFTausTrackPt1MediumChargedIsolationAndTightOOSCPhotonsReg + process.hltHpsDoublePFTau30TrackPt1MediumChargedIsolationAndTightOOSCPhotonsReg + process.HLTAK4PFJetsSequence + process.HLT1PFJetFilter + process.HLTEndSequence )
+
 
 # process.HLTSchedule = cms.Schedule( *(process.HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60, ))
 
 
-# source module (EDM inputs)
-process.source = cms.Source( "PoolSource",
-    fileNames = cms.untracked.vstring(
-        'root://cms-xrd-global.cern.ch///store/mc/Run3Winter21DRMiniAOD/GluGluToHHTo2B2Tau_node_cHHH1_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/250000/016c25e2-47d0-4f4f-abda-f9b4117151cc.root',
-    ),
-    inputCommands = cms.untracked.vstring(
-        'keep *'
-    )
-)
-
-# updatedTauName = "slimmedTausNewID" #name of pat::Tau collection with new tau-Ids
-# import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
-# tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, #debug = False,
-                    # updatedTauName = updatedTauName,
-                    # toKeep = ["deepTau2017v2p1", #deepTau TauIDs
-                               # ])
-# tauIdEmbedder.runTauID()
-# Path and EndPath definitions
-
 process.demo = cms.EDAnalyzer('NtupleMaker'
-     #, tracks = cms.untracked.InputTag('ctfWithMaterialTracks')
+#, tracks = cms.untracked.InputTag('ctfWithMaterialTracks')
      , triggerResults = cms.untracked.InputTag("TriggerResults","","MYHLT") #change to HLT instead of MYHLT if not rerun 
      , triggerEvent = cms.untracked.InputTag("hltTriggerSummaryAOD","","MYHLT")
      , triggerEventWithRefs = cms.untracked.InputTag("hltTriggerSummaryRAW","","MYHLT")
@@ -14594,6 +14573,18 @@ process.HLTriggerFinalPath = cms.Path( process.hltTriggerSummaryAOD + process.hl
 process.HLTSchedule = cms.Schedule( [*(process.HLT_DoubleMediumChargedIsoPFTauHPS30_Trk1_eta2p1_Reg_PFJet60, ), process.demoPath])
 
 
+
+
+# source module (EDM inputs)
+process.source = cms.Source( "PoolSource",
+    fileNames = cms.untracked.vstring(
+        'root://cms-xrd-global.cern.ch///store/mc/Run3Winter21DRMiniAOD/VBFHToTauTau_M125_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v1/270000/005b56c1-0107-46b3-9740-1c6efc559295.root',
+    ),
+    inputCommands = cms.untracked.vstring(
+        'keep *'
+    )
+)
+
 # override the GlobalTag's L1T menu from an Xml file
 from HLTrigger.Configuration.CustomConfigs import L1XML
 process = L1XML(process,"L1Menu_Collisions2022_v0_1_1_modified.xml")
@@ -14610,13 +14601,13 @@ if 'PrescaleService' in process.__dict__:
 
 # limit the number of events to be processed
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32( 1000 )
+    input = cms.untracked.int32( 10 )
 )
 
 # enable TrigReport, TimeReport and MultiThreading
 process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool( True ),
-    numberOfThreads = cms.untracked.uint32( 1 ),
+    numberOfThreads = cms.untracked.uint32( 4 ),
     numberOfStreams = cms.untracked.uint32( 0 ),
 )
 
@@ -14634,29 +14625,14 @@ if 'MessageLogger' in process.__dict__:
     process.MessageLogger.FastReport = cms.untracked.PSet()
     process.MessageLogger.ThroughputService = cms.untracked.PSet()
 
-# load the DQMStore and DQMRootOutputModule
-#process.load( "DQMServices.Core.DQMStore_cfi" )
+# # load the DQMStore and DQMRootOutputModule
+# process.load( "DQMServices.Core.DQMStore_cfi" )
 
-#process.dqmOutput = cms.OutputModule("DQMRootOutputModule",
-#    fileName = cms.untracked.string("DQMIO.root")
-#)
+# process.dqmOutput = cms.OutputModule("DQMRootOutputModule",
+    # fileName = cms.untracked.string("DQMIO.root")
+# )
 
-#process.DQMOutput = cms.EndPath( process.dqmOutput )
-
-# add a single "keep *" output
-#process.hltOutputMinimal = cms.OutputModule( "PoolOutputModule",
-#    fileName = cms.untracked.string( "output.root" ),
-#    fastCloning = cms.untracked.bool( False ),
-#    dataset = cms.untracked.PSet(
-#        dataTier = cms.untracked.string( 'AOD' ),
-#        filterName = cms.untracked.string( '' )
-#    ),
-#    outputCommands = cms.untracked.vstring( 'drop *',
-#        'keep edmTriggerResults_*_*_*',
-#        'keep triggerTriggerEvent_*_*_*'
-#    )
-#)
-#process.MinimalOutput = cms.EndPath( process.hltOutputMinimal )
+# process.DQMOutput = cms.EndPath( process.dqmOutput )
 
 # add specific customizations
 _customInfo = {}
@@ -14667,10 +14643,10 @@ _customInfo['globalTags'][False] = "auto:run3_mc_GRun"
 _customInfo['inputFiles']={}
 _customInfo['inputFiles'][True]  = "file:RelVal_Raw_GRun_DATA.root"
 _customInfo['inputFiles'][False] = "file:RelVal_Raw_GRun_MC.root"
-_customInfo['maxEvents' ]=  10000
+_customInfo['maxEvents' ]=  10
 _customInfo['globalTag' ]= "auto:phase1_2021_realistic"
-_customInfo['inputFile' ]=  ['root://cms-xrd-global.cern.ch///store/mc/Run3Winter21DRMiniAOD/GluGluToHHTo2B2Tau_node_cHHH1_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/250000/016c25e2-47d0-4f4f-abda-f9b4117151cc.root']
-_customInfo['realData'  ]=  True
+_customInfo['inputFile' ]=  ['root://cms-xrd-global.cern.ch///store/mc/Run3Winter21DRMiniAOD/VBFHToTauTau_M125_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v1/270000/005b56c1-0107-46b3-9740-1c6efc559295.root']
+_customInfo['realData'  ]=  False
 
 from HLTrigger.Configuration.customizeHLTforALL import customizeHLTforAll
 process = customizeHLTforAll(process,"GRun",_customInfo)
