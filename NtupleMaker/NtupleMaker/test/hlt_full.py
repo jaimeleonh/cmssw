@@ -14729,8 +14729,8 @@ process.TFileService = cms.Service("TFileService",
 
 
 process.demoPath = cms.EndPath(
-        # process.rerunMvaIsolationSequence *
-        # getattr(process,updatedTauName) *
+        process.rerunMvaIsolationSequence *
+        getattr(process,updatedTauName) *
         process.demo
 )
 
@@ -14772,7 +14772,7 @@ process.maxEvents = cms.untracked.PSet(
 # enable TrigReport, TimeReport and MultiThreading
 process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool( True ),
-    numberOfThreads = cms.untracked.uint32( 4 ),
+    numberOfThreads = cms.untracked.uint32( 1 ),
     numberOfStreams = cms.untracked.uint32( 0 ),
 )
 

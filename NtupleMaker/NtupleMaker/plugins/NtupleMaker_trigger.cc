@@ -242,19 +242,19 @@ void NtupleMaker::branchesTriggers(TTree* tree){
     // tree->Branch("hltL1VBFDiJetOR_phi", &hltL1VBFDiJetOR_phi);
     // tree->Branch("hltL1VBFDiJetOR_energy", &hltL1VBFDiJetOR_energy);
     
-    tree->Branch("passhltL1DoubleTau32", &passhltL1DoubleTauJet);
-    tree->Branch("hltL1DoubleTau32_nTaus", &hltL1DoubleTauJet_nTaus);
-    tree->Branch("hltL1DoubleTau32_tauPt", &hltL1DoubleTauJet_tauPt);
-    tree->Branch("hltL1DoubleTau32_tauEta", &hltL1DoubleTauJet_tauEta);
-    tree->Branch("hltL1DoubleTau32_tauPhi", &hltL1DoubleTauJet_tauPhi);
-    tree->Branch("hltL1DoubleTau32_tauEnergy", &hltL1DoubleTauJet_tauEnergy);
+    tree->Branch("passhltL1DoubleTau32", &passhltL1DoubleTau32);
+    tree->Branch("hltL1DoubleTau32_nTaus", &hltL1DoubleTau32_nTaus);
+    tree->Branch("hltL1DoubleTau32_tauPt", &hltL1DoubleTau32_tauPt);
+    tree->Branch("hltL1DoubleTau32_tauEta", &hltL1DoubleTau32_tauEta);
+    tree->Branch("hltL1DoubleTau32_tauPhi", &hltL1DoubleTau32_tauPhi);
+    tree->Branch("hltL1DoubleTau32_tauEnergy", &hltL1DoubleTau32_tauEnergy);
     
-    tree->Branch("passhltL1DoubleTau35", &passhltL1DoubleTauJet);
-    tree->Branch("hltL1DoubleTau35_nTaus", &hltL1DoubleTauJet_nTaus);
-    tree->Branch("hltL1DoubleTau35_tauPt", &hltL1DoubleTauJet_tauPt);
-    tree->Branch("hltL1DoubleTau35_tauEta", &hltL1DoubleTauJet_tauEta);
-    tree->Branch("hltL1DoubleTau35_tauPhi", &hltL1DoubleTauJet_tauPhi);
-    tree->Branch("hltL1DoubleTau35_tauEnergy", &hltL1DoubleTauJet_tauEnergy);
+    tree->Branch("passhltL1DoubleTau35", &passhltL1DoubleTau35);
+    tree->Branch("hltL1DoubleTau35_nTaus", &hltL1DoubleTau35_nTaus);
+    tree->Branch("hltL1DoubleTau35_tauPt", &hltL1DoubleTau35_tauPt);
+    tree->Branch("hltL1DoubleTau35_tauEta", &hltL1DoubleTau35_tauEta);
+    tree->Branch("hltL1DoubleTau35_tauPhi", &hltL1DoubleTau35_tauPhi);
+    tree->Branch("hltL1DoubleTau35_tauEnergy", &hltL1DoubleTau35_tauEnergy);
     
     tree->Branch("passhltL1DoubleTauJet", &passhltL1DoubleTauJet);
     tree->Branch("hltL1DoubleTauJet_nJets", &hltL1DoubleTauJet_nJets);
@@ -640,8 +640,10 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
     std::string HLT1PFJetFilter_Tag = "HLT1PFJetFilter::MYHLT";
     
     // accepted filters per event
+    std::cout << nFilters << std::endl;
     for(trigger::size_type iFilter=0; iFilter!=nFilters; ++iFilter) {
         std::string filterTag = triggerEvent->filterTag(iFilter).encode();
+        std::cout << filterTag << std::endl;
         trigger::Keys objectKeys = triggerEvent->filterKeys(iFilter);
         
         const trigger::TriggerObjectCollection& triggerObjects(triggerEvent->getObjects());
@@ -658,8 +660,8 @@ void NtupleMaker::fillTriggers(const edm::Event& iEvent){
         if (filterTag == hltL1DoubleTauJet_Tag && hltL1DoubleTauJet_tauPt.size() >= 2
             && hltL1DoubleTauJet_jetPt.size() >= 1) passhltL1DoubleTauJet = 1;
         
-        if (filterTag == hltL1DoubleTau32_Tag && hltL1DoubleTau32_tauPt.size() >= 2) passhltL1DoubleTau32 = 1;
-        if (filterTag == hltL1DoubleTau35_Tag && hltL1DoubleTau35_tauPt.size() >= 2) passhltL1DoubleTau35 = 1;
+        if (filterTag == hltL1DoubleTau32_Tag && nObjKeys >= 2) passhltL1DoubleTau32 = 1;
+        if (filterTag == hltL1DoubleTau35_Tag && nObjKeys >= 2) passhltL1DoubleTau35 = 1;
         
         // // Inclusive/VBFPlusTwoTau Modules
         // if (filterTag == hltHpsDoublePFTau20_Tag && nObjKeys >= 2) passhltHpsDoublePFTau20 = 1; 
