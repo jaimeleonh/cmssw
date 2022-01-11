@@ -73,9 +73,11 @@ L1TUtmTriggerMenuESProducer::L1TUtmTriggerMenuESProducer(const edm::ParameterSet
   // def.xml file
   std::string L1TriggerMenuFile = conf.getParameter<std::string>("L1TriggerMenuFile");
 
-  edm::FileInPath f1("L1Trigger/L1TGlobal/data/Luminosity/startup/" + L1TriggerMenuFile);
+  //edm::FileInPath f1(L1TriggerMenuFile);
+  //edm::FileInPath f1("L1Trigger/L1TGlobal/data/Luminosity/startup/" + L1TriggerMenuFile);
 
-  m_L1TriggerMenuFile = f1.fullPath();
+  //m_L1TriggerMenuFile = f1.fullPath();
+  m_L1TriggerMenuFile = L1TriggerMenuFile;
 }
 
 L1TUtmTriggerMenuESProducer::~L1TUtmTriggerMenuESProducer() {
