@@ -333,17 +333,22 @@ void l1t::TriggerMenuParser::parseCondFormats(const L1TUtmTriggerMenu* utmMenu) 
           //parse Externals
         } else if (condition.getType() == esConditionType::Externals) {
           parseExternal(condition, chipNr);
+        
+        } else if (condition.getType() == esConditionType::CaloCaloCorrelationOvRm ||
+                   condition.getType() == esConditionType::InvariantMassOvRm ||
+                   condition.getType() == esConditionType::TransverseMassOvRm ||
+                   condition.getType() == esConditionType::DoubleJetOvRm ||
+                   condition.getType() == esConditionType::DoubleTauOvRm ||
+                   condition.getType() == esConditionType::SingleJetOvRm) {
+          parseCorrelationWithOverlapRemoval(condition, chipNr);
 
         } else if (condition.getType() == esConditionType::SingleEgammaOvRm ||
                    condition.getType() == esConditionType::DoubleEgammaOvRm ||
                    condition.getType() == esConditionType::TripleEgammaOvRm ||
                    condition.getType() == esConditionType::QuadEgammaOvRm ||
                    condition.getType() == esConditionType::SingleTauOvRm ||
-                   condition.getType() == esConditionType::DoubleTauOvRm ||
                    condition.getType() == esConditionType::TripleTauOvRm ||
                    condition.getType() == esConditionType::QuadTauOvRm ||
-                   condition.getType() == esConditionType::SingleJetOvRm ||
-                   condition.getType() == esConditionType::DoubleJetOvRm ||
                    condition.getType() == esConditionType::TripleJetOvRm ||
                    condition.getType() == esConditionType::QuadJetOvRm) {
           edm::LogError("TriggerMenuParser")
@@ -353,11 +358,8 @@ void l1t::TriggerMenuParser::parseCondFormats(const L1TUtmTriggerMenu* utmMenu) 
               << "TripleEgammaOvRm" << std::endl
               << "QuadEgammaOvRm" << std::endl
               << "SingleTauOvRm" << std::endl
-              << "DoubleTauOvRm" << std::endl
               << "TripleTauOvRm" << std::endl
               << "QuadTauOvRm" << std::endl
-              << "SingleJetOvRm" << std::endl
-              << "DoubleJetOvRm" << std::endl
               << "TripleJetOvRm" << std::endl
               << "QuadJetOvRm" << std::endl
               << "The above conditions types OvRm are not implemented yet in the parser. Please remove alogrithms that "
