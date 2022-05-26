@@ -23,7 +23,8 @@
 #include "L1Trigger/DTTriggerPhase2/interface/constants.h"
 
 #include "L1Trigger/DTTriggerPhase2/interface/MotherGrouping.h"
-#include "L1Trigger/DTTriggerPhase2/interface/InitialGrouping.h"
+// #include "L1Trigger/DTTriggerPhase2/interface/InitialGrouping.h"
+#include "L1Trigger/DTTriggerPhase2/interface/TrapezoidalGrouping.h"
 #include "L1Trigger/DTTriggerPhase2/interface/HoughGrouping.h"
 #include "L1Trigger/DTTriggerPhase2/interface/PseudoBayesGrouping.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzer.h"
@@ -203,7 +204,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
     grouping_obj_ =
         std::make_unique<HoughGrouping>(pset.getParameter<edm::ParameterSet>("HoughGrouping"), consumesColl);
   } else {
-    grouping_obj_ = std::make_unique<InitialGrouping>(pset, consumesColl);
+    // grouping_obj_ = std::make_unique<InitialGrouping>(pset, consumesColl);
+    grouping_obj_ = std::make_unique<TrapezoidalGrouping>(pset, consumesColl);
   }
 
   if (algo_ == Standard) {
@@ -350,6 +352,19 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
           ss << ch_muonpaths.second.at(i)->primitive(lay)->laterality() << " ";
         LogInfo("DTTrigPhase2Prod") << ss.str();
       }
+    }
+  }
+  
+  for (auto & ch_muonpaths: muonpaths) {
+    for (unsigned int i = 0; i < ch_muonpaths.second.size(); i++) {
+      std::cout << iEvent.id().event() << "      mpath " << i << ": ";
+      for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
+        std::cout << ch_muonpaths.second.at(i)->primitive(lay)->channelId() << " ";
+      for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
+        std::cout<< ch_muonpaths.second.at(i)->primitive(lay)->tdcTimeStamp() << " ";
+      for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
+       std::cout << ch_muonpaths.second.at(i)->primitive(lay)->laterality() << " ";
+      std::cout << std::endl;
     }
   }
 

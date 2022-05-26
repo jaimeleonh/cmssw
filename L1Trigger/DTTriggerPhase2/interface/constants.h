@@ -175,6 +175,13 @@ namespace cmsdt {
   /* En nanosegundos */
   constexpr int LHC_CLK_FREQ = 25;
 
+  /* mixer constants */
+  // Hits can be separated up to 9 frames, with 2 BXs per frame
+  // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+  //  F1    F2    F3    F4    F5    F6    F7    F8    F9
+  constexpr int BX_PER_FRAME = 2;
+  constexpr int MAX_FRAME_DIF = 8;
+
   /* Adimensional */
   constexpr int MAX_BX_IDX = 3564;
 
