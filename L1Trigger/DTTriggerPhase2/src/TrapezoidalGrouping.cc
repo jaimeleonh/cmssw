@@ -104,6 +104,7 @@ void TrapezoidalGrouping::run(Event &iEvent,
           std::stable_sort(ptrPrimitive.begin(), ptrPrimitive.end(), hitLayerSort);
           auto ptrMuonPath = std::make_shared<MuonPath>(ptrPrimitive);
           ptrMuonPath->setCellHorizontalLayout(CELL_HORIZONTAL_LAYOUTS_PER_TASK[layer_to_pivot][itask]);
+          ptrMuonPath->setMissingLayer(MISSING_LAYER_LAYOUTS_PER_TASK[layer_to_pivot][itask]);
           mpaths.push_back(std::move(ptrMuonPath));
         }
       }

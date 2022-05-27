@@ -182,6 +182,19 @@ namespace cmsdt {
   constexpr int BX_PER_FRAME = 2;
   constexpr int MAX_FRAME_DIF = 8;
 
+  /* laterality provider */
+  constexpr int LAT_TOTAL_BITS = 9; // tdc counts from 0 to 512
+  constexpr int LAT_MSB_BITS = 6;
+  constexpr int TIME_TO_TDC_COUNTS = 32;
+
+  constexpr int LAT_P0_4H = 1;
+  constexpr int LAT_P1_4H = 31;
+  constexpr int LAT_P2_4H = 40;
+
+  constexpr int LAT_P0_3H = 24;
+  constexpr int LAT_P1_3H = 27;
+  constexpr int LAT_P2_3H = 30;
+
   /* Adimensional */
   constexpr int MAX_BX_IDX = 3564;
 

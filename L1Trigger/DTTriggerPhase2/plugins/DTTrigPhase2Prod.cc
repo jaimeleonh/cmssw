@@ -27,6 +27,9 @@
 #include "L1Trigger/DTTriggerPhase2/interface/TrapezoidalGrouping.h"
 #include "L1Trigger/DTTriggerPhase2/interface/HoughGrouping.h"
 #include "L1Trigger/DTTriggerPhase2/interface/PseudoBayesGrouping.h"
+#include "L1Trigger/DTTriggerPhase2/interface/LateralityProvider.h"
+#include "L1Trigger/DTTriggerPhase2/interface/LateralityBasicProvider.h"
+#include "L1Trigger/DTTriggerPhase2/interface/LateralityCoarsedProvider.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzer.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyticAnalyzer.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzerInChamber.h"
@@ -136,6 +139,7 @@ private:
   int algo_;  // Grouping code
   std::unique_ptr<MotherGrouping> grouping_obj_;
   std::unique_ptr<MuonPathAnalyzer> mpathanalyzer_;
+  std::unique_ptr<LateralityProvider> latprovider_;
   std::unique_ptr<MPFilter> mpathqualityenhancer_;
   std::unique_ptr<MPFilter> mpathqualityenhancerbayes_;
   std::unique_ptr<MPFilter> mpathredundantfilter_;
@@ -212,6 +216,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
     if (debug_)
       LogDebug("DTTrigPhase2Prod") << "DTp2:constructor: JM analyzer";
     mpathanalyzer_ = std::make_unique<MuonPathAnalyticAnalyzer>(pset, consumesColl, globalcoordsobtainer_);
+    // latprovider_ = std::make_unique<LateralityBasicProvider>(pset, consumesColl);
+    latprovider_ = std::make_unique<LateralityCoarsedProvider>(pset, consumesColl);
   } else {
     if (debug_)
       LogDebug("DTTrigPhase2Prod") << "DTp2:constructor: Full chamber analyzer";
@@ -355,6 +361,28 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
     }
   }
   
+  // for (auto & ch_muonpaths: muonpaths) {
+    // for (unsigned int i = 0; i < ch_muonpaths.second.size(); i++) {
+      // std::cout << iEvent.id().event() << "      mpath " << i << ": ";
+      // for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
+        // std::cout << ch_muonpaths.second.at(i)->primitive(lay)->channelId() << " ";
+      // for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
+        // std::cout<< ch_muonpaths.second.at(i)->primitive(lay)->tdcTimeStamp() << " ";
+      // for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
+       // std::cout << ch_muonpaths.second.at(i)->primitive(lay)->laterality() << " ";
+      // std::cout << std::endl;
+    // }
+  // }
+
+  std::map<int, std::vector<lat_vector>> lateralities;
+  for (auto & ch_muonpaths: muonpaths) {
+    if (algo_ == Standard) {
+      latprovider_->run(iEvent, iEventSetup, ch_muonpaths.second, lateralities[ch_muonpaths.first]);
+    }
+  }
+
+  std::cout << lateralities.size() << std::endl;
+
   for (auto & ch_muonpaths: muonpaths) {
     for (unsigned int i = 0; i < ch_muonpaths.second.size(); i++) {
       std::cout << iEvent.id().event() << "      mpath " << i << ": ";
@@ -362,11 +390,19 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
         std::cout << ch_muonpaths.second.at(i)->primitive(lay)->channelId() << " ";
       for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
         std::cout<< ch_muonpaths.second.at(i)->primitive(lay)->tdcTimeStamp() << " ";
-      for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
-       std::cout << ch_muonpaths.second.at(i)->primitive(lay)->laterality() << " ";
       std::cout << std::endl;
+      
+      std::cout << "Lateralities: ";
+      for (size_t lat = 0; lat < 4; lat++) {
+        for (size_t lay = 0; lay < 4; lay++) {
+          std::cout << lateralities[ch_muonpaths.first][i][lat][lay] << " ";
+        }
+        std::cout << std::endl;
+      }
     }
   }
+  
+  
 
   // FILTER GROUPING
   std::map<int, MuonPathPtrs> filteredmuonpaths;
