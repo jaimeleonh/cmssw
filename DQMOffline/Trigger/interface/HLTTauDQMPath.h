@@ -135,6 +135,7 @@ private:
 
   std::vector<FilterIndex> filterIndices_;
   std::vector<int> filterTauN_;
+  std::vector<int> filterJetN_;
   std::vector<int> filterElectronN_;
   std::vector<int> filterMuonN_;
   std::vector<int> filterMET_;
