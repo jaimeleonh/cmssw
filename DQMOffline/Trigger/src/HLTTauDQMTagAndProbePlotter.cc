@@ -162,7 +162,6 @@ void HLTTauDQMTagAndProbePlotter::analyze(edm::Event const& iEvent,
     passTrigger = false;
     for (size_t i = 0; i < numTriggers.size(); ++i) {
       for (unsigned int hltIndex = 0; hltIndex < trigNames.size(); ++hltIndex) {
-        std::cout << trigNames.triggerName(hltIndex) << " " << triggerResults.wasrun(hltIndex) << " " << triggerResults.accept(hltIndex) << std::endl;
         passTrigger = (trigNames.triggerName(hltIndex).find(numTriggers[i]) != std::string::npos &&
                        triggerResults.wasrun(hltIndex) && triggerResults.accept(hltIndex));
         if (passTrigger)
@@ -171,7 +170,6 @@ void HLTTauDQMTagAndProbePlotter::analyze(edm::Event const& iEvent,
       if (passTrigger)
         break;
     }
-    std::cout << passTrigger << std::endl;
     if (!passTrigger)
       return;
 
