@@ -112,7 +112,9 @@ void HLTTauDQMTagAndProbePlotter::analyze(edm::Event const& iEvent,
     offlineObjects = refCollection.electrons;
   if (xvariable == "met")
     offlineObjects = refCollection.met;
-
+  if (xvariable == "jet") {
+    offlineObjects = refCollection.jets;
+  }
   if (offlineObjects.size() < nOfflineObjs)
     return;
 
@@ -131,8 +133,9 @@ void HLTTauDQMTagAndProbePlotter::analyze(edm::Event const& iEvent,
 
         if (passTrigger) {
           double dr = ROOT::Math::VectorUtil::DeltaR(trgObject, offlineObject);
-          if (dr < 0.4)
+          if (dr < 0.4) {
             hltMatched = true;
+          }
           break;
         }
       }

@@ -208,7 +208,6 @@ void HLTTauDQMOfflineSource::analyze(const Event& iEvent, const EventSetup& iSet
         iEvent.getByToken(refObj.token, collHandle);
         if (!collHandle.isValid())
           continue;
-
         if (refObj.objID == 11) {
           refC.electrons.insert(refC.electrons.end(), collHandle->begin(), collHandle->end());
         } else if (refObj.objID == 13) {
@@ -217,6 +216,8 @@ void HLTTauDQMOfflineSource::analyze(const Event& iEvent, const EventSetup& iSet
           refC.taus.insert(refC.taus.end(), collHandle->begin(), collHandle->end());
         } else if (refObj.objID == 0) {
           refC.met.insert(refC.met.end(), collHandle->begin(), collHandle->end());
+        } else if (refObj.objID == 1) {
+          refC.jets.insert(refC.jets.end(), collHandle->begin(), collHandle->end());
         }
       }
     }

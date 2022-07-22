@@ -21,6 +21,8 @@
 #include "DataFormats/CaloTowers/interface/CaloTowerCollection.h"
 #include "DataFormats/CaloTowers/interface/CaloTowerDefs.h"
 #include "Math/GenVector/VectorUtil.h"
+//PFJet includes
+#include "DataFormats/JetReco/interface/PFJetCollection.h"
 
 using namespace edm;
 using namespace reco;
@@ -288,8 +290,8 @@ void HLTTauRefProducer::doMuons(edm::Event& iEvent) const {
 
 void HLTTauRefProducer::doJets(edm::Event& iEvent) const {
   auto product_Jets = make_unique<LorentzVectorCollection>();
-
   edm::Handle<CaloJetCollection> jets;
+  // edm::Handle<PFJetCollection> jets;
   if (iEvent.getByToken(Jets_, jets)) {
     for (auto const& jet : *jets) {
       if (jet.et() > ptMinJet_ && jet.eta() > etaMin_ && jet.eta() < etaMax_ && jet.phi() > phiMin_ &&
