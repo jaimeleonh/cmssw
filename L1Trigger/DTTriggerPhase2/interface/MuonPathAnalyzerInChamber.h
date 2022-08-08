@@ -32,6 +32,10 @@ public:
            MuonPathPtrs& inMpath,
            std::vector<lat_vector>& lateralities,
            std::vector<cmsdt::metaPrimitive>& metaPrimitives) override{};
+  void run(edm::Event& iEvent,
+           const edm::EventSetup& iEventSetup,
+           std::vector<cmsdt::metaPrimitive>& inMPaths,
+           std::vector<cmsdt::metaPrimitive>& outMPaths) override{};
   void run(edm::Event &iEvent,
            const edm::EventSetup &iEventSetup,
            MuonPathPtrs &inMpath,

@@ -54,6 +54,10 @@ public:
                    std::vector<cmsdt::metaPrimitive>& metaPrimitives) = 0;
   virtual void run(edm::Event& iEvent,
                    const edm::EventSetup& iEventSetup,
+                   std::vector<cmsdt::metaPrimitive>& inMPaths,
+                   std::vector<cmsdt::metaPrimitive>& outMPaths) = 0;
+  virtual void run(edm::Event& iEvent,
+                   const edm::EventSetup& iEventSetup,
                    MuonPathPtrs& inMpath,
                    MuonPathPtrs& outMPath) = 0;
 

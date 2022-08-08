@@ -31,7 +31,7 @@
 #include "L1Trigger/DTTriggerPhase2/interface/LateralityBasicProvider.h"
 #include "L1Trigger/DTTriggerPhase2/interface/LateralityCoarsedProvider.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzer.h"
-#include "L1Trigger/DTTriggerPhase2/interface/MuonPathFitter.h"
+#include "L1Trigger/DTTriggerPhase2/interface/MuonPathSLFitter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyticAnalyzer.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzerInChamber.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAssociator.h"
@@ -219,7 +219,7 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
     if (debug_)
       LogDebug("DTTrigPhase2Prod") << "DTp2:constructor: JM analyzer";
     // mpathanalyzer_ = std::make_unique<MuonPathAnalyticAnalyzer>(pset, consumesColl, globalcoordsobtainer_);
-    mpathanalyzer_ = std::make_unique<MuonPathFitter>(pset, consumesColl, globalcoordsobtainer_);
+    mpathanalyzer_ = std::make_unique<MuonPathSLFitter>(pset, consumesColl, globalcoordsobtainer_);
     // latprovider_ = std::make_unique<LateralityBasicProvider>(pset, consumesColl);
     latprovider_ = std::make_unique<LateralityCoarsedProvider>(pset, consumesColl);
   } else {
