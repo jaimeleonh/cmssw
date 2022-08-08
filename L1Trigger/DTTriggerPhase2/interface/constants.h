@@ -175,11 +175,61 @@ namespace cmsdt {
   /* En nanosegundos */
   constexpr int LHC_CLK_FREQ = 25;
 
+  /* mixer constants */
+  // Hits can be separated up to 9 frames, with 2 BXs per frame
+  // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+  //  F1    F2    F3    F4    F5    F6    F7    F8    F9
+  constexpr int BX_PER_FRAME = 2;
+  constexpr int MAX_FRAME_DIF = 8;
+
+  /* laterality provider */
+  constexpr int LAT_TOTAL_BITS = 9; // tdc counts from 0 to 512
+  constexpr int LAT_MSB_BITS = 6;
+  constexpr int TIME_TO_TDC_COUNTS = 32;
+
+  constexpr int LAT_P0_4H = 1;
+  constexpr int LAT_P1_4H = 31;
+  constexpr int LAT_P2_4H = 40;
+
+  constexpr int LAT_P0_3H = 24;
+  constexpr int LAT_P1_3H = 27;
+  constexpr int LAT_P2_3H = 30;
+  
+  /* Fitting */
+  constexpr int N_COEFFS = 8;
+  constexpr int GENERIC_COEFF_WIDTH = 20;
+  constexpr int WIDTH_FULL_TIME = 17;
+  constexpr int WIDTH_COARSED_TIME = 12;
+  constexpr int WIDTH_DIFBX = 5;
+  constexpr int WIDTH_FULL_POS = 17;
+  constexpr int WIDTH_FULL_SLOPE = 14;
+  constexpr int WIDTH_FULL_CHI2 = 16;
+  constexpr int WIREPOS_WIDTH = 17;
+  constexpr int WIREPOS_NORM_LSB_IGNORED = 9;
+
+  constexpr int XI_SL_WIDTH = 12;
+
+  constexpr int COEFF_WIDTH_SL_T0 = 15;
+  constexpr int COEFF_WIDTH_SL_POSITION = 18;
+  constexpr int COEFF_WIDTH_SL_SLOPE = 18;
+
+  constexpr int PRECISSION_SL_T0 = 13;
+  constexpr int PRECISSION_SL_POSITION = 13;
+  constexpr int PRECISSION_SL_SLOPE = 13;
+
+  constexpr int PROD_RESIZE_SL_T0 = 28;
+  constexpr int PROD_RESIZE_SL_POSITION = 30;
+  constexpr int PROD_RESIZE_SL_SLOPE = 30;
+
+  constexpr int T0_CUT_TOLERANCE = 0;
+
+
   /* Adimensional */
   constexpr int MAX_BX_IDX = 3564;
 
   // In ns (maximum drift time inside the cell)
   constexpr float MAXDRIFT = 387;
+  constexpr float MAXDRIFTTDC = 495; // we could make this value depend on the chamber, to be seen
   // In mm (cell dimmensions)
   constexpr int CELL_HEIGHT = 13;
   constexpr float CELL_SEMIHEIGHT = 6.5;
@@ -189,6 +239,9 @@ namespace cmsdt {
   constexpr float DRIFT_SPEED = 0.0542;
   // With 4 bits for the decimal part
   constexpr int DRIFT_SPEED_X4 = 889;  // 55.5 * 2 ** 4
+
+  // slope conversion 1 LSB = (v_drift) x (1 tdc count) / (1 semicell_h * 16) ~= 0.4e-3
+  constexpr float SLOPE_LSB = ((float) CELL_SEMILENGTH / MAXDRIFTTDC) * (1) / (CELL_SEMIHEIGHT * 16.);
 
   // distance between SLs, cm
   constexpr float VERT_PHI1_PHI3 = 23.5;

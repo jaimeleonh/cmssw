@@ -1,7 +1,6 @@
 #ifndef Phase2L1Trigger_DTTrigger_MuonPathAnalyzer_h
 #define Phase2L1Trigger_DTTrigger_MuonPathAnalyzer_h
 
-#include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Utilities/interface/ESGetToken.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/Framework/interface/FrameworkfwdMostUsed.h"
@@ -20,6 +19,7 @@
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPath.h"
 #include "L1Trigger/DTTriggerPhase2/interface/constants.h"
 #include "L1Trigger/DTTriggerPhase2/interface/GlobalCoordsObtainer.h"
+#include "L1Trigger/DTTriggerPhase2/interface/LateralityProvider.h"
 
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
@@ -50,6 +50,11 @@ public:
   virtual void run(edm::Event& iEvent,
                    const edm::EventSetup& iEventSetup,
                    MuonPathPtrs& inMpath,
+                   std::vector<lat_vector>& lateralities,
+                   std::vector<cmsdt::metaPrimitive>& metaPrimitives) = 0;
+  virtual void run(edm::Event& iEvent,
+                   const edm::EventSetup& iEventSetup,
+                   MuonPathPtrs& inMpath,
                    MuonPathPtrs& outMPath) = 0;
 
   virtual void finish();
@@ -62,7 +67,8 @@ private:
   // Private methods
 
   // Private attributes
-  bool debug_;
+  const bool debug_;
+
 };
 
 #endif

@@ -7,8 +7,7 @@
 // Previous definitions and declarations
 // ===============================================================================
 namespace {
-  constexpr int NLayers = 8;
-  typedef std::array<cmsdt::LATERAL_CASES, NLayers> TLateralities;
+  typedef std::array<cmsdt::LATERAL_CASES, cmsdt::NUM_LAYERS_2SL> TLateralities;
 }  // namespace
 // ===============================================================================
 // Class declarations
@@ -28,6 +27,11 @@ public:
            const edm::EventSetup &iEventSetup,
            MuonPathPtrs &inMpath,
            std::vector<cmsdt::metaPrimitive> &metaPrimitives) override{};
+  virtual void run(edm::Event& iEvent,
+           const edm::EventSetup& iEventSetup,
+           MuonPathPtrs& inMpath,
+           std::vector<lat_vector>& lateralities,
+           std::vector<cmsdt::metaPrimitive>& metaPrimitives) override{};
   void run(edm::Event &iEvent,
            const edm::EventSetup &iEventSetup,
            MuonPathPtrs &inMpath,
@@ -65,21 +69,24 @@ private:
   void buildLateralities(MuonPathPtr &mpath);
   void setLateralitiesInMP(MuonPathPtr &mpath, TLateralities lat);
   void setWirePosAndTimeInMP(MuonPathPtr &mpath);
-  void calculateFitParameters(MuonPathPtr &mpath, TLateralities lat, int present_layer[NLayers], int &lat_added);
+  void calculateFitParameters(MuonPathPtr &mpath,
+                              TLateralities lat,
+                              int present_layer[cmsdt::NUM_LAYERS_2SL],
+                              int &lat_added);
 
   void evaluateQuality(MuonPathPtr &mPath);
   int totalNumValLateralities_;
   std::vector<TLateralities> lateralities_;
   std::vector<cmsdt::LATQ_TYPE> latQuality_;
 
-  bool debug_;
+  const bool debug_;
   double chi2Th_;
   edm::FileInPath shift_filename_;
   int bxTolerance_;
   cmsdt::MP_QUALITY minQuality_;
   float chiSquareThreshold_;
   short minHits4Fit_;
-  int cellLayout_[NLayers];
+  int cellLayout_[cmsdt::NUM_LAYERS_2SL];
   bool splitPathPerSL_;
 
   // global coordinates
