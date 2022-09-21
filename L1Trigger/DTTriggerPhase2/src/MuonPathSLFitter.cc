@@ -30,16 +30,6 @@ MuonPathSLFitter::MuonPathSLFitter(const ParameterSet &pset,
     shiftthetainfo_[rawId] = shift;
   }
 
-  chosen_sl_ = pset.getParameter<int>("trigger_with_sl");
-
-  if (chosen_sl_ != 1 && chosen_sl_ != 3 && chosen_sl_ != 4) {
-    LogDebug("MuonPathSLFitter") << "chosen sl must be 1,3 or 4(both superlayers)";
-    assert(chosen_sl_ != 1 && chosen_sl_ != 3 && chosen_sl_ != 4);  //4 means run using the two superlayers
-  }
-
-  dtGeomH = iC.esConsumes<DTGeometry, MuonGeometryRecord, edm::Transition::BeginRun>();
-  globalcoordsobtainer_ = globalcoordsobtainer;
-
   // LUTs
   sl1_filename_ = pset.getParameter<edm::FileInPath>("lut_sl1");
   sl3_filename_ = pset.getParameter<edm::FileInPath>("lut_sl3");
@@ -208,8 +198,7 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
     // std::cout << inMPath->primitive(2)->tdcTimeStamp() << " ";
     // std::cout << inMPath->primitive(3)->tdcTimeStamp() << std::endl;
 
-    auto fit_common_out = fit(inMPath,
-                              fit_common_in,
+    auto fit_common_out = fit(fit_common_in,
                               XI_SL_WIDTH,
                               COEFF_WIDTH_SL_T0,
                               COEFF_WIDTH_SL_POSITION,
@@ -237,6 +226,7 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
       // pos_sl_f /= 10.;
       float pos_ch_f = (float) (fit_common_out.position) * ((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) / 10;
       float pos_sl_f = pos_ch_f - (sl - 1) * slope_f * VERT_PHI1_PHI3 / 2;
+
       float chi2_f = fit_common_out.chi2 * std::pow(((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC), 2) / 100;
 
       // obtention of global coordinates using luts

@@ -30,11 +30,6 @@ MuonPathFitter::MuonPathFitter(const ParameterSet &pset,
     shiftinfo_[rawId] = shift;
   }
 
-  if (chosen_sl_ != 1 && chosen_sl_ != 3 && chosen_sl_ != 4) {
-    LogDebug("MuonPathFitter") << "chosen sl must be 1,3 or 4(both superlayers)";
-    assert(chosen_sl_ != 1 && chosen_sl_ != 3 && chosen_sl_ != 4);  //4 means run using the two superlayers
-  }
-
   dtGeomH = iC.esConsumes<DTGeometry, MuonGeometryRecord, edm::Transition::BeginRun>();
   globalcoordsobtainer_ = globalcoordsobtainer;
 }
@@ -52,8 +47,7 @@ MuonPathFitter::~MuonPathFitter() {
 //--- Metodos privados
 //------------------------------------------------------------------
 
-fit_common_out_t MuonPathFitter::fit(MuonPathPtr &inMPath,
-                                     fit_common_in_t fit_common_in,
+fit_common_out_t MuonPathFitter::fit(fit_common_in_t fit_common_in,
                                      int XI_WIDTH,
                                      int COEFF_WIDTH_T0,
                                      int COEFF_WIDTH_POSITION,
@@ -169,7 +163,7 @@ fit_common_out_t MuonPathFitter::fit(MuonPathPtr &inMPath,
   // min and max times are computed throught several clk cycles in the fw, 
   // here we compute it at once
   int min_hit_time = 999999, max_hit_time = 0;
-
+  // std::cout << "Normalized times: " << std::endl;
   for (int i = 0; i < 2 * NUM_LAYERS; i++) {
     if (fit_common_in.hits_valid[i] == 1) {
       // calculate xi array
@@ -183,8 +177,8 @@ fit_common_out_t MuonPathFitter::fit(MuonPathPtr &inMPath,
       if (!vhdl_resize_signed_ok(tmp_xi_incr_vector, XI_WIDTH))
         return fit_common_out_t();
       xi_arr.push_back(tmp_xi_incr);
-
       // std::cout << "xi_arr[" << i << "]=" << xi_arr[i] << std::endl;
+      // std::cout << "normalized_times[" << i << "]=" << normalized_times[i] << std::endl;
 
       // calculate min and max times
       if (normalized_times[i] < min_hit_time) {

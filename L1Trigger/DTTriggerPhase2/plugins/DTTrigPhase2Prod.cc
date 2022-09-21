@@ -32,6 +32,7 @@
 #include "L1Trigger/DTTriggerPhase2/interface/LateralityCoarsedProvider.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzer.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathSLFitter.h"
+#include "L1Trigger/DTTriggerPhase2/interface/MuonPathCorFitter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyticAnalyzer.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzerInChamber.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAssociator.h"
@@ -147,7 +148,8 @@ private:
   std::unique_ptr<MPFilter> mpathqualityenhancerbayes_;
   std::unique_ptr<MPFilter> mpathredundantfilter_;
   std::unique_ptr<MPFilter> mpathhitsfilter_;
-  std::unique_ptr<MuonPathAssociator> mpathassociator_;
+  // std::unique_ptr<MuonPathAssociator> mpathassociator_;
+  std::unique_ptr<MuonPathAnalyzer> mpathassociator_;
   std::shared_ptr<GlobalCoordsObtainer> globalcoordsobtainer_;
 
   // Buffering
@@ -237,7 +239,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
   mpathqualityenhancerbayes_ = std::make_unique<MPQualityEnhancerFilterBayes>(pset);
   mpathredundantfilter_ = std::make_unique<MPRedundantFilter>(pset);
   mpathhitsfilter_ = std::make_unique<MPCleanHitsFilter>(pset);
-  mpathassociator_ = std::make_unique<MuonPathAssociator>(pset, consumesColl, globalcoordsobtainer_);
+  // mpathassociator_ = std::make_unique<MuonPathAssociator>(pset, consumesColl, globalcoordsobtainer_);
+  mpathassociator_ = std::make_unique<MuonPathCorFitter>(pset, consumesColl, globalcoordsobtainer_);
   rpc_integrator_ = std::make_unique<RPCIntegrator>(pset, consumesColl);
 
   dtGeomH = esConsumes<DTGeometry, MuonGeometryRecord, edm::Transition::BeginRun>();
@@ -534,7 +537,8 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   std::map<int, std::vector<metaPrimitive>> correlatedMetaPrimitives;
   if (algo_ == Standard) {
     for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
-      mpathassociator_->run(iEvent, iEventSetup, dtdigis, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
+      // mpathassociator_->run(iEvent, iEventSetup, dtdigis, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
+      mpathassociator_->run(iEvent, iEventSetup, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
     }
   } else {
     for (auto & ch_outmpaths: outmpaths) {
@@ -1015,7 +1019,6 @@ void DTTrigPhase2Prod::fillDescriptions(edm::ConfigurationDescriptions& descript
   // dtTriggerPhase2PrimitiveDigis
   edm::ParameterSetDescription desc;
   desc.add<edm::InputTag>("digiTag", edm::InputTag("CalibratedDigis"));
-  desc.add<int>("trigger_with_sl", 4);
   desc.add<int>("timeTolerance", 999999);
   desc.add<double>("tanPhiTh", 1.0);
   desc.add<double>("tanPhiThw2max", 1.3);
@@ -1039,6 +1042,7 @@ void DTTrigPhase2Prod::fillDescriptions(edm::ConfigurationDescriptions& descript
   desc.add<edm::FileInPath>("z_filename", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/wire_rawId_z.txt"));
   desc.add<edm::FileInPath>("lut_sl1", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/fitterlut_sl1.dat"));
   desc.add<edm::FileInPath>("lut_sl3", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/fitterlut_sl3.dat"));
+  desc.add<edm::FileInPath>("lut_2sl", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/fitterlut_2sl.dat"));
   desc.add<edm::FileInPath>("shift_filename", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/wire_rawId_x.txt"));
   desc.add<edm::FileInPath>("shift_theta_filename", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/theta_shift.txt"));
   desc.add<edm::FileInPath>("global_coords_filename",

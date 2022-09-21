@@ -160,8 +160,7 @@ public:
   std::map<int, float> shiftinfo_;
   
   int get_rom_addr(MuonPathPtr &inMPath, latcomb lats);
-  fit_common_out_t fit(MuonPathPtr &inMPath,
-                       fit_common_in_t fit_common_in,
+  fit_common_out_t fit(fit_common_in_t fit_common_in,
                        int XI_WIDTH,
                        int COEFF_WIDTH_T0,
                        int COEFF_WIDTH_POSITION,
@@ -176,8 +175,6 @@ public:
   double tanPhiTh_;
   const bool debug_;
   double chi2Th_;
-
-  int chosen_sl_;
 
   // global coordinates
   std::shared_ptr<GlobalCoordsObtainer> globalcoordsobtainer_;

@@ -206,6 +206,7 @@ namespace cmsdt {
   constexpr int WIDTH_FULL_CHI2 = 16;
   constexpr int WIREPOS_WIDTH = 17;
   constexpr int WIREPOS_NORM_LSB_IGNORED = 9;
+  constexpr int WIDTH_POS_SLOPE_CORR = 9;
 
   constexpr int XI_SL_WIDTH = 12;
 
@@ -220,6 +221,21 @@ namespace cmsdt {
   constexpr int PROD_RESIZE_SL_T0 = 28;
   constexpr int PROD_RESIZE_SL_POSITION = 30;
   constexpr int PROD_RESIZE_SL_SLOPE = 30;
+
+  constexpr int XI_COR_WIDTH = 14;
+
+  constexpr int COEFF_WIDTH_COR_T0 = 15;
+  constexpr int COEFF_WIDTH_COR_POSITION = 15;
+  constexpr int COEFF_WIDTH_COR_SLOPE = 15;
+
+  constexpr int PRECISSION_COR_T0 = 15;
+  constexpr int PRECISSION_COR_POSITION = 15;
+  constexpr int PRECISSION_COR_SLOPE = 15;
+
+  constexpr int PROD_RESIZE_COR_T0 = 30;
+  constexpr int PROD_RESIZE_COR_POSITION = 30;
+  constexpr int PROD_RESIZE_COR_SLOPE = 29;
+
 
   constexpr int T0_CUT_TOLERANCE = 0;
 
@@ -251,6 +267,16 @@ namespace cmsdt {
 
   // distance between center of the chamber and each SL in mm, 2 bit precision for the decimal part
   constexpr int CH_CENTER_TO_MID_SL_X2 = 470;  // 117.5 * 2 ** 2
+
+  // max difference in BX to even try to correlate
+  constexpr int MAX_BX_FOR_COR = 2;
+
+  // max number of TPs to store per BX
+  constexpr int MAX_PRIM_PER_BX_FOR_COR = 6;
+
+  // max number of TPs to correlate and perform the refitting
+  constexpr int MAX_PRIM_FOR_COR = 24;
+
 
   /*
   This is the maximum value than internal time can take. This is because
