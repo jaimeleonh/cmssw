@@ -7,13 +7,7 @@
 // Previous definitions and declarations
 // ===============================================================================
 
-struct bx_sl_vector {
-  int bx;
-  std::vector<cmsdt::metaPrimitive> mps;
-  int sl;
-};
-
-bool bxSort (const bx_sl_vector& vA, const bx_sl_vector& vB)
+bool bxSort (const cmsdt::bx_sl_vector& vA, const cmsdt::bx_sl_vector& vB)
 {
   if (vA.bx > vB.bx)
     return true;

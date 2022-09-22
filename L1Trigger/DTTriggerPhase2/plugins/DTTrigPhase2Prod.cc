@@ -37,6 +37,7 @@
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzerInChamber.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAssociator.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPFilter.h"
+#include "L1Trigger/DTTriggerPhase2/interface/MPSLFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPQualityEnhancerFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPRedundantFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPCleanHitsFilter.h"
@@ -235,7 +236,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
   superCellhalfspacewidth_ = pset.getParameter<int>("superCellspacewidth") / 2;
   superCelltimewidth_ = pset.getParameter<double>("superCelltimewidth");
 
-  mpathqualityenhancer_ = std::make_unique<MPQualityEnhancerFilter>(pset);
+  mpathqualityenhancer_ = std::make_unique<MPSLFilter>(pset);
+  // mpathqualityenhancer_ = std::make_unique<MPQualityEnhancerFilter>(pset);
   mpathqualityenhancerbayes_ = std::make_unique<MPQualityEnhancerFilterBayes>(pset);
   mpathredundantfilter_ = std::make_unique<MPRedundantFilter>(pset);
   mpathhitsfilter_ = std::make_unique<MPCleanHitsFilter>(pset);
@@ -539,6 +541,9 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
     for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
       // mpathassociator_->run(iEvent, iEventSetup, dtdigis, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
       mpathassociator_->run(iEvent, iEventSetup, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
+      // for (auto & tp: ch_filteredMetaPrimitives.second) {
+        // correlatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(tp);
+      // }
     }
   } else {
     for (auto & ch_outmpaths: outmpaths) {

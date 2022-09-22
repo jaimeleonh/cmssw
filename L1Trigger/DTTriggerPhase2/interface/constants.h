@@ -20,6 +20,8 @@
 #ifndef L1Trigger_DTTriggerPhase2_constants_h
 #define L1Trigger_DTTriggerPhase2_constants_h
 #include <cstdint>
+#include <vector>
+#include <cmath>
 
 // Compiler option to select program mode: PRUEBA_MEZCLADOR, PRUEBA_ANALIZADOR,
 // or NONE
@@ -119,7 +121,43 @@ namespace cmsdt {
           lat8(l8),
           index(idx),
           rpcFlag(rpc) {}
-
+      metaPrimitive()
+        : rawId(0),
+          t0(0),
+          x(0),
+          tanPhi(0),
+          phi(0),
+          phiB(0),
+          phi_cmssw(0),
+          phiB_cmssw(0),
+          chi2(0),
+          quality(0),
+          wi1(0),
+          tdc1(0),
+          lat1(0),
+          wi2(0),
+          tdc2(0),
+          lat2(0),
+          wi3(0),
+          tdc3(0),
+          lat3(0),
+          wi4(0),
+          tdc4(0),
+          lat4(0),
+          wi5(0),
+          tdc5(0),
+          lat5(0),
+          wi6(0),
+          tdc6(0),
+          lat6(0),
+          wi7(0),
+          tdc7(0),
+          lat7(0),
+          wi8(0),
+          tdc8(0),
+          lat8(0),
+          index(0),
+          rpcFlag(0) {}
     uint32_t rawId;
     double t0;
     double x;
@@ -157,15 +195,23 @@ namespace cmsdt {
     int index;
     int rpcFlag = 0;
   };
+
   struct PARTIAL_LATQ_TYPE {
     bool latQValid;
     int bxValue;
   };
+
   struct LATQ_TYPE {
     bool valid;
     int bxValue;
     int invalidateHitIdx;
     MP_QUALITY quality;
+  };
+
+  struct bx_sl_vector {
+    int bx;
+    std::vector<cmsdt::metaPrimitive> mps;
+    int sl;
   };
 
   enum algo { Standard = 0, PseudoBayes = 1, HoughTrans = 2 };

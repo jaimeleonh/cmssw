@@ -57,7 +57,7 @@ void MuonPathCorFitter::run(edm::Event& iEvent,
     std::map<int, std::vector<metaPrimitive>> SL1metaPrimitivesPerBX;
     std::map<int, std::vector<metaPrimitive>> SL3metaPrimitivesPerBX;
     for (const auto &metaprimitiveIt : inMPaths) {
-      int BX = round(metaprimitiveIt.t0 / 25.);
+      int BX = metaprimitiveIt.t0 / 25;
       if (metaprimitiveIt.rawId == sl1Id.rawId())
         SL1metaPrimitivesPerBX[BX].push_back(metaprimitiveIt);
       else if (metaprimitiveIt.rawId == sl3Id.rawId())
