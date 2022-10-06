@@ -209,9 +209,11 @@ fit_common_out_t MuonPathFitter::fit(fit_common_in_t fit_common_in,
       // std::cout << "time coeff ";
       // for (auto & elem: fit_common_in.coeffs.t0       [i])
         // std::cout << elem;
+      // std::cout << std::endl;
 
       // std::cout << " " << vhdl_signed_to_int(fit_common_in.coeffs.t0       [i]) << std::endl;
       products_t0.push_back(       xi_arr[i] * vhdl_signed_to_int(fit_common_in.coeffs.t0       [i]));
+      // std::cout << "products_t0[" << i << "]=" << products_t0[i] << std::endl;
       products_position.push_back( xi_arr[i] * vhdl_signed_to_int(fit_common_in.coeffs.position [i]));
       products_slope.push_back(    xi_arr[i] * vhdl_signed_to_int(fit_common_in.coeffs.slope    [i]));
     }
@@ -400,10 +402,15 @@ fit_common_out_t MuonPathFitter::fit(fit_common_in_t fit_common_in,
     if (fit_common_in.hits_valid[i] == 1) {
       std::vector<int> tmp_vector;
       int tmp_position_prec = (position_prec_arr[i] >> PARTIALS_PRECISSION);
+      // std::cout << tmp_position_prec << std::endl;
       vhdl_int_to_signed(tmp_position_prec, tmp_vector);
+      // for (auto & elem: tmp_vector)
+        // std::cout << elem;
+      // std::cout << endl;
       vhdl_resize_signed(tmp_vector, WIDTH_POSITION_PREC);
       // for (auto & elem: tmp_vector)
         // std::cout << elem;
+      // std::cout << endl;
       // std::cout << " " << CHI2_CALC_RES_BITS + 1 << std::endl;
       if (!vhdl_resize_signed_ok(tmp_vector, CHI2_CALC_RES_BITS + 1))
         return fit_common_out_t();

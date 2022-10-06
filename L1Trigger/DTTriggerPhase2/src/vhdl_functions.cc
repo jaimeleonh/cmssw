@@ -50,6 +50,7 @@ void vhdl_int_to_signed(int value, std::vector<int> &v) {
     v.push_back(1);
   } else {
     vhdl_int_to_unsigned(value, v);
+    v.push_back(0);
   }
   return;
 }

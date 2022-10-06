@@ -186,13 +186,17 @@ int MPSLFilter::killTps(cmsdt::metaPrimitive mp, int bx, std::map<int, valid_tp_
 int MPSLFilter::share_hit(cmsdt::metaPrimitive mp, cmsdt::metaPrimitive mp2) {
   if (mp.rawId != mp2.rawId)
     return 0;
-  if (mp.wi1 == mp2.wi1 and mp.tdc1 == mp2.tdc1 and mp.wi1 != -1 and mp.tdc1 != -1)
+  if ((mp.wi1 == mp2.wi1 and mp.tdc1 == mp2.tdc1 and mp.wi1 != -1 and mp.tdc1 != -1) ||
+      (mp.wi5 == mp2.wi5 and mp.tdc5 == mp2.tdc5 and mp.wi5 != -1 and mp.tdc5 != -1))
     return 1;
-  if (mp.wi2 == mp2.wi2 and mp.tdc2 == mp2.tdc2 and mp.wi2 != -1 and mp.tdc2 != -1)
+  if ((mp.wi2 == mp2.wi2 and mp.tdc2 == mp2.tdc2 and mp.wi2 != -1 and mp.tdc2 != -1) ||
+  (mp.wi6 == mp2.wi6 and mp.tdc6 == mp2.tdc6 and mp.wi6 != -1 and mp.tdc6 != -1))
     return 2;
-  if (mp.wi3 == mp2.wi3 and mp.tdc3 == mp2.tdc3 and mp.wi3 != -1 and mp.tdc3 != -1)
+  if ((mp.wi3 == mp2.wi3 and mp.tdc3 == mp2.tdc3 and mp.wi3 != -1 and mp.tdc3 != -1) ||
+      (mp.wi7 == mp2.wi7 and mp.tdc7 == mp2.tdc7 and mp.wi7 != -1 and mp.tdc7 != -1))
     return 3;
-  if (mp.wi4 == mp2.wi4 and mp.tdc4 == mp2.tdc4 and mp.wi4 != -1 and mp.tdc4 != -1)
+  if ((mp.wi4 == mp2.wi4 and mp.tdc4 == mp2.tdc4 and mp.wi4 != -1 and mp.tdc4 != -1) ||
+      (mp.wi8 == mp2.wi8 and mp.tdc8 == mp2.tdc8 and mp.wi8 != -1 and mp.tdc8 != -1))
     return 4;
   return 0;
 }

@@ -192,14 +192,25 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
 
   for (int isl = 0; isl < 2; isl++) {
     int wire[4], tdc[4];
-    wire[0] = mp[isl].wi1;
-    tdc[0] = mp[isl].tdc1;
-    wire[1] = mp[isl].wi2;
-    tdc[1] = mp[isl].tdc2;
-    wire[2] = mp[isl].wi3;
-    tdc[2] = mp[isl].tdc3;
-    wire[3] = mp[isl].wi4;
-    tdc[3] = mp[isl].tdc4;
+    if (isl != 1) {
+      wire[0] = mp[isl].wi1;
+      tdc[0] = mp[isl].tdc1;
+      wire[1] = mp[isl].wi2;
+      tdc[1] = mp[isl].tdc2;
+      wire[2] = mp[isl].wi3;
+      tdc[2] = mp[isl].tdc3;
+      wire[3] = mp[isl].wi4;
+      tdc[3] = mp[isl].tdc4;
+    } else {
+      wire[0] = mp[isl].wi5;
+      tdc[0] = mp[isl].tdc5;
+      wire[1] = mp[isl].wi6;
+      tdc[1] = mp[isl].tdc6;
+      wire[2] = mp[isl].wi7;
+      tdc[2] = mp[isl].tdc7;
+      wire[3] = mp[isl].wi8;
+      tdc[3] = mp[isl].tdc8;
+    }
 
     for (int i = 0; i < NUM_LAYERS; i++) {
       if (wire[i] != -1) {
@@ -264,16 +275,49 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
   // std::cout << "Lateralities: ";
   for (int isl = 0; isl < 2; isl++) {
     int lat[4];
-    lat[0] = mp[isl].lat1;
-    lat[1] = mp[isl].lat2;
-    lat[2] = mp[isl].lat3;
-    lat[3] = mp[isl].lat4;
-  
+    if (isl != 1) {
+      lat[0] = mp[isl].lat1;
+      lat[1] = mp[isl].lat2;
+      lat[2] = mp[isl].lat3;
+      lat[3] = mp[isl].lat4;
+    } else {
+      lat[0] = mp[isl].lat5;
+      lat[1] = mp[isl].lat6;
+      lat[2] = mp[isl].lat7;
+      lat[3] = mp[isl].lat8;
+    }
+
     for (size_t i = 0; i < NUM_LAYERS; i++) {
       // std::cout << lat[i] << " ";
       fit_common_in.lateralities.push_back(lat[i]);
     }
   }
+
+  std::cout << "Wires ";
+  for (int i = 0; i < 8; i++)
+    std::cout << fit_common_in.hits[i].wi << " ";
+  std::cout << std::endl;
+
+  std::cout << "TDC ";
+  for (int i = 0; i < 8; i++)
+    std::cout << fit_common_in.hits[i].ti << " ";
+  std::cout << std::endl;
+
+  std::cout << "lay ";
+  for (int i = 0; i < 8; i++)
+    std::cout << fit_common_in.hits[i].ly << " ";
+  std::cout << std::endl;
+
+  std::cout << "wp ";
+  for (int i = 0; i < 8; i++)
+    std::cout << fit_common_in.hits[i].wp << " ";
+  std::cout << std::endl;
+
+  std::cout << "Lateralities ";
+  for (int i = 0; i < 8; i++)
+    std::cout << fit_common_in.lateralities[i] << " ";
+  std::cout << std::endl;
+
   // std::cout << std::endl;
   fit_common_in.coeffs = coeffs;
   // std::cout << "Starting to fit" << std::endl;
@@ -314,7 +358,7 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
                             PROD_RESIZE_COR_POSITION,
                             PROD_RESIZE_COR_SLOPE);
                             
-  // std::cout << "Valid fit: " << fit_common_out.valid_fit << std::endl;
+  std::cout << "Valid fit: " << fit_common_out.valid_fit << std::endl;
   if (fit_common_out.valid_fit == 1) {
     float t0_f = ((float) fit_common_out.t0) * (float) LHC_CLK_FREQ / (float) TIME_TO_TDC_COUNTS;
     float slope_f = -fit_common_out.slope * SLOPE_LSB;
@@ -377,18 +421,18 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
                                              mp[0].wi4,
                                              mp[0].tdc4,
                                              mp[0].lat4,
-                                             mp[1].wi1,
-                                             mp[1].tdc1,
-                                             mp[1].lat1,
-                                             mp[1].wi2,
-                                             mp[1].tdc2,
-                                             mp[1].lat2,
-                                             mp[1].wi3,
-                                             mp[1].tdc3,
-                                             mp[1].lat3,
-                                             mp[1].wi4,
-                                             mp[1].tdc4,
-                                             mp[1].lat4,
+                                             mp[1].wi5,
+                                             mp[1].tdc5,
+                                             mp[1].lat5,
+                                             mp[1].wi6,
+                                             mp[1].tdc6,
+                                             mp[1].lat6,
+                                             mp[1].wi7,
+                                             mp[1].tdc7,
+                                             mp[1].lat7,
+                                             mp[1].wi8,
+                                             mp[1].tdc8,
+                                             mp[1].lat8,
                                              -1}));
   }
   return;
@@ -447,10 +491,10 @@ int MuonPathCorFitter::get_rom_addr(mp_group mps, std::vector<int> missing_hits)
     mps[0].lat2,
     mps[0].lat3,
     mps[0].lat4,
-    mps[1].lat1,
-    mps[1].lat2,
-    mps[1].lat3,
-    mps[1].lat4
+    mps[1].lat5,
+    mps[1].lat6,
+    mps[1].lat7,
+    mps[1].lat8
   };
 
   std::vector<int> rom_addr;

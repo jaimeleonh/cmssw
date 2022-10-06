@@ -99,6 +99,7 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
     // return;
 
   DTChamberId ChId(MuonPathSLId.wheel(), MuonPathSLId.station(), MuonPathSLId.sector());
+  
   // std::cout << "SL" << sl << std::endl;
   if (sl == 1)
     return;
@@ -230,7 +231,8 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
       float chi2_f = fit_common_out.chi2 * std::pow(((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC), 2) / 100;
 
       // obtention of global coordinates using luts
-      DTWireId wireId(MuonPathSLId, 2, 1);      
+      DTWireId wireId(MuonPathSLId, 2, 1);
+      // std::cout << "SL" << sl << " " << shiftinfo_[wireId.rawId()] << std::endl;
       int pos = (int) (10 * (pos_sl_f - shiftinfo_[wireId.rawId()]) * INCREASED_RES_POS_POW);
       int slope = (int) (-slope_f * INCREASED_RES_SLOPE_POW);
       auto global_coords =
@@ -259,42 +261,78 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
       float phi_cmssw = jm_x_cmssw_global.phi() - PHI_CONV * (thisec - 1);
       float psi = atan(slope_f);
       float phiB_cmssw = hasPosRF(ChId.wheel(), ChId.sector()) ? psi - phi_cmssw : -psi - phi_cmssw;
-
-      metaPrimitives.emplace_back(metaPrimitive({MuonPathSLId.rawId(),
-                                               t0_f,
-                                               pos_sl_f,
-                                               slope_f,
-                                               phi,
-                                               phiB,
-                                               phi_cmssw,
-                                               phiB_cmssw,
-                                               chi2_f,
-                                               quality,
-                                               inMPath->primitive(0)->channelId(),
-                                               inMPath->primitive(0)->tdcTimeStamp(),
-                                               lat_comb[0],
-                                               inMPath->primitive(1)->channelId(),
-                                               inMPath->primitive(1)->tdcTimeStamp(),
-                                               lat_comb[1],
-                                               inMPath->primitive(2)->channelId(),
-                                               inMPath->primitive(2)->tdcTimeStamp(),
-                                               lat_comb[2],
-                                               inMPath->primitive(3)->channelId(),
-                                               inMPath->primitive(3)->tdcTimeStamp(),
-                                               lat_comb[3],
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1,
-                                               -1}));
+      if (sl < 2)
+        metaPrimitives.emplace_back(metaPrimitive({MuonPathSLId.rawId(),
+                                                 t0_f,
+                                                 pos_sl_f,
+                                                 slope_f,
+                                                 phi,
+                                                 phiB,
+                                                 phi_cmssw,
+                                                 phiB_cmssw,
+                                                 chi2_f,
+                                                 quality,
+                                                 inMPath->primitive(0)->channelId(),
+                                                 inMPath->primitive(0)->tdcTimeStamp(),
+                                                 lat_comb[0],
+                                                 inMPath->primitive(1)->channelId(),
+                                                 inMPath->primitive(1)->tdcTimeStamp(),
+                                                 lat_comb[1],
+                                                 inMPath->primitive(2)->channelId(),
+                                                 inMPath->primitive(2)->tdcTimeStamp(),
+                                                 lat_comb[2],
+                                                 inMPath->primitive(3)->channelId(),
+                                                 inMPath->primitive(3)->tdcTimeStamp(),
+                                                 lat_comb[3],
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1}));
+      else
+        metaPrimitives.emplace_back(metaPrimitive({MuonPathSLId.rawId(),
+                                                 t0_f,
+                                                 pos_sl_f,
+                                                 slope_f,
+                                                 phi,
+                                                 phiB,
+                                                 phi_cmssw,
+                                                 phiB_cmssw,
+                                                 chi2_f,
+                                                 quality,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 -1,
+                                                 inMPath->primitive(0)->channelId(),
+                                                 inMPath->primitive(0)->tdcTimeStamp(),
+                                                 lat_comb[0],
+                                                 inMPath->primitive(1)->channelId(),
+                                                 inMPath->primitive(1)->tdcTimeStamp(),
+                                                 lat_comb[1],
+                                                 inMPath->primitive(2)->channelId(),
+                                                 inMPath->primitive(2)->tdcTimeStamp(),
+                                                 lat_comb[2],
+                                                 inMPath->primitive(3)->channelId(),
+                                                 inMPath->primitive(3)->tdcTimeStamp(),
+                                                 lat_comb[3],
+                                                 -1}));
     }
   }
   return;

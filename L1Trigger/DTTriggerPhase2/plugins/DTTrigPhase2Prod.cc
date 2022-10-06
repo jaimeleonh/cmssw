@@ -38,6 +38,7 @@
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAssociator.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPSLFilter.h"
+#include "L1Trigger/DTTriggerPhase2/interface/MPCorFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPQualityEnhancerFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPRedundantFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPCleanHitsFilter.h"
@@ -151,6 +152,7 @@ private:
   std::unique_ptr<MPFilter> mpathhitsfilter_;
   // std::unique_ptr<MuonPathAssociator> mpathassociator_;
   std::unique_ptr<MuonPathAnalyzer> mpathassociator_;
+  std::unique_ptr<MPFilter> mpathcorfilter_;
   std::shared_ptr<GlobalCoordsObtainer> globalcoordsobtainer_;
 
   // Buffering
@@ -243,6 +245,7 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
   mpathhitsfilter_ = std::make_unique<MPCleanHitsFilter>(pset);
   // mpathassociator_ = std::make_unique<MuonPathAssociator>(pset, consumesColl, globalcoordsobtainer_);
   mpathassociator_ = std::make_unique<MuonPathCorFitter>(pset, consumesColl, globalcoordsobtainer_);
+  mpathcorfilter_ = std::make_unique<MPCorFilter>(pset);
   rpc_integrator_ = std::make_unique<RPCIntegrator>(pset, consumesColl);
 
   dtGeomH = esConsumes<DTGeometry, MuonGeometryRecord, edm::Transition::BeginRun>();
@@ -266,6 +269,7 @@ void DTTrigPhase2Prod::beginRun(edm::Run const& iRun, const edm::EventSetup& iEv
   mpathqualityenhancerbayes_->initialise(iEventSetup);  // Filter object initialisation
   mpathhitsfilter_->initialise(iEventSetup);
   mpathassociator_->initialise(iEventSetup);  // Associator object initialisation
+  mpathcorfilter_->initialise(iEventSetup);
 
   if (auto geom = iEventSetup.getHandle(dtGeomH)) {
     dtGeo_ = &(*geom);
@@ -585,7 +589,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       }
     }
   }
-  filteredMetaPrimitives.clear();
+  // filteredMetaPrimitives.clear();
 
   if (debug_)
     for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
@@ -605,12 +609,24 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       }
     }
   }
-  // for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
-    // for (unsigned int i = 0; i < ch_correlatedMetaPrimitives.second.size(); i++) {
-      // std::cout << " correlated mp " << i << ": ";
-      // printmPC(ch_correlatedMetaPrimitives.second.at(i));
-    // }
-  // }
+  for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
+    for (unsigned int i = 0; i < ch_correlatedMetaPrimitives.second.size(); i++) {
+      std::cout << " correlated mp " << i << ": ";
+      printmPC(ch_correlatedMetaPrimitives.second.at(i));
+    }
+  }
+
+  // Correlated Filtering
+  std::map<int, std::vector<metaPrimitive>> filtCorrelatedMetaPrimitives;
+  if (algo_ == Standard) {
+    for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
+      mpathcorfilter_->run(iEvent, iEventSetup,
+        ch_filteredMetaPrimitives.second,
+        correlatedMetaPrimitives[ch_filteredMetaPrimitives.first],
+        filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first]
+      );
+    }
+  }
 
   double shift_back = 0;
   if (scenario_ == MC)  //scope for MC
@@ -624,7 +640,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   if (useRPC_) {
     rpc_integrator_->initialise(iEventSetup, shift_back);
     rpc_integrator_->prepareMetaPrimitives(rpcRecHits);
-    for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
+    for (auto & ch_correlatedMetaPrimitives: filtCorrelatedMetaPrimitives) {
       rpc_integrator_->matchWithDTAndUseRPCTime(ch_correlatedMetaPrimitives.second);  // Probably this is a FIXME
     }
     rpc_integrator_->makeRPCOnlySegments();
@@ -639,10 +655,10 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   vector<L1Phase2MuDTExtThDigi> outExtP2Th;
 
   // Assigning index value
-  for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
+  for (auto & ch_correlatedMetaPrimitives: filtCorrelatedMetaPrimitives) {
     assignIndex(ch_correlatedMetaPrimitives.second);
   }
-  for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
+  for (auto & ch_correlatedMetaPrimitives: filtCorrelatedMetaPrimitives) {
     for (const auto& metaPrimitiveIt : ch_correlatedMetaPrimitives.second) {
       DTChamberId chId(metaPrimitiveIt.rawId);
       DTSuperLayerId slId(metaPrimitiveIt.rawId);

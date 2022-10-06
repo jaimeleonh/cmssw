@@ -149,11 +149,11 @@ void TrapezoidalGrouping::setInChannels(const DTDigiCollection *digis, int sl) {
   for (const auto &dtLayerId_It : *digis) {
     const DTLayerId dtLId = dtLayerId_It.first;
     
-   // if (dtLId.wheel() != -1 || dtLId.sector() != 12 || dtLId.station() != 2)
-   //   continue;
+    if (dtLId.wheel() != -2 || dtLId.sector() != 1 || dtLId.station() != 1)
+      continue;
 
     if (dtLId.superlayer() != sl + 1)
-      continue;  //skip digis not in SL...
+          continue;  //skip digis not in SL...
 
     for (DTDigiCollection::const_iterator digiIt = (dtLayerId_It.second).first; digiIt != (dtLayerId_It.second).second;
          ++digiIt) {
