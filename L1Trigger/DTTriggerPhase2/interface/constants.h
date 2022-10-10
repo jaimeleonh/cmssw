@@ -242,6 +242,9 @@ namespace cmsdt {
   constexpr int LAT_P2_3H = 30;
   
   /* Fitting */
+
+  constexpr int SL1_CELLS_OFFSET = 48;
+
   constexpr int N_COEFFS = 8;
   constexpr int GENERIC_COEFF_WIDTH = 20;
   constexpr int WIDTH_FULL_TIME = 17;

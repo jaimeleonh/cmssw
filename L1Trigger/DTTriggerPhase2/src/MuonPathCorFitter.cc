@@ -176,6 +176,12 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
 
   DTChamberId ChId(MuonPathSLId.wheel(), MuonPathSLId.station(), MuonPathSLId.sector());
   // std::cout << "SL" << sl << std::endl;
+  
+  DTSuperLayerId MuonPathSL1Id(ChId.wheel(), ChId.station(), ChId.sector(), 1);
+  DTSuperLayerId MuonPathSL3Id(ChId.wheel(), ChId.station(), ChId.sector(), 3);
+  DTWireId wireIdSL1(MuonPathSL1Id, 2, 1);
+  DTWireId wireIdSL3(MuonPathSL3Id, 2, 1);
+  auto sl_shift_cm = shiftinfo_[wireIdSL1.rawId()] - shiftinfo_[wireIdSL3.rawId()];
 
   fit_common_in_t fit_common_in;
 
@@ -220,13 +226,26 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
         // std::cout << "ti: " << ti << std::endl;
         auto wi = wire[i];
         auto ly = i;
-        DTSuperLayerId thisSLId(mp[isl].rawId);
-        auto wireId = DTWireId(thisSLId, i + 1, wi + 1); // wire start from 1, mixer groups them starting from 0
-        int rawId = wireId.rawId();
-        // wp in tdc counts (still in floating point)
-        float wp_f = ((10. * shiftinfo_[rawId] / CELL_SEMILENGTH) * MAXDRIFTTDC);
+        // DTSuperLayerId thisSLId(mp[isl].rawId);
+        // auto wireId = DTWireId(thisSLId, i + 1, wi + 1); // wire start from 1, mixer groups them starting from 0
+        // int rawId = wireId.rawId();
+
+        int wp_semicells = (wi - SL1_CELLS_OFFSET) * 2 + 1;
+        std::cout << "wp_semicells " << wi << " " << SL1_CELLS_OFFSET << " " <<  wp_semicells << std::endl;
+        if (ly % 2 == 1)
+          wp_semicells -= 1;
+        std::cout << sl_shift_cm << std::endl;
+        if (isl == 1)  // SL3
+          wp_semicells -= (int) round((sl_shift_cm * 10) / CELL_SEMILENGTH);
+        float wp_tdc = wp_semicells * MAXDRIFTTDC;
+        // float wp_f = ((10. * shiftinfo_[rawId] / CELL_SEMILENGTH) * MAXDRIFTTDC);
         // std::cout << "WPF: " << wp_f << " " <<  MAXDRIFTTDC << " " << shiftinfo_[rawId] << " " << (10. * shiftinfo_[rawId] / CELL_SEMILENGTH) << " " << rawId << std::endl;
-        int wp = (int) ((long int)(round(wp_f * std::pow(2, WIREPOS_WIDTH))) / (int) std::pow(2, WIREPOS_WIDTH));
+        int wp = (int) ((long int)(round(wp_tdc * std::pow(2, WIREPOS_WIDTH))) / (int) std::pow(2, WIREPOS_WIDTH));
+
+        // wp in tdc counts (still in floating point)
+        // float wp_f = ((10. * shiftinfo_[rawId] / CELL_SEMILENGTH) * MAXDRIFTTDC);
+        // std::cout << "WPF: " << wp_f << " " <<  MAXDRIFTTDC << " " << shiftinfo_[rawId] << " " << (10. * shiftinfo_[rawId] / CELL_SEMILENGTH) << " " << rawId << std::endl;
+        // int wp = (int) ((long int)(round(wp_tdc * std::pow(2, WIREPOS_WIDTH))) / (int) std::pow(2, WIREPOS_WIDTH));
         // std::cout << "WP: " << wp << std::endl;
         fit_common_in.hits.push_back({ti, wi, ly, wp});
         // fill valids as well
@@ -268,8 +287,6 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
   auto rom_addr = get_rom_addr(mp, missing_layers);
 
   coeffs_t coeffs = RomDataConvert(lut_2sl[rom_addr], COEFF_WIDTH_COR_T0, COEFF_WIDTH_COR_POSITION, COEFF_WIDTH_COR_SLOPE, 0, 7);
-
-
 
   // Filling lateralities
   // std::cout << "Lateralities: ";
@@ -372,11 +389,14 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
     // std::cout << "POSITION: " << fit_common_out.position << " " << ((float) (fit_common_out.position) + (sl - 1) * (fit_common_out.slope / 16.)) << " " << ((float) (fit_common_out.position) + (sl - 1) * (fit_common_out.slope / 16.))
        // ((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) << std::endl;
     // pos_sl_f /= 10.;
+    DTWireId wireId(MuonPathSLId, 2, 1);
     float pos_ch_f = (float) (fit_common_out.position) * ((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) / 10;
+    pos_ch_f += (SL1_CELLS_OFFSET * CELL_LENGTH) / 10.;
+    pos_ch_f += shiftinfo_[wireId.rawId()];
+
     float chi2_f = fit_common_out.chi2 * std::pow(((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC), 2) / 100;
 
     // obtention of global coordinates using luts
-    DTWireId wireId(MuonPathSLId, 2, 1);      
     int pos = (int) (10 * (pos_ch_f - shiftinfo_[wireId.rawId()]) * INCREASED_RES_POS_POW);
     int slope = (int) (-slope_f * INCREASED_RES_SLOPE_POW);
     auto global_coords =
