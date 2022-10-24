@@ -112,41 +112,50 @@ std::vector<metaPrimitive> MPCorFilter::filter(
 }
 
 std::vector<int> MPCorFilter::coarsify(cmsdt::metaPrimitive mp, int sl) {
-  float sign = 0;
-  if (sl == 1) sign = -1;
-  else if (sl == 3) sign = 1;
-  float pos_ch_f = mp.x + sign * mp.tanPhi * VERT_PHI1_PHI3 / 2;
+  // float sign = 0;
+  // if (sl == 1) sign = -1;
+  // else if (sl == 3) sign = 1;
+
+  // DTSuperLayerId MuonPathSLId(mp.rawId);  // SL1
+  // DTChamberId ChId(MuonPathSLId.wheel(), MuonPathSLId.station(), MuonPathSLId.sector());  
+  // DTSuperLayerId MuonPathSL1Id(ChId.wheel(), ChId.station(), ChId.sector(), 1);
+  // DTWireId wireIdSL1(MuonPathSL1Id, 2, 1);
+
+  // float pos_ch_f = mp.x + sign * mp.tanPhi * VERT_PHI1_PHI3 / 2;
+  float pos_ch_f = mp.x;
 
   // translating into tdc counts
-  int pos_ch = int(round(pos_ch_f / (((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) / 10)));
-  int slope = (int) (-mp.tanPhi / (SLOPE_LSB * INCREASED_RES_SLOPE_POW));
+  // int pos_ch = int(round(pos_ch_f / (((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) / 10)));
+  int pos_ch = int(round(pos_ch_f));
+  // int slope = (int) (-mp.tanPhi / (SLOPE_LSB * INCREASED_RES_SLOPE_POW));
+  int slope = (int) (mp.tanPhi);
 
-  std::cout << sl << " " << pos_ch_f << " " << pos_ch << std::endl; 
+  // std::cout << sl << " " << pos_ch_f << " " << pos_ch << std::endl; 
 
   std::vector<int> t0_slv, t0_coarse, pos_slv, pos_coarse, slope_slv, slope_coarse;
   vhdl_int_to_unsigned(mp.t0, t0_slv);
   vhdl_int_to_signed(pos_ch, pos_slv);
   vhdl_int_to_signed(slope, slope_slv);
 
-  for (size_t i = 0; i < pos_slv.size(); i++)
-    std::cout << pos_slv[i];
-  std::cout << std::endl;
+  // for (size_t i = 0; i < pos_slv.size(); i++)
+    // std::cout << pos_slv[i];
+  // std::cout << std::endl;
 
   vhdl_resize_unsigned(t0_slv, WIDTH_FULL_TIME);
   vhdl_resize_signed(pos_slv, WIDTH_FULL_POS);
   vhdl_resize_signed(slope_slv, WIDTH_FULL_SLOPE);
 
-  for (size_t i = 0; i < pos_slv.size(); i++)
-    std::cout << pos_slv[i];
-  std::cout << std::endl;
+  // for (size_t i = 0; i < pos_slv.size(); i++)
+    // std::cout << pos_slv[i];
+  // std::cout << std::endl;
 
   t0_coarse = vhdl_slice(t0_slv, FSEG_T0_BX_LSB + 4, FSEG_T0_DISCARD_LSB - 1);
   pos_coarse = vhdl_slice(pos_slv, WIDTH_FULL_POS - 1, FSEG_POS_DISCARD_LSB - 1);
   slope_coarse = vhdl_slice(slope_slv, WIDTH_FULL_SLOPE - 1, FSEG_SLOPE_DISCARD_LSB - 1);
 
-  for (size_t i = 0; i < pos_coarse.size(); i++)
-    std::cout << pos_coarse[i];
-  std::cout << std::endl;
+  // for (size_t i = 0; i < pos_coarse.size(); i++)
+    // std::cout << pos_coarse[i];
+  // std::cout << std::endl;
 
   std::vector <int> results;
   int t0_coarse_int = vhdl_unsigned_to_int(t0_coarse);
@@ -157,6 +166,7 @@ std::vector<int> MPCorFilter::coarsify(cmsdt::metaPrimitive mp, int sl) {
     auto aux_t0_coarse_int = t0_coarse_int + (2 * index - 1);
     auto aux_pos_coarse_int = pos_coarse_int + (2 * index - 1);
     auto aux_slope_coarse_int = slope_coarse_int + (2 * index - 1);
+    // std::cout << "aux_pos_coarse_int " << aux_pos_coarse_int << " " << (aux_pos_coarse_int >> 1) << std::endl;
     results.push_back(aux_t0_coarse_int >> 1);
     results.push_back(aux_pos_coarse_int >> 1);
     results.push_back(aux_slope_coarse_int >> 1);
@@ -166,17 +176,18 @@ std::vector<int> MPCorFilter::coarsify(cmsdt::metaPrimitive mp, int sl) {
 
 
 int MPCorFilter::match(cmsdt::metaPrimitive mp, std::vector<int> coarsed, valid_cor_tp_t valid_cor_tp2) {
-  for (int i = 0; i < 3; i++)
-    for (int j = 0; j < 3; j++)
-    std::cout << coarsed[3 * i + j] << " ";
-  std::cout << std::endl;
-  std::cout << valid_cor_tp2.coarsed_t0 << " " << valid_cor_tp2.coarsed_pos << " " << valid_cor_tp2.coarsed_slope << std::endl;
+  // for (int i = 0; i < 3; i++)
+    // for (int j = 0; j < 3; j++)
+    // std::cout << coarsed[3 * i + j] << " ";
+  // std::cout << std::endl;
+  // std::cout << valid_cor_tp2.coarsed_t0 << " " << valid_cor_tp2.coarsed_pos << " " << valid_cor_tp2.coarsed_slope << std::endl;
 
   bool matched = (
     (coarsed[0] == valid_cor_tp2.coarsed_t0    || coarsed[3] == valid_cor_tp2.coarsed_t0    || coarsed[6] == valid_cor_tp2.coarsed_t0)  &&
     (coarsed[1] == valid_cor_tp2.coarsed_pos   || coarsed[4] == valid_cor_tp2.coarsed_pos   || coarsed[7] == valid_cor_tp2.coarsed_pos) &&
     (coarsed[2] == valid_cor_tp2.coarsed_slope || coarsed[5] == valid_cor_tp2.coarsed_slope || coarsed[8] == valid_cor_tp2.coarsed_slope)
   );
+  // std::cout << matched << std::endl;
   return ((int) matched) * 2 + (int) (mp.quality > valid_cor_tp2.mp.quality);
 }
 
@@ -186,7 +197,7 @@ bool MPCorFilter::isDead(cmsdt::metaPrimitive mp, std::vector<int> coarsed, std:
       if (!mp_valid.valid)
         continue;
       int isMatched = match(mp, coarsed, mp_valid);
-      if (isMatched == 2) return true; // matched and quality <= store tp
+      if (isMatched == 2) return true; // matched and quality <= stored tp
     }
   }
   return false;

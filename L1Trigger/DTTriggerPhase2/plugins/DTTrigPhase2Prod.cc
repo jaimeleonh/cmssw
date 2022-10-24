@@ -137,6 +137,13 @@ private:
   int df_extended_;
   int max_index_;
 
+  bool output_mixer_;
+  bool output_latpredictor_;
+  bool output_slfitter_;
+  bool output_slfilter_;
+  bool output_matcher_;
+  bool skip_processing_;
+
   // ParameterSet
   edm::EDGetTokenT<DTDigiCollection> dtDigisToken_;
   edm::EDGetTokenT<RPCRecHitCollection> rpcRecHitsLabel_;
@@ -204,6 +211,14 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
 
   // Choosing grouping scheme:
   algo_ = pset.getParameter<int>("algo");
+
+  // shortcuts
+
+  output_mixer_ = pset.getParameter<bool>("output_mixer");
+  output_latpredictor_ = pset.getParameter<bool>("output_latpredictor");
+  output_slfitter_ = pset.getParameter<bool>("output_slfitter");
+  output_slfilter_ = pset.getParameter<bool>("output_slfilter");
+  output_matcher_ = pset.getParameter<bool>("output_matcher");
 
   edm::ConsumesCollector consumesColl(consumesCollector());
   globalcoordsobtainer_ = std::make_shared<GlobalCoordsObtainer>(pset);
@@ -386,11 +401,14 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       // std::cout << std::endl;
     // }
   // }
+  
 
   std::map<int, std::vector<lat_vector>> lateralities;
-  for (auto & ch_muonpaths: muonpaths) {
-    if (algo_ == Standard) {
-      latprovider_->run(iEvent, iEventSetup, ch_muonpaths.second, lateralities[ch_muonpaths.first]);
+  if (!output_mixer_) {
+    for (auto & ch_muonpaths: muonpaths) {
+      if (algo_ == Standard) {
+        latprovider_->run(iEvent, iEventSetup, ch_muonpaths.second, lateralities[ch_muonpaths.first]);
+      }
     }
   }
 
@@ -437,6 +455,8 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
     }
   }
 
+  skip_processing_ = output_mixer_ || output_latpredictor_;
+
   ///////////////////////////////////////////
   /// Fitting SECTION;
   ///////////////////////////////////////////
@@ -457,7 +477,178 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       LogDebug("DTTrigPhase2Prod") << "Fitting 1SL ";
     for (auto & ch_muonpaths: muonpaths) { // FIXME, do we need filtered muonpaths?
       // mpathanalyzer_->run(iEvent, iEventSetup, ch_filteredmuonpaths.second, metaPrimitives[ch_filteredmuonpaths.first]);
-      mpathanalyzer_->run(iEvent, iEventSetup, ch_muonpaths.second, lateralities[ch_muonpaths.first], metaPrimitives[ch_muonpaths.first]);
+      if (!output_mixer_ && !output_latpredictor_)
+        mpathanalyzer_->run(iEvent, iEventSetup, ch_muonpaths.second, lateralities[ch_muonpaths.first], metaPrimitives[ch_muonpaths.first]);
+      else if (output_mixer_) {
+        for (auto &inMPath: ch_muonpaths.second) {
+          auto sl = inMPath->primitive(0)->superLayerId(); // 0, 1, 2
+          int selected_lay = 1;
+          if (inMPath->primitive(0)->tdcTimeStamp() != -1)
+            selected_lay = 0;
+          int dumLayId = inMPath->primitive(selected_lay)->cameraId();
+          auto dtDumlayerId = DTLayerId(dumLayId);
+          DTSuperLayerId MuonPathSLId(dtDumlayerId.wheel(), dtDumlayerId.station(), dtDumlayerId.sector(), sl + 1);
+          if (sl == 0)
+            metaPrimitives[ch_muonpaths.first].emplace_back(metaPrimitive({MuonPathSLId.rawId(),
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   inMPath->primitive(0)->channelId(),
+                                                   inMPath->primitive(0)->tdcTimeStamp(),
+                                                   -1,
+                                                   inMPath->primitive(1)->channelId(),
+                                                   inMPath->primitive(1)->tdcTimeStamp(),
+                                                   -1,
+                                                   inMPath->primitive(2)->channelId(),
+                                                   inMPath->primitive(2)->tdcTimeStamp(),
+                                                   -1,
+                                                   inMPath->primitive(3)->channelId(),
+                                                   inMPath->primitive(3)->tdcTimeStamp(),
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1}));
+          else
+            metaPrimitives[ch_muonpaths.first].emplace_back(metaPrimitive({MuonPathSLId.rawId(),
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   inMPath->primitive(0)->channelId(),
+                                                   inMPath->primitive(0)->tdcTimeStamp(),
+                                                   -1,
+                                                   inMPath->primitive(1)->channelId(),
+                                                   inMPath->primitive(1)->tdcTimeStamp(),
+                                                   -1,
+                                                   inMPath->primitive(2)->channelId(),
+                                                   inMPath->primitive(2)->tdcTimeStamp(),
+                                                   -1,
+                                                   inMPath->primitive(3)->channelId(),
+                                                   inMPath->primitive(3)->tdcTimeStamp(),
+                                                   -1,
+                                                   -1}));
+        }
+      }
+      else if (output_latpredictor_) {
+        int imp = -1;
+        for (auto &inMPath: ch_muonpaths.second) {
+          imp++;
+          auto sl = inMPath->primitive(0)->superLayerId(); // 0, 1, 2
+          int selected_lay = 1;
+          if (inMPath->primitive(0)->tdcTimeStamp() != -1)
+            selected_lay = 0;
+          int dumLayId = inMPath->primitive(selected_lay)->cameraId();
+          auto dtDumlayerId = DTLayerId(dumLayId);
+          DTSuperLayerId MuonPathSLId(dtDumlayerId.wheel(), dtDumlayerId.station(), dtDumlayerId.sector(), sl + 1);
+          for (auto &latcomb: lateralities[ch_muonpaths.first][imp]) {
+            if (sl == 0)
+              metaPrimitives[ch_muonpaths.first].emplace_back(metaPrimitive({MuonPathSLId.rawId(),
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     inMPath->primitive(0)->channelId(),
+                                                     inMPath->primitive(0)->tdcTimeStamp(),
+                                                     latcomb[0],
+                                                     inMPath->primitive(1)->channelId(),
+                                                     inMPath->primitive(1)->tdcTimeStamp(),
+                                                     latcomb[1],
+                                                     inMPath->primitive(2)->channelId(),
+                                                     inMPath->primitive(2)->tdcTimeStamp(),
+                                                     latcomb[2],
+                                                     inMPath->primitive(3)->channelId(),
+                                                     inMPath->primitive(3)->tdcTimeStamp(),
+                                                     latcomb[3],
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1}));
+            else
+              metaPrimitives[ch_muonpaths.first].emplace_back(metaPrimitive({MuonPathSLId.rawId(),
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     -1,
+                                                     inMPath->primitive(0)->channelId(),
+                                                     inMPath->primitive(0)->tdcTimeStamp(),
+                                                     latcomb[0],
+                                                     inMPath->primitive(1)->channelId(),
+                                                     inMPath->primitive(1)->tdcTimeStamp(),
+                                                     latcomb[1],
+                                                     inMPath->primitive(2)->channelId(),
+                                                     inMPath->primitive(2)->tdcTimeStamp(),
+                                                     latcomb[2],
+                                                     inMPath->primitive(3)->channelId(),
+                                                     inMPath->primitive(3)->tdcTimeStamp(),
+                                                     latcomb[3],
+                                                     -1}));
+          }
+        }
+      }
     }
   } else {
     // implementation for advanced (2SL) grouping, no filter required..
@@ -467,6 +658,8 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       mpathanalyzer_->run(iEvent, iEventSetup, ch_muonpaths.second, outmpaths[ch_muonpaths.first]);
     }
   }
+
+  skip_processing_ = skip_processing_ || output_slfitter_;
 
   if (dump_) {
     for (auto & ch_outmpaths: outmpaths) {
@@ -505,7 +698,12 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   std::map<int, std::vector<metaPrimitive>> filteredMetaPrimitives;
   if (algo_ == Standard)
     for (auto & ch_metaPrimitives: metaPrimitives) {
-      mpathqualityenhancer_->run(iEvent, iEventSetup, ch_metaPrimitives.second, filteredMetaPrimitives[ch_metaPrimitives.first]);
+      if (!skip_processing_)
+        mpathqualityenhancer_->run(iEvent, iEventSetup, ch_metaPrimitives.second, filteredMetaPrimitives[ch_metaPrimitives.first]);
+      else
+        for (auto &mp: ch_metaPrimitives.second) {
+          filteredMetaPrimitives[ch_metaPrimitives.first].push_back(mp);
+        }
     }
   if (dump_) {
     for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
@@ -523,7 +721,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
     // }
   // }
 
-
+  skip_processing_ = skip_processing_ || output_slfilter_;
   metaPrimitives.clear();
   // metaPrimitives.erase(metaPrimitives.begin(), metaPrimitives.end());
 
@@ -544,7 +742,12 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   if (algo_ == Standard) {
     for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
       // mpathassociator_->run(iEvent, iEventSetup, dtdigis, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
-      mpathassociator_->run(iEvent, iEventSetup, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
+      if (!skip_processing_)
+        mpathassociator_->run(iEvent, iEventSetup, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
+      else
+        for (auto &mp: ch_filteredMetaPrimitives.second) {
+          correlatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(mp);
+        }
       // for (auto & tp: ch_filteredMetaPrimitives.second) {
         // correlatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(tp);
       // }
@@ -589,6 +792,8 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       }
     }
   }
+
+  skip_processing_ = skip_processing_ || output_matcher_;
   // filteredMetaPrimitives.clear();
 
   if (debug_)
@@ -609,22 +814,32 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       }
     }
   }
-  for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
-    for (unsigned int i = 0; i < ch_correlatedMetaPrimitives.second.size(); i++) {
-      std::cout << " correlated mp " << i << ": ";
-      printmPC(ch_correlatedMetaPrimitives.second.at(i));
-    }
-  }
+  // for (auto & ch_correlatedMetaPrimitives: correlatedMetaPrimitives) {
+    // for (unsigned int i = 0; i < ch_correlatedMetaPrimitives.second.size(); i++) {
+      // std::cout << " correlated mp " << i << ": ";
+      // printmPC(ch_correlatedMetaPrimitives.second.at(i));
+    // }
+  // }
 
   // Correlated Filtering
   std::map<int, std::vector<metaPrimitive>> filtCorrelatedMetaPrimitives;
   if (algo_ == Standard) {
     for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
-      mpathcorfilter_->run(iEvent, iEventSetup,
-        ch_filteredMetaPrimitives.second,
-        correlatedMetaPrimitives[ch_filteredMetaPrimitives.first],
-        filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first]
-      );
+      if (!skip_processing_)
+        mpathcorfilter_->run(iEvent, iEventSetup,
+          ch_filteredMetaPrimitives.second,
+          correlatedMetaPrimitives[ch_filteredMetaPrimitives.first],
+          filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first]
+        );
+      else {
+        for (auto &mp: ch_filteredMetaPrimitives.second) {
+          filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(mp);
+        }
+        if (output_matcher_)
+          for (auto &mp: correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]) {
+            filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(mp);
+          }
+      }
     }
   }
 
@@ -658,6 +873,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   for (auto & ch_correlatedMetaPrimitives: filtCorrelatedMetaPrimitives) {
     assignIndex(ch_correlatedMetaPrimitives.second);
   }
+
   for (auto & ch_correlatedMetaPrimitives: filtCorrelatedMetaPrimitives) {
     for (const auto& metaPrimitiveIt : ch_correlatedMetaPrimitives.second) {
       DTChamberId chId(metaPrimitiveIt.rawId);
@@ -1059,6 +1275,11 @@ void DTTrigPhase2Prod::fillDescriptions(edm::ConfigurationDescriptions& descript
   desc.add<int>("scenario", 0);
   desc.add<int>("df_extended", 0);
   desc.add<int>("max_primitives", 999);
+  desc.add<bool>("output_mixer", false);
+  desc.add<bool>("output_latpredictor", false);
+  desc.add<bool>("output_slfitter", false);
+  desc.add<bool>("output_slfilter", false);
+  desc.add<bool>("output_matcher", false);
   desc.add<edm::FileInPath>("ttrig_filename", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/wire_rawId_ttrig.txt"));
   desc.add<edm::FileInPath>("z_filename", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/wire_rawId_z.txt"));
   desc.add<edm::FileInPath>("lut_sl1", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/fitterlut_sl1.dat"));

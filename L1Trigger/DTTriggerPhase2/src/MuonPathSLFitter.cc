@@ -133,12 +133,12 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
         // auto wireId = DTWireId(dtlayerId, wi + 1); // wire start from 1, mixer groups them starting from 0
         // int rawId = wireId.rawId();
         // wp in tdc counts (still in floating point)
-        int wp_cells = (wi + 1 - SL1_CELLS_OFFSET) * 2 + 1;
+        int wp_semicells = (wi - SL1_CELLS_OFFSET) * 2 + 1;
         if (ly % 2 == 1)
-          wp_cells -= 1;
-        if (sl == 2)
-          wp_cells += (int) round((sl_shift_cm * 10) / CELL_SEMILENGTH);
-        float wp_tdc = wp_cells * MAXDRIFTTDC;
+          wp_semicells -= 1;
+        if (isl == 1)
+          wp_semicells -= (int) round((sl_shift_cm * 10) / CELL_SEMILENGTH);
+        float wp_tdc = wp_semicells * MAXDRIFTTDC;
         // float wp_f = ((10. * shiftinfo_[rawId] / CELL_SEMILENGTH) * MAXDRIFTTDC);
         // std::cout << "WPF: " << wp_f << " " <<  MAXDRIFTTDC << " " << shiftinfo_[rawId] << " " << (10. * shiftinfo_[rawId] / CELL_SEMILENGTH) << " " << rawId << std::endl;
         int wp = (int) ((long int)(round(wp_tdc * std::pow(2, WIREPOS_WIDTH))) / (int) std::pow(2, WIREPOS_WIDTH));
@@ -240,7 +240,7 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
       DTWireId wireId(MuonPathSLId, 2, 1);
       float pos_ch_f = (float) (fit_common_out.position) * ((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) / 10;
       pos_ch_f += (SL1_CELLS_OFFSET * CELL_LENGTH) / 10.;
-      pos_ch_f += shiftinfo_[wireId.rawId()];
+      pos_ch_f += shiftinfo_[wireIdSL1.rawId()];
       // if (sl == 2)
         // pos_ch_f -= sl_shift_cm;
       float pos_sl_f = pos_ch_f - (sl - 1) * slope_f * VERT_PHI1_PHI3 / 2;
@@ -279,8 +279,8 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
       if (sl < 2)
         metaPrimitives.emplace_back(metaPrimitive({MuonPathSLId.rawId(),
                                                  t0_f,
-                                                 pos_sl_f,
-                                                 slope_f,
+                                                 (double) (fit_common_out.position),
+                                                 (double) fit_common_out.slope,
                                                  phi,
                                                  phiB,
                                                  phi_cmssw,
@@ -315,8 +315,8 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
       else
         metaPrimitives.emplace_back(metaPrimitive({MuonPathSLId.rawId(),
                                                  t0_f,
-                                                 pos_sl_f,
-                                                 slope_f,
+                                                 (double) (fit_common_out.position),
+                                                 (double) fit_common_out.slope,
                                                  phi,
                                                  phiB,
                                                  phi_cmssw,

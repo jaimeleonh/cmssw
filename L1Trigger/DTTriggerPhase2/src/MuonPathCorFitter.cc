@@ -134,24 +134,55 @@ void MuonPathCorFitter::run(edm::Event& iEvent,
 
 bool MuonPathCorFitter::canCorrelate(cmsdt::metaPrimitive mp_sl1, cmsdt::metaPrimitive mp_sl3) {
   // moving position from SL RF to chamber RF
-  
-  float pos_ch_sl1_f = mp_sl1.x - mp_sl1.tanPhi * VERT_PHI1_PHI3 / 2;
-  float pos_ch_sl3_f = mp_sl3.x + mp_sl3.tanPhi * VERT_PHI1_PHI3 / 2;
+
+  // float pos_ch_sl1_f = mp_sl1.x - mp_sl1.tanPhi * VERT_PHI1_PHI3 / 2;
+  float pos_ch_sl1_f = mp_sl1.x;
+  // float pos_ch_sl3_f = mp_sl3.x + mp_sl3.tanPhi * VERT_PHI1_PHI3 / 2;
+  float pos_ch_sl3_f = mp_sl3.x;
 
   // translating into tdc counts
-  int pos_ch_sl1 = int(round(pos_ch_sl1_f / (((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) / 10)));
-  int pos_ch_sl3 = int(round(pos_ch_sl3_f / (((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC) / 10)));
+  int pos_ch_sl1 = int(pos_ch_sl1_f);
+  int pos_ch_sl3 = int(pos_ch_sl3_f);
 
-  int slope_sl1 = (int) (-mp_sl1.tanPhi / (SLOPE_LSB * INCREASED_RES_SLOPE_POW));
-  int slope_sl3 = (int) (-mp_sl3.tanPhi / (SLOPE_LSB * INCREASED_RES_SLOPE_POW));
+  // int slope_sl1 = (int) (-mp_sl1.tanPhi / (SLOPE_LSB * INCREASED_RES_SLOPE_POW));
+  int slope_sl1 = (int) mp_sl1.tanPhi;
+  // std::vector<int> slope_sl1_slv;
+  // vhdl_int_to_signed(slope_sl1, slope_sl1_slv);
+  // auto slope_sl1_slv_coarsed = vhdl_slice(slope_sl1_slv, WIDTH_FULL_SLOPE, WIDTH_POS_SLOPE_CORR);
+  // auto slope_sl1_coarsed = vhdl_signed_to_int(slope_sl1_slv_coarsed);
 
-  if (abs((slope_sl1 >> (WIDTH_FULL_SLOPE - WIDTH_POS_SLOPE_CORR))
-      - (slope_sl3 >> (WIDTH_FULL_SLOPE - WIDTH_POS_SLOPE_CORR))) > 1)
+  // int slope_sl3 = (int) (-mp_sl3.tanPhi / (SLOPE_LSB * INCREASED_RES_SLOPE_POW));
+  int slope_sl3 = (int) mp_sl3.tanPhi;
+  // std::vector<int> slope_sl3_slv;
+  // vhdl_int_to_signed(slope_sl3, slope_sl3_slv);
+  // auto slope_sl3_slv_coarsed = vhdl_slice(slope_sl3_slv, WIDTH_FULL_SLOPE, WIDTH_POS_SLOPE_CORR);
+  // auto slope_sl3_coarsed = vhdl_signed_to_int(slope_sl3_slv_coarsed);
+
+  // std::cout << "SLOPE " << slope_sl1 << " " <<  (slope_sl1 >> WIDTH_POS_SLOPE_CORR) << " " << slope_sl3 << " " << (slope_sl3 >> WIDTH_POS_SLOPE_CORR) << std::endl;
+
+  if (abs((slope_sl1 >> WIDTH_POS_SLOPE_CORR)
+      - (slope_sl3 >> WIDTH_POS_SLOPE_CORR)) > 1)
+  // if (abs(slope_sl1_coarsed - slope_sl3_coarsed) > 1)
     return false;
 
-  if (abs((pos_ch_sl1 >> (WIDTH_FULL_POS - WIDTH_POS_SLOPE_CORR))
-      - (pos_ch_sl3 >> (WIDTH_FULL_POS - WIDTH_POS_SLOPE_CORR))) > 1)
+  // std::vector<int> pos_sl1_slv;
+  // vhdl_int_to_signed(pos_sl1, pos_sl1_slv);
+  // auto pos_sl1_slv_coarsed = vhdl_slice(pos_sl1_slv, WIDTH_FULL_POS, WIDTH_POS_SLOPE_CORR);
+  // auto pos_sl1_coarsed = vhdl_signed_to_int(pos_sl1_slv_coarsed);
+
+  // std::vector<int> pos_sl3_slv;
+  // vhdl_int_to_signed(pos_sl3, pos_sl3_slv);
+  // auto pos_sl3_slv_coarsed = vhdl_slice(pos_sl3_slv, WIDTH_FULL_POS, WIDTH_POS_SLOPE_CORR);
+  // auto pos_sl3_coarsed = vhdl_signed_to_int(pos_sl3_slv_coarsed);
+
+  // std::cout << "POS" << std::endl;
+
+  if (abs((pos_ch_sl1 >> WIDTH_POS_SLOPE_CORR)
+      - (pos_ch_sl3 >> WIDTH_POS_SLOPE_CORR)) > 1)
+  // if (abs(pos_sl1_coarsed - pos_sl3_coarsed) > 1)
     return false;
+
+  // std::cout << "TIME" << std::endl;
 
   if (abs(mp_sl1.t0 - mp_sl3.t0) > dT0_correlate_TP_)
     return false;
@@ -170,13 +201,13 @@ void MuonPathCorFitter::finish() {
 
 void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &metaPrimitives) {
   //FIXME
-  DTSuperLayerId MuonPathSLId(mp[0].rawId);
+  DTSuperLayerId MuonPathSLId(mp[0].rawId);  // SL1
   // if (MuonPathSLId.rawId() != 580788224)
     // return;
 
   DTChamberId ChId(MuonPathSLId.wheel(), MuonPathSLId.station(), MuonPathSLId.sector());
   // std::cout << "SL" << sl << std::endl;
-  
+
   DTSuperLayerId MuonPathSL1Id(ChId.wheel(), ChId.station(), ChId.sector(), 1);
   DTSuperLayerId MuonPathSL3Id(ChId.wheel(), ChId.station(), ChId.sector(), 3);
   DTWireId wireIdSL1(MuonPathSL1Id, 2, 1);
@@ -231,10 +262,10 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
         // int rawId = wireId.rawId();
 
         int wp_semicells = (wi - SL1_CELLS_OFFSET) * 2 + 1;
-        std::cout << "wp_semicells " << wi << " " << SL1_CELLS_OFFSET << " " <<  wp_semicells << std::endl;
+        // std::cout << "wp_semicells " << wi << " " << SL1_CELLS_OFFSET << " " <<  wp_semicells << std::endl;
         if (ly % 2 == 1)
           wp_semicells -= 1;
-        std::cout << sl_shift_cm << std::endl;
+        // std::cout << sl_shift_cm << std::endl;
         if (isl == 1)  // SL3
           wp_semicells -= (int) round((sl_shift_cm * 10) / CELL_SEMILENGTH);
         float wp_tdc = wp_semicells * MAXDRIFTTDC;
@@ -310,30 +341,30 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
     }
   }
 
-  std::cout << "Wires ";
-  for (int i = 0; i < 8; i++)
-    std::cout << fit_common_in.hits[i].wi << " ";
-  std::cout << std::endl;
+  // std::cout << "Wires ";
+  // for (int i = 0; i < 8; i++)
+    // std::cout << fit_common_in.hits[i].wi << " ";
+  // std::cout << std::endl;
 
-  std::cout << "TDC ";
-  for (int i = 0; i < 8; i++)
-    std::cout << fit_common_in.hits[i].ti << " ";
-  std::cout << std::endl;
+  // std::cout << "TDC ";
+  // for (int i = 0; i < 8; i++)
+    // std::cout << fit_common_in.hits[i].ti << " ";
+  // std::cout << std::endl;
 
-  std::cout << "lay ";
-  for (int i = 0; i < 8; i++)
-    std::cout << fit_common_in.hits[i].ly << " ";
-  std::cout << std::endl;
+  // std::cout << "lay ";
+  // for (int i = 0; i < 8; i++)
+    // std::cout << fit_common_in.hits[i].ly << " ";
+  // std::cout << std::endl;
 
-  std::cout << "wp ";
-  for (int i = 0; i < 8; i++)
-    std::cout << fit_common_in.hits[i].wp << " ";
-  std::cout << std::endl;
+  // std::cout << "wp ";
+  // for (int i = 0; i < 8; i++)
+    // std::cout << fit_common_in.hits[i].wp << " ";
+  // std::cout << std::endl;
 
-  std::cout << "Lateralities ";
-  for (int i = 0; i < 8; i++)
-    std::cout << fit_common_in.lateralities[i] << " ";
-  std::cout << std::endl;
+  // std::cout << "Lateralities ";
+  // for (int i = 0; i < 8; i++)
+    // std::cout << fit_common_in.lateralities[i] << " ";
+  // std::cout << std::endl;
 
   // std::cout << std::endl;
   fit_common_in.coeffs = coeffs;
@@ -375,7 +406,7 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
                             PROD_RESIZE_COR_POSITION,
                             PROD_RESIZE_COR_SLOPE);
                             
-  std::cout << "Valid fit: " << fit_common_out.valid_fit << std::endl;
+  // std::cout << "Valid fit: " << fit_common_out.valid_fit << std::endl;
   if (fit_common_out.valid_fit == 1) {
     float t0_f = ((float) fit_common_out.t0) * (float) LHC_CLK_FREQ / (float) TIME_TO_TDC_COUNTS;
     float slope_f = -fit_common_out.slope * SLOPE_LSB;
@@ -421,8 +452,8 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
     float phiB_cmssw = hasPosRF(ChId.wheel(), ChId.sector()) ? psi - phi_cmssw : -psi - phi_cmssw;
     metaPrimitives.emplace_back(metaPrimitive({MuonPathSLId.rawId(),
                                              t0_f,
-                                             pos_ch_f,
-                                             slope_f,
+                                             (double) fit_common_out.position,
+                                             (double) fit_common_out.slope,
                                              phi,
                                              phiB,
                                              phi_cmssw,

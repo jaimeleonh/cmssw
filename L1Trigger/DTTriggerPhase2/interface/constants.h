@@ -291,9 +291,9 @@ namespace cmsdt {
   constexpr int FSEG_T0_BX_LSB = 2;
   constexpr int FSEG_T0_DISCARD_LSB = 4;
   constexpr int FSEG_T0_SIZE = FSEG_T0_BX_LSB + (5 - FSEG_T0_DISCARD_LSB);
-  constexpr int FSEG_POS_DISCARD_LSB = 6;
+  constexpr int FSEG_POS_DISCARD_LSB = 9;
   constexpr int FSEG_POS_SIZE = WIDTH_FULL_POS - FSEG_POS_DISCARD_LSB;  
-  constexpr int FSEG_SLOPE_DISCARD_LSB = 6;    
+  constexpr int FSEG_SLOPE_DISCARD_LSB = 9;
   constexpr int FSEG_SLOPE_SIZE = WIDTH_FULL_SLOPE - FSEG_SLOPE_DISCARD_LSB;    
 
   /* Adimensional */
@@ -331,7 +331,7 @@ namespace cmsdt {
   constexpr int MAX_PRIM_PER_BX_FOR_COR = 6;
 
   // max number of TPs to correlate and perform the refitting
-  constexpr int MAX_PRIM_FOR_COR = 24;
+  constexpr int MAX_PRIM_FOR_COR = 12;
 
 
   /*

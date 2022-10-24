@@ -25,6 +25,12 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                df_extended = cms.int32(0), # DF: 0 for standard, 1 for extended, 2 for both 
                                                max_primitives = cms.int32(999),
 
+                                               output_mixer = cms.bool(False),
+                                               output_latpredictor = cms.bool(False),
+                                               output_slfitter = cms.bool(False),
+                                               output_slfilter = cms.bool(False),
+                                               output_matcher = cms.bool(False),
+
                                                ttrig_filename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/wire_rawId_ttrig.txt'),
                                                z_filename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/wire_rawId_z.txt'),
                                                lut_sl1 = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/fitterlut_sl1.dat'),

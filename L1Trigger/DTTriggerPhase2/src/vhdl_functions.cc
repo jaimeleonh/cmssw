@@ -42,10 +42,10 @@ void vhdl_int_to_unsigned(int value, std::vector<int> &v) {
 void vhdl_int_to_signed(int value, std::vector<int> &v) {
   if (value < 0) {
     int val = 1;
-    while (val < value) {
+    while (val < -value) {
       val *= 2;
     }
-    vhdl_int_to_unsigned(val - value, v);
+    vhdl_int_to_unsigned(val + value, v);
     v.push_back(0);
     v.push_back(1);
   } else {
