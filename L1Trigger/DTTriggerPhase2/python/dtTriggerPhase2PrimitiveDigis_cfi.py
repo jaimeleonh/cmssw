@@ -29,6 +29,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                output_latpredictor = cms.bool(False),
                                                output_slfitter = cms.bool(False),
                                                output_slfilter = cms.bool(False),
+                                               output_confirmed = cms.bool(False),
                                                output_matcher = cms.bool(False),
 
                                                ttrig_filename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/wire_rawId_ttrig.txt'),

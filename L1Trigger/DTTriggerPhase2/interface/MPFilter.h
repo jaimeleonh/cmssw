@@ -12,7 +12,7 @@
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
 
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
-#include "Geometry/DTGeometry/interface/DTLayer.h"
+#include "DataFormats/MuonDetId/interface/DTLayerId.h"
 
 #include <iostream>
 #include <fstream>

@@ -36,6 +36,7 @@
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyticAnalyzer.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAnalyzerInChamber.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MuonPathAssociator.h"
+#include "L1Trigger/DTTriggerPhase2/interface/MuonPathConfirmator.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPSLFilter.h"
 #include "L1Trigger/DTTriggerPhase2/interface/MPCorFilter.h"
@@ -141,8 +142,10 @@ private:
   bool output_latpredictor_;
   bool output_slfitter_;
   bool output_slfilter_;
+  bool output_confirmed_;
   bool output_matcher_;
   bool skip_processing_;
+  bool allow_confirmation_;
 
   // ParameterSet
   edm::EDGetTokenT<DTDigiCollection> dtDigisToken_;
@@ -159,6 +162,7 @@ private:
   std::unique_ptr<MPFilter> mpathhitsfilter_;
   // std::unique_ptr<MuonPathAssociator> mpathassociator_;
   std::unique_ptr<MuonPathAnalyzer> mpathassociator_;
+  std::unique_ptr<MuonPathConfirmator> mpathconfirmator_;
   std::unique_ptr<MPFilter> mpathcorfilter_;
   std::shared_ptr<GlobalCoordsObtainer> globalcoordsobtainer_;
 
@@ -218,7 +222,9 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
   output_latpredictor_ = pset.getParameter<bool>("output_latpredictor");
   output_slfitter_ = pset.getParameter<bool>("output_slfitter");
   output_slfilter_ = pset.getParameter<bool>("output_slfilter");
+  output_confirmed_ = pset.getParameter<bool>("output_confirmed");
   output_matcher_ = pset.getParameter<bool>("output_matcher");
+  allow_confirmation_ = pset.getParameter<bool>("allow_confirmation");
 
   edm::ConsumesCollector consumesColl(consumesCollector());
   globalcoordsobtainer_ = std::make_shared<GlobalCoordsObtainer>(pset);
@@ -259,6 +265,7 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset)
   mpathredundantfilter_ = std::make_unique<MPRedundantFilter>(pset);
   mpathhitsfilter_ = std::make_unique<MPCleanHitsFilter>(pset);
   // mpathassociator_ = std::make_unique<MuonPathAssociator>(pset, consumesColl, globalcoordsobtainer_);
+  mpathconfirmator_ = std::make_unique<MuonPathConfirmator>(pset, consumesColl);
   mpathassociator_ = std::make_unique<MuonPathCorFitter>(pset, consumesColl, globalcoordsobtainer_);
   mpathcorfilter_ = std::make_unique<MPCorFilter>(pset);
   rpc_integrator_ = std::make_unique<RPCIntegrator>(pset, consumesColl);
@@ -735,18 +742,34 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
     LogDebug("DTTrigPhase2Prod") << "filteredMetaPrimitives: starting correlations" << std::endl;
 
   /////////////////////////////////////
+  //// CONFIRMATION:
+  /////////////////////////////////////
+
+  std::map<int, std::vector<metaPrimitive>> confirmedMetaPrimitives;
+  for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
+    if (!skip_processing_ && allow_confirmation_)
+      mpathconfirmator_->run(iEvent, iEventSetup, ch_filteredMetaPrimitives.second, dtdigis, confirmedMetaPrimitives[ch_filteredMetaPrimitives.first]);
+    else
+      for (auto &mp: ch_filteredMetaPrimitives.second) {
+        confirmedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(mp);
+      }
+  }
+  filteredMetaPrimitives.clear();
+  skip_processing_ = skip_processing_ || output_confirmed_;
+
+  /////////////////////////////////////
   //// CORRELATION:
   /////////////////////////////////////
 
   std::map<int, std::vector<metaPrimitive>> correlatedMetaPrimitives;
   if (algo_ == Standard) {
-    for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
+    for (auto & ch_confirmedMetaPrimitives: confirmedMetaPrimitives) {
       // mpathassociator_->run(iEvent, iEventSetup, dtdigis, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
       if (!skip_processing_)
-        mpathassociator_->run(iEvent, iEventSetup, ch_filteredMetaPrimitives.second, correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]);
+        mpathassociator_->run(iEvent, iEventSetup, ch_confirmedMetaPrimitives.second, correlatedMetaPrimitives[ch_confirmedMetaPrimitives.first]);
       else
-        for (auto &mp: ch_filteredMetaPrimitives.second) {
-          correlatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(mp);
+        for (auto &mp: ch_confirmedMetaPrimitives.second) {
+          correlatedMetaPrimitives[ch_confirmedMetaPrimitives.first].push_back(mp);
         }
       // for (auto & tp: ch_filteredMetaPrimitives.second) {
         // correlatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(tp);
@@ -824,24 +847,26 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   // Correlated Filtering
   std::map<int, std::vector<metaPrimitive>> filtCorrelatedMetaPrimitives;
   if (algo_ == Standard) {
-    for (auto & ch_filteredMetaPrimitives: filteredMetaPrimitives) {
+    for (auto & ch_confirmedMetaPrimitives: confirmedMetaPrimitives) {
       if (!skip_processing_)
         mpathcorfilter_->run(iEvent, iEventSetup,
-          ch_filteredMetaPrimitives.second,
-          correlatedMetaPrimitives[ch_filteredMetaPrimitives.first],
-          filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first]
+          ch_confirmedMetaPrimitives.second,
+          correlatedMetaPrimitives[ch_confirmedMetaPrimitives.first],
+          confirmedMetaPrimitives[ch_confirmedMetaPrimitives.first]
         );
       else {
-        for (auto &mp: ch_filteredMetaPrimitives.second) {
-          filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(mp);
+        for (auto &mp: ch_confirmedMetaPrimitives.second) {
+          filtCorrelatedMetaPrimitives[ch_confirmedMetaPrimitives.first].push_back(mp);
         }
         if (output_matcher_)
-          for (auto &mp: correlatedMetaPrimitives[ch_filteredMetaPrimitives.first]) {
-            filtCorrelatedMetaPrimitives[ch_filteredMetaPrimitives.first].push_back(mp);
+          for (auto &mp: correlatedMetaPrimitives[ch_confirmedMetaPrimitives.first]) {
+            filtCorrelatedMetaPrimitives[ch_confirmedMetaPrimitives.first].push_back(mp);
           }
       }
     }
   }
+  correlatedMetaPrimitives.clear();
+  confirmedMetaPrimitives.clear();
 
   double shift_back = 0;
   if (scenario_ == MC)  //scope for MC
@@ -1279,6 +1304,7 @@ void DTTrigPhase2Prod::fillDescriptions(edm::ConfigurationDescriptions& descript
   desc.add<bool>("output_latpredictor", false);
   desc.add<bool>("output_slfitter", false);
   desc.add<bool>("output_slfilter", false);
+  desc.add<bool>("output_confirmed", false);
   desc.add<bool>("output_matcher", false);
   desc.add<edm::FileInPath>("ttrig_filename", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/wire_rawId_ttrig.txt"));
   desc.add<edm::FileInPath>("z_filename", edm::FileInPath("L1Trigger/DTTriggerPhase2/data/wire_rawId_z.txt"));
