@@ -227,6 +227,7 @@ namespace cmsdt {
   //  F1    F2    F3    F4    F5    F6    F7    F8    F9
   constexpr int BX_PER_FRAME = 2;
   constexpr int MAX_FRAME_DIF = 8;
+  constexpr int PATHFINDER_INPUT_HITS_LIMIT = 8;
 
   /* laterality provider */
   constexpr int LAT_TOTAL_BITS = 9; // tdc counts from 0 to 512
@@ -289,12 +290,13 @@ namespace cmsdt {
   
   // Filtering
   constexpr int FSEG_T0_BX_LSB = 2;
-  constexpr int FSEG_T0_DISCARD_LSB = 4;
+  constexpr int FSEG_T0_DISCARD_LSB = 5;
   constexpr int FSEG_T0_SIZE = FSEG_T0_BX_LSB + (5 - FSEG_T0_DISCARD_LSB);
   constexpr int FSEG_POS_DISCARD_LSB = 9;
   constexpr int FSEG_POS_SIZE = WIDTH_FULL_POS - FSEG_POS_DISCARD_LSB;  
   constexpr int FSEG_SLOPE_DISCARD_LSB = 9;
-  constexpr int FSEG_SLOPE_SIZE = WIDTH_FULL_SLOPE - FSEG_SLOPE_DISCARD_LSB;    
+  constexpr int FSEG_SLOPE_SIZE = WIDTH_FULL_SLOPE - FSEG_SLOPE_DISCARD_LSB;
+  constexpr int SLFILT_MAX_SEG1T0_TO_SEG2ARRIVAL = 24;
 
   /* Adimensional */
   constexpr int MAX_BX_IDX = 3564;

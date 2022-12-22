@@ -97,7 +97,7 @@ public:
 private:
   // Private methods
   void setInChannels(const DTDigiCollection* digi, int sl);
-  std::vector<DTPrimitives> group_hits(DTPrimitive pivot_hit, std::vector<DTPrimitives> input_paths, DTPrimitives hits_per_cell);
+  std::vector<DTPrimitives> group_hits(DTPrimitive pivot_hit, std::vector<DTPrimitives> input_paths, DTPrimitives hits_per_cell, DTPrimitives &hits_in_trapezoid);
 
   // Private attributes
   const bool debug_;

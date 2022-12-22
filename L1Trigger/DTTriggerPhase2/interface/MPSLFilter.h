@@ -58,7 +58,8 @@ public:
 
 private:
   // Private methods
-  std::vector<cmsdt::metaPrimitive> filter(std::map<int, std::vector<cmsdt::metaPrimitive>>);
+  // std::vector<cmsdt::metaPrimitive> filter(std::map<int, std::vector<cmsdt::metaPrimitive>>);
+  std::vector<cmsdt::metaPrimitive> filter(std::vector<cmsdt::metaPrimitive> mps);
   bool isDead(cmsdt::metaPrimitive mp, std::map<int, valid_tp_arr_t> tps_per_bx);
   int killTps(cmsdt::metaPrimitive mp, int bx, std::map<int, valid_tp_arr_t> &tps_per_bx);
   int share_hit(cmsdt::metaPrimitive mp, cmsdt::metaPrimitive mp2);

@@ -1,5 +1,6 @@
 #ifndef L1Trigger_DTTriggerPhase2_vhdl_h
 #define L1Trigger_DTTriggerPhase2_vhdl_h
+
 #include <cstdint>
 #include <vector>
 #include <cmath>

@@ -403,8 +403,6 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
         // std::cout << ch_muonpaths.second.at(i)->primitive(lay)->channelId() << " ";
       // for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
         // std::cout<< ch_muonpaths.second.at(i)->primitive(lay)->tdcTimeStamp() << " ";
-      // for (int lay = 0; lay < ch_muonpaths.second.at(i)->nprimitives(); lay++)
-       // std::cout << ch_muonpaths.second.at(i)->primitive(lay)->laterality() << " ";
       // std::cout << std::endl;
     // }
   // }
@@ -688,7 +686,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   // for (auto & ch_metaPrimitives: metaPrimitives) {
     // for (unsigned int i = 0; i < ch_metaPrimitives.second.size(); i++) {
       // std::cout << " SL mp " << i << ": ";
-      // printmP(ch_metaPrimitives.second.at(i));
+      // printmPC(ch_metaPrimitives.second.at(i));
     // }
   // }
 
@@ -724,7 +722,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
   // for (auto & ch_metaPrimitives: filteredMetaPrimitives) {
     // for (unsigned int i = 0; i < ch_metaPrimitives.second.size(); i++) {
       // std::cout << " SL filtmp " << i << ": ";
-      // printmP(ch_metaPrimitives.second.at(i));
+      // printmPC(ch_metaPrimitives.second.at(i));
     // }
   // }
 
@@ -852,7 +850,7 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
         mpathcorfilter_->run(iEvent, iEventSetup,
           ch_confirmedMetaPrimitives.second,
           correlatedMetaPrimitives[ch_confirmedMetaPrimitives.first],
-          confirmedMetaPrimitives[ch_confirmedMetaPrimitives.first]
+          filtCorrelatedMetaPrimitives[ch_confirmedMetaPrimitives.first]
         );
       else {
         for (auto &mp: ch_confirmedMetaPrimitives.second) {
@@ -865,6 +863,14 @@ void DTTrigPhase2Prod::produce(Event& iEvent, const EventSetup& iEventSetup) {
       }
     }
   }
+  
+  // for (auto & ch_correlatedMetaPrimitives: filtCorrelatedMetaPrimitives) {
+      // for (unsigned int i = 0; i < ch_correlatedMetaPrimitives.second.size(); i++) {
+      // std::cout << "filtered correlated mp " << i << ": ";
+      // printmPC(ch_correlatedMetaPrimitives.second.at(i));
+    // }
+  // }
+  
   correlatedMetaPrimitives.clear();
   confirmedMetaPrimitives.clear();
 

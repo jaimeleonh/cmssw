@@ -62,13 +62,17 @@ public:
 private:
   // Private methods
   std::vector<cmsdt::metaPrimitive> filter(
-    std::map<int, std::vector<cmsdt::metaPrimitive>> SL1mpsPerBX,
-    std::map<int, std::vector<cmsdt::metaPrimitive>> SL3mpsPerBX,
-    std::map<int, std::vector<cmsdt::metaPrimitive>> CormpsPerBX);
+    std::vector<cmsdt::metaPrimitive> SL1mps,
+    // std::map<int, std::vector<cmsdt::metaPrimitive>> SL1mpsPerBX,
+    std::vector<cmsdt::metaPrimitive> SL3mps,
+    // std::map<int, std::vector<cmsdt::metaPrimitive>> SL3mpsPerBX,
+    std::vector<cmsdt::metaPrimitive> Cormps);
+    // std::map<int, std::vector<cmsdt::metaPrimitive>> CormpsPerBX);
   std::vector<int> coarsify(cmsdt::metaPrimitive mp, int sl);
   bool isDead(cmsdt::metaPrimitive mp, std::vector<int> coarsed, std::map<int, valid_cor_tp_arr_t> tps_per_bx);
   int killTps(cmsdt::metaPrimitive mp, std::vector<int> coarsed,int bx, std::map<int, valid_cor_tp_arr_t> &tps_per_bx);
   int match(cmsdt::metaPrimitive mp, std::vector<int> coarsed, valid_cor_tp_t valid_cor_tp2);
+  int get_chi2(cmsdt::metaPrimitive mp);
 
   // Private attributes
   const bool debug_;

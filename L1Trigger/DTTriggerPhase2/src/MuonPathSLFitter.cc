@@ -142,7 +142,7 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
         // float wp_f = ((10. * shiftinfo_[rawId] / CELL_SEMILENGTH) * MAXDRIFTTDC);
         // std::cout << "WPF: " << wp_f << " " <<  MAXDRIFTTDC << " " << shiftinfo_[rawId] << " " << (10. * shiftinfo_[rawId] / CELL_SEMILENGTH) << " " << rawId << std::endl;
         int wp = (int) ((long int)(round(wp_tdc * std::pow(2, WIREPOS_WIDTH))) / (int) std::pow(2, WIREPOS_WIDTH));
-        // std::cout << "WP: " << wp << std::endl;
+        // std::cout << "ly: " << ly << " wi:" << wi << " " << " WP: " << wp << std::endl;
         fit_common_in.hits.push_back({ti, wi, ly, wp});
         // fill valids as well
         if (inMPath->missingLayer() == i) fit_common_in.hits_valid.push_back(0);
@@ -184,6 +184,7 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
     fit_common_in.lateralities.clear();
 
     auto rom_addr = get_rom_addr(inMPath, lat_comb);
+    // std::cout << rom_addr << std::endl;
     coeffs_t coeffs;
     if (sl == 0) {
       coeffs = RomDataConvert(lut_sl1[rom_addr], COEFF_WIDTH_SL_T0, COEFF_WIDTH_SL_POSITION, COEFF_WIDTH_SL_SLOPE, 2 * sl, 2 * sl + 3);
@@ -222,10 +223,12 @@ void MuonPathSLFitter::analyze(MuonPathPtr &inMPath, lat_vector lat_combs, std::
                               PROD_RESIZE_SL_T0,
                               PROD_RESIZE_SL_POSITION,
                               PROD_RESIZE_SL_SLOPE);
-                              
     // std::cout << "Valid fit: " << fit_common_out.valid_fit << std::endl;
     if (fit_common_out.valid_fit == 1) {
       float t0_f = ((float) fit_common_out.t0) * (float) LHC_CLK_FREQ / (float) TIME_TO_TDC_COUNTS;
+      
+      // std::cout << fit_common_out.t0 << " " << t0_f << std::endl;
+      
       float slope_f = -fit_common_out.slope * SLOPE_LSB;
       // std::cout << std::abs(slope_f) << " " << tanPhiTh_ << std::endl;
       if (std::abs(slope_f) > tanPhiTh_)

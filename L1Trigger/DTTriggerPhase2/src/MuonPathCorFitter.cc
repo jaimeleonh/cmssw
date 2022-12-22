@@ -90,13 +90,23 @@ void MuonPathCorFitter::run(edm::Event& iEvent,
               if (isl2 >= MAX_PRIM_PER_BX_FOR_COR)
                 break;
               if (bxs_to_consider[ibx].sl == 1) {
-                if (!canCorrelate(prim1, prim2)) continue;
+                // std::cout << prim1.t0 << " " << prim2.t0;
+                if (!canCorrelate(prim1, prim2)) {
+                  // std::cout << " cannot correlate" << std::endl;
+                  continue;
+                }
+                // std::cout << " can correlate" << std::endl;
                 if (prim1.quality >= 3 && prim2.quality >= 3) mps_q8.push_back(mp_group({prim1, prim2}));
                 else if ((prim1.quality >= 3 && prim2.quality < 3) || (prim1.quality < 3 && prim2.quality >= 3))
                   mps_q7.push_back(mp_group({prim1, prim2}));
                 else mps_q6.push_back(mp_group({prim1, prim2}));
               } else {
-                if (!canCorrelate(prim2, prim1)) continue;
+                // std::cout << prim2.t0 << " " << prim1.t0;
+                if (!canCorrelate(prim2, prim1)) {
+                  // std::cout << " cannot correlate" << std::endl;
+                  continue;
+                }
+                // std::cout << " can correlate" << std::endl;
                 if (prim2.quality >= 3 && prim1.quality >= 3) mps_q8.push_back(mp_group({prim2, prim1}));
                 else if ((prim2.quality >= 3 && prim1.quality < 3) || (prim2.quality < 3 && prim1.quality >= 3))
                   mps_q7.push_back(mp_group({prim2, prim1}));
@@ -282,7 +292,7 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
         // fill valids as well
         fit_common_in.hits_valid.push_back(1);
       } else {
-        missing_layers.push_back(isl * NUM_LAYERS + 1);
+        missing_layers.push_back(isl * NUM_LAYERS + i);
         fit_common_in.hits.push_back({-1, -1, -1, -1});
         fit_common_in.hits_valid.push_back(0);
       }
@@ -336,7 +346,6 @@ void MuonPathCorFitter::analyze(mp_group mp, std::vector<cmsdt::metaPrimitive> &
     }
 
     for (size_t i = 0; i < NUM_LAYERS; i++) {
-      // std::cout << lat[i] << " ";
       fit_common_in.lateralities.push_back(lat[i]);
     }
   }
@@ -599,7 +608,7 @@ int MuonPathCorFitter::get_rom_addr(mp_group mps, std::vector<int> missing_hits)
       }
     }
     for (size_t ilat = 0; ilat < lats.size(); ilat++) {
-      if ((int) ilat == missing_hits[0]) // only applies to 3-hit, as in 4-hit missL=-1
+      if ((int) ilat == missing_hits[0] || (int) ilat == missing_hits[1]) // only applies to 3-hit, as in 4-hit missL=-1
         continue;
       auto lat = lats[ilat];
       if (lat == -1)

@@ -26,9 +26,12 @@ void MPCorFilter::run(edm::Event &iEvent,
   if (debug_)
     LogDebug("MPCorFilter") << "MPCorFilter: run";
 
-  std::map<int, std::vector<metaPrimitive>> SL1metaPrimitivesPerBX;
-  std::map<int, std::vector<metaPrimitive>> SL3metaPrimitivesPerBX;
-  std::map<int, std::vector<metaPrimitive>> CormetaPrimitivesPerBX;
+  // std::map<int, std::vector<metaPrimitive>> SL1metaPrimitivesPerBX;
+  std::vector<metaPrimitive> SL1metaPrimitives;
+  // std::map<int, std::vector<metaPrimitive>> SL3metaPrimitivesPerBX;
+  std::vector<metaPrimitive> SL3metaPrimitives;
+  // std::map<int, std::vector<metaPrimitive>> CormetaPrimitivesPerBX;
+  std::vector<metaPrimitive> CormetaPrimitives;
   uint32_t sl1Id_rawid = -1, sl3Id_rawid = -1;
   if (inSLMPaths.size() > 0) {
     int dum_sl_rawid = inSLMPaths[0].rawId;
@@ -40,19 +43,25 @@ void MPCorFilter::run(edm::Event &iEvent,
     sl3Id_rawid = sl3Id.rawId();
 
     for (const auto &metaprimitiveIt : inSLMPaths) {
-      int BX = metaprimitiveIt.t0 / 25;
-      if (metaprimitiveIt.rawId == sl1Id_rawid)
-        SL1metaPrimitivesPerBX[BX].push_back(metaprimitiveIt);
+      // int BX = metaprimitiveIt.t0 / 25;
+      if (metaprimitiveIt.rawId == sl1Id_rawid) {
+        SL1metaPrimitives.push_back(metaprimitiveIt);
+        // SL1metaPrimitivesPerBX[BX].push_back(metaprimitiveIt);
+      }
       else if (metaprimitiveIt.rawId == sl3Id_rawid)
-        SL3metaPrimitivesPerBX[BX].push_back(metaprimitiveIt);
+        SL3metaPrimitives.push_back(metaprimitiveIt);
+        // SL3metaPrimitivesPerBX[BX].push_back(metaprimitiveIt);
     }
   }
-  for (const auto &metaprimitiveIt : inCorMPaths) {
-    int BX = metaprimitiveIt.t0 / 25;
-    CormetaPrimitivesPerBX[BX].push_back(metaprimitiveIt);
-  }
+  // for (const auto &metaprimitiveIt : inCorMPaths) {
+    // int BX = metaprimitiveIt.t0 / 25;
+    // std::cout << metaprimitiveIt.quality << " " << metaprimitiveIt.t0 << std::endl;
+    // CormetaPrimitivesPerBX[BX].push_back(metaprimitiveIt);
+    // CormetaPrimitives.push_back(metaprimitiveIt);
+  // }
 
-  auto filteredMPs = filter(SL1metaPrimitivesPerBX, SL3metaPrimitivesPerBX, CormetaPrimitivesPerBX);
+  // auto filteredMPs = filter(SL1metaPrimitivesPerBX, SL3metaPrimitivesPerBX, CormetaPrimitivesPerBX);
+  auto filteredMPs = filter(SL1metaPrimitives, SL3metaPrimitives, inCorMPaths);
   for (auto & mp: filteredMPs)
     outMPaths.push_back(mp);
 }
@@ -63,40 +72,79 @@ void MPCorFilter::finish(){};
 ///  OTHER METHODS
 
 std::vector<metaPrimitive> MPCorFilter::filter(
-    std::map<int, std::vector<metaPrimitive>> SL1mpsPerBX,
-    std::map<int, std::vector<metaPrimitive>> SL3mpsPerBX,
-    std::map<int, std::vector<metaPrimitive>> CormpsPerBX)
+    std::vector<metaPrimitive> SL1mps,
+    // std::map<int, std::vector<metaPrimitive>> SL1mpsPerBX,
+    std::vector<metaPrimitive> SL3mps,
+    // std::map<int, std::vector<metaPrimitive>> SL3mpsPerBX,
+    std::vector<metaPrimitive> Cormps)
+    // std::map<int, std::vector<metaPrimitive>> CormpsPerBX)
 {
+  // std::cout << "SL1 " << SL1mps.size() << " SL3 " << SL3mps.size() << std::endl;
   std::map<int, valid_cor_tp_arr_t> mp_valid_per_bx;
-  for (auto &elem: SL1mpsPerBX) {
-    mp_valid_per_bx[elem.first] = valid_cor_tp_arr_t(12);
-    int imp = 0;
-    for (auto &mp : elem.second) {
-      auto coarsed = coarsify(mp, 1);
-      mp_valid_per_bx[elem.first][imp] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
-      imp += 2;
+  // for (auto &elem: SL1mpsPerBX) {
+  std::map<int, int> imp_per_bx_sl1;
+  for (auto &mp: SL1mps) {
+    int BX = mp.t0 / 25;
+    // mp_valid_per_bx[elem.first] = valid_cor_tp_arr_t(12);
+    if (mp_valid_per_bx.find(BX) == mp_valid_per_bx.end()) {
+        mp_valid_per_bx[BX] = valid_cor_tp_arr_t(12);
     }
+    
+    if (imp_per_bx_sl1.find(BX) == imp_per_bx_sl1.end()) {
+        imp_per_bx_sl1[BX] = 0;
+    }
+    
+    // std::cout << "SL1 " << mp.t0 << std::endl;
+    // int imp = 0;
+    // for (auto &mp : elem.second) {
+    auto coarsed = coarsify(mp, 1);
+    // mp_valid_per_bx[elem.first][imp] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
+    mp_valid_per_bx[BX][imp_per_bx_sl1[BX]] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
+    // imp += 2;
+    imp_per_bx_sl1[BX] += 2;
+    // }
   }
-  for (auto &elem: SL3mpsPerBX) {
-    if (mp_valid_per_bx.find(elem.first) == mp_valid_per_bx.end())
-      mp_valid_per_bx[elem.first] = valid_cor_tp_arr_t(12);
-    int imp = 1;
-    for (auto &mp : elem.second) {
-      auto coarsed = coarsify(mp, 3);
-      mp_valid_per_bx[elem.first][imp] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
-      imp += 2;
+  // for (auto &elem: SL3mpsPerBX) {
+  std::map<int, int> imp_per_bx_sl3;
+  for (auto &mp: SL3mps) {
+    int BX = mp.t0 / 25;
+    // if (mp_valid_per_bx.find(elem.first) == mp_valid_per_bx.end())
+      // mp_valid_per_bx[elem.first] = valid_cor_tp_arr_t(12);
+    if (mp_valid_per_bx.find(BX) == mp_valid_per_bx.end()) {
+        mp_valid_per_bx[BX] = valid_cor_tp_arr_t(12);
     }
+
+    if (imp_per_bx_sl3.find(BX) == imp_per_bx_sl3.end()) {
+        imp_per_bx_sl3[BX] = 1;
+    }
+
+    // int imp = 1;
+    // for (auto &mp : elem.second) {
+    auto coarsed = coarsify(mp, 3);
+    // mp_valid_per_bx[elem.first][imp] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
+    mp_valid_per_bx[BX][imp_per_bx_sl3[BX]] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
+    imp_per_bx_sl3[BX] += 2;
+    // }
   }
-  for (auto &elem: CormpsPerBX) {
-    if (mp_valid_per_bx.find(elem.first) == mp_valid_per_bx.end()) {
-      mp_valid_per_bx[elem.first] = valid_cor_tp_arr_t(12);
+  // for (auto &elem: CormpsPerBX) {
+  for (auto &mp: Cormps) {
+    // if (mp_valid_per_bx.find(elem.first) == mp_valid_per_bx.end()) {
+      // mp_valid_per_bx[elem.first] = valid_cor_tp_arr_t(12);
+    // }
+    int BX = mp.t0 / 25;
+    if (mp_valid_per_bx.find(BX) == mp_valid_per_bx.end()) {
+      mp_valid_per_bx[BX] = valid_cor_tp_arr_t(12);
     }
-    for (auto &mp : elem.second) {
-      auto coarsed = coarsify(mp, 0);
-      if (isDead(mp, coarsed, mp_valid_per_bx)) continue;
-      auto index = killTps(mp, coarsed, elem.first, mp_valid_per_bx);
-      mp_valid_per_bx[elem.first][index] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
-    }
+    // for (auto &mp : elem.second) {
+    auto coarsed = coarsify(mp, 0);
+    auto dead = isDead(mp, coarsed, mp_valid_per_bx);
+    // std::cout << mp.quality << " " << mp.t0 << " " << dead << std::endl;
+    if (isDead(mp, coarsed, mp_valid_per_bx)) continue;
+    // auto index = killTps(mp, coarsed, elem.first, mp_valid_per_bx);
+    auto index = killTps(mp, coarsed, BX, mp_valid_per_bx);
+    // mp_valid_per_bx[elem.first][index] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
+    mp_valid_per_bx[BX][index] = valid_cor_tp_t({true, mp, coarsed[3], coarsed[4], coarsed[5]});
+    // }
   }
 
   std::vector<metaPrimitive> outTPs;
@@ -130,7 +178,7 @@ std::vector<int> MPCorFilter::coarsify(cmsdt::metaPrimitive mp, int sl) {
   // int slope = (int) (-mp.tanPhi / (SLOPE_LSB * INCREASED_RES_SLOPE_POW));
   int slope = (int) (mp.tanPhi);
 
-  // std::cout << sl << " " << pos_ch_f << " " << pos_ch << std::endl; 
+  // std::cout << sl << " " << mp.t0 << " " << pos_ch_f << " " << pos_ch << std::endl; 
 
   std::vector<int> t0_slv, t0_coarse, pos_slv, pos_coarse, slope_slv, slope_coarse;
   vhdl_int_to_unsigned(mp.t0, t0_slv);
@@ -149,9 +197,9 @@ std::vector<int> MPCorFilter::coarsify(cmsdt::metaPrimitive mp, int sl) {
     // std::cout << pos_slv[i];
   // std::cout << std::endl;
 
-  t0_coarse = vhdl_slice(t0_slv, FSEG_T0_BX_LSB + 4, FSEG_T0_DISCARD_LSB - 1);
-  pos_coarse = vhdl_slice(pos_slv, WIDTH_FULL_POS - 1, FSEG_POS_DISCARD_LSB - 1);
-  slope_coarse = vhdl_slice(slope_slv, WIDTH_FULL_SLOPE - 1, FSEG_SLOPE_DISCARD_LSB - 1);
+  t0_coarse = vhdl_slice(t0_slv, FSEG_T0_BX_LSB + 4, FSEG_T0_DISCARD_LSB);
+  pos_coarse = vhdl_slice(pos_slv, WIDTH_FULL_POS - 1, FSEG_POS_DISCARD_LSB);
+  slope_coarse = vhdl_slice(slope_slv, WIDTH_FULL_SLOPE - 1, FSEG_SLOPE_DISCARD_LSB);
 
   // for (size_t i = 0; i < pos_coarse.size(); i++)
     // std::cout << pos_coarse[i];
@@ -163,13 +211,14 @@ std::vector<int> MPCorFilter::coarsify(cmsdt::metaPrimitive mp, int sl) {
   int slope_coarse_int = vhdl_signed_to_int(slope_coarse);
 
   for (int index = 0; index <= 2; index++) {
-    auto aux_t0_coarse_int = t0_coarse_int + (2 * index - 1);
-    auto aux_pos_coarse_int = pos_coarse_int + (2 * index - 1);
-    auto aux_slope_coarse_int = slope_coarse_int + (2 * index - 1);
+    auto aux_t0_coarse_int = (t0_coarse_int + (index - 1))
+      % (int) std::pow(2, FSEG_T0_BX_LSB + 4 - (FSEG_T0_DISCARD_LSB));
+    auto aux_pos_coarse_int = pos_coarse_int + (index - 1);
+    auto aux_slope_coarse_int = slope_coarse_int + (index - 1);
     // std::cout << "aux_pos_coarse_int " << aux_pos_coarse_int << " " << (aux_pos_coarse_int >> 1) << std::endl;
-    results.push_back(aux_t0_coarse_int >> 1);
-    results.push_back(aux_pos_coarse_int >> 1);
-    results.push_back(aux_slope_coarse_int >> 1);
+    results.push_back(aux_t0_coarse_int);
+    results.push_back(aux_pos_coarse_int);
+    results.push_back(aux_slope_coarse_int);
   }
   return results;  
 }
@@ -186,9 +235,11 @@ int MPCorFilter::match(cmsdt::metaPrimitive mp, std::vector<int> coarsed, valid_
     (coarsed[0] == valid_cor_tp2.coarsed_t0    || coarsed[3] == valid_cor_tp2.coarsed_t0    || coarsed[6] == valid_cor_tp2.coarsed_t0)  &&
     (coarsed[1] == valid_cor_tp2.coarsed_pos   || coarsed[4] == valid_cor_tp2.coarsed_pos   || coarsed[7] == valid_cor_tp2.coarsed_pos) &&
     (coarsed[2] == valid_cor_tp2.coarsed_slope || coarsed[5] == valid_cor_tp2.coarsed_slope || coarsed[8] == valid_cor_tp2.coarsed_slope)
-  );
-  // std::cout << matched << std::endl;
-  return ((int) matched) * 2 + (int) (mp.quality > valid_cor_tp2.mp.quality);
+  ) && (abs(mp.t0 / 25 - valid_cor_tp2.mp.t0 / 25) <= 1);
+  // std::cout << mp.quality << " " << valid_cor_tp2.mp.quality << " " << mp.t0 << " " << valid_cor_tp2.mp.t0 << " " << matched << std::endl;
+  return ((int) matched) * 2 +
+    (int) (mp.quality > valid_cor_tp2.mp.quality) +
+    (int) (mp.quality == valid_cor_tp2.mp.quality) * (int) (get_chi2(mp) < get_chi2(valid_cor_tp2.mp));
 }
 
 bool MPCorFilter::isDead(cmsdt::metaPrimitive mp, std::vector<int> coarsed, std::map<int, valid_cor_tp_arr_t> tps_per_bx) {
@@ -210,8 +261,10 @@ int MPCorFilter::killTps(cmsdt::metaPrimitive mp, std::vector<int> coarsed,
   for (auto &elem: tps_per_bx) {
     if (abs(bx - elem.first) > 2) continue;
     for (size_t i = 0; i < elem.second.size(); i++) {
+      // std::cout << elem.first << " " << i << " " << elem.second[i].mp.t0 << std::endl;
       if (elem.second[i].valid == 1) {
         int isMatched = match(mp, coarsed, elem.second[i]);
+        // std::cout << i << " " << mp.t0 << " " << mp.quality << " " << elem.second[i].mp.t0 << " " << elem.second[i].mp.quality << " " << isMatched << std::endl;
         if (isMatched == 3) {
           elem.second[i].valid = false;
           if (elem.first == bx && index_to_kill == -1) index_to_kill = i;
@@ -223,6 +276,26 @@ int MPCorFilter::killTps(cmsdt::metaPrimitive mp, std::vector<int> coarsed,
   if (index_to_kill != -1) return index_to_kill;
   // If I wasn't able to kill anyone from my BX, I fill the first empty space
   return index_to_occupy;
+}
+
+int MPCorFilter::get_chi2(cmsdt::metaPrimitive mp) {
+  // chi2 is coarsified to the index of the chi2's highest bit set to 1
+
+  int chi2 = (int) round(mp.chi2 / (std::pow(((float) CELL_SEMILENGTH / (float) MAXDRIFTTDC), 2) / 100));
+
+  std::vector<int> chi2_unsigned, chi2_unsigned_msb;
+  vhdl_int_to_unsigned(chi2, chi2_unsigned);
+  // std::cout << mp.t0 << " " << chi2 << " ";
+  // for (auto &elem: chi2_unsigned)
+    // std::cout << elem;
+  // std::cout << std::endl;
+
+  for (int i = (int) chi2_unsigned.size() - 1; i >= 0; i--) {
+    if (chi2_unsigned[i] == 1) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 void MPCorFilter::printmP(metaPrimitive mP) {
