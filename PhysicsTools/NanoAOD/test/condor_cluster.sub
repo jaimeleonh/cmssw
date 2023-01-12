@@ -4,4 +4,4 @@ output = $Fp(filename)hlt.stdout
 error = $Fp(filename)hlt.stderr
 log = $Fp(filename)hlt.log
 +JobFlavour = "workday"
-queue filename matching (/afs/cern.ch/work/j/jleonhol/private/L1/nanoaod/CMSSW_12_6_0_patch1/src/run2022G/Job_*/*.sh)
+queue filename matching (/afs/cern.ch/work/j/jleonhol/private/L1/nanoaod/CMSSW_12_6_0_patch1/src/PhysicsTools/NanoAOD/test/run2022F/Job_*/*.sh)
