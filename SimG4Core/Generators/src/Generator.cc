@@ -154,6 +154,10 @@ void Generator::HepMC2G4(const HepMC::GenEvent *evt_orig, G4Event *g4evt) {
         status = 2;
       }
 
+      if (status == 2 && abs(pdg) == 999999) {
+        status = 3;
+      }
+
       // Particles which are not decayed by generator
       if (status == 1) {
         // filter out unwanted particles and vertices
@@ -497,9 +501,10 @@ bool Generator::particlePassesPrimaryCuts(const G4ThreeVector &p) const {
 
 bool Generator::isExotic(int pdgcode) const {
   int pdgid = std::abs(pdgcode);
-  return ((pdgid >= 1000000 && pdgid < 4000000 && pdgid != 3000022) ||  // SUSY, R-hadron, and technicolor particles
+  return ((pdgid >= 1000000 && pdgid < 5000000 && pdgid != 3000022) ||  // SUSY, R-hadron, dark, and technicolor particles
           pdgid == 17 ||                                                // 4th generation lepton
           pdgid == 34 ||                                                // W-prime
+          pdgid == 999999 ||                                            // Dark-photon
           pdgid == 37)                                                  // charged Higgs
              ? true
              : false;
