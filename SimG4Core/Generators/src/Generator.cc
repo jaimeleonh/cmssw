@@ -154,7 +154,7 @@ void Generator::HepMC2G4(const HepMC::GenEvent *evt_orig, G4Event *g4evt) {
         status = 2;
       }
 
-      if (status == 2 && abs(pdg) == 999999) {
+      if (status == 2 && abs(pdg) == 9900015) {
         status = 3;
       }
 
@@ -236,6 +236,10 @@ void Generator::HepMC2G4(const HepMC::GenEvent *evt_orig, G4Event *g4evt) {
         status = hasDecayVertex ? 2 : 1;
       }
 
+      if (status == 2 && abs(pdg) == 9900015) {
+        status = 3;
+      }
+
       // this particle has predefined decay but has no vertex
       if (2 == status && !hasDecayVertex) {
         edm::LogWarning("SimG4CoreGenerator: in event ") << g4evt->GetEventID() << " a particle "
@@ -293,7 +297,8 @@ void Generator::HepMC2G4(const HepMC::GenEvent *evt_orig, G4Event *g4evt) {
       // Particles of status 1 trasnported along the beam pipe for forward
       // detectors (HECTOR) always pass to Geant4 without cuts
       if (1 == status && std::abs(zimpact) >= Z_hector && rimpact2 <= theDecRCut2) {
-        toBeAdded = true;
+        // very forward n, nbar, gamma are allowed
+        toBeAdded = (2112 == std::abs(pdg) || 22 == pdg);
         if (verbose > 2)
           LogDebug("SimG4CoreGenerator") << "GenParticle barcode = " << (*pitr)->barcode() << " passed case 3";
       } else {
@@ -365,7 +370,7 @@ void Generator::HepMC2G4(const HepMC::GenEvent *evt_orig, G4Event *g4evt) {
           double charge = g4prim->GetG4code()->GetPDGCharge();
 
           // apply Pt cut
-          if (fPtransCut && 0.0 != charge && px * px + py * py < theMinPtCut2) {
+          if (fPtransCut &&  1 == status && 0.0 != charge && px * px + py * py < theMinPtCut2) {
             delete g4prim;
             continue;
           }
@@ -501,10 +506,9 @@ bool Generator::particlePassesPrimaryCuts(const G4ThreeVector &p) const {
 
 bool Generator::isExotic(int pdgcode) const {
   int pdgid = std::abs(pdgcode);
-  return ((pdgid >= 1000000 && pdgid < 5000000 && pdgid != 3000022) ||  // SUSY, R-hadron, dark, and technicolor particles
+  return ((pdgid >= 1000000 && pdgid < 4000000 && pdgid != 3000022) ||  // SUSY, R-hadron, dark, and technicolor particles
           pdgid == 17 ||                                                // 4th generation lepton
           pdgid == 34 ||                                                // W-prime
-          pdgid == 999999 ||                                            // Dark-photon
           pdgid == 37)                                                  // charged Higgs
              ? true
              : false;
