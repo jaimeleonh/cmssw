@@ -66,6 +66,23 @@ def addCaloFull(process):
 
     return process
 
+def addGenParticles(process):
+    process.genParticleTable.externalVariables = cms.PSet()
+
+    process.load("PhysicsTools.PatAlgos.slimming.genParticles_cff")
+    process.l1tNanoTask.add(process.genParticlesTask)
+    process.load("PhysicsTools.NanoAOD.genparticles_cff")
+    process.l1tNanoTask.add(process.genParticleTask)
+    process.l1tNanoTask.add(process.genParticleTablesTask)
+    process.l1tNanoSequence.insert(0, process.finalGenParticles)
+
+    process.load("PhysicsTools.NanoAOD.jetMC_cff")
+    process.l1tNanoTask.add(process.genJetTable)
+    from PhysicsTools.PatAlgos.slimming.slimmedGenJets_cfi import slimmedGenJets
+    process.slimmedGenJets = slimmedGenJets.clone()
+    process.l1tNanoSequence.insert(1, process.slimmedGenJets)
+
+    return process
 
 '''
 l1tNanoTask = cms.Task(
