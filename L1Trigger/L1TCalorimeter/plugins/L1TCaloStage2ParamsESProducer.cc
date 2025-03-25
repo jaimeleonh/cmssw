@@ -313,6 +313,9 @@ L1TCaloStage2ParamsESProducer::L1TCaloStage2ParamsESProducer(const edm::Paramete
   std::shared_ptr<LUT> metHFPhiCalibrationLUT(new LUT(metHFPhiCalibrationLUTStream));
   m_params_helper.setMetHFPhiCalibrationLUT(*metHFPhiCalibrationLUT);
 
+  edm::FileInPath netMetModelFile = conf.getParameter<edm::FileInPath>("netMetModelFile");
+  m_params_helper.setNetMetModelFile(netMetModelFile.fullPath());
+
   // HI centrality trigger
   std::vector<double> etSumCentLower = conf.getParameter<std::vector<double>>("etSumCentralityLower");
   std::vector<double> etSumCentUpper = conf.getParameter<std::vector<double>>("etSumCentralityUpper");

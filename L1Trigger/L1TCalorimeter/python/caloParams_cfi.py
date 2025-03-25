@@ -134,6 +134,8 @@ caloParams = cms.ESProducer(
     metPhiCalibrationLUTFile  = cms.FileInPath("L1Trigger/L1TCalorimeter/data/lut_etSumPUS_dummy.txt"),
     metHFPhiCalibrationLUTFile         = cms.FileInPath("L1Trigger/L1TCalorimeter/data/lut_etSumPUS_dummy.txt"),
 
+    netMetModelFile = cms.FileInPath("L1Trigger/L1TCalorimeter/data/model_netmet_v0.json"),
+
     # HI
     etSumCentralityLower =   cms.vdouble(0,200,400,600,800, 1000,1200,1400),
     etSumCentralityUpper = cms.vdouble(200,400,600,800,1000,1200,1400,1600),

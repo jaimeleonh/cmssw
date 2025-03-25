@@ -18,6 +18,7 @@
 #include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxTauAlgoFirmware.h"
 #include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxJetAlgoFirmware.h"
 #include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxSumsAlgoFirmware.h"
+#include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxNetMETAlgoFirmware.h"
 
 #include "L1Trigger/L1TCalorimeter/interface/CaloParamsHelper.h"
 
@@ -39,6 +40,7 @@ l1t::Stage2MainProcessorFirmwareImp1::Stage2MainProcessorFirmwareImp1(unsigned f
   m_demuxTauAlgo = make_unique<Stage2Layer2DemuxTauAlgoFirmwareImp1>(params);
   m_demuxJetAlgo = make_unique<Stage2Layer2DemuxJetAlgoFirmwareImp1>(params);
   m_demuxSumsAlgo = make_unique<Stage2Layer2DemuxSumsAlgoFirmwareImp1>(params);
+  m_demuxNetMETAlgo = make_unique<Stage2Layer2DemuxNetMETAlgoFirmwareImp1>(params);
 }
 
 //need to switch to BXVector
@@ -82,6 +84,7 @@ void l1t::Stage2MainProcessorFirmwareImp1::processEvent(const std::vector<l1t::C
   m_demuxTauAlgo->processEvent(mpTaus, taus);
   m_demuxJetAlgo->processEvent(mpJets, jets);
   m_demuxSumsAlgo->processEvent(mpSums, etSums);
+  m_demuxNetMETAlgo->processEvent(jets, etSums, etSums);
 }
 
 void l1t::Stage2MainProcessorFirmwareImp1::print(std::ostream& out) const {

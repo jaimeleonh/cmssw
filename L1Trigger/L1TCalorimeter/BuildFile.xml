@@ -5,6 +5,7 @@
 <use name="DataFormats/L1GlobalCaloTrigger"/>
 <use name="CondFormats/L1TObjects"/>
 <use name="CondFormats/DataRecord"/>
+<use name="conifer"/>
 <export>
   <lib name="1"/>
 </export>

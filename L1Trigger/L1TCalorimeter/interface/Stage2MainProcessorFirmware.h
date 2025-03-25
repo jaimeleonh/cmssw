@@ -25,6 +25,7 @@
 #include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxTauAlgoFirmware.h"
 #include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxJetAlgoFirmware.h"
 #include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxSumsAlgoFirmware.h"
+#include "L1Trigger/L1TCalorimeter/interface/Stage2Layer2DemuxNetMETAlgoFirmware.h"
 
 #include "L1Trigger/L1TCalorimeter/interface/CaloParamsHelper.h"
 
@@ -72,6 +73,7 @@ namespace l1t {
     std::unique_ptr<Stage2Layer2DemuxTauAlgo> m_demuxTauAlgo;
     std::unique_ptr<Stage2Layer2DemuxJetAlgo> m_demuxJetAlgo;
     std::unique_ptr<Stage2Layer2DemuxSumsAlgo> m_demuxSumsAlgo;
+    std::unique_ptr<Stage2Layer2DemuxNetMETAlgo> m_demuxNetMETAlgo;
   };
 
 }  // namespace l1t
