@@ -40,14 +40,13 @@ void l1t::Stage2Layer2DemuxNetMETAlgoFirmwareImp1::processEvent(const std::vecto
     inputJets.size() > 2 ? inputJets[2].hwEta() : 0,
     inputJets.size() > 2 ? inputJets[2].hwPhi() : 0,
     inputJets.size() > 2 ? inputJets[2].hwPt() : 0,
-    inputJets.size() > 3 ? inputJets[2].hwEta() : 0,
-    inputJets.size() > 3 ? inputJets[2].hwPhi() : 0,
-    inputJets.size() > 3 ? inputJets[2].hwPt() : 0,
+    inputJets.size() > 3 ? inputJets[3].hwEta() : 0,
+    inputJets.size() > 3 ? inputJets[3].hwPhi() : 0,
+    inputJets.size() > 3 ? inputJets[3].hwPt() : 0,
     inputSums[11].hwPt(),
-    inputSums[13].hwPt(),
-    inputSums[12].hwPt()
+    inputSums[12].hwPt(),
+    inputSums[13].hwPt()
   };
-
   std::vector<score_t> netmet = bdt_->decision_function(inputs);
 
   // Replace met noHF with the NetMET

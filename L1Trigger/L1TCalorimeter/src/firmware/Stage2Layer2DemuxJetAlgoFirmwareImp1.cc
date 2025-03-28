@@ -34,9 +34,9 @@ void l1t::Stage2Layer2DemuxJetAlgoFirmwareImp1::processEvent(const std::vector<l
   std::vector<l1t::Jet>::iterator start(outputJets.begin());
   std::vector<l1t::Jet>::iterator end(outputJets.end());
 
-  //  for (auto& jet: outputJets){
-  //    std::cout << "MP : " << jet.hwPt() << ", " << jet.hwEta() << ", " << jet.hwPhi() << ", " << CaloTools::towerEta(jet.hwEta()) << ", " << CaloTools::towerPhi(jet.hwEta(),jet.hwPhi()) << std::endl;
-  //  }
+  //for (auto& jet: outputJets){
+      //std::cout << "MP : " << jet.hwPt() << ", " << jet.hwEta() << ", " << jet.hwPhi() << ", " << CaloTools::towerEta(jet.hwEta()) << ", " << CaloTools::towerPhi(jet.hwEta(),jet.hwPhi()) << " " << CaloTools::gtEta(CaloTools::mpEta(jet.hwEta())) << " " << CaloTools::gtPhi(CaloTools::mpEta(jet.hwEta()), jet.hwPhi()) << std::endl;
+  //}
 
   BitonicSort<l1t::Jet>(down, start, end);
 
