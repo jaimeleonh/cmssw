@@ -5,12 +5,13 @@
 
 #include "HeterogeneousCore/AlpakaInterface/interface/config.h"
 #include "PhysicsTools/PyTorch/interface/Model.h"
-#include "PhysicsTools/PyTorchAlpaka/interface/GetDevice.h"
-#include "PhysicsTools/PyTorchAlpaka/interface/TensorCollection.h"
 #include "PhysicsTools/PyTorchAlpaka/interface/SoAConversion.h"
-#include "PhysicsTools/PyTorchAlpaka/interface/QueueGuard.h"
+#include "PhysicsTools/PyTorchAlpaka/interface/GetDevice.h"
+#include "PhysicsTools/PyTorchAlpaka/interface/TensorRegistry.h"
 
 namespace ALPAKA_ACCELERATOR_NAMESPACE::torch {
+
+  using namespace cms::torch::alpakatools;
 
   class AlpakaModel : public cms::torch::Model {
   public:
@@ -27,37 +28,31 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::torch {
     // Loads model to alpaka accelerator specified memory space.
     // Note that this is done in default stream, i.e. synchronously.
     explicit AlpakaModel(const std::string &model_path, const Device &dev)
-        : cms::torch::Model(model_path, cms::torch::alpakatools::getDevice(dev)) {}
+        : cms::torch::Model(model_path, getDevice(dev)) {}
     explicit AlpakaModel(const std::string &model_path, const Queue &queue)
-        : cms::torch::Model(model_path, cms::torch::alpakatools::getDevice(queue)) {}
+        : cms::torch::Model(model_path, getDevice(queue)) {}
 
     // Forward pass (inference) of model with SoA metadata input/output.
     // Allows to run inference directly using SoA portable objects/collections without excessive copies and conversions.
     // Refer: PhysicsTools/PyTorch/interface/SoAConversion.h for details about wrapping memory layouts.
-    void forward(Queue &queue,
-                 cms::torch::alpakatools::TensorCollection<Queue> &inputs,
-                 cms::torch::alpakatools::TensorCollection<Queue> &outputs) {
+    void forward(Queue &queue, TensorRegistry<Device> &inputs, TensorRegistry<Device> &outputs) {
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-      inputs.copy(queue, cms::torch::alpakatools::detail::MemcpyKind::DeviceToHost);
-      outputs.copy(queue, cms::torch::alpakatools::detail::MemcpyKind::DeviceToHost);
+      inputs.copy(queue, MemcpyKind::DeviceToHost);
+      outputs.copy(queue, MemcpyKind::DeviceToHost);
 #else
-      inputs.copy(queue, cms::torch::alpakatools::detail::MemcpyKind::DeviceToDevice);
+      inputs.copy(queue, MemcpyKind::DeviceToDevice);
 #endif  // ALPAKA_ACC_GPU_HIP_ENABLED
-      cms::torch::alpakatools::QueueGuard<Queue> guard(queue);
-      if (cms::torch::alpakatools::getDevice(queue) != this->Model::device()) {
-        to(queue);
-      }
 
-      auto input_tensor = cms::torch::alpakatools::detail::convertInput(inputs, device_);
+      auto input_tensor = convertInput(inputs, device_);
       if (outputs.size() > 1) {
         auto output_tensors = model_.forward(input_tensor);
-        cms::torch::alpakatools::detail::convertOutput(output_tensors, outputs, device_);
+        convertOutput(output_tensors, outputs, device_);
       } else {
-        cms::torch::alpakatools::detail::convertOutput(outputs, device_) = model_.forward(input_tensor).toTensor();
+        convertOutput(outputs, device_) = model_.forward(input_tensor).toTensor();
       }
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-      outputs.copy(queue, cms::torch::alpakatools::detail::MemcpyKind::HostToDevice);
+      outputs.copy(queue, MemcpyKind::HostToDevice);
 #endif  // ALPAKA_ACC_GPU_HIP_ENABLED
     }
 
@@ -65,16 +60,16 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::torch {
     // The caller should ensure the QueueGuard is instantiated and PyTorch stream context is properly set.
     void to(const Device &dev) {
       if constexpr (std::is_same_v<::alpaka::Dev<Device>, ::alpaka::DevCpu>) {
-        this->Model::to(cms::torch::alpakatools::getDevice(dev));
+        this->Model::to(getDevice(dev));
         return;
       }
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
       // ROCm/HIP not yet directly supported → fallback to CPU inference
-      this->Model::to(cms::torch::alpakatools::getDevice(dev));
+      this->Model::to(getDevice(dev));
       return;
 #endif  // ALPAKA_ACC_GPU_HIP_ENABLED
       // CUDA → keep async execution
-      this->Model::to(cms::torch::alpakatools::getDevice(dev), true);
+      this->Model::to(getDevice(dev), true);
     }
 
     // Overload for Queue to simplify the interface for the common case of async execution.

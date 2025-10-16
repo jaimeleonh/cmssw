@@ -1,6 +1,5 @@
 #include "DataFormats/PortableTestObjects/interface/TestSoA.h"
-#include "DataFormats/PortableTestObjects/interface/alpaka/ParticleDeviceCollection.h"
-#include "DataFormats/PortableTestObjects/interface/alpaka/SimpleNetDeviceCollection.h"
+#include "DataFormats/PortableTestObjects/interface/alpaka/TorchTestDeviceCollection.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
@@ -10,11 +9,15 @@
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/MakerMacros.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/stream/EDProducer.h"
 #include "HeterogeneousCore/AlpakaInterface/interface/config.h"
-#include "PhysicsTools/PyTorchAlpaka/interface/TensorCollection.h"
+#include "PhysicsTools/PyTorchAlpaka/interface/QueueGuard.h"
+#include "PhysicsTools/PyTorchAlpaka/interface/TensorRegistry.h"
 #include "PhysicsTools/PyTorchAlpaka/interface/alpaka/AlpakaModel.h"
-#include "PhysicsTools/PyTorchAlpakaTest/interface/Environment.h"
+#include "PhysicsTools/PyTorchAlpakaTest/plugins/Environment.h"
 
 namespace ALPAKA_ACCELERATOR_NAMESPACE::torchtest {
+
+  using namespace torchportabletest;
+  using namespace cms::torch::alpakatools;
 
   class SimpleNet : public stream::EDProducer<> {
   public:
@@ -37,27 +40,33 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::torchtest {
       // in/out collections
       const auto &particles = event.get(particles_token_);
       const auto batch_size = particles.const_view().metadata().size();
-      auto regression_collection = portabletest::SimpleNetDeviceCollection(event.queue(), batch_size);
+      auto regression_collection = SimpleNetDeviceCollection(batch_size, event.queue());
 
       // records
       auto input_records = particles.const_view().records();
       auto output_records = regression_collection.view().records();
       // input tensor definition
-      cms::torch::alpakatools::TensorCollection<Queue> inputs(batch_size);
-      inputs.add<portabletest::ParticleSoA>("particles", input_records.pt(), input_records.eta(), input_records.phi());
+      TensorRegistry<Device> inputs(batch_size);
+      inputs.register_tensor<ParticleSoA>("particles", input_records.pt(), input_records.eta(), input_records.phi());
       // output tensor definition
-      cms::torch::alpakatools::TensorCollection<Queue> outputs(batch_size);
-      outputs.add<portabletest::SimpleNetSoA>("regression_head", output_records.reco_pt());
+      TensorRegistry<Device> outputs(batch_size);
+      outputs.register_tensor<SimpleNetSoA>("regression_head", output_records.reco_pt());
 
-      model_.forward(event.queue(), inputs, outputs);
+      // inference, queue guard restore stream when goes out of scope
+      {
+        QueueGuard<Queue> guard(event.queue());
+        model_.to(event.queue());
+        model_.forward(event.queue(), inputs, outputs);
+      }
+
       // put device-side product into event
       event.emplace(simple_net_token_, std::move(regression_collection));
     }
 
   private:
     // event query tokens
-    const device::EDGetToken<portabletest::ParticleDeviceCollection> particles_token_;
-    const device::EDPutToken<portabletest::SimpleNetDeviceCollection> simple_net_token_;
+    const device::EDGetToken<ParticleDeviceCollection> particles_token_;
+    const device::EDPutToken<SimpleNetDeviceCollection> simple_net_token_;
     // model
     torch::AlpakaModel model_;
     // debug mode flag
