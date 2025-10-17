@@ -34,6 +34,7 @@ namespace l1sc {
           pf_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("src")))},
           bx_lookup_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("src")))},
           clusters_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("clusters")))},
+          taus_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("taus")))},
           environment_{static_cast<Environment>(params.getUntrackedParameter<int>("environment"))},
           run_scout_{params.getParameter<bool>("run_scout")} {}
 
@@ -81,8 +82,15 @@ namespace l1sc {
                     clusters.const_view(),
                     toString(bx_lookup_backend));
             } else {
+              // clusters info
               assert(pf_backend == clusters_backend);
               print(pf.const_view(), clusters.const_view(), toString(clusters_backend));
+              // taus
+              if (taus_handle.isValid()) {
+                auto const& taus = *taus_handle;
+                auto const& taus_backend = static_cast<Backend>(event.get(taus_backend_));
+                print(clusters.const_view(), taus.const_view(), toString(taus_backend));
+              }
             }
           } else {
             // debug unpacker only
@@ -102,6 +110,35 @@ namespace l1sc {
       fmt::print("=========================================================================\n");
       fmt::print("[INFO] OK - TauTagging\n");
       fmt::print("=========================================================================\n");
+
+    void print(const ClustersHostCollection::ConstView& clusters,
+               const SoftTauOutputHostTensor::ConstView& taus,
+               const std::string_view taus_backend) {
+      fmt::print("[DEBUG] Taus[{}] ({})\n", taus.metadata().size(), taus_backend);
+      constexpr auto sep = "+---------+--------------+-----------+-----------+-----------+-----------+";
+      fmt::print("{}\n", sep);
+      fmt::print("| {:>7} | {:>12} | {:>9} | {:>9} | {:>9} | {:>9} |\n", "cluster", "constituents", "true tau", "fake tau", "pt", "vz");
+      fmt::print("{}\n", sep);
+
+      const int max_entries = (environment_ > Environment::kTest) ? taus.metadata().size() : 5;
+
+      std::vector<int> constituents(max_entries, 0);
+      for (int i = 0; i < clusters.metadata().size(); ++i) {
+        if (clusters.cluster()[i] < 0)
+          continue;
+        if (clusters.cluster()[i] >= max_entries)
+          continue;
+        constituents[clusters.cluster()[i]] += 1;
+      }
+      for (int i = 0; i < taus.metadata().size() && i < max_entries; ++i) {
+        fmt::print("| {:>7} | {:>12} | {:>9.4f} | {:>9.4f} | {:>9.4f} | {:>9.4f} |\n", 
+          i, constituents[i], taus.genuine_tau_score()[i], taus.fake_tau_score()[i], taus.pt()[i], taus.vz()[i]);
+      }
+      if (max_entries < taus.metadata().size()) {
+        fmt::print("| {:>7} | {:>12} | {:>9} | {:>9} | {:>9} | {:>9} |\n", "...", "...", "...", "...", "...", "...");
+      }
+
+      fmt::print("{}\n", sep);
     }
 
     void print(const PFCandidateHostCollection::ConstView& pf,
@@ -183,9 +220,6 @@ namespace l1sc {
             "...",
             "...",
             "...");
-        for (int j = pf.metadata().size() - 5; j < pf.metadata().size(); ++j) {
-          printRow(j, pf[j], clusters[j]);
-        }
       }
 
       fmt::print("{}\n", sep);
@@ -393,6 +427,7 @@ namespace l1sc {
     const edm::EDGetTokenT<unsigned short> pf_backend_;
     const edm::EDGetTokenT<unsigned short> bx_lookup_backend_;
     const edm::EDGetTokenT<unsigned short> clusters_backend_;
+    const edm::EDGetTokenT<unsigned short> taus_backend_;
     // debug
     const Environment environment_;
     const bool run_scout_;
