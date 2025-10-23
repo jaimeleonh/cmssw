@@ -109,6 +109,14 @@ def parse_args():
         help="Broker: 'none' or 'hostname:port'"
     )
 
+    # Tagger
+    parser.add_argument(
+        "-m","--model",
+        type=str,
+        default="L1TriggerScouting/TauTagging/data/softtauid_sigmoid.pt",
+        help="Path to JIT compiled PyTorch model."
+    )
+
     # Directories and I/O streams
     parser.add_argument(
         "-fbd", "--fuBaseDir",

@@ -2,6 +2,7 @@
 
 #include <fmt/format.h>
 
+#include "DataFormats/L1ScoutingSoA/interface/AssociationMapHost.h"
 #include "DataFormats/L1ScoutingSoA/interface/BxLookupHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/PFCandidateHostCollection.h"
@@ -31,9 +32,15 @@ namespace l1sc {
         : pf_token_{consumes(params.getUntrackedParameter<edm::InputTag>("src"))},
           bx_lookup_token_{consumes(params.getUntrackedParameter<edm::InputTag>("src"))},
           clusters_token_{consumes(params.getUntrackedParameter<edm::InputTag>("clusters"))},
+<<<<<<< HEAD
+=======
+          association_map_token_{consumes(params.getUntrackedParameter<edm::InputTag>("clusters"))},
+          taus_token_{consumes(params.getUntrackedParameter<edm::InputTag>("taus"))},
+>>>>>>> 9d93f69582b (Reorder TensorSoA [cls, vz, pt, charge], add model with wrapped sigmoid on top, refactor preprocessing step with new CLUE features)
           pf_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("src")))},
           bx_lookup_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("src")))},
           clusters_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("clusters")))},
+          association_map_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("clusters")))},
           taus_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("taus")))},
           environment_{static_cast<Environment>(params.getUntrackedParameter<int>("environment"))},
           run_scout_{params.getParameter<bool>("run_scout")} {}
@@ -60,6 +67,11 @@ namespace l1sc {
         const auto pf_handle = event.getHandle(pf_token_);
         const auto bx_lookup_handle = event.getHandle(bx_lookup_token_);
         const auto clusters_handle = event.getHandle(clusters_token_);
+<<<<<<< HEAD
+=======
+        const auto association_map_handle = event.getHandle(association_map_token_);
+        const auto taus_handle = event.getHandle(taus_token_);
+>>>>>>> 9d93f69582b (Reorder TensorSoA [cls, vz, pt, charge], add model with wrapped sigmoid on top, refactor preprocessing step with new CLUE features)
 
         if (pf_handle.isValid()) {
           // pf
@@ -69,7 +81,9 @@ namespace l1sc {
           if (clusters_handle.isValid()) {
             // clusters
             auto const& clusters = *clusters_handle;
+            auto const& association_map = *association_map_handle;
             auto const clusters_backend = static_cast<Backend>(event.get(clusters_backend_));
+            auto const association_map_backend = static_cast<Backend>(event.get(association_map_backend_));
             if (run_scout_ && bx_lookup_handle.isValid()) {
               // bx lookup
               auto const& bx_lookup = *bx_lookup_handle;
@@ -89,7 +103,7 @@ namespace l1sc {
               if (taus_handle.isValid()) {
                 auto const& taus = *taus_handle;
                 auto const& taus_backend = static_cast<Backend>(event.get(taus_backend_));
-                print(clusters.const_view(), taus.const_view(), toString(taus_backend));
+                print(association_map.const_view<OffsetsSoA>(), taus.const_view(), toString(taus_backend));
               }
             }
           } else {
@@ -100,6 +114,7 @@ namespace l1sc {
       }
     }
 
+<<<<<<< HEAD
     void beginStream(edm::StreamID) override {
       if (environment_ >= Environment::kDevelopment) {
         fmt::print("=========================================================================\n");
@@ -112,30 +127,25 @@ namespace l1sc {
       fmt::print("=========================================================================\n");
 
     void print(const ClustersHostCollection::ConstView& clusters,
+=======
+    void print(const OffsetsSoA::ConstView& offsets,
+>>>>>>> 9d93f69582b (Reorder TensorSoA [cls, vz, pt, charge], add model with wrapped sigmoid on top, refactor preprocessing step with new CLUE features)
                const SoftTauOutputHostTensor::ConstView& taus,
                const std::string_view taus_backend) {
       fmt::print("[DEBUG] Taus[{}] ({})\n", taus.metadata().size(), taus_backend);
-      constexpr auto sep = "+---------+--------------+-----------+-----------+-----------+-----------+";
+      constexpr auto sep = "+---------+---------+-----------+-----------+-----------+-----------+";
       fmt::print("{}\n", sep);
-      fmt::print("| {:>7} | {:>12} | {:>9} | {:>9} | {:>9} | {:>9} |\n", "cluster", "constituents", "true tau", "fake tau", "pt", "vz");
+      fmt::print("| {:>7} | {:>7} | {:>9} | {:>9} | {:>9} | {:>9} |\n", "cluster", "size", "cls", "vz", "pt", "vz");
       fmt::print("{}\n", sep);
 
       const int max_entries = (environment_ > Environment::kTest) ? taus.metadata().size() : 5;
-
-      std::vector<int> constituents(max_entries, 0);
-      for (int i = 0; i < clusters.metadata().size(); ++i) {
-        if (clusters.cluster()[i] < 0)
-          continue;
-        if (clusters.cluster()[i] >= max_entries)
-          continue;
-        constituents[clusters.cluster()[i]] += 1;
-      }
       for (int i = 0; i < taus.metadata().size() && i < max_entries; ++i) {
-        fmt::print("| {:>7} | {:>12} | {:>9.4f} | {:>9.4f} | {:>9.4f} | {:>9.4f} |\n", 
-          i, constituents[i], taus.genuine_tau_score()[i], taus.fake_tau_score()[i], taus.pt()[i], taus.vz()[i]);
+        const auto size = offsets.offsets()[i + 1] - offsets.offsets()[i];
+        fmt::print("| {:>7} | {:>7} | {:>9.4f} | {:>9.4f} | {:>9.4f} | {:>9.4f} |\n", 
+          i, size, taus.cls()[i], taus.vz()[i], taus.pt()[i], taus.charge()[i]);
       }
       if (max_entries < taus.metadata().size()) {
-        fmt::print("| {:>7} | {:>12} | {:>9} | {:>9} | {:>9} | {:>9} |\n", "...", "...", "...", "...", "...", "...");
+        fmt::print("| {:>7} | {:>7} | {:>9} | {:>9} | {:>9} | {:>9} |\n", "...", "...", "...", "...", "...", "...");
       }
 
       fmt::print("{}\n", sep);
@@ -205,9 +215,7 @@ namespace l1sc {
 
       if (max_entries < size) {
         fmt::print(
-            "| {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} "
-            "|\n",
-            "...",
+            "| {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} |\n",
             "...",
             "...",
             "...",
@@ -419,10 +427,13 @@ namespace l1sc {
     const edm::EDGetTokenT<PFCandidateHostCollection> pf_token_;
     const edm::EDGetTokenT<BxLookupHostCollection> bx_lookup_token_;
     const edm::EDGetTokenT<ClustersHostCollection> clusters_token_;
+    const edm::EDGetTokenT<AssociationMapHost> association_map_token_;
+    const edm::EDGetTokenT<SoftTauOutputHostTensor> taus_token_;
     // backend query
     const edm::EDGetTokenT<unsigned short> pf_backend_;
     const edm::EDGetTokenT<unsigned short> bx_lookup_backend_;
     const edm::EDGetTokenT<unsigned short> clusters_backend_;
+    const edm::EDGetTokenT<unsigned short> association_map_backend_;
     const edm::EDGetTokenT<unsigned short> taus_backend_;
     // debug
     const Environment environment_;
