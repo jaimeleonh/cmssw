@@ -4,6 +4,7 @@
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/Common/interface/DeviceProduct.h"
 
+#include "DataFormats/L1ScoutingSoA/interface/IndexSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/BxIndexSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/OffsetsSoA.h"
@@ -13,6 +14,7 @@
 #include "DataFormats/L1ScoutingSoA/interface/SelectedBxSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/W3PiTable.h"
 
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h"
