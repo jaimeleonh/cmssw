@@ -33,6 +33,16 @@ def addGenObjects(process):
     genParticleTable.variables.lXY = Var("sqrt(vertex().x() * vertex().x() + vertex().y() * vertex().y())", float, "lXY")
     genParticleTable.variables.dXY = Var("-vertex().x() * sin(phi()) + vertex().y() * cos(phi())", float, "dXY")
 
+    # prunedGenParticles is not available in GEN-SIM
+    genParticleTable.src = "genParticles" 
+
+    # remove isolation
+    process.nanoAOD_step.remove(getattr(process, "genIso"))
+    process.genParticleTable.externalVariables = cms.PSet()
+
+    # remove genvistaus
+    # process.nanoAOD_step.remove(getattr(process, "genTauTask"))
+
     ## add pruned gen particles a la Mini
     if False: 
         ## Gen all 
@@ -53,14 +63,14 @@ def addGenObjects(process):
     process.genJetAK8Table.cut = "pt > 10"
 
     process.l1tPh2NanoTask.add(
-                puTable, metMCTable,
+#               puTable, metMCTable,
                 genParticleTask, genParticleTablesTask,
-                genTauTask,
+                #genTauTask,
     )
     
     # add all GenJets: AK4 and AK8
-    process.l1tPh2NanoTask.add(genJetTable,patJetPartonsNano,genJetFlavourTable)
-    process.l1tPh2NanoTask.add(genJetAK8Table,genJetAK8FlavourAssociation,genJetAK8FlavourTable)
+    #process.l1tPh2NanoTask.add(genJetTable,patJetPartonsNano,genJetFlavourTable)
+    #process.l1tPh2NanoTask.add(genJetAK8Table,genJetAK8FlavourAssociation,genJetAK8FlavourTable)
 
     return process
 
