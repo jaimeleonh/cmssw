@@ -40,7 +40,7 @@ typedef SimpleFlatTableProducer<l1tp2::Phase2L1CaloJet> SimpleTriggerL1CaloJetFl
 typedef SimpleFlatTableProducer<l1t::PFTau> SimpleTriggerL1PFTauFlatTableProducer;
 
 #include "DataFormats/L1TParticleFlow/interface/HPSPFTau.h"
-typedef SimpleFlatTableProducer<l1t::HPSPFTau> SimpleTriggerL1HPSPFTauFlatTableProducer;
+typedef SimpleFlatTableProducer<l1t::PFTau> SimpleTriggerL1HPSPFTauFlatTableProducer;
 
 #include "DataFormats/L1TParticleFlow/interface/PFJet.h"
 typedef SimpleFlatTableProducer<l1t::PFJet> SimpleTriggerL1PFJetFlatTableProducer;
