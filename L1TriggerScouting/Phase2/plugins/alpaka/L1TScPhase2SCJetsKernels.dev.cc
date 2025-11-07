@@ -175,8 +175,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 #ifdef L1TSC_VERBOSE_DEBUG
             if (block_idx <= 2)
               printf(
-                  "Jet %3u pt %7.2f eta %+6.3f phi %+6.3f, from seed index %d, id %u pt %7.2f eta %+6.3f phi "
-                  "%+6.3f\n\n",
+                  "Jet %3u pt %7.2f eta %+6.3f phi %+6.3f, from seed %6d, id %6u pt %7.2f eta %+6.3f phi %+6.3f\n\n",
                   ijet - begin,
                   jets.pt()[ijet],
                   jets.eta()[ijet],
@@ -211,7 +210,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
             alpaka::atomicAdd(acc, &jets.numberOfDaughters()[jcluster + begin], 1u, alpaka::hierarchy::Threads{});
 #ifdef L1TSC_VERBOSE_DEBUG
             if (block_idx <= 2)
-              printf("Particle %3u (globally %3u) assigned to jet %3u (globally %u) with deltaR %.5f\n",
+              printf("Particle %3u (globally %6u) assigned to jet %3u (globally %6u) with deltaR %.5f\n",
                      tid,
                      ipart,
                      jcluster,
@@ -294,13 +293,14 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   public:
     template <typename TAcc, typename = std::enable_if_t<alpaka::isAccelerator<TAcc>>>
     ALPAKA_FN_ACC void operator()(TAcc const& acc,
+                                  PuppiDeviceCollection::ConstView puppi,
                                   OffsetsSoA::ConstView bxLookup,
                                   OffsetsSoA::ConstView jetBxLookup,
                                   OffsetsSoA::ConstView clusterdParticleOffsets,
                                   ClustersDeviceCollection::ConstView clusters,
                                   const unsigned int njets,
                                   const unsigned int nclustered,
-                                  uint16_t* key,
+                                  uint32_t* key,
                                   uint16_t* idx,
                                   IndexSoA::View map) const {
       uint32_t grid_dim = alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[0];
@@ -315,12 +315,22 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
           uint32_t i = tid + begin;
           assert(i < nparticles);
           assert(clusters.cluster()[i] == -1 || clusters.cluster()[i] < int(end - begin));
-          key[i] = static_cast<uint16_t>(clusters.cluster()[i]);
+          if (clusters.cluster()[i] == -1) {
+            key[i] = 0xFFFFFFFF;
+          } else {
+            uint16_t ptcode = static_cast<uint16_t>(std::max(0xFFFF - puppi.pt()[i] * 32.f, 0.0f));
+            key[i] = (static_cast<uint32_t>(clusters.cluster()[i]) << 16) | ptcode;
+          }
           idx[i] = tid;
 #ifdef L1TSC_VERBOSE_DEBUG
           if (block_idx <= 2)
-            printf(
-                "In BX %u cand %3u/%3u assigned to cluster key %u\n", block_idx + 1, tid, end - begin, unsigned(key[i]));
+            printf("In BX %u cand %3u/%3u of pt %6.2f assigned to cluster %3d -> key %08x\n",
+                   block_idx + 1,
+                   tid,
+                   end - begin,
+                   puppi.pt()[i],
+                   clusters.cluster()[i],
+                   unsigned(key[i]));
 #endif
         }
       }
@@ -369,9 +379,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
           assert(clusteredBegin + tid < nclustered);
           assert(map.metadata().size() == int(nclustered));
 #ifdef L1TSC_VERBOSE_DEBUG
-          uint32_t ijet = key[icand];
+          uint32_t ijet = key[icand] >> 16;
           if (block_idx <= 2)
-            printf("In BX %u index %u/%u is cand %3u/%3u of index %u assigned to jet %u (local)\n",
+            printf("In BX %u index %3u/%3u is cand %3u/%3u of index %6u assigned to jet %3u (local)\n",
                    block_idx + 1,
                    tid,
                    clusteredEnd - clusteredBegin,
@@ -647,11 +657,12 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                         jetBxLookup.view<BxIndexSoA>(),
                         nJetsTotalDevice.data());
 
-    return finalize(queue, bxLookup, clusters, nJetsTotalDevice, jetsNonZS, jetBxLookup);
+    return finalize(queue, src, bxLookup, clusters, nJetsTotalDevice, jetsNonZS, jetBxLookup);
   }
 
   std::tuple<BxLookupDeviceCollection, ClusterObjDeviceCollection, AssociationMapDevice>
   L1TScPhase2SCJetsKernels::finalize(Queue& queue,
+                                     const PuppiDeviceCollection& src,
                                      const BxLookupDeviceCollection& bxLookup,
                                      const ClustersDeviceCollection& clusters,
                                      const CounterDevice& nJetsTotalDevice,
@@ -742,12 +753,13 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     // indices of the clustered particles within each jet
     // needs an index buffer for reordering, and a key for sorting
     unsigned int npart = clusters.const_view().metadata().size();
-    auto h_key_device = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, Vec1D(npart));
+    auto h_key_device = alpaka::allocAsyncBuf<uint32_t, Idx>(queue, Vec1D(npart));
     auto h_idx_device = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, Vec1D(npart));
     alpaka::memset(queue, h_idx_device, 0x00);
     alpaka::exec<Acc1D>(queue,
                         grid,
                         JetToAssociationMapKernel{},
+                        src.const_view(),
                         bxLookup.const_view<OffsetsSoA>(),
                         jetBxLookup.const_view<OffsetsSoA>(),
                         map.const_view<OffsetsSoA>(),
@@ -835,7 +847,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                         jetBxLookup.view<BxIndexSoA>(),
                         nJetsTotalDevice.data());
 
-    return finalize(queue, bxLookup, clusters, nJetsTotalDevice, jetsNonZS, jetBxLookup);
+    return finalize(queue, src, bxLookup, clusters, nJetsTotalDevice, jetsNonZS, jetBxLookup);
   }
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels

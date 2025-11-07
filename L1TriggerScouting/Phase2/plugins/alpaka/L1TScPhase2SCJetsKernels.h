@@ -32,6 +32,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                     ClustersDeviceCollection& clusters) const;
 
     return_type finalize(Queue& queue,
+                         const PuppiDeviceCollection& src,
                          const BxLookupDeviceCollection& bx_lookup,
                          const ClustersDeviceCollection& clusters,
                          const CounterDevice& nJetsTotalDevice,
