@@ -30,6 +30,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                                   OffsetsSoA::View jetBxLookup,
                                   BxIndexSoA::View jetBxIndex,
                                   unsigned int* nJetsTotal) const {
+      constexpr bool single_thread = requires_single_thread_per_block<TAcc>::value;
       if (cms::alpakatools::once_per_grid(acc))
         jetBxLookup.offsets()[0] = 0;
       uint32_t grid_dim = alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[0];
@@ -116,8 +117,12 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
           float seed_pt = work.pt()[iseed], seed_eta = work.eta()[iseed], seed_phi = work.phi()[iseed];
           float sum_pt = seed_pt, sum_eta = 0, sum_phi = 0;
           bool is_seed = true;
+          // on single-thread we can skip already vetoed seeds
+          if constexpr (single_thread) {
+            if (clusters.is_seed()[icluster] == -1) 
+              continue;
+          }
           // scan up
-
           for (uint32_t j = tid; j > 0; --j) {
             uint32_t ipart = j - 1 + begin;  // global index
             float deta = work.eta()[ipart] - seed_eta;
@@ -129,6 +134,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                 is_seed = false;
                 break;
               } else {
+                if constexpr (single_thread) {
+                  clusters.is_seed()[work.cluster()[ipart]] = -1;
+                }
                 sum_pt += work.pt()[ipart];
                 sum_eta += work.pt()[ipart] * deta;
                 sum_phi += work.pt()[ipart] * dphi;
@@ -146,6 +154,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                 is_seed = false;
                 break;
               } else {
+                if constexpr (single_thread) {
+                  clusters.is_seed()[work.cluster()[ipart]] = -1;
+                }
                 sum_pt += work.pt()[ipart];
                 sum_eta += work.pt()[ipart] * deta;
                 sum_phi += work.pt()[ipart] * dphi;
@@ -219,6 +230,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 #endif
           }
           clusters.cluster()[icluster] = jcluster;
+          if constexpr (single_thread) {
+            clusters.is_seed()[icluster] = std::max(clusters.is_seed()[icluster], 0); // clear -1 markers
+          }
         }
 
         if (once_per_block(acc)) {
