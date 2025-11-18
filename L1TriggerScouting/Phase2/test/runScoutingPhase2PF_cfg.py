@@ -195,10 +195,12 @@ process.p_unpack = cms.Path(
 )
 process.p_ak4 = cms.Path(
   process.scPhase2PFRawToDigiStruct +
+  process.goodOrbitsByNBX +
   process.scPhase2AK4PFDemo
 )
 process.p_sc4 = cms.Path(
   process.scPhase2PFRawToDigiStruct +
+  process.goodOrbitsByNBX +
   process.scPhase2SC4PFDemo
 )
 
