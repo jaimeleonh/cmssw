@@ -53,8 +53,8 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
           puppi.puppiw()[idx] = 1.0f;
           puppi.quality()[idx] = hwQual;
         } else {
-          auto hwPuppiw = decodeBits<uint16_t, 40, 10>(data);
-          auto hwQual = decodeBits<uint8_t, 50, 6>(data);
+          auto hwPuppiw = decodeBits<uint16_t, 40, 9>(data);
+          auto hwQual = decodeBits<uint8_t, 49, 6>(data);
 
           puppi.z0()[idx] = 0.0f;
           puppi.dxy()[idx] = 0.0f;

@@ -69,16 +69,16 @@ namespace l1puppiUnpack {
     quality = (data >> 58) & 0x7;  //3 bits
   }
   inline void readneutral(const uint64_t data, uint16_t &wpuppi, uint8_t &id) {
-    wpuppi = (data >> 40) & 0x3FF;
-    id = (data >> 50) & 0x3F;
+    wpuppi = (data >> 40) & 0x1FF;
+    id = (data >> 49) & 0x3F;
   }
   inline void readneutral(const uint64_t data, float &wpuppi, uint8_t &id) {
-    int wpuppiint = (data >> 40) & 0x3FF;
+    int wpuppiint = (data >> 40) & 0x1FF;
     wpuppi = wpuppiint * (1 / 256.f);
-    id = (data >> 50) & 0x3F;
+    id = (data >> 49) & 0x3F;
   }
   inline void readquality(const uint64_t data, uint8_t pid, uint8_t &quality) {
-    quality = pid > 1 ? (data >> 58) & 0x7 : (data >> 50) & 0x3F;
+    quality = pid > 1 ? (data >> 58) & 0x7 : (data >> 49) & 0x3F;
   }
 
   template <unsigned int start, unsigned int bits = 16, typename T>
