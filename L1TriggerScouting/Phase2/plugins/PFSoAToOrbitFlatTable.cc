@@ -93,7 +93,7 @@ void PFSoAToOrbitFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm::Even
   out->addColumn<float>("dxy", pf_dxy, "L1PF dxy");
   out->addColumn<float>("puppiw", pf_puppiw, "L1PF puppiw");
   out->addColumn<uint8_t>("quality", pf_quality, "L1PF quality");
-  out->addColumn<int16_t>("pdgid", pf_pdgid, "L1PF pdgid");
+  out->addColumn<int16_t>("pdgId", pf_pdgid, "L1PF pdgid");
   iEvent.put(std::move(out));
 }
 

@@ -195,7 +195,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       // concatenate the association maps (could be done better!)
       auto nclusters = associator.size();
       auto nclustered = associator.extents().values;
-      std::cout << "BX " << idx << ": found " << nclusters << " clusters from " << n_points << " PF candidates of which " << nclustered << " are clustered." << std::endl;
       alpaka::exec<Acc1D>(queue, 
         make_workdiv<Acc1D>(1, 1), 
         [] ALPAKA_FN_ACC(Acc1D const& acc,
