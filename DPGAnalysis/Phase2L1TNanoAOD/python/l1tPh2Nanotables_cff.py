@@ -445,6 +445,48 @@ caloJetTable = jetTable.clone(
     cut = cms.string("pt > 5"), ## increase this to save space
 )
 
+
+candidateTable = cms.EDProducer(
+    "SimpleTriggerL1PFCandidateFlatTableProducer",
+    src = cms.InputTag('__src__'),
+    cut = cms.string(""),
+    name = cms.string("__name__"),
+    doc = cms.string("__Template PFJet Table__"),
+    singleton = cms.bool(False), # the number of entries is variable
+    variables = cms.PSet(
+        l1P3Vars,
+        charge = Var("charge()", int),
+        puppiWeight = Var("puppiWeight()", float),
+        hwpt = Var("hwPt()", int),
+        hweta = Var("hwEta()", int),
+        hwphi = Var("hwPhi()", int),
+        id = Var("id()", int),
+        z0 = Var("z0()", float),
+        dxy = Var("dxy()", float),
+        # z0 = Var("vz", float, "vertex z0"), ## empty
+    )
+)
+
+barrelPfCandidateTable = candidateTable.clone(
+    src = cms.InputTag('l1tLayer1Barrel', 'PF'),
+    name = cms.string("L1BarrelPf"),
+)
+
+barrelExtPfCandidateTable = candidateTable.clone(
+    src = cms.InputTag('l1tLayer1BarrelExtended', 'PF'),
+    name = cms.string("L1BarrelExtPf"),
+)
+
+barrelPuppiCandidateTable = candidateTable.clone(
+    src = cms.InputTag('l1tLayer1Barrel', 'Puppi'),
+    name = cms.string("L1BarrelPuppi"),
+)
+
+barrelExtPuppiCandidateTable = candidateTable.clone(
+    src = cms.InputTag('l1tLayer1BarrelExtended', 'Puppi'),
+    name = cms.string("L1BarrelExtPuppi"),
+)
+
 ### SUMS
 
 puppiMetTable = cms.EDProducer(
@@ -605,5 +647,10 @@ p2L1TablesTask = cms.Task(
     gttEtSumTable,
     gttHtSumTable,
     gttExtHtSumTable,
+    # pf
+    barrelPfCandidateTable,
+    barrelExtPfCandidateTable,
+    barrelPuppiCandidateTable,
+    barrelExtPuppiCandidateTable,
 )
 

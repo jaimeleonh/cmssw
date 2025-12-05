@@ -42,6 +42,9 @@ typedef SimpleFlatTableProducer<l1t::PFTau> SimpleTriggerL1PFTauFlatTableProduce
 #include "DataFormats/L1TParticleFlow/interface/HPSPFTau.h"
 typedef SimpleFlatTableProducer<l1t::PFTau> SimpleTriggerL1HPSPFTauFlatTableProducer;
 
+#include "DataFormats/L1TParticleFlow/interface/PFCandidate.h"
+typedef SimpleFlatTableProducer<l1t::PFCandidate> SimpleTriggerL1PFCandidateFlatTableProducer;
+
 #include "DataFormats/L1TParticleFlow/interface/PFJet.h"
 typedef SimpleFlatTableProducer<l1t::PFJet> SimpleTriggerL1PFJetFlatTableProducer;
 
@@ -60,4 +63,5 @@ DEFINE_FWK_MODULE(SimpleTriggerL1TrackerMuonFlatTableProducer);
 DEFINE_FWK_MODULE(SimpleTriggerL1CaloJetFlatTableProducer);
 DEFINE_FWK_MODULE(SimpleTriggerL1PFTauFlatTableProducer);
 DEFINE_FWK_MODULE(SimpleTriggerL1HPSPFTauFlatTableProducer);
+DEFINE_FWK_MODULE(SimpleTriggerL1PFCandidateFlatTableProducer);
 DEFINE_FWK_MODULE(SimpleTriggerL1PFJetFlatTableProducer);
