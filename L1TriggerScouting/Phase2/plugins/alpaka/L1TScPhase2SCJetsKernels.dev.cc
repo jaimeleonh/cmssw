@@ -660,7 +660,10 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                                   ClusterObjDeviceCollection::View work2,
                                   ClusterObjDeviceCollection::View jetsIn,
                                   ClusterObjDeviceCollection::View jetsOut,
-                                  OffsetsSoA::View jetBxLookup) const {
+                                  OffsetsSoA::ConstView jetPreRefitBxLookup,
+                                  OffsetsSoA::View jetBxLookup,
+                                  BxIndexSoA::View jetBxIndex,
+                                  unsigned int* nJetsTotal) const {
 
       // for prefix scan (only on GPU)
       uint32_t* ws = nullptr;
@@ -691,7 +694,8 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         auto& sum_dau = alpaka::declareSharedVar<uint32_t, __COUNTER__>(acc);
 
         unsigned int iter = 0;
-        auto njets = jetBxLookup.offsets()[block_idx + 1];
+        auto njets = jetPreRefitBxLookup.offsets()[block_idx + 1];
+        unsigned int nfinaljets = 0;
         for (iter = 0; iter < njets; ++iter) {
           bool even = (iter % 2 == 0);
           auto pt = even ? puppi.pt() : work2.pt();
@@ -754,18 +758,21 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
           alpaka::syncBlockThreads(acc);
 
           if (once_per_block(acc)) {
-            jetsOut.pt()[begin + iter] = sum_pt;
-            jetsOut.eta()[begin + iter] = seed_eta + sum_eta / sum_pt;
-            jetsOut.phi()[begin + iter] = cms::alpakatools::reducePhiRange(acc, seed_phi + sum_phi / sum_pt);
-            jetsOut.numberOfDaughters()[begin + iter] = sum_dau;
+            if (sum_pt != 0) {
+              nfinaljets++;
+              jetsOut.pt()[begin + iter] = sum_pt;
+              jetsOut.eta()[begin + iter] = seed_eta + sum_eta / sum_pt;
+              jetsOut.phi()[begin + iter] = cms::alpakatools::reducePhiRange(acc, seed_phi + sum_phi / sum_pt);
+              jetsOut.numberOfDaughters()[begin + iter] = sum_dau;
 #ifdef L1TSC_VERBOSE_DEBUG
-            if (block_idx <= 2)
-              printf("In BX %u Jet pt %7.2f eta %+6.3f phi %+6.3f\n\n",
-                     block_idx + 1,
-                     jetsOut.pt()[begin + iter],
-                     jetsOut.eta()[begin + iter],
-                     jetsOut.phi()[begin + iter]);
+              if (block_idx <= 2)
+                printf("In BX %u Jet pt %7.2f eta %+6.3f phi %+6.3f\n\n",
+                      block_idx + 1,
+                      jetsOut.pt()[begin + iter],
+                      jetsOut.eta()[begin + iter],
+                      jetsOut.phi()[begin + iter]);
 #endif
+              }
           }
 
           blockPrefixScan(acc, tag + begin, size, ws);
@@ -807,6 +814,17 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
           alpaka::syncBlockThreads(acc);
 
         }  // iter
+
+        if (once_per_block(acc)) {
+#ifdef L1TSC_VERBOSE_DEBUG
+          if (block_idx <= 2)
+            printf("In BX %u size total jet count %u\n\n", block_idx + 1, iter);
+#endif
+          jetBxIndex.bx()[block_idx] = bxIndex.bx()[block_idx];
+          jetBxLookup.offsets()[block_idx + 1] = nfinaljets;
+          alpaka::atomicAdd(acc, nJetsTotal, nfinaljets, alpaka::hierarchy::Blocks{});
+        }
+
         #ifdef L1TSC_VERBOSE_DEBUG
           if (block_idx <= 2)
             for (uint32_t tid : independent_group_elements(acc, end - begin)) {
@@ -1099,10 +1117,16 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     auto jetsNonZS = ClusterObjDeviceCollection(npf, queue);
     jetsNonZS.zeroInitialise(queue);
 
+    auto jetPreRefitBxLookup = BxLookupDeviceCollection({{int(nbx), int(nbx + 1)}}, queue);
+    jetPreRefitBxLookup.zeroInitialise(queue);
+
     auto jetBxLookup = BxLookupDeviceCollection({{int(nbx), int(nbx + 1)}}, queue);
     jetBxLookup.zeroInitialise(queue);
 
     // buffer for the number of jets per BX
+    auto nJetsTotalPreRefitDevice = CounterDevice(queue);
+    nJetsTotalPreRefitDevice.zeroInitialise(queue);
+
     auto nJetsTotalDevice = CounterDevice(queue);
     nJetsTotalDevice.zeroInitialise(queue);
 
@@ -1139,9 +1163,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                         h_tag_device.data(),
                         work2.view(),
                         jetsPreReFit.view(),
-                        jetBxLookup.view<OffsetsSoA>(),
-                        jetBxLookup.view<BxIndexSoA>(),
-                        nJetsTotalDevice.data());
+                        jetPreRefitBxLookup.view<OffsetsSoA>(),
+                        jetPreRefitBxLookup.view<BxIndexSoA>(),
+                        nJetsTotalPreRefitDevice.data());
 
     // reset clusters and association between particles and clusters
     alpaka::exec<Acc1D>(
@@ -1175,7 +1199,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                         workReFit2.view(),
                         jetsPreReFit.view(),
                         jetsNonZS.view(),
-                        jetBxLookup.view<OffsetsSoA>());
+                        jetPreRefitBxLookup.const_view<OffsetsSoA>(),
+                        jetBxLookup.view<OffsetsSoA>(),
+                        jetBxLookup.view<BxIndexSoA>(),
+                        nJetsTotalDevice.data()
+                      );
 
     return finalize(queue, src, bxLookup, clusters, nJetsTotalDevice, jetsNonZS, jetBxLookup);
   }
