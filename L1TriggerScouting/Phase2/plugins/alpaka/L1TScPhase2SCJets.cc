@@ -28,6 +28,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
           jets_token_{produces()},
           map_token_{produces()},
           R2_{std::pow(params.getParameter<double>("rParam"), 2)},
+          ReFitR2_{std::pow(params.getParameter<double>("rReFitParam"), 2)},
           nJets_{params.getParameter<unsigned int>("nJets")} {}
 
     void produce(device::Event &event, const device::EventSetup &event_setup) override {
@@ -46,10 +47,17 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
         event.emplace(jets_token_, std::move(jets));
         event.emplace(map_token_, std::move(map));
       } else {
-        auto [jetBXs, jets, map] = kernels_.run(event.queue(), src, bx_lookup, R2_, nJets_, clusters);
-        event.emplace(jetBXs_token_, std::move(jetBXs));
-        event.emplace(jets_token_, std::move(jets));
-        event.emplace(map_token_, std::move(map));
+        if (ReFitR2_ > 0) {
+          auto [jetBXs, jets, map] = kernels_.run(event.queue(), src, bx_lookup, R2_, ReFitR2_, nJets_, clusters);
+          event.emplace(jetBXs_token_, std::move(jetBXs));
+          event.emplace(jets_token_, std::move(jets));
+          event.emplace(map_token_, std::move(map));
+        } else {
+          auto [jetBXs, jets, map] = kernels_.run(event.queue(), src, bx_lookup, R2_, nJets_, clusters);
+          event.emplace(jetBXs_token_, std::move(jetBXs));
+          event.emplace(jets_token_, std::move(jets));
+          event.emplace(map_token_, std::move(map));
+        }
       }
 
       // move clustering results to event storage
@@ -60,6 +68,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
       edm::ParameterSetDescription desc;
       desc.add<edm::InputTag>("src");
       desc.add<double>("rParam", 0.4);
+      desc.add<double>("rReFitParam", 0.);
       desc.add<unsigned int>("nJets", 0);
       descriptions.addWithDefaultLabel(desc);
     };
@@ -80,6 +89,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
 
     // params
     double R2_;
+    double ReFitR2_;
     unsigned int nJets_;
   };
 

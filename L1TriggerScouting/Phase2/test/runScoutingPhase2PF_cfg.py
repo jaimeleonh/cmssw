@@ -19,6 +19,11 @@ options.register ('jetR',
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.float,
                   'Jet radius')
+options.register ('jetReFitR',
+                  0.0, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.float,
+                  'Jet radius (after ReFit)')
 options.register ('dumpClusters',
                   False, 
                   VarParsing.VarParsing.multiplicity.singleton,
@@ -153,6 +158,7 @@ if "alpaka" in options.run.lower():
       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
       src = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
       rParam = cms.double(options.jetR),
+      rReFitParam = cms.double(options.jetReFitR),
       nJets = cms.uint32(options.njets),
   )
 

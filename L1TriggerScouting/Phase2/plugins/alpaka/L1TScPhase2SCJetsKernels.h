@@ -31,6 +31,14 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                     unsigned int nJets,
                     ClustersDeviceCollection& clusters) const;
 
+    return_type run(Queue& queue,
+                    const PuppiDeviceCollection& src,
+                    const BxLookupDeviceCollection& bx_lookup,
+                    float R2,
+                    float ReFitR2,
+                    unsigned int nJets,
+                    ClustersDeviceCollection& clusters) const;
+
     return_type finalize(Queue& queue,
                          const PuppiDeviceCollection& src,
                          const BxLookupDeviceCollection& bx_lookup,
