@@ -1205,6 +1205,32 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                         nJetsTotalDevice.data()
                       );
 
+    alpaka::exec<Acc1D>(
+        queue,
+        flatgrid,
+        [] ALPAKA_FN_ACC(Acc1D const& acc,
+                         OffsetsSoA::ConstView bxLookup,
+                         ClustersDeviceCollection::ConstView clusters) {
+          uint32_t grid_dim = alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[0];
+          for (uint32_t block_idx : independent_groups(acc, grid_dim)) {
+            // get event range
+            uint32_t begin = bxLookup.offsets()[block_idx];
+            uint32_t end = bxLookup.offsets()[block_idx + 1];
+
+#ifdef L1TSC_VERBOSE_DEBUG
+            if (block_idx <= 2)
+              for (uint32_t tid : independent_group_elements(acc, end - begin)) {
+                uint32_t i = tid + begin;
+                printf("Prefinalize: In BX %u particle %u assigned to cluster %u\n", block_idx + 1, i - begin, clusters.cluster()[i]);
+              }
+#endif
+          }
+        },
+        bxLookup.const_view<OffsetsSoA>(),
+        clusters.const_view()
+      );
+
+    // return finalize(queue, src, bxLookup, clusters, nJetsTotalPreRefitDevice, jetsPreReFit, jetPreRefitBxLookup);
     return finalize(queue, src, bxLookup, clusters, nJetsTotalDevice, jetsNonZS, jetBxLookup);
   }
 
