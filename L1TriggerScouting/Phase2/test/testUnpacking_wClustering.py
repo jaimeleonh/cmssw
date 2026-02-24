@@ -263,9 +263,8 @@ if options.run in ("sc4Alpaka",):
 
     process.clusterJetIndexTable = cms.EDProducer("ClusterMapperSoAToNanoaodFlatTable",
         srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
-        srcMapCands = cms.InputTag("scPhase2SC4PFAlpaka"),
         name = process.puppiTable.name,
-        varName = cms.string("SC4jetIndex"),
+        clustering_name = cms.string("SC4ReFit"),
         doc = cms.string(""),
     )
 
