@@ -2,6 +2,7 @@ from __future__ import print_function
 import FWCore.ParameterSet.Config as cms
 import os
 
+# define cmsRun CLI options w/ defaults, types; expose them as e.g. options.njets inside config
 from L1TriggerScouting.Phase2.options_cff import options, VarParsing
 options.register ('njets',
                   16, 
@@ -25,37 +26,92 @@ options.register ('dumpClusters',
                   VarParsing.VarParsing.varType.bool,         
                   'Dump clusters to options.outFile')
 
+
+# Additional algorithms
+options.register('jetAlgo',
+                 'auto',
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 'Jet algorithm: auto | seededCone | iterative | seededConeNMSWeighted | linkTree')
+options.register('RSeed',
+                 0.3,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Seed finding radius (for seededConeNMSWeighted)')
+options.register('RCen',
+                 0.4,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Centroid radius (for seededConeNMSWeighted)')
+options.register('RClu',
+                 0.4,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Assignment radius (for seededConeNMSWeighted)')
+options.register('RLink',
+                 0.3,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Link radius for linkTree')
+options.register('alphaSeed',
+                 2.0,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'alpha in score = dr2 / pt_seed^alpha (for seededConeNMSWeighted)')
+options.register('nCentroidIters',
+                 1,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.int,
+                 'Number of centroid iterations (seededConeNMSWeighted): 0=use seed axis, >0 refine axis')
+
+# Parse CLI options (+ defaults from options_cff)
 options.parseArguments()
+
+# ensure builder unit number of streams atleast 1 (DAQ concept)
 if options.buNumStreams == []:
     options.buNumStreams.append(1)
+
+# use CLI-specified analysis workflows (later: which unpackers activated, which trigger obj produced, which selections) if provided, else default list
 analyses = options.analyses if options.analyses else ["w3pi", "hphijpsi", "h2rho", "h2phi"]
 print(f"Analyses set to {analyses}")
 
+# ensure selected run mode (decide scheduled execution path cms.Path) valid; else abort
 if options.run not in ("unpack", "ak4", "sc4", "unpackAlpaka", "clueAlpaka", "sc4Alpaka", "sc4AlpakaTaus"):
     raise RuntimeError("Unsupported run mode %r" % options.run)
 
+# python wrapper to create edm::Process object (container defining event-processing once at job start: modules, paths, source)
 process = cms.Process("SCPU")
+
+# (from CLI:) how many events to process
+# untracked: used by framework, not part of event metadata (not part of physics configuration)
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(options.maxEvents)
 )
 
+# framework-level param. set -> configure how CMSSW parallelizes event loops (threads, streams, summary)
 process.options = cms.untracked.PSet(
     numberOfThreads = cms.untracked.uint32(options.numThreads),
     numberOfStreams = cms.untracked.uint32(options.numFwkStreams),
     numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(1),
     wantSummary = cms.untracked.bool(True)
 )
-process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 10
 
+# load another py config and attach content to this process (_cfi config fragment initial; _cff full)
+# here configure CMSSW logging service (what gets printed, how often, ...)
+process.load("FWCore.MessageService.MessageLogger_cfi")
+process.MessageLogger.cerr.FwkReport.reportEvery = 10    # every 10 events
+
+# ensure each BU dir has corresponding stream count
 if len(options.buNumStreams) != len(options.buBaseDir):
     raise RuntimeError("Mismatch between buNumStreams (%d) and buBaseDirs (%d)" % (len(options.buNumStreams), len(options.buBaseDir)))
 
+# select which PF FED streams to unpack (all by default, or CLI specified)
 if options.pfBarrelStreamIDs == [] and options.pfEndcapStreamIDs == []:
     pfStreamIDs = list(range(sum(options.buNumStreams))) # take all 
 else:
     pfStreamIDs = options.pfBarrelStreamIDs + options.pfEndcapStreamIDs
 
+# configure DAQ file coordination service that manages BU/FU raw file access (e.g. run000039/...stream00.raw)
 process.EvFDaqDirector = cms.Service("EvFDaqDirector",
     useFileBroker = cms.untracked.bool(options.broker != "none"),
     fileBrokerHostFromCfg = cms.untracked.bool(False),
@@ -68,18 +124,23 @@ process.EvFDaqDirector = cms.Service("EvFDaqDirector",
     buBaseDirsNumStreams = cms.untracked.vint32(*options.buNumStreams),
     directorIsBU = cms.untracked.bool(False),
 )
+
+# create CMSSW service for performance monitoring (DAQ oriented)
 process.FastMonitoringService = cms.Service("FastMonitoringService")
 
+# load config fragment for timing profiling (per-module execution t, per-path t, per-event t, framework overhead, concurrency t) -> write to JSON
 process.load( "HLTrigger.Timer.FastTimerService_cfi" )
 process.FastTimerService.writeJSONSummary = cms.untracked.bool(True)
 process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.uname()[1]}.{options.task}.json')
 #process.MessageLogger.cerr.FastReport = cms.untracked.PSet( limit = cms.untracked.int32( 10000000 ) )
 
+# create required BU/FU run dir structure for DAQSource to read scouting raw files
 fuDir = options.fuBaseDir+("/run%06d" % options.runNumber)
 buDirs = [b+("/run%06d" % options.runNumber) for b in options.buBaseDir]
 for d in [fuDir, options.fuBaseDir] + buDirs + options.buBaseDir:
     os.makedirs(d, exist_ok=True)
 
+# define DAQ-style raw input, telling CMSSW which .raw to read and how to buffer into events
 process.source = cms.Source("DAQSource",
     testing = cms.untracked.bool(True),
     dataMode = cms.untracked.string(options.daqSourceMode),
@@ -95,18 +156,29 @@ process.source = cms.Source("DAQSource",
         buDirs[0] + "/" + "run%06d_ls%04d_index%06d_stream00.raw" % (options.runNumber, options.lumiNumber, 1),
     )
 )
+
+# create lock file (hack) to simulate FU readiness so DAQSource can read scouting .raw without waiting for online DAQ coordination
 os.system("touch " + buDirs[0] + "/" + "fu.lock")
 
+# load PF raw unpacker moduler to convert scouting raw to correlator layer 2 PF cands
+# unpacker = raw -> digi/structured physics objects; interpret bit layout ([pt bits][eta bits]...), convert int to floats, build structured arrays
 process.load("L1TriggerScouting.Phase2.unpackers_cff")
+
+# enable GPU backend infrastructure when running Alpaka-based modules
+# accelerator = computing device other than CPU for executing modules (here: nvidia GPU executing Alpaka kernels)
 if "alpaka" in options.run.lower():
   process.load("Configuration.StandardSequences.Accelerators_cff")
 
 ## Configure unpackers
+# closune standard raw->digi unpacker and configure it to unpack the PF FED streams (with chosen split factor)
 process.scPhase2PFRawToDigiStruct = process.scPhase2PuppiRawToDigiStruct.clone(
   fedIDs = [*pfStreamIDs],
   splitFactor = cms.uint32(len(pfStreamIDs) // options.timeslices)
 )
+
+# require min BX count corresponding to time-sliced, tmux-corrected orbit
 process.goodOrbitsByNBX.nbxMin = 3564 * options.timeslices // options.tmuxPeriod
+# tell orbit-validation filter (goodOrbitsByNBX) to validate orbit completeness using BX info produced by scPhase2PFRawToDigiStruct unpacker
 process.goodOrbitsByNBX.unpackers = [ "scPhase2PFRawToDigiStruct" ]
 
 process.scPhase2AK4PFDemo = cms.EDProducer("ScPhase2PuppiAKJetsDemo",
@@ -153,6 +225,15 @@ if "alpaka" in options.run.lower():
       src = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
       rParam = cms.double(options.jetR),
       nJets = cms.uint32(options.njets),
+
+      algo = cms.string(options.jetAlgo),
+      RSeed = cms.double(options.RSeed),
+      RCen  = cms.double(options.RCen),
+      RClu  = cms.double(options.RClu),
+      RLink = cms.double(options.RLink),
+      alphaSeed = cms.double(options.alphaSeed),
+      minSeedPt = cms.double(options.minSeedPt),
+      nCentroidIters = cms.uint32(options.nCentroidIters),
   )
 
   process.SoftTauIdSC4 = l1sc_SoftTauIdML_alpaka(
