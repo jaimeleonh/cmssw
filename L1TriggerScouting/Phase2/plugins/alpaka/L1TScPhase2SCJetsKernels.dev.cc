@@ -4,7 +4,9 @@
 #include "HeterogeneousCore/AlpakaInterface/interface/host.h"
 #include "HeterogeneousCore/AlpakaInterface/interface/workdivision.h"
 #include "HeterogeneousCore/AlpakaInterface/interface/prefixScan.h"
-#include "HeterogeneousCore/AlpakaInterface/interface/radixSort.h"
+// #include "HeterogeneousCore/AlpakaInterface/interface/radixSort.h"
+// #include "L1TriggerScouting/Phase2/plugins/alpaka/radixSort128.h"
+#include "L1TriggerScouting/Phase2/plugins/alpaka/radixSort64.h"
 #include "HeterogeneousCore/AlpakaMath/interface/deltaPhi.h"
 
 //#define L1TSC_VERBOSE_DEBUG
@@ -12,6 +14,8 @@
 namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   using namespace cms::alpakatools;
+
+  constexpr uint32_t kThreadsPerBlock = 64;
 
   // original non-iter clustering (device kernel functor)
 
@@ -24,8 +28,8 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   //                                 BxIndexSoA::ConstView bxIndex, // BX label per BX
   //                                 float R,
   //                                 float R2,
-  //                                 uint16_t* uieta, // tmp eta sort key
-  //                                 uint16_t* idx, // tmp sort index buffer
+  //                                 uint64_t* uieta, // tmp eta sort key
+  //                                 uint64_t* idx, // tmp sort index buffer
   //                                 ClusterObjDeviceCollection::View work, // eta sorted working p. cp
   //                                 ClustersDeviceCollection::View clusters, // output p. assignment info
   //                                 ClusterObjDeviceCollection::View jets, // tmp jet collection
@@ -2101,7 +2105,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       ClustersDeviceCollection& clusters) const {
     unsigned int nbx = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
 
-    uint32_t threads_per_block = 256;
+    uint32_t threads_per_block = kThreadsPerBlock;
     uint32_t blocks_per_grid = nbx;
     auto grid = make_workdiv<Acc1D>(blocks_per_grid, threads_per_block);
 
@@ -2162,7 +2166,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     // computes number of BX
     unsigned int nbx = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
     // create launch grid with one block per BX
-    uint32_t threads_per_block = 256;
+    uint32_t threads_per_block = kThreadsPerBlock;
     uint32_t blocks_per_grid = nbx;
     auto grid = make_workdiv<Acc1D>(blocks_per_grid, threads_per_block);
 
@@ -2305,7 +2309,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     unsigned int nbx = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
     unsigned int npf = src.const_view().metadata().size();
 
-    uint32_t threads_per_block = 256;
+    uint32_t threads_per_block = kThreadsPerBlock;
     uint32_t blocks_per_grid = nbx;
     auto grid = make_workdiv<Acc1D>(blocks_per_grid, threads_per_block);
 
@@ -2394,7 +2398,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     unsigned int nbx   = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
     unsigned int npart = src.const_view().metadata().size();
 
-    uint32_t threads_per_block = 256;
+    uint32_t threads_per_block = kThreadsPerBlock;
     uint32_t blocks_per_grid   = nbx;
     auto grid = cms::alpakatools::make_workdiv<Acc1D>(blocks_per_grid, threads_per_block);
 
@@ -2471,7 +2475,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     unsigned int nbx   = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
     unsigned int npart = src.const_view().metadata().size();
 
-    uint32_t threads_per_block = 256;
+    uint32_t threads_per_block = kThreadsPerBlock;
     uint32_t blocks_per_grid   = nbx;
     auto grid = cms::alpakatools::make_workdiv<Acc1D>(blocks_per_grid, threads_per_block);
 
