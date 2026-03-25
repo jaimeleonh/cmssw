@@ -17,6 +17,7 @@
 #include "L1TriggerScouting/Phase2/interface/L1TScPhase2Common.h"
 #include "L1TriggerScouting/Phase2/plugins/alpaka/L1TScPhase2SCJetsKernels.h"
 
+#include <algorithm>
 #include <cmath>
 #include <string>
 
@@ -28,20 +29,19 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
   public:
     // constructor (declare consumed & produced products; read config param at job start & store in member variables)
     L1TScPhase2SCJets(const edm::ParameterSet& params)
-          // init parent base class
         : EDProducer<>(params),
 
           // input tokens: declare what input product module will read (e.g. PuppiDeviceCollection from input tag "src")
           src_candidates_token_{consumes(params.getParameter<edm::InputTag>("src"))},
           bx_lookup_token_{consumes(params.getParameter<edm::InputTag>("src"))},
 
-          // output tokens: declare products written by this module (tokens later used with event.emplace()) 
+          // output tokens: declare products written by this module (tokens later used with event.emplace())
           clusters_token_{produces()},
           jetBXs_token_{produces()},
           jets_token_{produces()},
           map_token_{produces()},
 
-          // module parameters (square Radii once in constructor)
+          // module parameters (square radii once in constructor)
           R2_{std::pow(params.getParameter<double>("rParam"), 2)},
           nJets_{params.getParameter<unsigned int>("nJets")},
           algo_{params.getParameter<std::string>("algo")},
@@ -51,32 +51,57 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
           RLink2_{std::pow(params.getParameter<double>("RLink"), 2)},
           alphaSeed_{params.getParameter<double>("alphaSeed")},
           minSeedPt_{params.getParameter<double>("minSeedPt")},
-          nCentroidIters_(params.getParameter<unsigned int>("nCentroidIters")) {}
-
+          nCentroidIters_{params.getParameter<unsigned int>("nCentroidIters")} {}
 
     void produce(device::Event& event, const device::EventSetup& event_setup) override {
       // fetch inputs using token (corresponding to consumes() declarations)
       const auto& src = event.get(src_candidates_token_);
       const auto& bx_lookup = event.get(bx_lookup_token_);
 
-      // create collection object clusters; allocate storage (on device/queue ssociated with this event -> event.queue) for nsrc entries
-      const auto nsrc = src.const_view().metadata().size(); //number of PF cands
+      // create collection object clusters; allocate storage (on device/queue associated with this event -> event.queue) for nsrc entries
+      const auto nsrc = src.const_view().metadata().size(); // number of PF cands
       auto clusters = ClustersDeviceCollection(nsrc, event.queue());
 
-      // Decide algorithm ("algo_" string to boolean)
-      const bool autoMode = (algo_ == "auto");
-      const bool wantWeighted = (algo_ == "seededConeNMSWeighted");
-      const bool wantSeeded = (algo_ == "seededCone");
-      const bool wantIter = (algo_ == "iterative");
-      const bool wantLinkTree = (algo_ == "linkTree");
+      // canonical names
+      const bool autoMode                   = (algo_ == "auto");
+      const bool wantSCGreedy               = (algo_ == "SCGreedy" || algo_ == "iterative");
+      const bool wantSCNMS                  = (algo_ == "SCNMS" || algo_ == "seededCone");
+      const bool wantSCNMSWeighted          = (algo_ == "SCNMSWeighted" || algo_ == "seededConeNMSWeighted");
+      const bool wantSCNMSWeightedMultiIter = (algo_ == "SCNMSWeightedMultiIter");
+      const bool wantLinkTree               = (algo_ == "LinkTree" || algo_ == "linkTree");
 
       // validate algo string
-      if (!autoMode && !wantWeighted && !wantSeeded && !wantIter && !wantLinkTree) {
+      if (!autoMode &&
+          !wantSCGreedy &&
+          !wantSCNMS &&
+          !wantSCNMSWeighted &&
+          !wantSCNMSWeightedMultiIter &&
+          !wantLinkTree) {
         throw cms::Exception("Configuration")
-            << "L1TScPhase2SCJets: unknown algo='" << algo_
-            << "'. Allowed: auto | seededCone | iterative | seededConeNMSWeighted | linkTree";
+            << "L1TScPhase2SCJets: unknown algo='" << algo_ << "'. "
+            << "Allowed: auto | SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree "
+            << "(legacy aliases also accepted: iterative | seededCone | seededConeNMSWeighted | linkTree)";
       }
 
+      // ----------------------------------------------------------------
+      // dispatch
+      //
+      // Algorithm mapping:
+      //
+      //   SCNMS:
+      //     old kernel logic, but with split radii
+      //       RSeed -> seed finding + old centroid accumulation
+      //       RClu  -> final nearest-axis assignment
+      //
+      //   SCNMSWeighted:
+      //     same as SCNMS, but final assignment uses the old weighted metric
+      //
+      //   SCNMSWeightedMultiIter:
+      //     newer generic NMS-style implementation with explicit
+      //     seed/centroid/assignment radii and forced >= 2 centroid iters
+      //
+      // So for SCNMS / SCNMSWeighted, RCen is intentionally ignored.
+      // ----------------------------------------------------------------
       if (wantLinkTree) {
         auto [jetBXs, jets, map] = kernels_.runLinkTree(event.queue(),
                                                         src,
@@ -87,23 +112,52 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
         event.emplace(jetBXs_token_, std::move(jetBXs));
         event.emplace(jets_token_, std::move(jets));
         event.emplace(map_token_, std::move(map));
-      } else if (wantWeighted) {
-        auto [jetBXs, jets, map] = kernels_.runSeededConeNMSWeighted(event.queue(),
-                                                                     src,
-                                                                     bx_lookup,
-                                                                     float(RSeed2_),
-                                                                     float(RCen2_),
-                                                                     float(RClu2_),
-                                                                     float(alphaSeed_),
-                                                                     float(minSeedPt_),
-                                                                     nCentroidIters_,
-                                                                     clusters);
+
+      } else if (wantSCNMSWeightedMultiIter) {
+        // force multiple centroid iterations here even if config forgot to set it
+        unsigned int nIters = std::max(2u, nCentroidIters_);
+
+        auto [jetBXs, jets, map] = kernels_.runSCNMSWeightedMultiIter(event.queue(),
+                                                                      src,
+                                                                      bx_lookup,
+                                                                      float(RSeed2_),
+                                                                      float(RCen2_),
+                                                                      float(RClu2_),
+                                                                      float(alphaSeed_),
+                                                                      float(minSeedPt_),
+                                                                      nIters,
+                                                                      clusters);
         event.emplace(jetBXs_token_, std::move(jetBXs));
         event.emplace(jets_token_, std::move(jets));
         event.emplace(map_token_, std::move(map));
+
+      } else if (wantSCNMSWeighted) {
+        auto [jetBXs, jets, map] = kernels_.runSCNMSWeighted(event.queue(),
+                                                             src,
+                                                             bx_lookup,
+                                                             float(RSeed2_),
+                                                             float(RClu2_),
+                                                             clusters);
+        event.emplace(jetBXs_token_, std::move(jetBXs));
+        event.emplace(jets_token_, std::move(jets));
+        event.emplace(map_token_, std::move(map));
+
+      } else if (wantSCNMS) {
+        auto [jetBXs, jets, map] = kernels_.runSCNMS(event.queue(),
+                                                     src,
+                                                     bx_lookup,
+                                                     float(RSeed2_),
+                                                     float(RClu2_),
+                                                     clusters);
+        event.emplace(jetBXs_token_, std::move(jetBXs));
+        event.emplace(jets_token_, std::move(jets));
+        event.emplace(map_token_, std::move(map));
+
       } else {
-        // old behaviour
-        const bool doIter = wantIter || (autoMode && nJets_ != 0);
+        // old behaviour for auto / SCGreedy:
+        // if auto and nJets != 0 -> iterative SCGreedy
+        // if auto and nJets == 0 -> legacy single-radius non-iterative seeded cone
+        const bool doIter = wantSCGreedy || (autoMode && nJets_ != 0);
 
         if (doIter) {
           auto [jetBXs, jets, map] = kernels_.run(event.queue(), src, bx_lookup, float(R2_), nJets_, clusters);
@@ -122,7 +176,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
       event.emplace(clusters_token_, std::move(clusters));
     }
 
-    // define config schema for module (which par accepted, types, defaults)
+    // define config schema for module (which params accepted, types, defaults)
     static void fillDescriptions(edm::ConfigurationDescriptions& descriptions) { // called during config validation before job start
       // create object holding definition of one config set
       edm::ParameterSetDescription desc;
@@ -131,11 +185,30 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
       desc.add<edm::InputTag>("src");
       desc.add<double>("rParam", 0.4);
       desc.add<unsigned int>("nJets", 0);
-      desc.add<std::string>("algo", "auto");  // auto | seededCone | iterative | seededConeNMSWeighted | linkTree
+
+      // canonical names:
+      // auto | SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree
+      // old aliases still accepted in produce()
+      desc.add<std::string>("algo", "auto");
+
+      // seeded-cone radii
+      //
+      // SCNMS / SCNMSWeighted:
+      //   RSeed = seed finding + old centroid accumulation
+      //   RClu  = final assignment
+      //   RCen  = ignored
+      //
+      // SCNMSWeightedMultiIter:
+      //   RSeed / RCen / RClu are all used
       desc.add<double>("RSeed", 0.3);
       desc.add<double>("RCen", 0.4);
       desc.add<double>("RClu", 0.4);
+
+      // LinkTree radius
       desc.add<double>("RLink", 0.3);
+
+      // weighted / threshold / iteration controls
+      // only used by SCNMSWeightedMultiIter or LinkTree as relevant
       desc.add<double>("alphaSeed", 2.0);
       desc.add<double>("minSeedPt", 0.0);
       desc.add<unsigned int>("nCentroidIters", 1);
@@ -147,8 +220,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
   private:
     // get device pf data
     const device::EDGetToken<PuppiDeviceCollection> src_candidates_token_;
-    // get association map if runScouting=False
+    // get BX lookup from same input tag
     const device::EDGetToken<BxLookupDeviceCollection> bx_lookup_token_;
+
     // put device clustering data
     const device::EDPutToken<ClustersDeviceCollection> clusters_token_;
     const device::EDPutToken<BxLookupDeviceCollection> jetBXs_token_;

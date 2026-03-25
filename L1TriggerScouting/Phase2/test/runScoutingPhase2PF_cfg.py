@@ -5,64 +5,82 @@ import os
 # define cmsRun CLI options w/ defaults, types; expose them as e.g. options.njets inside config
 from L1TriggerScouting.Phase2.options_cff import options, VarParsing
 options.register ('njets',
-                  16, 
+                  16,
                   VarParsing.VarParsing.multiplicity.singleton,
-                  VarParsing.VarParsing.varType.int,         
-                  'Number of jet seeds to reconstruct with SeededCone'
+                  VarParsing.VarParsing.varType.int,
+                  'Number of jets to reconstruct with SCGreedy (iterative seeded cone)'
 )
 options.register ('minSeedPt',
-                  0.0, 
+                  0.0,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.float,
-                  'Minimum pt cut for seeded-cone jet seeds')
+                  'Minimum pt cut for seed candidates (used by SCNMSWeightedMultiIter / LinkTree)'
+)
 options.register ('jetR',
-                  0.4, 
+                  0.4,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.float,
-                  'Jet radius')
+                  'Legacy single-radius parameter used by auto / SCGreedy fallback / demo modules'
+)
 options.register ('dumpClusters',
-                  False, 
+                  False,
                   VarParsing.VarParsing.multiplicity.singleton,
-                  VarParsing.VarParsing.varType.bool,         
+                  VarParsing.VarParsing.varType.bool,
                   'Dump clusters to options.outFile')
 
 
 # Additional algorithms
+# canonical names:
+#   SCGreedy                = iterative greedy seeded cone
+#   SCNMS                   = old non-iterative seeded cone with split radii:
+#                             RSeed for seed finding + old centroid accumulation,
+#                             RClu for final nearest-axis assignment
+#   SCNMSWeighted           = same old non-iterative seeded cone logic, but final
+#                             assignment uses old weighted metric
+#   SCNMSWeightedMultiIter  = newer weighted NMS-style seeded cone with explicit
+#                             centroid iterations and separate RCen
+#   LinkTree                = link-based clustering
+#
+# backward-compatible aliases kept:
+#   iterative               -> SCGreedy
+#   seededCone              -> SCNMS
+#   seededConeNMSWeighted   -> SCNMSWeighted
+#   linkTree                -> LinkTree
 options.register('jetAlgo',
                  'auto',
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
-                 'Jet algorithm: auto | seededCone | iterative | seededConeNMSWeighted | linkTree')
+                 'Jet algorithm: auto | SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree')
 options.register('RSeed',
                  0.3,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.float,
-                 'Seed finding radius (for seededConeNMSWeighted)')
+                 'Seed-finding radius; for SCNMS/SCNMSWeighted also used for old centroid accumulation')
 options.register('RCen',
                  0.4,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.float,
-                 'Centroid radius (for seededConeNMSWeighted)')
+                 'Centroid radius (used only by SCNMSWeightedMultiIter)')
 options.register('RClu',
                  0.4,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.float,
-                 'Assignment radius (for seededConeNMSWeighted)')
+                 'Final particle-assignment radius for SCNMS / SCNMSWeighted / SCNMSWeightedMultiIter')
 options.register('RLink',
                  0.3,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.float,
-                 'Link radius for linkTree')
+                 'Link radius for LinkTree')
 options.register('alphaSeed',
                  2.0,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.float,
-                 'alpha in score = dr2 / pt_seed^alpha (for seededConeNMSWeighted)')
+                 'alpha in score = dr2 / pt_seed^alpha (used by SCNMSWeightedMultiIter)')
 options.register('nCentroidIters',
                  1,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.int,
-                 'Number of centroid iterations (seededConeNMSWeighted): 0=use seed axis, >0 refine axis')
+                 'Number of centroid iterations for SCNMSWeightedMultiIter: 0=use seed axis, >0 refine axis')
 
 # Parse CLI options (+ defaults from options_cff)
 options.parseArguments()
@@ -107,7 +125,7 @@ if len(options.buNumStreams) != len(options.buBaseDir):
 
 # select which PF FED streams to unpack (all by default, or CLI specified)
 if options.pfBarrelStreamIDs == [] and options.pfEndcapStreamIDs == []:
-    pfStreamIDs = list(range(sum(options.buNumStreams))) # take all 
+    pfStreamIDs = list(range(sum(options.buNumStreams))) # take all
 else:
     pfStreamIDs = options.pfBarrelStreamIDs + options.pfEndcapStreamIDs
 
@@ -170,7 +188,7 @@ if "alpaka" in options.run.lower():
   process.load("Configuration.StandardSequences.Accelerators_cff")
 
 ## Configure unpackers
-# closune standard raw->digi unpacker and configure it to unpack the PF FED streams (with chosen split factor)
+# clone standard raw->digi unpacker and configure it to unpack the PF FED streams (with chosen split factor)
 process.scPhase2PFRawToDigiStruct = process.scPhase2PuppiRawToDigiStruct.clone(
   fedIDs = [*pfStreamIDs],
   splitFactor = cms.uint32(len(pfStreamIDs) // options.timeslices)
@@ -226,13 +244,31 @@ if "alpaka" in options.run.lower():
       rParam = cms.double(options.jetR),
       nJets = cms.uint32(options.njets),
 
+      # canonical algorithm names handled in producer; old aliases still accepted there
       algo = cms.string(options.jetAlgo),
+
+      # seeded-cone radii
+      # SCNMS / SCNMSWeighted:
+      #   RSeed = seed finding + old centroid accumulation
+      #   RClu  = final assignment
+      #   RCen  = ignored
+      #
+      # SCNMSWeightedMultiIter:
+      #   RSeed / RCen / RClu are all used
       RSeed = cms.double(options.RSeed),
       RCen  = cms.double(options.RCen),
       RClu  = cms.double(options.RClu),
+
+      # LinkTree radius
       RLink = cms.double(options.RLink),
+
+      # weighted-assignment controls (used by SCNMSWeightedMultiIter)
       alphaSeed = cms.double(options.alphaSeed),
+
+      # generic min seed / root pt threshold
       minSeedPt = cms.double(options.minSeedPt),
+
+      # centroid refinement iterations used by SCNMSWeightedMultiIter
       nCentroidIters = cms.uint32(options.nCentroidIters),
   )
 
@@ -265,7 +301,7 @@ if "alpaka" in options.run.lower():
     process.scPhase2PFRawToDigiAlpaka +
     process.goodOrbitsByNBX +
     process.scPhase2SC4PFAlpaka +
-    process.SoftTauIdSC4 
+    process.SoftTauIdSC4
   )
 
 
@@ -284,7 +320,7 @@ process.p_sc4 = cms.Path(
   process.scPhase2SC4PFDemo
 )
 
-if options.run not in ("both","inclusive","selected"): 
+if options.run not in ("both","inclusive","selected"):
   sched = [ getattr(process, "p_" + options.run)]
   if options.dumpClusters:
     process.scPhase2PFStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
@@ -300,10 +336,12 @@ if options.run not in ("both","inclusive","selected"):
     process.out = cms.OutputModule("OrbitNanoAODOutputModule",
      fileName = cms.untracked.string(options.outFile),
      SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring()),
-     outputCommands = cms.untracked.vstring("drop *", 
+     outputCommands = cms.untracked.vstring("drop *",
        "keep l1ScoutingRun3OrbitFlatTable_*_*_*")
     )
     process.p_out = cms.EndPath(process.out)
+
+    # dump Alpaka clustering outputs (clusters + jets)
     if options.run in ("sc4Alpaka",):
       process.dumpClusters = cms.EDProducer("ClusterSoAToOrbitFlatTable",
           srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
@@ -319,6 +357,7 @@ if options.run not in ("both","inclusive","selected"):
       )
       process.p_dump = cms.Path(process.dumpClusters + process.dumpJets)
       sched.append(process.p_dump)
+
     if options.run in ("clueAlpaka",):
       process.dumpClusters = cms.EDProducer("ClusterSoAToOrbitFlatTable",
           srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
@@ -326,14 +365,9 @@ if options.run not in ("both","inclusive","selected"):
           name = cms.string("ClueClusters"),
           doc = cms.string("")
       )
-      #process.dumpJets = cms.EDProducer("ClusterObjSoAToOrbitFlatTable",
-      #    srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
-      #    srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
-      #    name = cms.string("SC4AlpakaJets"),
-      #    doc = cms.string(""),
-      #)
       process.p_dump = cms.Path(process.dumpClusters)
-      sched.append(process.p_dump)      
+      sched.append(process.p_dump)
+
     sched.append(process.p_out)
 else:
   sched = [ process.p_inclusive, process.p_selected ]
