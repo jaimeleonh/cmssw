@@ -19,12 +19,13 @@
 #include "DataFormats/L1Scouting/interface/OrbitCollection.h"
 #include "DataFormats/L1TParticleFlow/interface/L1ScoutingPuppi.h"
 #include "DataFormats/NanoAOD/interface/OrbitFlatTable.h"
+#include "DataFormats/L1TParticleFlow/interface/RecMeson.h"
 
-class ScPuppiToOrbitFlatTable : public edm::global::EDProducer<> {
+class ScRecMesonToOrbitFlatTable : public edm::global::EDProducer<> {
 public:
   // constructor and destructor
-  explicit ScPuppiToOrbitFlatTable(const edm::ParameterSet&);
-  ~ScPuppiToOrbitFlatTable() override {};
+  explicit ScRecMesonToOrbitFlatTable(const edm::ParameterSet&);
+  ~ScRecMesonToOrbitFlatTable() override {};
 
   void produce(edm::StreamID, edm::Event&, edm::EventSetup const&) const override;
 
@@ -32,7 +33,7 @@ public:
 
 private:
   // the tokens to access the data
-  edm::EDGetTokenT<OrbitCollection<l1Scouting::Puppi>> src_;
+  edm::EDGetTokenT<OrbitCollection<l1Scouting::RecMeson<2>>> src_;
 
   std::string name_, doc_;
 };
@@ -40,8 +41,8 @@ private:
 
 // -------------------------------- constructor  -------------------------------
 
-ScPuppiToOrbitFlatTable::ScPuppiToOrbitFlatTable(const edm::ParameterSet& iConfig)
-    : src_(consumes<OrbitCollection<l1Scouting::Puppi>>(iConfig.getParameter<edm::InputTag>("src"))),
+ScRecMesonToOrbitFlatTable::ScRecMesonToOrbitFlatTable(const edm::ParameterSet& iConfig)
+    : src_(consumes<OrbitCollection<l1Scouting::RecMeson<2>>>(iConfig.getParameter<edm::InputTag>("src"))),
       name_(iConfig.getParameter<std::string>("name")),
       doc_(iConfig.getParameter<std::string>("doc")) {
   produces<l1ScoutingRun3::OrbitFlatTable>();
@@ -49,39 +50,34 @@ ScPuppiToOrbitFlatTable::ScPuppiToOrbitFlatTable(const edm::ParameterSet& iConfi
 // -----------------------------------------------------------------------------
 
 // ----------------------- method called for each orbit  -----------------------
-void ScPuppiToOrbitFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm::EventSetup const&) const {
-  edm::Handle<OrbitCollection<l1Scouting::Puppi>> src;
+void ScRecMesonToOrbitFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm::EventSetup const&) const {
+  edm::Handle<OrbitCollection<l1Scouting::RecMeson<2>>> src;
   iEvent.getByToken(src_, src);
   auto out = std::make_unique<l1ScoutingRun3::OrbitFlatTable>(src->bxOffsets(), name_);
   out->setDoc(doc_);
-  std::vector<float> pt(out->size()), eta(out->size()), phi(out->size()), z0(out->size()), dxy(out->size()),
-      puppiw(out->size());
-  std::vector<int16_t> pdgId(out->size());
-  std::vector<uint8_t> quality(out->size());
+  std::vector<float> pt(out->size()), eta(out->size()), phi(out->size()), mass(out->size());
+  std::vector<int16_t> id1(out->size()), id2(out->size());
   unsigned int i = 0;
-  for (const l1Scouting::Puppi& puppi : *src) {
-    pt[i] = puppi.pt();
-    eta[i] = puppi.eta();
-    phi[i] = puppi.phi();
-    z0[i] = puppi.z0();
-    dxy[i] = puppi.dxy();
-    puppiw[i] = puppi.puppiw();
-    pdgId[i] = puppi.pdgId();
-    quality[i] = puppi.quality();
+  for (const l1Scouting::RecMeson<2>& RecMeson : *src) {
+    pt[i] = RecMeson.pt();
+    eta[i] = RecMeson.eta();
+    phi[i] = RecMeson.phi();
+    id1[i] = RecMeson.daughterIds(0);
+    id2[i] = RecMeson.daughterIds(1);
+    mass[i] = RecMeson.mass();
+
     ++i;
   }
   out->addColumn<float>("pt", pt, "pt (GeV)");
   out->addColumn<float>("eta", eta, "eta (natural units)");
   out->addColumn<float>("phi", phi, "phi (natural units)");
-  out->addColumn<float>("z0", z0, "z0 (cm)");
-  out->addColumn<float>("dxy", dxy, "dxy (cm)");
-  out->addColumn<float>("puppiw", puppiw, "puppi weight (range [0,1])");
-  out->addColumn<int16_t>("pdgId", pdgId, "pdgId (natural units)");
-  out->addColumn<uint8_t>("quality", quality, "quality (8 bits)");
+  out->addColumn<int16_t>("id1", id1, "index of 1st daughter");
+  out->addColumn<int16_t>("id2", id2, "index of 2nd daughter");
+  out->addColumn<float>("mass", mass, "mass (natural units)");
   iEvent.put(std::move(out));
 }
 
-void ScPuppiToOrbitFlatTable::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+void ScRecMesonToOrbitFlatTable::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
 
   desc.add<edm::InputTag>("src");
@@ -91,4 +87,4 @@ void ScPuppiToOrbitFlatTable::fillDescriptions(edm::ConfigurationDescriptions& d
   descriptions.addDefault(desc);
 }
 
-DEFINE_FWK_MODULE(ScPuppiToOrbitFlatTable);
+DEFINE_FWK_MODULE(ScRecMesonToOrbitFlatTable);

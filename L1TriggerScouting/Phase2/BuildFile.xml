@@ -1,6 +1,7 @@
 <use name="rootvecops"/>
 <use name="DataFormats/L1Scouting"/>
 <use name="DataFormats/L1TParticleFlow"/>
+<use name="DataFormats/L1TrackTrigger"/>
 <use name="DataFormats/L1Trigger"/>
 <use name="DataFormats/Portable"/>
 <use name="DataFormats/SoATemplate"/>
