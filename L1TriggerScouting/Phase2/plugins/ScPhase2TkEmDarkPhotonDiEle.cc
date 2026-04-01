@@ -37,13 +37,14 @@ private:
               unsigned long &nPass,
               const std::string &bxLabel);
 
-  bool doStruct_;
   edm::EDGetTokenT<OrbitCollection<l1Scouting::TkEle>> structTkEleToken_;
 
   struct Cuts {
-    float minpt = 1;
+    std::array<float, 2> minpt;
+    std::array<float, 2> minid;
     float maxeta = 1.479;
     float maxdz = 1;
+    float maxRelIso = 0.4;
   } cuts;
 
   template <typename T>
@@ -53,14 +54,25 @@ private:
   unsigned long passStruct_;
 };
 
-ScPhase2TkEmDarkPhotonDiEle::ScPhase2TkEmDarkPhotonDiEle(const edm::ParameterSet &iConfig)
-    : doStruct_(iConfig.getParameter<bool>("runStruct")) {
-  if (doStruct_) {
-    structTkEleToken_ = consumes<OrbitCollection<l1Scouting::TkEle>>(iConfig.getParameter<edm::InputTag>("src"));
-    produces<std::vector<unsigned>>("selectedBx");
-    produces<l1ScoutingRun3::OrbitFlatTable>("zdee");
+ScPhase2TkEmDarkPhotonDiEle::ScPhase2TkEmDarkPhotonDiEle(const edm::ParameterSet &iConfig) {
+  structTkEleToken_ = consumes<OrbitCollection<l1Scouting::TkEle>>(iConfig.getParameter<edm::InputTag>("src"));
+  produces<std::vector<unsigned>>("selectedBx");
+  produces<l1ScoutingRun3::OrbitFlatTable>("zdee");
+  auto minPts = iConfig.getParameter<std::vector<double>>("ptMin");
+  if (minPts.size() != 2) {
+    throw cms::Exception("Configuration")
+        << "ptMin should be a vector of size 2, for the leading and subleading electron";
   }
-  cuts.minpt = iConfig.getParameter<double>("ptMin");
+  std::copy_n(minPts.begin(), 2, cuts.minpt.begin());
+  auto minIds = iConfig.getParameter<std::vector<double>>("idScore");
+  if (minIds.size() != 2) {
+    throw cms::Exception("Configuration")
+        << "idScore should be a vector of size 2, for the leading and subleading electron";
+  }
+  std::copy_n(minIds.begin(), 2, cuts.minid.begin());
+  cuts.maxRelIso = iConfig.getParameter<double>("relIso");
+  cuts.maxeta = iConfig.getParameter<double>("etaMax");
+  cuts.maxdz = iConfig.getParameter<double>("dzMax");
 }
 
 ScPhase2TkEmDarkPhotonDiEle::~ScPhase2TkEmDarkPhotonDiEle() {};
@@ -71,17 +83,14 @@ void ScPhase2TkEmDarkPhotonDiEle::beginStream(edm::StreamID) {
 }
 
 void ScPhase2TkEmDarkPhotonDiEle::produce(edm::Event &iEvent, const edm::EventSetup &iSetup) {
-  if (doStruct_) {
-    edm::Handle<OrbitCollection<l1Scouting::TkEle>> srcTkEle;
-    iEvent.getByToken(structTkEleToken_, srcTkEle);
+  edm::Handle<OrbitCollection<l1Scouting::TkEle>> srcTkEle;
+  iEvent.getByToken(structTkEleToken_, srcTkEle);
 
-    runObj(*srcTkEle, iEvent, countStruct_, passStruct_, "");
-  }
+  runObj(*srcTkEle, iEvent, countStruct_, passStruct_, "");
 }
 
 void ScPhase2TkEmDarkPhotonDiEle::endStream() {
-  if (doStruct_)
-    edm::LogImportant("ScPhase2AnalysisSummary") << "zdee Struct analysis: " << countStruct_ << " -> " << passStruct_;
+  edm::LogImportant("ScPhase2AnalysisSummary") << "zdee Struct analysis: " << countStruct_ << " -> " << passStruct_;
 }
 
 template <typename T>
@@ -96,10 +105,10 @@ void ScPhase2TkEmDarkPhotonDiEle::runObj(const OrbitCollection<T> &srcTkEle,
 
   std::vector<float> masses;
   ROOT::RVec<unsigned int> iEle;
-  std::array<unsigned int, 2> bestPair;
+  std::array<unsigned int, 2> bestPair{{0, 0}};
 
   bool bestPairFound;
-  float maxDeltaPhi;
+  float minDZ;
 
   for (unsigned int bx = 1; bx <= OrbitCollection<T>::NBX; ++bx) {
     nTry++;
@@ -110,7 +119,8 @@ void ScPhase2TkEmDarkPhotonDiEle::runObj(const OrbitCollection<T> &srcTkEle,
     // Select events with two or more electrons with pT > 5 GeV and in barrel
     iEle.clear();
     for (unsigned int i = 0; i < size; ++i) {  //make list of all electrons
-      if ((cands[i].pt() >= cuts.minpt) && (std::abs(cands[i].eta()) <= cuts.maxeta)) {
+      if ((cands[i].pt() >= cuts.minpt[1]) && (std::abs(cands[i].eta()) <= cuts.maxeta) &&
+          (cands[i].idScore() >= std::min(cuts.minid[0], cuts.minid[1]))) {
         iEle.push_back(i);
       }
     }
@@ -121,33 +131,50 @@ void ScPhase2TkEmDarkPhotonDiEle::runObj(const OrbitCollection<T> &srcTkEle,
 
     // Loop over possible ee pairs; get the best pair
     bestPairFound = false;
-    maxDeltaPhi = -999;
+    minDZ = cuts.maxdz;
     for (unsigned int i1 = 0; i1 < nEle; ++i1) {
+      if (cands[iEle[i1]].pt() < cuts.minpt[0])
+        continue;
+
+      if (cands[iEle[i1]].idScore() < cuts.minid[0])
+        continue;
+
+      if (cands[iEle[i1]].isolation() > cands[iEle[i1]].pt() * cuts.maxRelIso)
+        continue;
+
       for (unsigned int i2 = i1 + 1; i2 < nEle; ++i2) {
+        // pt cut was already applied when filling iEle,
+        // but we need to apply id cuts
+        if ((cands[iEle[i2]].idScore() < cuts.minid[1]))
+          continue;
+
+        // isolation cut
+        if (cands[iEle[i2]].isolation() > cands[iEle[i2]].pt() * cuts.maxRelIso)
+          continue;
+
         // OS requirement
         if (!(cands[iEle[i1]].charge() * cands[iEle[i2]].charge() < 0))
           continue;
 
         // dz requirement
-        if (std::abs(cands[iEle[i1]].z0() - cands[iEle[i2]].z0()) > cuts.maxdz)
+        float pairDZ = std::abs(cands[iEle[i1]].z0() - cands[iEle[i2]].z0());
+        if (pairDZ >= cuts.maxdz)
           continue;
 
-        // Find the one with the max dPhi
-        auto dPhi = std::abs(ROOT::VecOps::DeltaPhi<float>(cands[iEle[i1]].phi(), cands[iEle[i2]].phi()));
-
-        std::array<unsigned int, 2> pair{{iEle[i1], iEle[i2]}};  // pair of indices
-        if (dPhi > maxDeltaPhi) {
-          std::copy_n(pair.begin(), 2, bestPair.begin());
-          maxDeltaPhi = dPhi;
+        if (pairDZ < minDZ) {
+          bestPair[0] = iEle[i1];
+          bestPair[1] = iEle[i2];
+          minDZ = pairDZ;
           bestPairFound = true;
         }
+        // Find the one with the max dPhi
       }
     }
     if (!bestPairFound)
       continue;
 
     // Best ee pair mass
-    auto mass = pairmass({{bestPair[0], bestPair[1]}}, cands);
+    auto mass = pairmass(bestPair, cands);
 
     ret->emplace_back(bx);
     nPass++;
@@ -178,8 +205,11 @@ float ScPhase2TkEmDarkPhotonDiEle::pairmass(const std::array<unsigned int, 2> &t
 void ScPhase2TkEmDarkPhotonDiEle::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
   edm::ParameterSetDescription desc;
   desc.add<edm::InputTag>("src");
-  desc.add<double>("ptMin", 1.0);
-  desc.add<bool>("runStruct", true);
+  desc.add<std::vector<double>>("ptMin", {5.0, 4.0});
+  desc.add<std::vector<double>>("idScore", {0.0, 0.0});
+  desc.add<double>("etaMax", 1.479);
+  desc.add<double>("dzMax", 1.0);
+  desc.add<double>("relIso", 0.4);
   descriptions.addDefault(desc);
 }
 
