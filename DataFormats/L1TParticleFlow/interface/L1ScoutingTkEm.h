@@ -41,18 +41,20 @@ namespace l1Scouting {
   class TkEle : public TkEm {
   public:
     TkEle() {}
-    TkEle(float pt, float eta, float phi, uint8_t quality, float isolation, int8_t charge, float z0)
-        : TkEm(pt, eta, phi, quality, isolation), charge_(charge), z0_(z0) {}
+    TkEle(float pt, float eta, float phi, uint8_t quality, float isolation, int8_t charge, float z0, float idScore)
+        : TkEm(pt, eta, phi, quality, isolation), charge_(charge), z0_(z0), idScore_(idScore) {}
 
     int8_t charge() const { return charge_; }
     float z0() const { return z0_; }
+    float idScore() const { return idScore_; }
 
     void setZ0(float z0) { z0_ = z0; }
     void setCharge(int8_t charge) { charge_ = charge; }
+    void setIdScore(float idScore) { idScore_ = idScore; }
 
   private:
     int8_t charge_;
-    float z0_;
+    float z0_, idScore_;
   };
 }  // namespace l1Scouting
 #endif

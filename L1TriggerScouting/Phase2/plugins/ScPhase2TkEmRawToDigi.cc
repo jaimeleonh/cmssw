@@ -119,12 +119,12 @@ void ScPhase2TkEmRawToDigi::unpackFromRaw(uint64_t datalow,
 void ScPhase2TkEmRawToDigi::unpackFromRaw(uint64_t datalow,
                                           uint32_t datahigh,
                                           std::vector<l1Scouting::TkEle> &outBuffer) {
-  float pt, eta, phi, isolation, z0;
+  float pt, eta, phi, isolation, z0, idScore;
   uint8_t quality;
   int8_t charge;
   l1tkemUnpack::readshared(datalow, datahigh, pt, eta, phi, quality, isolation);
-  l1tkemUnpack::readele(datalow, datahigh, charge, z0);
-  outBuffer.emplace_back(pt, eta, phi, quality, isolation, charge, z0);
+  l1tkemUnpack::readele(datalow, datahigh, charge, z0, idScore);
+  outBuffer.emplace_back(pt, eta, phi, quality, isolation, charge, z0, idScore);
 }
 
 void ScPhase2TkEmRawToDigi::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {

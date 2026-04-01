@@ -10,7 +10,9 @@
 // 43-30 eta
 // 47-44 quality
 // 58-48 isolation
-// 95-59 unassigned
+// 59 charge (for electrons, 1 is negative)
+// 69-60 z0 (for electrons, LSB is 0.05cm)
+// 77-70 idScore (for electrons, GT encoding, LSB is 1/128)
 
 namespace l1tkemUnpack {
   inline void readshared(const uint64_t datalow,
@@ -51,18 +53,22 @@ namespace l1tkemUnpack {
     int isolationint = ((datalow >> 58) & 1) ? ((datalow >> 48) | (-0x400)) : ((datalow >> 48) & (0x7FF));
     isolation = isolationint * 0.25f;
   }
-  inline void readele(const uint64_t datalow, const uint32_t datahigh, int8_t &charge,
-                      int16_t &z0) {  //int
+  inline void readele(
+      const uint64_t datalow, const uint32_t datahigh, int8_t &charge, int16_t &z0, uint8_t &idScore) {  //int
     charge = (datalow & (1llu << 59)) ? -1 : +1;
 
-    uint16_t z0raw = ((datahigh & 0x20) << 4) | (datalow >> 60);    // 6 bits from high, 4 from low
+    uint16_t z0raw = ((datahigh & 0x3f) << 4) | (datalow >> 60);    // 6 bits from high, 4 from low
     z0 = (z0raw & 0x200) ? (z0raw | (-0x200)) : (z0raw & (0x3FF));  // 10 bits
+
+    idScore = (datahigh >> 6) & 0xff;  // 8 bits, unsigned
   }
-  inline void readele(const uint64_t datalow, const uint32_t datahigh, int8_t &charge,
-                      float &z0) {  //float
+  inline void readele(
+      const uint64_t datalow, const uint32_t datahigh, int8_t &charge, float &z0, float &idScore) {  //float
     int16_t z0int;
-    readele(datalow, datahigh, charge, z0int);
+    uint8_t idScoreInt;
+    readele(datalow, datahigh, charge, z0int, idScoreInt);
     z0 = z0int * 0.05f;
+    idScore = idScoreInt * float(1 / 128.f);
   }
 }  // namespace l1tkemUnpack
 

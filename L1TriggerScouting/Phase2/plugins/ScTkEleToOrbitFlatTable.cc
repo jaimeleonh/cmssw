@@ -54,7 +54,8 @@ void ScTkEleToOrbitFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm::Ev
   iEvent.getByToken(src_, src);
   auto out = std::make_unique<l1ScoutingRun3::OrbitFlatTable>(src->bxOffsets(), name_);
   out->setDoc(doc_);
-  std::vector<float> pt(out->size()), eta(out->size()), phi(out->size()), isolation(out->size()), z0(out->size());
+  std::vector<float> pt(out->size()), eta(out->size()), phi(out->size()), isolation(out->size()), z0(out->size()),
+      idScore(out->size());
   std::vector<uint8_t> quality(out->size());
   std::vector<int16_t> charge(out->size());
   unsigned int i = 0;
@@ -66,6 +67,7 @@ void ScTkEleToOrbitFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm::Ev
     isolation[i] = tkem.isolation();
     charge[i] = tkem.charge();
     z0[i] = tkem.z0();
+    idScore[i] = tkem.idScore();
     ++i;
   }
   out->addColumn<float>("pt", pt, "pt (GeV)");
@@ -75,6 +77,7 @@ void ScTkEleToOrbitFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm::Ev
   out->addColumn<float>("isolation", isolation, "isolation (natural units)");
   out->addColumn<int16_t>("charge", charge, "charge");
   out->addColumn<float>("z0", z0, "z0 (cm)");
+  out->addColumn<float>("idScore", idScore, "idScore [0.0, 1.0]");
   iEvent.put(std::move(out));
 }
 

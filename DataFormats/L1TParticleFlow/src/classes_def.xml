@@ -77,7 +77,7 @@
   <class name="edm::Wrapper<OrbitCollection<l1Scouting::TkEm>>" />
 
   <class name="l1Scouting::TkEle"  ClassVersion="3">
-	    <version ClassVersion="3" checksum="407081992"/>
+	    <version ClassVersion="3" checksum="3461118136"/>
   </class>
   <class name="std::vector<l1Scouting::TkEle>" />
   <class name="OrbitCollection<l1Scouting::TkEle>" />
