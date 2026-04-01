@@ -8,7 +8,6 @@ if options.buNumStreams == []:
     options.buNumStreams.append(3)
 analyses = options.analyses if options.analyses else [
     "w3pi", "wdsg", "wpig", 
-    "hrhog", "hphig", "hjpsig", "hphijpsi", "h2rho", "h2phi", 
     "z2phiRecMeson", "z2rhoRecMeson",
     "h2phiRecMeson", "h2rhoRecMeson", "hphijpsiRecMeson",
     "hphigammaRecMeson", "hrhogammaRecMeson", "hjpsigammaRecMeson",
