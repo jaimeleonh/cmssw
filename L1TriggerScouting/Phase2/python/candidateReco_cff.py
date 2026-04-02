@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 recIsoTkEmStruct = cms.EDProducer("ScPhase2RecIsoTkEm",
     src = cms.InputTag("scPhase2PuppiRawToDigiStruct"),
     srcTkEm = cms.InputTag("scPhase2TkEmRawToDigiStruct"),
-    minPtGamma = cms.double(20),
+    minPt = cms.double(20),
     isolationMinDeltaR = cms.double(0.05),
     isolationMaxDeltaR = cms.double(0.25),
     maxRelIso = cms.double(0.25)

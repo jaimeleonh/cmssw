@@ -150,11 +150,38 @@ w3piStruct = cms.EDProducer("ScPhase2PuppiW3PiDemo",
 wdsgStruct = cms.EDProducer("ScPhase2PuppiWDsGammaDemo",
     srcPuppi = cms.InputTag("scPhase2PuppiRawToDigiStruct"),
     srcTkEm = cms.InputTag("scPhase2TkEmRawToDigiStruct"),
+    ptHad = cms.vdouble(10., 4., 3.),
+    ptTkEm = cms.double(25.),
+    maxDeltaRHad = cms.double(0.15),
+    minMassDs = cms.double(1.2), # tight is 1.75
+    maxMassDs = cms.double(3.0), # tight is 2.3
+    minMass = cms.double(60.),
+    maxMass = cms.double(100.),
+    maxDeltaRDsTkEm = cms.double(3.5),
+    minDeltaPhiDsTkEm = cms.double(2.5),
+    relIsoDs = cms.double(0.5), # tight cut is 0.45
+    relIsoTkEm = cms.double(0.5), # tight cut is 0.25
+    isolationMinDeltaRDs = cms.double(0.00),
+    isolationMaxDeltaRDs = cms.double(0.50),
+    isolationMinDeltaRTkEm = cms.double(0.02),
+    isolationMaxDeltaRTkEm = cms.double(0.50),
 )
+
 
 wpigStruct = cms.EDProducer("ScPhase2PuppiWPiGammaDemo",
     srcPuppi = cms.InputTag("scPhase2PuppiRawToDigiStruct"),
     srcTkEm = cms.InputTag("scPhase2TkEmRawToDigiStruct"),
+    ptPi = cms.double(20), # tight cut is 25
+    ptTkEm = cms.double(20),
+    minMass = cms.double(60.),
+    maxMass = cms.double(100.),
+    minDeltaRPiTkEm = cms.double(0.5),
+    relIsoPi = cms.double(0.50), # tight cut is 0.3
+    relIsoTkEm = cms.double(0.50), # tight cut is 0.3
+    isolationMinDeltaRPi = cms.double(0.00),
+    isolationMaxDeltaRPi = cms.double(0.50),
+    isolationMinDeltaRTkEm = cms.double(0.02),
+    isolationMaxDeltaRTkEm = cms.double(0.50)
 )
 
 hrhogStruct = cms.EDProducer("ScPhase2PuppiHRhoGammaDemo",

@@ -49,7 +49,7 @@ private:
 ScPhase2RecIsoTkEm::ScPhase2RecIsoTkEm(const edm::ParameterSet &iConfig)
     : structToken_(consumes<OrbitCollection<l1Scouting::Puppi>>(iConfig.getParameter<edm::InputTag>("src"))),
       structTkEmToken_(consumes<OrbitCollection<l1Scouting::TkEm>>(iConfig.getParameter<edm::InputTag>("srcTkEm"))),
-      minPtGamma_(iConfig.getParameter<double>("minPtGamma")),
+      minPtGamma_(iConfig.getParameter<double>("minPt")),
       minDeltaR2_(std::pow(iConfig.getParameter<double>("isolationMinDeltaR"), 2)),
       maxDeltaR2_(std::pow(iConfig.getParameter<double>("isolationMaxDeltaR"), 2)),
       maxRelIso_(iConfig.getParameter<double>("maxRelIso")) {
@@ -137,7 +137,7 @@ void ScPhase2RecIsoTkEm::fillDescriptions(edm::ConfigurationDescriptions &descri
   edm::ParameterSetDescription desc;
   desc.add<edm::InputTag>("src");
   desc.add<edm::InputTag>("srcTkEm");
-  desc.add<double>("minPtGamma");
+  desc.add<double>("minPt");
   desc.add<double>("maxRelIso");
   desc.add<double>("isolationMinDeltaR");
   desc.add<double>("isolationMaxDeltaR");

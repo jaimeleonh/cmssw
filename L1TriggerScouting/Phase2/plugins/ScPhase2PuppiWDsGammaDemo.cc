@@ -12,6 +12,7 @@
 #include "DataFormats/L1TParticleFlow/interface/L1ScoutingTkEm.h"
 #include "L1TriggerScouting/Utilities/interface/BxOffsetsFiller.h"
 
+#include "DataFormats/Math/interface/deltaR.h"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4D.h>
 #include <Math/GenVector/LorentzVector.h>
@@ -38,7 +39,6 @@ private:
               unsigned long &nPass,
               const std::string &bxLabel);
 
-  bool doStruct_;
   edm::EDGetTokenT<OrbitCollection<l1Scouting::Puppi>> structPuppiToken_;
   edm::EDGetTokenT<OrbitCollection<l1Scouting::TkEm>> structTkEmToken_;
 
@@ -48,7 +48,7 @@ private:
     float minpt3 = 10;
     float minpt4 = 25;
     float maxdeltar2 = 0.15 * 0.15;
-    float mindeltarDsGamma2 = 3.5 * 3.5;
+    float maxdeltarDsGamma2 = 3.5 * 3.5;
     float mindeltaphiDsGamma = 2.5;
     float minmass = 60;
     float maxmass = 100;
@@ -67,48 +67,42 @@ private:
       unsigned int pidex1, unsigned int pidex2, unsigned int pidex3, const T *cands, unsigned int size) const;
 
   template <typename T>
-  bool isolationDs(unsigned int pidex1,
-                   unsigned int pidex2,
-                   unsigned int pidex3,
-                   const T *cands,
-                   unsigned int size,
-                   unsigned int &cache) const {
-    if (cache == 0)
-      cache = isolationDs(pidex1, pidex2, pidex3, cands, size) ? 1 : 2;
-    return (cache == 1);
-  }
-
-  template <typename T>
   bool isolationTkEm(float pt, float eta, float phi, const T *cands, unsigned int size) const;
-
-  template <typename T>
-  bool isolationTkEm(float pt, float eta, float phi, const T *cands, unsigned int size, unsigned int &cache) const {
-    if (cache == 0)
-      cache = isolationTkEm(pt, eta, phi, cands, size) ? 1 : 2;
-    return (cache == 1);
-  }
 
   bool deltar(float eta1, float eta2, float phi1, float phi2) const;
   bool deltarmin(float eta1, float eta2, float phi1, float phi2) const;
   bool deltaphi(float phi1, float phi2) const;
-  static float tripletmass(const std::array<unsigned int, 3> &t, const float *pts, const float *etas, const float *phis);
-  static float quadrupletmass(const std::array<unsigned int, 4> &t,
-                              const float *pts,
-                              const float *etas,
-                              const float *phis);
 
   unsigned long countStruct_;
   unsigned long passStruct_;
 };
 
 ScPhase2PuppiWDsGammaDemo::ScPhase2PuppiWDsGammaDemo(const edm::ParameterSet &iConfig)
-    : doStruct_(iConfig.getParameter<bool>("runStruct")) {
-  if (doStruct_) {
-    structPuppiToken_ = consumes<OrbitCollection<l1Scouting::Puppi>>(iConfig.getParameter<edm::InputTag>("srcPuppi"));
-    structTkEmToken_ = consumes<OrbitCollection<l1Scouting::TkEm>>(iConfig.getParameter<edm::InputTag>("srcTkEm"));
-    produces<std::vector<unsigned>>("selectedBx");
-    produces<l1ScoutingRun3::OrbitFlatTable>("wdsgamma");
+    : structPuppiToken_(consumes<OrbitCollection<l1Scouting::Puppi>>(iConfig.getParameter<edm::InputTag>("srcPuppi"))),
+      structTkEmToken_(consumes<OrbitCollection<l1Scouting::TkEm>>(iConfig.getParameter<edm::InputTag>("srcTkEm"))) {
+  produces<std::vector<unsigned>>("selectedBx");
+  produces<l1ScoutingRun3::OrbitFlatTable>("wdsgamma");
+  auto ptPis = iConfig.getParameter<std::vector<double>>("ptHad");
+  if (ptPis.size() != 3 || ptPis[1] > ptPis[0] || ptPis[2] > ptPis[1]) {
+    throw cms::Exception("InvalidConfiguration") << "ptPi must have exactly 3 elements, in descending order";
   }
+  cuts.minpt1 = ptPis[2];
+  cuts.minpt2 = ptPis[1];
+  cuts.minpt3 = ptPis[0];
+  cuts.minpt4 = iConfig.getParameter<double>("ptTkEm");
+  cuts.maxdeltar2 = std::pow(iConfig.getParameter<double>("maxDeltaRHad"), 2);
+  cuts.maxdeltarDsGamma2 = std::pow(iConfig.getParameter<double>("maxDeltaRDsTkEm"), 2);
+  cuts.mindeltaphiDsGamma = iConfig.getParameter<double>("minDeltaPhiDsTkEm");
+  cuts.minmass = iConfig.getParameter<double>("minMass");
+  cuts.maxmass = iConfig.getParameter<double>("maxMass");
+  cuts.minmass3 = iConfig.getParameter<double>("minMassDs");
+  cuts.maxmass3 = iConfig.getParameter<double>("maxMassDs");
+  cuts.maxiso = iConfig.getParameter<double>("relIsoDs");
+  cuts.maxisotkem = iConfig.getParameter<double>("relIsoTkEm");
+  cuts.mindr2 = std::pow(iConfig.getParameter<double>("isolationMinDeltaRDs"), 2);
+  cuts.maxdr2 = std::pow(iConfig.getParameter<double>("isolationMaxDeltaRDs"), 2);
+  cuts.mindr2tkem = std::pow(iConfig.getParameter<double>("isolationMinDeltaRTkEm"), 2);
+  cuts.maxdr2tkem = std::pow(iConfig.getParameter<double>("isolationMaxDeltaRTkEm"), 2);
 }
 
 ScPhase2PuppiWDsGammaDemo::~ScPhase2PuppiWDsGammaDemo() {};
@@ -119,21 +113,18 @@ void ScPhase2PuppiWDsGammaDemo::beginStream(edm::StreamID) {
 }
 
 void ScPhase2PuppiWDsGammaDemo::produce(edm::Event &iEvent, const edm::EventSetup &iSetup) {
-  if (doStruct_) {
-    edm::Handle<OrbitCollection<l1Scouting::Puppi>> srcPuppi;
-    iEvent.getByToken(structPuppiToken_, srcPuppi);
+  edm::Handle<OrbitCollection<l1Scouting::Puppi>> srcPuppi;
+  iEvent.getByToken(structPuppiToken_, srcPuppi);
 
-    edm::Handle<OrbitCollection<l1Scouting::TkEm>> srcTkEm;
-    iEvent.getByToken(structTkEmToken_, srcTkEm);
+  edm::Handle<OrbitCollection<l1Scouting::TkEm>> srcTkEm;
+  iEvent.getByToken(structTkEmToken_, srcTkEm);
 
-    runObj(*srcPuppi, *srcTkEm, iEvent, countStruct_, passStruct_, "");
-  }
+  runObj(*srcPuppi, *srcTkEm, iEvent, countStruct_, passStruct_, "");
 }
 
 void ScPhase2PuppiWDsGammaDemo::endStream() {
-  if (doStruct_)
-    edm::LogImportant("ScPhase2AnalysisSummary")
-        << "WDsGammma Struct analysis: " << countStruct_ << " -> " << passStruct_;
+  edm::LogImportant("ScPhase2AnalysisSummary")
+      << "WDsGammma Struct analysis: " << countStruct_ << " -> " << passStruct_;
 }
 
 template <typename T, typename U>
@@ -150,19 +141,17 @@ void ScPhase2PuppiWDsGammaDemo::runObj(const OrbitCollection<T> &srcPuppi,
   std::vector<uint8_t> i0s, i1s, i2s, i3s;  //i3s is the photon
   ROOT::RVec<unsigned int> ix;              // pions, kaons
   ROOT::RVec<unsigned int> ig;              // photons
-  ROOT::RVec<unsigned int>
-      iso;  //stores whether the Ds or photon passes isolation test so we don't calculate reliso twice
-  std::array<unsigned int, 4> bestQuadruplet;
+  std::array<unsigned int, 4> bestQuadruplet{{0, 0, 0, 0}};
   float bestQuadrupletScore, bestQuadrupletMass;
   for (unsigned int bx = 1; bx <= OrbitCollection<T>::NBX; ++bx) {
     nTry++;
     auto range = srcPuppi.bxIterator(bx);
-    const T *cands = &range.front();
     auto size = range.size();
+    const T *cands = (size > 0) ? &range.front() : nullptr;
 
     auto range2 = srcTkEm.bxIterator(bx);
-    const U *cands2 = &range2.front();
     auto size2 = range2.size();
+    const U *cands2 = (size2 > 0) ? &range2.front() : nullptr;
 
     ix.clear();
     int intermediatecut = 0;
@@ -183,24 +172,23 @@ void ScPhase2PuppiWDsGammaDemo::runObj(const OrbitCollection<T> &srcPuppi,
       continue;
 
     ig.clear();
-    for (unsigned int i = 0; i < size2; ++i) {  //make list of all hadrons
+    for (unsigned int i = 0; i < size2; ++i) {  //make list of isolated photons
       if (cands2[i].pt() >= cuts.minpt4) {
-        ig.push_back(i);
+        if (isolationTkEm(cands2[i].pt(), cands2[i].eta(), cands2[i].phi(), cands, size)) {
+          ig.push_back(i);
+        }
       }
     }
+
     unsigned int ngammas = ig.size();
     if (ngammas < 1)
       continue;
 
-    iso.resize(2);  // gamma and Ds isolations
-    std::fill(iso.begin(), iso.end(), 0);
     bestQuadrupletScore = 0;
 
     for (unsigned int i1 = 0; i1 < npions; ++i1) {
       if (cands[ix[i1]].pt() < cuts.minpt3)
         continue;  //high pt cut
-      //if (isolation(ix[i1], cands, size, iso[i1]) == 0)
-      //  continue;  //check iso of high pt pion
       for (unsigned int i2 = 0; i2 < npions; ++i2) {
         if (i2 == i1 || cands[ix[i2]].pt() < cuts.minpt2)
           continue;
@@ -211,51 +199,44 @@ void ScPhase2PuppiWDsGammaDemo::runObj(const OrbitCollection<T> &srcPuppi,
         for (unsigned int i3 = 0; i3 < npions; ++i3) {
           if (i3 == i1 or i3 == i2)
             continue;
-          if (cands[ix[i2]].pt() < cuts.minpt1)
-            continue;  //low pt cut
           if (cands[ix[i3]].pt() > cands[ix[i1]].pt() || (cands[ix[i3]].pt() == cands[ix[i1]].pt() and i3 < i1))
             continue;
           if (cands[ix[i3]].pt() > cands[ix[i2]].pt() || (cands[ix[i3]].pt() == cands[ix[i2]].pt() and i3 < i2))
             continue;
 
-          if (!isolationDs(ix[i1], ix[i2], ix[i3], cands, size, iso[0]))
-            continue;
+          if (!deltar(cands[ix[i1]].eta(), cands[ix[i3]].eta(), cands[ix[i1]].phi(), cands[ix[i3]].phi()) ||
+              !deltar(cands[ix[i2]].eta(), cands[ix[i3]].eta(), cands[ix[i2]].phi(), cands[ix[i3]].phi()))
+            continue;  //angular sep of 3rd track from the other two
 
-          auto mass3 = (cands[ix[i1]].p4() + cands[ix[i2]].p4() + cands[ix[i3]].p4())
-                           .mass();  //FIXME switch to tripletmass function
-          if (mass3 >= cuts.minmass3 and mass3 <= cuts.maxmass3)
+          if (std::abs(cands[ix[i1]].charge() + cands[ix[i2]].charge() + cands[ix[i3]].charge()) != 1)
+            continue;  //Ds charge requirement
+
+          auto dsP4 = cands[ix[i1]].p4() + cands[ix[i2]].p4() + cands[ix[i3]].p4();
+          auto mass3 = dsP4.mass();
+          if (!(cuts.minmass3 <= mass3 && mass3 <= cuts.maxmass3))
+            continue;  // Ds mass cut
+
+          if (!isolationDs(ix[i1], ix[i2], ix[i3], cands, size))
             continue;
 
           for (unsigned int i4 = 0; i4 < ngammas; ++i4) {
-            if (cands2[ig[i4]].pt() < cuts.minpt4)
-              continue;  //photon pt cut
-
-            std::array<unsigned int, 4> tr{{ix[i1], ix[i2], ix[i3], ig[i4]}};  //quadruplet of indices
-
-            if (std::abs(cands[ix[i1]].charge() + cands[ix[i2]].charge() + cands[ix[i3]].charge()) == 1) {
-              //make Lorentz vectors for each quadruplet
-              auto mass = (cands[ix[i1]].p4() + cands[ix[i2]].p4() + cands[ix[i3]].p4() + cands2[ig[i4]].p4()).mass();
-              if (mass >= cuts.minmass and mass <= cuts.maxmass) {  //MASS test
-                if (deltar(cands[ix[i1]].eta(), cands[ix[i3]].eta(), cands[ix[i1]].phi(), cands[ix[i3]].phi()) and
-                    deltar(cands[ix[i2]].eta(), cands[ix[i3]].eta(), cands[ix[i2]].phi(), cands[ix[i3]].phi())) {
-                  //ISOLATION test for photon
-                  bool isop = isolationTkEm(
-                      cands2[ig[i4]].pt(), cands2[ig[i4]].eta(), cands2[ig[i4]].phi(), cands, size, iso[1]);
-                  bool pass_deltaphi = deltaphi(cands[ix[i1]].phi(), cands2[ig[i4]].phi());
-                  bool pass_deltar =
-                      deltarmin(cands[ix[i1]].eta(), cands2[ig[i4]].eta(), cands[ix[i1]].phi(), cands2[ig[i4]].phi());
-                  if (isop == true and pass_deltaphi == true and pass_deltar == true) {
-                    float ptsum = cands[ix[i1]].pt() + cands[ix[i2]].pt() + cands[ix[i3]].pt() + cands2[ig[i4]].pt();
-                    if (ptsum > bestQuadrupletScore) {
-                      std::copy_n(tr.begin(), 4, bestQuadruplet.begin());
-                      bestQuadrupletScore = ptsum;
-                      bestQuadrupletMass = mass;
-                    }
-                  }  // iso
-                }  // delta R
-              }  // mass
-            }  //charge
-          }  // photon pt cut
+            auto mass = (dsP4 + cands2[ig[i4]].p4()).mass();
+            if (mass >= cuts.minmass and mass <= cuts.maxmass) {  //MASS test
+              bool pass_deltaphi = deltaphi(dsP4.phi(), cands2[ig[i4]].phi());
+              bool pass_deltar = deltarmin(dsP4.eta(), cands2[ig[i4]].eta(), dsP4.phi(), cands2[ig[i4]].phi());
+              if (pass_deltaphi && pass_deltar) {
+                float ptsum = cands[ix[i1]].pt() + cands[ix[i2]].pt() + cands[ix[i3]].pt() + cands2[ig[i4]].pt();
+                if (ptsum > bestQuadrupletScore) {
+                  bestQuadruplet[0] = ix[i1];
+                  bestQuadruplet[1] = ix[i2];
+                  bestQuadruplet[2] = ix[i3];
+                  bestQuadruplet[3] = ig[i4];
+                  bestQuadrupletScore = ptsum;
+                  bestQuadrupletMass = mass;
+                }  // best
+              }  // delta R
+            }  // mass
+          }  // photon loop
         }  //low pt cut
       }  //intermediate pt cut
     }  //high pt cut
@@ -276,7 +257,7 @@ void ScPhase2PuppiWDsGammaDemo::runObj(const OrbitCollection<T> &srcPuppi,
   // now we make the table
   auto bxOffsets = bxOffsetsFiller.done();
   auto tab = std::make_unique<l1ScoutingRun3::OrbitFlatTable>(bxOffsets, "WDsGamma" + label, true);
-  tab->addColumn<float>("mass", masses, "3-pion invariant mass");
+  tab->addColumn<float>("mass", masses, "W invariant mass");
   tab->addColumn<uint8_t>("i0", i0s, "leading pion");
   tab->addColumn<uint8_t>("i1", i1s, "subleading pion");
   tab->addColumn<uint8_t>("i2", i2s, "trailing pion");
@@ -288,100 +269,63 @@ void ScPhase2PuppiWDsGammaDemo::runObj(const OrbitCollection<T> &srcPuppi,
 template <typename T>
 bool ScPhase2PuppiWDsGammaDemo::isolationDs(
     unsigned int pidex1, unsigned int pidex2, unsigned int pidex3, const T *cands, unsigned int size) const {
-  bool passed = false;
   float psum = 0;
   float eta = cands[pidex1].eta();  //center cone around leading track
   float phi = cands[pidex1].phi();
   for (unsigned int j = 0u; j < size; ++j) {  //loop over other particles
     if (pidex1 == j or pidex2 == j or pidex3 == j)
       continue;
-    float deta = eta - cands[j].eta(), dphi = ROOT::VecOps::DeltaPhi<float>(phi, cands[j].phi());
-    float dr2 = deta * deta + dphi * dphi;
+    float dr2 = reco::deltaR2(eta, phi, cands[j].eta(), cands[j].phi());
     if (dr2 >= cuts.mindr2 && dr2 <= cuts.maxdr2)
       psum += cands[j].pt();
   }
-  if (psum <= cuts.maxiso * (cands[pidex1].pt() + cands[pidex2].pt() + cands[pidex3].pt()))
-    passed = true;
-  return passed;
+  return (psum <= cuts.maxiso * (cands[pidex1].pt() + cands[pidex2].pt() + cands[pidex3].pt()));
 }
 
 template <typename T>
 bool ScPhase2PuppiWDsGammaDemo::isolationTkEm(float pt, float eta, float phi, const T *cands, unsigned int size) const {
-  bool passed = false;
   float psum = 0;
   for (unsigned int j = 0u; j < size; ++j) {  //loop over other particles
-    float deta = eta - cands[j].eta(), dphi = ROOT::VecOps::DeltaPhi<float>(phi, cands[j].phi());
-    float dr2 = deta * deta + dphi * dphi;
+    float dr2 = reco::deltaR2(eta, phi, cands[j].eta(), cands[j].phi());
     if (dr2 >= cuts.mindr2tkem && dr2 <= cuts.maxdr2tkem)
       psum += cands[j].pt();
   }
-  if (psum <= cuts.maxisotkem * pt)
-    passed = true;
-  return passed;
+  return (psum <= cuts.maxisotkem * pt);
 }
 
 bool ScPhase2PuppiWDsGammaDemo::deltar(float eta1, float eta2, float phi1, float phi2) const {
-  bool passed = true;
-  float deta = eta1 - eta2;
-  float dphi = ROOT::VecOps::DeltaPhi<float>(phi1, phi2);
-  float dr2 = deta * deta + dphi * dphi;
-  if (dr2 > cuts.maxdeltar2) {
-    passed = false;
-    return passed;
-  }
-  return passed;
+  float dr2 = reco::deltaR2(eta1, phi1, eta2, phi2);
+  return (dr2 < cuts.maxdeltar2);
 }
 
 bool ScPhase2PuppiWDsGammaDemo::deltarmin(float eta1, float eta2, float phi1, float phi2) const {
-  bool passed = true;
-  float deta = eta1 - eta2;
-  float dphi = ROOT::VecOps::DeltaPhi<float>(phi1, phi2);
-  float dr2 = deta * deta + dphi * dphi;
-  if (dr2 < cuts.mindeltarDsGamma2) {
-    passed = false;
-    return passed;
-  }
-  return passed;
+  float dr2 = reco::deltaR2(eta1, phi1, eta2, phi2);
+  return (dr2 < cuts.maxdeltarDsGamma2);
 }
 
 bool ScPhase2PuppiWDsGammaDemo::deltaphi(float phi1, float phi2) const {
-  bool passed = true;
-  float dphi = ROOT::VecOps::DeltaPhi<float>(phi1, phi2);
-  if (fabs(dphi) < cuts.mindeltaphiDsGamma) {
-    passed = false;
-    return passed;
-  }
-  return passed;
-}
-
-float ScPhase2PuppiWDsGammaDemo::tripletmass(const std::array<unsigned int, 3> &t,
-                                             const float *pts,
-                                             const float *etas,
-                                             const float *phis) {
-  ROOT::Math::PtEtaPhiMVector p1(pts[t[0]], etas[t[0]], phis[t[0]], 0.1396);
-  ROOT::Math::PtEtaPhiMVector p2(pts[t[1]], etas[t[1]], phis[t[1]], 0.1396);
-  ROOT::Math::PtEtaPhiMVector p3(pts[t[2]], etas[t[2]], phis[t[2]], 0.1396);
-  float mass = (p1 + p2 + p3).M();
-  return mass;
-}
-
-float ScPhase2PuppiWDsGammaDemo::quadrupletmass(const std::array<unsigned int, 4> &t,
-                                                const float *pts,
-                                                const float *etas,
-                                                const float *phis) {
-  ROOT::Math::PtEtaPhiMVector p1(pts[t[0]], etas[t[0]], phis[t[0]], 0.1396);
-  ROOT::Math::PtEtaPhiMVector p2(pts[t[1]], etas[t[1]], phis[t[1]], 0.1396);
-  ROOT::Math::PtEtaPhiMVector p3(pts[t[2]], etas[t[2]], phis[t[2]], 0.1396);
-  ROOT::Math::PtEtaPhiMVector p4(pts[t[3]], etas[t[3]], phis[t[3]], 0.0000);
-  float mass = (p1 + p2 + p3 + p4).M();
-  return mass;
+  return std::abs(reco::deltaPhi(phi1, phi2)) >= cuts.mindeltaphiDsGamma;
 }
 
 void ScPhase2PuppiWDsGammaDemo::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
   edm::ParameterSetDescription desc;
   desc.add<edm::InputTag>("srcPuppi");
   desc.add<edm::InputTag>("srcTkEm");
-  desc.add<bool>("runStruct", true);
+  desc.add<std::vector<double>>("ptHad", {10., 5., 3.});
+  desc.add<double>("ptTkEm", 20.);
+  desc.add<double>("minMassDs", 1.75);
+  desc.add<double>("maxMassDs", 2.30);
+  desc.add<double>("minMass", 60.);
+  desc.add<double>("maxMass", 100.);
+  desc.add<double>("maxDeltaRHad", 0.15);
+  desc.add<double>("maxDeltaRDsTkEm", 3.5);
+  desc.add<double>("minDeltaPhiDsTkEm", 2.5);
+  desc.add<double>("relIsoDs", 0.45);
+  desc.add<double>("relIsoTkEm", 0.25);
+  desc.add<double>("isolationMinDeltaRDs", 0.00);
+  desc.add<double>("isolationMaxDeltaRDs", 0.50);
+  desc.add<double>("isolationMinDeltaRTkEm", 0.02);
+  desc.add<double>("isolationMaxDeltaRTkEm", 0.50);
   descriptions.addDefault(desc);
 }
 

@@ -12,6 +12,7 @@
 #include "DataFormats/L1TParticleFlow/interface/L1ScoutingPuppi.h"
 #include "L1TriggerScouting/Utilities/interface/BxOffsetsFiller.h"
 
+#include "DataFormats/Math/interface/deltaR.h"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4D.h>
 #include <Math/GenVector/LorentzVector.h>
@@ -126,7 +127,7 @@ void ScPhase2PuppiW3PiDemo::runObj(const OrbitCollection<T> &src,
   std::vector<uint8_t> i0s, i1s, i2s;
   ROOT::RVec<unsigned int> ix;   // pions
   ROOT::RVec<unsigned int> iso;  //stores whether a particle passes isolation test so we don't calculate reliso twice
-  std::array<unsigned int, 3> bestTriplet;  // best triplet
+  std::array<unsigned int, 3> bestTriplet{{0, 0, 0}};  // best triplet
   float bestTripletScore, bestTripletMass;
   for (unsigned int bx = 1; bx <= OrbitCollection<T>::NBX; ++bx) {
     nTry++;
@@ -226,32 +227,21 @@ void ScPhase2PuppiW3PiDemo::runObj(const OrbitCollection<T> &src,
 //TEST functions
 template <typename T>
 bool ScPhase2PuppiW3PiDemo::isolation(unsigned int pidex, const T *cands, unsigned int size) const {
-  bool passed = false;
   float psum = 0;
   float eta = cands[pidex].eta();
   float phi = cands[pidex].phi();
   for (unsigned int j = 0u; j < size; ++j) {  //loop over other particles
     if (pidex == j)
       continue;
-    float deta = eta - cands[j].eta(), dphi = ROOT::VecOps::DeltaPhi<float>(phi, cands[j].phi());
-    float dr2 = deta * deta + dphi * dphi;
+    float dr2 = reco::deltaR2(eta, phi, cands[j].eta(), cands[j].phi());
     if (dr2 >= cuts.mindr2 && dr2 <= cuts.maxdr2)
       psum += cands[j].pt();
   }
-  if (psum <= cuts.maxiso * cands[pidex].pt())
-    passed = true;
-  return passed;
+  return (psum <= cuts.maxiso * cands[pidex].pt());
 }
 bool ScPhase2PuppiW3PiDemo::deltar(float eta1, float eta2, float phi1, float phi2) const {
-  bool passed = true;
-  float deta = eta1 - eta2;
-  float dphi = ROOT::VecOps::DeltaPhi<float>(phi1, phi2);
-  float dr2 = deta * deta + dphi * dphi;
-  if (dr2 < cuts.mindeltar2) {
-    passed = false;
-    return passed;
-  }
-  return passed;
+  float dr2 = reco::deltaR2(eta1, phi1, eta2, phi2);
+  return (dr2 >= cuts.mindeltar2);
 }
 
 void ScPhase2PuppiW3PiDemo::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
