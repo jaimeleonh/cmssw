@@ -62,6 +62,8 @@ private:
   // If the decay is to Q+Q, the meson candidate collections 1 & 2 will be the same
   // If the deacy is to Q_1+Q_2, then no
   bool sameMesonCollection_;
+  // If the two mesons are built from the same collection, we need to make sure to not use the same daughter candidates for both mesons
+  bool sameDaughersCollection_;
 };
 
 ScPhase2BosonTo2RecMeson::ScPhase2BosonTo2RecMeson(const edm::ParameterSet &iConfig)
@@ -74,6 +76,7 @@ ScPhase2BosonTo2RecMeson::ScPhase2BosonTo2RecMeson(const edm::ParameterSet &iCon
   structToken2_ = consumes<OrbitCollection<l1Scouting::RecMeson<2>>>(iConfig.getParameter<edm::InputTag>("srcMeson2"));
   sameMesonCollection_ =
       (iConfig.getParameter<edm::InputTag>("srcMeson1") == iConfig.getParameter<edm::InputTag>("srcMeson2"));
+  sameDaughersCollection_ = sameMesonCollection_ || iConfig.getParameter<bool>("sameDaughersCollection");
   produces<std::vector<unsigned>>("selectedBx");
   produces<l1ScoutingRun3::OrbitFlatTable>(analysisName_);
 }
@@ -142,12 +145,14 @@ void ScPhase2BosonTo2RecMeson::runObj(const OrbitCollection<T> &srcMeson1,
           continue;
 
         // Four different dauther particles
-        if ((candsMeson1[i1].daughterIds(0) == candsMeson2[i2].daughterIds(0)) ||
-            (candsMeson1[i1].daughterIds(0) == candsMeson2[i2].daughterIds(1)))
-          continue;
-        if ((candsMeson1[i1].daughterIds(1) == candsMeson2[i2].daughterIds(0)) ||
-            (candsMeson1[i1].daughterIds(1) == candsMeson2[i2].daughterIds(1)))
-          continue;
+        if (sameDaughersCollection_) {
+          if ((candsMeson1[i1].daughterIds(0) == candsMeson2[i2].daughterIds(0)) ||
+              (candsMeson1[i1].daughterIds(0) == candsMeson2[i2].daughterIds(1)))
+            continue;
+          if ((candsMeson1[i1].daughterIds(1) == candsMeson2[i2].daughterIds(0)) ||
+              (candsMeson1[i1].daughterIds(1) == candsMeson2[i2].daughterIds(1)))
+            continue;
+        }
 
         // Choose best pair of mesons based on score (e.g. max pt)
         float ptsum = candsMeson1[i1].pt() + candsMeson2[i2].pt();
@@ -208,7 +213,7 @@ void ScPhase2BosonTo2RecMeson::fillDescriptions(edm::ConfigurationDescriptions &
   desc.add<double>("minPtQ");
   desc.add<double>("maxIso");
   desc.add<std::string>("analysisName");
-  desc.add<bool>("runStruct", true);
+  desc.add<bool>("sameDaughersCollection", false);
   descriptions.addDefault(desc);
 }
 

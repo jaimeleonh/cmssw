@@ -7,8 +7,6 @@ options.parseArguments()
 if options.buNumStreams == []:
     options.buNumStreams.append(3)
 fullAnalysesList = ["w3pi", "wdsg", "wpig", "zdee",
-                    "z2phiRecMeson", "z2rhoRecMeson",
-                    "z2phiTTrackRecMeson", "z2rhoTTrackRecMeson",
                     "h2phiRecMeson", "h2rhoRecMeson", "hphijpsiRecMeson",
                     "h2phiTTrackRecMeson", "h2rhoTTrackRecMeson", "hphijpsiTTrackRecMeson",
                     "hphigammaRecMeson", "hrhogammaRecMeson", "hjpsigammaRecMeson",

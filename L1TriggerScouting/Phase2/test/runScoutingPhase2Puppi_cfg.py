@@ -8,7 +8,6 @@ if options.buNumStreams == []:
     options.buNumStreams.append(1)
 analyses = options.analyses if options.analyses else [
     "w3pi", 
-    "z2phiRecMeson", "z2rhoRecMeson",
     "h2phiRecMeson", "h2rhoRecMeson", "hphijpsiRecMeson"]
 print(f"Analyses set to {analyses}")
 
