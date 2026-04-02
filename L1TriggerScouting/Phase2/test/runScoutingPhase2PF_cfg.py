@@ -78,8 +78,7 @@ process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.una
 fuDir = options.fuBaseDir+("/run%06d" % options.runNumber)
 buDirs = [b+("/run%06d" % options.runNumber) for b in options.buBaseDir]
 for d in [fuDir, options.fuBaseDir] + buDirs + options.buBaseDir:
-  if not os.path.isdir(d):
-    os.makedirs(d)
+    os.makedirs(d, exist_ok=True)
 
 process.source = cms.Source("DAQSource",
     testing = cms.untracked.bool(True),
