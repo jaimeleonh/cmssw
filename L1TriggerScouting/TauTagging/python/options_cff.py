@@ -1,4 +1,36 @@
 import argparse
+from enum import IntEnum
+
+class Step(IntEnum):
+    UNPACKING = 1
+    CLUSTERING = 2
+    SORTING = 3
+    RESHAPING = 4
+    TAGGING = 5
+
+def parse_step(value: str) -> Step:
+try:
+    return Step[value.upper()]
+except KeyError:
+    valid = ", ".join(s.name.lower() for s in Step)
+    raise argparse.ArgumentTypeError(
+        f"Invalid step '{value}'. Valid choices: {valid}"
+    )
+
+class Dump(IntEnum):
+    NONE = 0
+    CANDIDATES = 1
+    CLUSTERS = 2
+    LOGITS = 3
+
+def parse_dump(value: str) -> Step:
+try:
+    return Dump[value.upper()]
+except KeyError:
+    valid = ", ".join(s.name.lower() for s in Dump)
+    raise argparse.ArgumentTypeError(
+        f"Invalid dump '{value}'. Valid choices: {valid}"
+    )
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -25,11 +57,18 @@ def parse_args():
     
     # pipeline 
     parser.add_argument(
-        "-o", "--only",
-        nargs="+",
-        default=["tagging"],
-        choices=["unpacking", "clustering", "tagging"],
-        help="Run only the specified pipeline stages"
+        "--step",
+        type=parse_step,
+        default=Step.TAGGING,
+        help="Run only the specified pipeline stages: unpacking, clustering, sorting, reshaping, tagging"
+    )
+
+    # dump
+    parser.add_argument(
+        "-d", "--dump",
+        type=parse_dump,
+        default=Step.NONE,
+        help="Select which artifacts to dump on NanoAOD file: none, candidates, clusters, logits"
     )
 
     # Backend and environment
@@ -40,6 +79,7 @@ def parse_args():
         choices=["serial_sync", "cuda_async", "rocm_async"],
         help="Hardware accelerator backend"
     )
+<<<<<<< HEAD
     parser.add_argument(
         "-e", "--environment",
         type=int,
@@ -47,6 +87,9 @@ def parse_args():
         choices=[0, 1, 2],
         help="0 - production, 1 - development, 2 - test"
     )
+=======
+
+>>>>>>> b80229cb280 (WIP Rebasing on 16_1_0_pre3)
     parser.add_argument(
         "-ws", "--wantSummary",
         action='store_true',

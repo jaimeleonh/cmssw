@@ -17,7 +17,6 @@
 #include "FWCore/MessageLogger/interface/MessageDrop.h"
 
 #include "DataFormats/NanoAOD/interface/FlatTable.h"
-#include "DataFormats/L1ScoutingSoA/interface/BxLookupHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/AssociationMapHost.h"
 
@@ -56,16 +55,13 @@ void ClusterMapperSoAToNanoaodFlatTable::produce(edm::StreamID, edm::Event& iEve
   iEvent.getByToken(srcClusters_, srcClusters);
 
   const auto* cluster = srcClusters->const_view().cluster().data();
-  const auto* seed = srcClusters->const_view().is_seed().data();
   const unsigned int nclusters = srcClusters->const_view().metadata().size();
   std::vector<int32_t> clusters{cluster, cluster + nclusters};
-  std::vector<int32_t> is_seed{seed, seed + nclusters};
 
   auto out = std::make_unique<nanoaod::FlatTable>(clusters.size(), name_, false, true);
   out->setDoc(doc_);
   out->addColumn<int32_t>(
       "clusterIndex" + clustering_name_, clusters, "associated cluster index for " + clustering_name_);
-  out->addColumn<int32_t>("isSeed" + clustering_name_, is_seed, "cluster used as seed for " + clustering_name_);
   iEvent.put(std::move(out));
 }
 

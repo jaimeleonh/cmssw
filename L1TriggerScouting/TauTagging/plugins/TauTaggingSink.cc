@@ -64,11 +64,8 @@ namespace l1sc {
         const auto pf_handle = event.getHandle(pf_token_);
         const auto bx_lookup_handle = event.getHandle(bx_lookup_token_);
         const auto clusters_handle = event.getHandle(clusters_token_);
-<<<<<<< HEAD
-=======
         const auto association_map_handle = event.getHandle(association_map_token_);
         const auto taus_handle = event.getHandle(taus_token_);
->>>>>>> 9d93f69582b (Reorder TensorSoA [cls, vz, pt, charge], add model with wrapped sigmoid on top, refactor preprocessing step with new CLUE features)
 
         if (pf_handle.isValid()) {
           // pf

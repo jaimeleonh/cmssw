@@ -1,32 +1,16 @@
 <lcgdict>
-  <!-- BxLookupHostCollection -->
-  <!-- BxIndexSoA -->
-  <class name="l1sc::BxIndexSoA"/>
-  <class name="l1sc::BxIndexSoA::View"/>
-  <class name="l1sc::BxIndexSoA::ConstView"/>
-  <!-- OffsetsSoA -->
-  <class name="l1sc::OffsetsSoA"/>
-  <class name="l1sc::OffsetsSoA::View"/>
-  <class name="l1sc::OffsetsSoA::ConstView"/>
-  <!-- ROOT R/W recipies -->
-  <class name="portablecollection::CollectionImpl<0,l1sc::BxIndexLayout<128,false>,l1sc::OffsetsLayout<128,false>>"/>
-  <class name="portablecollection::CollectionImpl<1,l1sc::OffsetsLayout<128,false>>"/>
-  <class name="portablecollection::CollectionLeaf<0,l1sc::BxIndexLayout<128,false>>"/>
-  <class name="portablecollection::CollectionLeaf<1,l1sc::OffsetsLayout<128,false>>"/>
-  <!-- PortableMultiCollection -->
-  <class name="l1sc::BxLookupHostCollection"/>
-  <class name="edm::Wrapper<l1sc::BxLookupHostCollection>" splitLevel="0"/>
+  <!-- BxLookupHost -->
+  <!-- BxLookupSoA -->
+  <class name="l1sc::BxLookupSoA"/>
+  <class name="l1sc::BxLookupSoA::View"/>
+  <class name="l1sc::BxLookupSoA::ConstView"/>
+  <!-- PortableCollection -->
+  <class name="l1sc::BxLookupHost"/>
+  <class name="edm::Wrapper<l1sc::BxLookupHost>" splitLevel="0"/>
   <!-- ___________ END ___________ -->
 
   <!-- AssociationMapHost -->
-  <!-- IndexSoA -->
-  <class name="l1sc::IndexSoA"/>
-  <class name="l1sc::IndexSoA::View"/>
-  <class name="l1sc::IndexSoA::ConstView"/>
-  <!-- ROOT R/W recipies -->
-  <class name="portablecollection::CollectionImpl<0,l1sc::IndexLayout<128,false>,l1sc::OffsetsLayout<128,false>>"/>
-  <class name="portablecollection::CollectionLeaf<0,l1sc::IndexLayout<128,false>>"/>
-  <!-- PortableMultiCollection -->
+  <!-- PortableCollection -->
   <class name="l1sc::AssociationMapHost"/>
   <class name="edm::Wrapper<l1sc::AssociationMapHost>" splitLevel="0"/>
   <!-- ___________ END ___________ -->

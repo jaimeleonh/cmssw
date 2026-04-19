@@ -3,16 +3,22 @@
 
 #include <alpaka/alpaka.hpp>
 
+#include <cstdio>
+#include <limits>
+#include <fmt/core.h> 
+
 #include "DataFormats/Portable/interface/PortableHostCollection.h"
 #include "DataFormats/Portable/interface/PortableHostObject.h"
 #include "DataFormats/Portable/interface/alpaka/PortableObject.h"
 #include "DataFormats/Portable/interface/alpaka/PortableCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/SoftTauDeviceTensor.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h"
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PFCandidateDeviceCollection.h"
 #include "HeterogeneousCore/AlpakaInterface/interface/config.h"
+
+// #define __DEBUG__
 
 // These definitions are not stored in DataFormats/L1ScoutingSoA/
 // since are designed to be used as helper types in the kernels
@@ -37,16 +43,26 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   using namespace ::l1sc;
 
-  SoftTauInputDeviceTensor transform(Queue& queue,
-                                     const PFCandidateDeviceCollection& pf,
-                                     const BxLookupDeviceCollection& bx_lookup,
-                                     const ClustersDeviceCollection& clusters);
-  SoftTauInputDeviceTensor transform(Queue& queue,
-                                     const PFCandidateDeviceCollection& pf,
-                                     const ClustersDeviceCollection& clusters);
-  SoftTauInputDeviceTensor transform(Queue& queue,
-                                     const PFCandidateDeviceCollection& pf,
-                                     const AssociationMapDevice& association_map);
+  AssociationMapDevice sortClustersCandsMap(Queue& queue,
+                            const PFCandidateDeviceCollection& pf,
+                            const BxLookupDevice& bxClustersMap,
+                            const AssociationMapDevice& clusterCandsMap, 
+                            const ClustersDeviceCollection& clusters);
+
+  SoftTauInputDeviceTensor transform(Queue& queue, 
+                 const PFCandidateDeviceCollection& pf, 
+                 const AssociationMapDevice& clusterCandsMap);
+
+  SoftTauInputDeviceTensor copyInputChunk(Queue& queue,
+                          const SoftTauInputDeviceTensor& full_input,
+                          uint32_t begin,
+                          uint32_t chunk_size);
+
+  void copyOutputChunk(Queue& queue,
+                       const SoftTauOutputDeviceTensor& batch_output,
+                       SoftTauOutputDeviceTensor& full_output,
+                       uint32_t begin,
+                       uint32_t chunk_size);
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels
 

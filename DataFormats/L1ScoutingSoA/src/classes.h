@@ -3,10 +3,7 @@
 
 #include "DataFormats/Common/interface/Wrapper.h"
 
-#include "DataFormats/L1ScoutingSoA/interface/IndexSoA.h"
-#include "DataFormats/L1ScoutingSoA/interface/BxIndexSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersSoA.h"
-#include "DataFormats/L1ScoutingSoA/interface/OffsetsSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/PuppiSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/VertexSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/TkEmSoA.h"
@@ -15,7 +12,7 @@
 #include "DataFormats/L1ScoutingSoA/interface/W3PiTable.h"
 
 #include "DataFormats/L1ScoutingSoA/interface/AssociationMapHost.h"
-#include "DataFormats/L1ScoutingSoA/interface/BxLookupHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/BxLookupHost.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/PuppiHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/VertexHostCollection.h"

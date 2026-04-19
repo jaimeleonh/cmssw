@@ -1,4 +1,5 @@
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PFCandidateDeviceCollection.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
@@ -19,63 +20,58 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
   public:
     explicit CLUETaus(const edm::ParameterSet &params)
         : EDProducer<>(params),
-          pf_candidates_token_{consumes(params.getParameter<edm::InputTag>("src"))},
-          bx_lookup_token_{consumes(params.getParameter<edm::InputTag>("src"))},
-          cluestering_token_{produces()},
-          association_map_token_{produces()},
+          pf_candidates_token_{consumes(params.getParameter<edm::InputTag>("candidates"))},
+          bx_sizes_token_{consumes(params.getParameter<edm::InputTag>("bxSizes"))},
+          bx_clusters_map_token_{produces("bxClustersMap")},
+          clusters_cands_map_token_{produces("clustersCandsMap")},
+          cluster_indexes_token_{produces("clusterIndexes")},
+          clusters_token_{produces("clusters")},
           clustering_(static_cast<float>(params.getParameter<double>("dc")),
                       static_cast<float>(params.getParameter<double>("rhoc")),
                       static_cast<float>(params.getParameter<double>("dm")),
-                      params.getParameter<bool>("wrapCoords")),
-          environment_{static_cast<Environment>(params.getUntrackedParameter<int>("environment"))},
-          run_scout_{params.getParameter<bool>("run_scout")} {}
+                      params.getParameter<bool>("wrapCoords")) {}
 
     void produce(device::Event &event, const device::EventSetup &event_setup) override {
       // get collection from device memory space (implicit copy done by framework)
       const auto &pf = event.get(pf_candidates_token_);
+      const auto &bx_sizes = event.get(bx_sizes_token_);
       const auto n_points = pf.const_view().metadata().size();
 
-      // allocate buffer
-      auto clusters = ClustersDeviceCollection(n_points, event.queue());
-      // run CLUEstering algo
-      if (run_scout_) {
-        const auto &bx_lookup = event.get(bx_lookup_token_);
-        auto association_map = clustering_.run(event.queue(), pf, bx_lookup, clusters);
-        event.emplace(association_map_token_, std::move(association_map));
-      } else {
-        auto association_map = clustering_.run(event.queue(), pf, clusters);
-        event.emplace(association_map_token_, std::move(association_map));
-      }
+      // allocate buffer for the index of the cluster for each pf candidate
+      auto points_clusters = ClustersDeviceCollection(event.queue(), n_points);
 
-      // move clustering results to event storage
-      event.emplace(cluestering_token_, std::move(clusters));
+      // run CLUEstering algo
+      auto [bx_clusters_map, cluster_indexes, clusters_cands_map] = clustering_.run(event.queue(), pf, bx_sizes, points_clusters);
+
+      // emplace clustering products into the orbit
+      event.emplace(bx_clusters_map_token_, std::move(bx_clusters_map)); // bx -> clusters map
+      event.emplace(clusters_cands_map_token_, std::move(clusters_cands_map)); // clusters -> candidates map
+      event.emplace(cluster_indexes_token_, std::move(cluster_indexes)); // list of (unique) cluster indexes
+      event.emplace(clusters_token_, std::move(points_clusters)); // list of the cluster index each candidate belongs to (-1 if it is outlier)
     }
 
     static void fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
       edm::ParameterSetDescription desc;
-      desc.add<edm::InputTag>("src");
+      desc.add<edm::InputTag>("candidates");
+      desc.add<edm::InputTag>("bxSizes");
       desc.add<double>("dc");
       desc.add<double>("rhoc");
       desc.add<double>("dm");
       desc.add<bool>("wrapCoords");
-      desc.add<bool>("run_scout");
-      desc.addUntracked<int>("environment", static_cast<int>(Environment::kProduction));
       descriptions.addWithDefaultLabel(desc);
     }
 
   private:
     // get device pf data
     const device::EDGetToken<PFCandidateDeviceCollection> pf_candidates_token_;
-    // get association map if runScouting=False
-    const device::EDGetToken<BxLookupDeviceCollection> bx_lookup_token_;
+    const device::EDGetToken<BxLookupDevice> bx_sizes_token_;
     // put device clustering data
-    const device::EDPutToken<ClustersDeviceCollection> cluestering_token_;
-    const device::EDPutToken<AssociationMapDevice> association_map_token_;
+    const device::EDPutToken<BxLookupDevice> bx_clusters_map_token_;
+    const device::EDPutToken<AssociationMapDevice> clusters_cands_map_token_;
+    const device::EDPutToken<ClustersDeviceCollection> cluster_indexes_token_;
+    const device::EDPutToken<ClustersDeviceCollection> clusters_token_;
     // algorithm
     const kernels::CLUEsteringAlgo clustering_;
-    // debug / test
-    const Environment environment_;
-    const bool run_scout_;
   };
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc
