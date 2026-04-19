@@ -20,9 +20,9 @@ namespace cms::torch::alpakatools {
     // cms-sw/cmsdist PRs: https://github.com/cms-sw/cmsdist/pulls?q=is%3Apr+is%3Aopen+in%3Atitle+%22PyTorch%22
     if constexpr (std::is_same_v<TDev, alpaka::DevHipRt>)
       return ::torch::Device(c10::DeviceType::CPU);
-      // return ::torch::Device(c10::DeviceType::HIP, device.getNativeHandle());
+    // return ::torch::Device(c10::DeviceType::HIP, device.getNativeHandle());
 #else
-    // default, crop index
+    // default, omit device index for CPU
     return ::torch::Device(c10::DeviceType::CPU);
 #endif
   }
