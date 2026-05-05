@@ -11,6 +11,7 @@
 #include "DataFormats/L1ScoutingSoA/interface/W3PiHostTable.h"
 #include "DataFormats/L1ScoutingSoA/interface/CounterHost.h"
 #include "DataFormats/L1ScoutingSoA/interface/SoftTauHostTensor.h"
+#include "DataFormats/L1ScoutingSoA/interface/SoftJetHostTensor.h"
 
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::AssociationMapHost);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::BxLookupHost);
@@ -23,4 +24,6 @@ SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SelectedBxHostCollection);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::W3PiHostTable);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftTauInputHostTensor);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftTauOutputHostTensor);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftJetInputHostTensor);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftJetOutputHostTensor);
 SET_PORTABLEHOSTOBJECT_READ_RULES(l1sc::CounterHost);

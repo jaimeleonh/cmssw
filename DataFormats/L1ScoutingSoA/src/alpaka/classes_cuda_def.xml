@@ -59,4 +59,14 @@
   <class name="alpaka_cuda_async::l1sc::SoftTauOutputDeviceTensor" persistent="false"/>
   <class name="edm::DeviceProduct<alpaka_cuda_async::l1sc::SoftTauOutputDeviceTensor>" persistent="false"/>
   <class name="edm::Wrapper<edm::DeviceProduct<alpaka_cuda_async::l1sc::SoftTauOutputDeviceTensor>>" persistent="false"/>
+
+  <!-- SoftJetInputDeviceTensor -->
+  <class name="alpaka_cuda_async::l1sc::SoftJetInputDeviceTensor" persistent="false"/>
+  <class name="edm::DeviceProduct<alpaka_cuda_async::l1sc::SoftJetInputDeviceTensor>" persistent="false"/>
+  <class name="edm::Wrapper<edm::DeviceProduct<alpaka_cuda_async::l1sc::SoftJetInputDeviceTensor>>" persistent="false"/>
+
+  <!-- SoftJetOutputDeviceTensor -->
+  <class name="alpaka_cuda_async::l1sc::SoftJetOutputDeviceTensor" persistent="false"/>
+  <class name="edm::DeviceProduct<alpaka_cuda_async::l1sc::SoftJetOutputDeviceTensor>" persistent="false"/>
+  <class name="edm::Wrapper<edm::DeviceProduct<alpaka_cuda_async::l1sc::SoftJetOutputDeviceTensor>>" persistent="false"/>
 </lcgdict>

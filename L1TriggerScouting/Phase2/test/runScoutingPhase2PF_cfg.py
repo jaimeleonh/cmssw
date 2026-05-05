@@ -19,6 +19,11 @@ options.register ('jetR',
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.float,
                   'Jet radius')
+options.register ('jetReFitR',
+                  0.0, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.float,
+                  'Jet radius (after ReFit)')
 options.register ('dumpClusters',
                   False, 
                   VarParsing.VarParsing.multiplicity.singleton,
@@ -127,9 +132,12 @@ if "alpaka" in options.run.lower():
       l1sc_L1TScPhase2PuppiRawToDigi_alpaka,
       l1sc_L1TScPhase2SCJets_alpaka
   )
-  from L1TriggerScouting.TauTagging.modules import (
-      l1sc_CLUETaus_alpaka,
-      l1sc_SoftTauIdML_alpaka,
+  # from L1TriggerScouting.TauTagging.modules import (
+  #     l1sc_CLUETaus_alpaka,
+  #     l1sc_SoftTauIdML_alpaka,
+  # )
+  from L1TriggerScouting.JetTagging.modules import (
+      l1sc_SoftJetIdML_alpaka,
   )
   process.scPhase2PFRawToDigiAlpaka = l1sc_L1TScPhase2PuppiRawToDigi_alpaka(
       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
@@ -139,29 +147,39 @@ if "alpaka" in options.run.lower():
       environment = cms.untracked.int32(options.environment),
   )
 
-  process.CLUETaus = l1sc_CLUETaus_alpaka(
-      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-      src = 'scPhase2PFRawToDigiAlpaka',
-      dc = cms.double(0.2),
-      rhoc = cms.double(5.0),
-      dm = cms.double(0.4),
-      wrapCoords = cms.bool(False),
-      run_scout = cms.bool(True),
-  )
+  # process.CLUETaus = l1sc_CLUETaus_alpaka(
+  #     alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+  #     src = 'scPhase2PFRawToDigiAlpaka',
+  #     dc = cms.double(0.2),
+  #     rhoc = cms.double(5.0),
+  #     dm = cms.double(0.4),
+  #     wrapCoords = cms.bool(False),
+  #     run_scout = cms.bool(True),
+  # )
 
   process.scPhase2SC4PFAlpaka = l1sc_L1TScPhase2SCJets_alpaka(
       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-      src = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
+      src = cms.InputTag("scPhase2PFRawToDigiAlpaka", "candidates"),
+      bxLookup = cms.InputTag("scPhase2PFRawToDigiAlpaka", "bxLookup"),
       rParam = cms.double(options.jetR),
+      # rReFitParam = cms.double(options.jetReFitR),
       nJets = cms.uint32(options.njets),
   )
 
-  process.SoftTauIdSC4 = l1sc_SoftTauIdML_alpaka(
+  # process.SoftTauIdSC4 = l1sc_SoftTauIdML_alpaka(
+  #     alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+  #     pf = 'scPhase2PFRawToDigiAlpaka',
+  #     clusters = 'scPhase2SC4PFAlpaka',
+  #     model = cms.FileInPath("L1TriggerScouting/TauTagging/data/softtauid_sigmoid.pt"),
+  #     maxBatchSize = cms.uint32(64),
+  # )
+
+  process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-      pf = 'scPhase2PFRawToDigiAlpaka',
-      clusters = 'scPhase2SC4PFAlpaka',
-      model = cms.FileInPath("L1TriggerScouting/TauTagging/data/softtauid_sigmoid.pt"),
-      maxBatchSize = cms.uint32(64),
+      pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
+      clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
+      model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique.pt"),
+      maxBatchSize = cms.uint32(32),
   )
 
   process.goodOrbitsByNBX.unpackersAlpaka = [ "scPhase2PFRawToDigiAlpaka" ]
@@ -171,23 +189,23 @@ if "alpaka" in options.run.lower():
     process.scPhase2PFRawToDigiAlpaka +
     process.goodOrbitsByNBX
   )
-  process.p_clueAlpaka = cms.Path(
-    process.scPhase2PFRawToDigiAlpaka +
-    process.goodOrbitsByNBX +
-    process.CLUETaus
-  )
+  # process.p_clueAlpaka = cms.Path(
+  #   process.scPhase2PFRawToDigiAlpaka +
+  #   process.goodOrbitsByNBX +
+  #   process.CLUETaus
+  # )
   process.p_sc4Alpaka = cms.Path(
     process.scPhase2PFRawToDigiAlpaka +
     process.goodOrbitsByNBX +
-    process.scPhase2SC4PFAlpaka
-  )
-  process.p_sc4AlpakaTaus = cms.Path(
-    process.scPhase2PFRawToDigiAlpaka +
-    process.goodOrbitsByNBX +
     process.scPhase2SC4PFAlpaka +
-    process.SoftTauIdSC4 
+    process.SoftJetIdSC4
   )
-
+  # process.p_sc4AlpakaTaus = cms.Path(
+  #   process.scPhase2PFRawToDigiAlpaka +
+  #   process.goodOrbitsByNBX +
+  #   process.scPhase2SC4PFAlpaka +
+  #   process.SoftTauIdSC4 
+  # )
 
 process.p_unpack = cms.Path(
   process.scPhase2PFRawToDigiStruct +
@@ -195,10 +213,12 @@ process.p_unpack = cms.Path(
 )
 process.p_ak4 = cms.Path(
   process.scPhase2PFRawToDigiStruct +
+  process.goodOrbitsByNBX +
   process.scPhase2AK4PFDemo
 )
 process.p_sc4 = cms.Path(
   process.scPhase2PFRawToDigiStruct +
+  process.goodOrbitsByNBX +
   process.scPhase2SC4PFDemo
 )
 
@@ -224,7 +244,7 @@ if options.run not in ("both","inclusive","selected"):
     process.p_out = cms.EndPath(process.out)
     if options.run in ("sc4Alpaka",):
       process.dumpClusters = cms.EDProducer("ClusterSoAToOrbitFlatTable",
-          srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
+          srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka", "bxLookup"),
           srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
           name = cms.string("SC4AlpakaClusters"),
           doc = cms.string("")
@@ -235,7 +255,14 @@ if options.run not in ("both","inclusive","selected"):
           name = cms.string("SC4AlpakaJets"),
           doc = cms.string(""),
       )
-      process.p_dump = cms.Path(process.dumpClusters + process.dumpJets)
+      process.softJetTable = cms.EDProducer("ScPhase2SoftJetOutputTensorToOrbitFlatTable",
+          srcBxClustersMap = cms.InputTag("scPhase2SC4PFAlpaka"),
+          srcOutput = cms.InputTag("SoftJetIdSC4"), 
+          # name = process.dumpJets.name, 
+          name = cms.string("SC4AlpakaJetsScore"),
+          doc = cms.string(""),
+      )
+      process.p_dump = cms.Path(process.dumpClusters + process.dumpJets + process.softJetTable)
       sched.append(process.p_dump)
     if options.run in ("clueAlpaka",):
       process.dumpClusters = cms.EDProducer("ClusterSoAToOrbitFlatTable",

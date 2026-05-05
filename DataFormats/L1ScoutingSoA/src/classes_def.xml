@@ -83,4 +83,18 @@
   <class name="l1sc::SoftTauOutputHostTensor::Layout"/>
   <!-- ROOT R/W recipies -->
   <class name="edm::Wrapper<l1sc::SoftTauOutputHostTensor>" splitLevel="0"/>
+
+    <!-- SoftJetInputHostTensor -->
+  <class name="l1sc::SoftJetInputHostTensor" rntupleStreamerMode="true"/>
+  <!-- Layouts -->
+  <class name="l1sc::SoftJetInputHostTensor::Layout"/>
+  <!-- ROOT R/W recipies -->
+  <class name="edm::Wrapper<l1sc::SoftJetInputHostTensor>" splitLevel="0"/>
+
+  <!-- SoftJetOutputHostTensor -->
+  <class name="l1sc::SoftJetOutputHostTensor" rntupleStreamerMode="true"/>
+  <!-- Layouts -->
+  <class name="l1sc::SoftJetOutputHostTensor::Layout"/>
+  <!-- ROOT R/W recipies -->
+  <class name="edm::Wrapper<l1sc::SoftJetOutputHostTensor>" splitLevel="0"/>
 </lcgdict>
