@@ -79,10 +79,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
 
       for (auto &batch : batches) {
         c10::InferenceMode guard(true);
-
-        // pseudo-code: use the actual AlpakaModel API if available
         model_.to(event.queue());
-
         model_.forward(event.queue(), batch.inputs, batch.outputs);
       }
 
