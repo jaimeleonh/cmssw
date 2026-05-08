@@ -23,11 +23,6 @@ options.register ('jetR',
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.float,
                   'Jet radius')
-options.register ('jetReFitR',
-                  0.0, 
-                  VarParsing.VarParsing.multiplicity.singleton,
-                  VarParsing.VarParsing.varType.float,
-                  'Jet radius (after ReFit)')
 options.register ('dumpClusters',
                   False, 
                   VarParsing.VarParsing.multiplicity.singleton,
@@ -257,14 +252,14 @@ if options.run in ("sc4Alpaka",):
 
     process.dumpJetsTable = cms.EDProducer("ClusterObjSoAToNanoaodFlatTable",
         srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
-        name = cms.string("SC4AlpakaJets"),
+        name = cms.string("SC4IterAllJet"),
         doc = cms.string(""),
     )
 
     process.clusterJetIndexTable = cms.EDProducer("ClusterMapperSoAToNanoaodFlatTable",
         srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
         name = process.puppiTable.name,
-        clustering_name = cms.string("SC4ReFit"),
+        clustering_name = process.dumpJetsTable.name,
         doc = cms.string(""),
     )
 
