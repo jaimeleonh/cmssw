@@ -47,10 +47,10 @@ options.register ('dumpClusters',
 #   seededConeNMSWeighted   -> SCNMSWeighted
 #   linkTree                -> LinkTree
 options.register('jetAlgo',
-                 'auto',
+                 'SCGreedy',
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
-                 'Jet algorithm: auto | SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree')
+                 'Jet algorithm: SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree')
 options.register('RSeed',
                  0.3,
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -238,38 +238,39 @@ if "alpaka" in options.run.lower():
       run_scout = cms.bool(True),
   )
 
+  sc4Alpaka_kwargs = {
+      "alpaka": cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      "src": cms.InputTag("scPhase2PFRawToDigiAlpaka"),
+      "algo": cms.string(options.jetAlgo)
+  }
+
+  if options.jetAlgo == "SCGreedy":
+      sc4Alpaka_kwargs.update({
+          "rParam": cms.double(options.jetR),
+          "nJets": cms.uint32(options.njets),
+      })
+  elif options.jetAlgo == "SCNMS" or options.jetAlgo == "SCNMSWeighted":
+      sc4Alpaka_kwargs.update({
+          "RSeed": cms.double(options.RSeed),
+          "RClu": cms.double(options.RClu),
+      })
+  elif options.jetAlgo == "SCNMSWeightedMultiIter":
+      sc4Alpaka_kwargs.update({
+          "RSeed": cms.double(options.RSeed),
+          "RCen": cms.double(options.RCen),
+          "RClu": cms.double(options.RClu),
+          "alphaSeed": cms.double(options.alphaSeed),
+          "minSeedPt": cms.double(options.minSeedPt),
+          "nCentroidIters": cms.uint32(options.nCentroidIters),
+      })
+  elif options.jetAlgo == "LinkTree":
+      sc4Alpaka_kwargs.update({
+          "RLink": cms.double(options.RLink),
+          "minSeedPt": cms.double(options.minSeedPt),
+      })
+
   process.scPhase2SC4PFAlpaka = l1sc_L1TScPhase2SCJets_alpaka(
-      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-      src = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
-      rParam = cms.double(options.jetR),
-      nJets = cms.uint32(options.njets),
-
-      # canonical algorithm names handled in producer; old aliases still accepted there
-      algo = cms.string(options.jetAlgo),
-
-      # seeded-cone radii
-      # SCNMS / SCNMSWeighted:
-      #   RSeed = seed finding + old centroid accumulation
-      #   RClu  = final assignment
-      #   RCen  = ignored
-      #
-      # SCNMSWeightedMultiIter:
-      #   RSeed / RCen / RClu are all used
-      RSeed = cms.double(options.RSeed),
-      RCen  = cms.double(options.RCen),
-      RClu  = cms.double(options.RClu),
-
-      # LinkTree radius
-      RLink = cms.double(options.RLink),
-
-      # weighted-assignment controls (used by SCNMSWeightedMultiIter)
-      alphaSeed = cms.double(options.alphaSeed),
-
-      # generic min seed / root pt threshold
-      minSeedPt = cms.double(options.minSeedPt),
-
-      # centroid refinement iterations used by SCNMSWeightedMultiIter
-      nCentroidIters = cms.uint32(options.nCentroidIters),
+      **sc4Alpaka_kwargs
   )
 
   process.SoftTauIdSC4 = l1sc_SoftTauIdML_alpaka(

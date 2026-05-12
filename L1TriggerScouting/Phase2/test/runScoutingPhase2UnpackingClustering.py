@@ -26,8 +26,56 @@ options.register ('jetR',
 options.register ('dumpClusters',
                   False, 
                   VarParsing.VarParsing.multiplicity.singleton,
-                  VarParsing.VarParsing.varType.bool,         
+                  VarParsing.VarParsing.varType.bool,
                   'Dump clusters to options.outFile')
+
+# Additional algorithms
+# canonical names:
+#   SCGreedy                = iterative greedy seeded cone
+#   SCNMS                   = old non-iterative seeded cone with split radii:
+#                             RSeed for seed finding + old centroid accumulation,
+#                             RClu for final nearest-axis assignment
+#   SCNMSWeighted           = same old non-iterative seeded cone logic, but final
+#                             assignment uses old weighted metric
+#   SCNMSWeightedMultiIter  = newer weighted NMS-style seeded cone with explicit
+#                             centroid iterations and separate RCen
+#   LinkTree                = link-based clustering
+
+options.register('jetAlgo',
+                 'SCGreedy',
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 'Jet algorithm: SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree')
+options.register('RSeed',
+                 0.3,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Seed-finding radius; for SCNMS/SCNMSWeighted also used for old centroid accumulation')
+options.register('RCen',
+                 0.4,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Centroid radius (used only by SCNMSWeightedMultiIter)')
+options.register('RClu',
+                 0.4,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Final particle-assignment radius for SCNMS / SCNMSWeighted / SCNMSWeightedMultiIter')
+options.register('RLink',
+                 0.3,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'Link radius for LinkTree')
+options.register('alphaSeed',
+                 2.0,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float,
+                 'alpha in score = dr2 / pt_seed^alpha (used by SCNMSWeightedMultiIter)')
+options.register('nCentroidIters',
+                 1,
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.int,
+                 'Number of centroid iterations for SCNMSWeightedMultiIter: 0=use seed axis, >0 refine axis')
 
 options.parseArguments()
 
@@ -45,7 +93,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.Accelerators_cff")
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
 process.options.wantSummary = cms.untracked.bool(True)
-process.maxEvents.input = cms.untracked.int32(1)
+process.maxEvents.input = cms.untracked.int32(10)
 
 process.load('Configuration.Geometry.GeometryExtendedRun4D110Reco_cff')
 process.load('Configuration.Geometry.GeometryExtendedRun4D110_cff')
@@ -100,48 +148,6 @@ process.runPF = cms.Path(
 process.runPF.associate(process.L1TLayer1TaskInputsTask)
 process.runPF.associate(process.L1TInputTask)
 
-process.pfBarrelTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
-                name = cms.string("L1PFBarrel"),
-                src = cms.InputTag("l1tLayer1BarrelExtended:PF"),
-                cut = cms.string(""),
-                doc = cms.string(""),
-                singleton = cms.bool(False), # the number of entries is variable
-                extension = cms.bool(False), # this is the main table
-                variables = cms.PSet(
-                    pt  = Var("pt",  float, precision=16),
-                    eta  = Var("eta", float, precision=16),
-                    phi = Var("phi", float, precision=16),
-                    pdgId = Var("pdgId", int,),
-                    z0 = Var("vz", float, precision=16),
-                    dxy = LazyVar("dxy", float, precision=16),
-                    quality = LazyVar("hwQual", int),
-                    puppiw = LazyVar("puppiWeight", float, precision=16),
-                )
-)
-process.pfEndcapTable = process.pfBarrelTable.clone(
-                name = cms.string("L1PFEndcap"),
-                src = cms.InputTag("l1tLayer1HGCalExtended:PF"),
-)
-process.puppiTable = process.pfBarrelTable.clone(
-                name = cms.string("L1Puppi"),
-                src = cms.InputTag("l1tLayer1Extended:Puppi"),
-)
-
-
-process.packPFBarrel = cms.EDProducer("ScPhase2PuppiPacker",
-    src = cms.InputTag("l1tLayer1BarrelExtended:PF"),
-    fedIDs = cms.vuint32(1,2,3),
-    splitFactor = cms.uint32(3),
-    scoutingHeader = cms.bool(True)
-)
-
-process.packPFEndcap = cms.EDProducer("ScPhase2PuppiPacker",
-    src = cms.InputTag("l1tLayer1HGCalExtended:PF"),
-    fedIDs = cms.vuint32(4,5),
-    splitFactor = cms.uint32(2),
-    scoutingHeader = cms.bool(True)
-)
-
 process.packPuppi = cms.EDProducer("ScPhase2PuppiPacker",
     src = cms.InputTag("l1tLayer1Extended:Puppi"),
     fedIDs = cms.vuint32(0),
@@ -152,133 +158,109 @@ process.packPuppi = cms.EDProducer("ScPhase2PuppiPacker",
 from L1TriggerScouting.Phase2.modules import (
     l1sc_L1TScPhase2PuppiRawToDigi_alpaka, l1sc_L1TScPhase2SCJets_alpaka
 )
-
-process.unpackPFBarrelAlpaka = l1sc_L1TScPhase2PuppiRawToDigi_alpaka(
-    #alpaka = cms.untracked.PSet( backend = cms.untracked.string("serial_sync") ),
-    streams = process.packPFBarrel.fedIDs,
-    splitFactor = process.packPFBarrel.splitFactor,
-    src = cms.InputTag('packPFBarrel'),
-)
-process.unpackPFEndcapAlpaka = l1sc_L1TScPhase2PuppiRawToDigi_alpaka(
-    #alpaka = cms.untracked.PSet( backend = cms.untracked.string("serial_sync") ),
-    streams = process.packPFEndcap.fedIDs,
-    splitFactor = process.packPFEndcap.splitFactor,
-    src = cms.InputTag('packPFEndcap'),
-)
-
-process.unpackPFBarrel = cms.EDProducer('ScPhase2PuppiRawToDigi',
-    fedIDs = process.packPFBarrel.fedIDs,
-    splitFactor = process.packPFBarrel.splitFactor,
-    src = cms.InputTag('packPFBarrel'),
-)
-process.unpackPFEndcap = cms.EDProducer('ScPhase2PuppiRawToDigi',
-    fedIDs = process.packPFEndcap.fedIDs,
-    splitFactor = process.packPFEndcap.splitFactor,
-    src = cms.InputTag('packPFEndcap'),
-)
 process.unpackPuppi = cms.EDProducer('ScPhase2PuppiRawToDigi',
     fedIDs = process.packPuppi.fedIDs,
     splitFactor = process.packPuppi.splitFactor,
     src = cms.InputTag('packPuppi'),
 )
 
-process.scPFBarrelStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
-    src = cms.InputTag("unpackPFBarrel"),
-    name = cms.string("L1PFUnpackBarrel"),
-    doc = cms.string("L1PF candidates from Barrel, unpacked to OrbitCollection"),
-)
-process.scPFEndcapStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
-    src = cms.InputTag("unpackPFEndcap"),
-    name = cms.string("L1PFUnpackEndcap"),
-    doc = cms.string("L1PF candidates from Endcap, unpacked to OrbitCollection"),
-)
-process.scPFEndcapStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
-    src = cms.InputTag("unpackPFEndcap"),
-    name = cms.string("L1PFUnpackEndcap"),
-    doc = cms.string("L1PF candidates from Endcap, unpacked to OrbitCollection"),
-)
-process.scPuppiStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
-    src = cms.InputTag("unpackPuppi"),
-    name = cms.string("L1PuppiUnpack"),
-    doc = cms.string("L1Puppi candidates, unpacked to OrbitCollection"),
-)
-process.scPFBarrelSoAToTable = cms.EDProducer("PFSoAToOrbitFlatTable",
-    srcBx = cms.InputTag("unpackPFBarrelAlpaka"),
-    srcPF = cms.InputTag("unpackPFBarrelAlpaka"),
-    name = cms.string("L1PFUnpackAlpakaBarrel"),
-    doc = cms.string("L1PF candidates from Barrel, unpacked to Alpaka SoA"),
-)
-process.scPFEndcapSoAToTable = cms.EDProducer("PFSoAToOrbitFlatTable",
-    srcBx = cms.InputTag("unpackPFEndcapAlpaka"),
-    srcPF = cms.InputTag("unpackPFEndcapAlpaka"),
-    name = cms.string("L1PFUnpackAlpakaEndcap"),
-    doc = cms.string("L1PF candidates from Endcap, unpacked to Alpaka SoA"),
-)
-
-
 process.p = cms.Path(
     process.packPuppi +
-    #process.packPFBarrel + process.packPFEndcap + process.packPuppi +
-    process.unpackPuppi +
-    #process.unpackPFBarrel + process.unpackPFEndcap + process.unpackPuppi +
-    #process.unpackPFBarrelAlpaka + process.unpackPFEndcapAlpaka +
-    process.puppiTable# +
-    #process.pfBarrelTable + process.pfEndcapTable + process.puppiTable +
-    #process.scPuppiStructToTable #+
-    #process.scPFBarrelStructToTable + process.scPFEndcapStructToTable + process.scPuppiStructToTable #+
-    #process.scPFBarrelSoAToTable + process.scPFEndcapSoAToTable
+    process.unpackPuppi
 )
+
+if options.dumpClusters:
+    process.puppiTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
+        name = cms.string("L1Puppi"),
+        src = cms.InputTag("l1tLayer1Extended:Puppi"),
+        cut = cms.string(""),
+        doc = cms.string(""),
+        singleton = cms.bool(False), # the number of entries is variable
+        extension = cms.bool(False), # this is the main table
+        variables = cms.PSet(
+            pt  = Var("pt",  float, precision=16),
+            eta  = Var("eta", float, precision=16),
+            phi = Var("phi", float, precision=16),
+            pdgId = Var("pdgId", int,),
+            z0 = Var("vz", float, precision=16),
+            dxy = LazyVar("dxy", float, precision=16),
+            quality = LazyVar("hwQual", int),
+            puppiw = LazyVar("puppiWeight", float, precision=16),
+        )
+    )
+    process.p_dumpclusters = cms.Path(process.puppiTable)
 
 if options.run in ("sc4Alpaka",):
     process.unpackPuppiAlpaka = l1sc_L1TScPhase2PuppiRawToDigi_alpaka(
-        alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
         streams = process.packPuppi.fedIDs,
         splitFactor = process.packPuppi.splitFactor,
         src = cms.InputTag('packPuppi'),
         environment = cms.untracked.int32(options.environment),
     )
 
+    sc4Alpaka_kwargs = {
+        "src": cms.InputTag("unpackPuppiAlpaka"),
+        "algo": cms.string(options.jetAlgo)
+    }
+
+    assert options.jetAlgo in [
+        "SCGreedy", "SCNMS", "SCNMSWeighted", "SCNMSWeightedMultiIter", "LinkTree"
+    ]
+
+    if options.jetAlgo == "SCGreedy":
+        sc4Alpaka_kwargs.update({
+            "rParam": cms.double(options.jetR),
+            "nJets": cms.uint32(options.njets),
+        })
+    elif options.jetAlgo == "SCNMS" or options.jetAlgo == "SCNMSWeighted":
+        sc4Alpaka_kwargs.update({
+            "RSeed": cms.double(options.RSeed),
+            "RClu": cms.double(options.RClu),
+        })
+    elif options.jetAlgo == "SCNMSWeightedMultiIter":
+        sc4Alpaka_kwargs.update({
+            "RSeed": cms.double(options.RSeed),
+            "RCen": cms.double(options.RCen),
+            "RClu": cms.double(options.RClu),
+            "alphaSeed": cms.double(options.alphaSeed),
+            "minSeedPt": cms.double(options.minSeedPt),
+            "nCentroidIters": cms.uint32(options.nCentroidIters),
+        })
+    elif options.jetAlgo == "LinkTree":
+        sc4Alpaka_kwargs.update({
+            "RLink": cms.double(options.RLink),
+            "minSeedPt": cms.double(options.minSeedPt),
+        })
+
     process.scPhase2SC4PFAlpaka = l1sc_L1TScPhase2SCJets_alpaka(
-        alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-        src = cms.InputTag("unpackPuppiAlpaka"),
-        rParam = cms.double(options.jetR),
-        rReFitParam = cms.double(options.jetReFitR),
-        nJets = cms.uint32(options.njets),
+        **sc4Alpaka_kwargs
     )
+
     process.p_sc4Alpaka = cms.Path(
         process.unpackPuppiAlpaka +
         process.scPhase2SC4PFAlpaka
     )
 
-    process.dumpJetsTable = cms.EDProducer("ClusterObjSoAToNanoaodFlatTable",
-        srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
-        name = cms.string("SC4IterAllJet"),
-        doc = cms.string(""),
+    if options.dumpClusters:
+        process.dumpJetsTable = cms.EDProducer("ClusterObjSoAToNanoaodFlatTable",
+            srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
+            name = cms.string(process.scPhase2SC4PFAlpaka.algo.value() + "Jet"),
+            doc = cms.string(""),
+        )
+        process.clusterJetIndexTable = cms.EDProducer("ClusterMapperSoAToNanoaodFlatTable",
+            srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
+            name = process.puppiTable.name,
+            clustering_name = process.dumpJetsTable.name,
+            doc = cms.string(""),
+        )
+        process.p_dump = cms.Path(process.dumpJetsTable + process.clusterJetIndexTable)
+
+if options.dumpClusters:
+    process.outStandard = cms.OutputModule("NanoAODOutputModule",
+        fileName = cms.untracked.string("plainNano.root"),
+        SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring()),
+        outputCommands = cms.untracked.vstring("drop *", "keep nanoaodFlatTable_*Table_*_*"),
+        compressionLevel = cms.untracked.int32(4),
+        compressionAlgorithm = cms.untracked.string("ZLIB"),
     )
-
-    process.clusterJetIndexTable = cms.EDProducer("ClusterMapperSoAToNanoaodFlatTable",
-        srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
-        name = process.puppiTable.name,
-        clustering_name = process.dumpJetsTable.name,
-        doc = cms.string(""),
-    )
-
-    process.p_dump = cms.Path(process.dumpJetsTable + process.clusterJetIndexTable)
-
-
-process.outStandard = cms.OutputModule("NanoAODOutputModule",
-    fileName = cms.untracked.string("plainNano.root"),
-    SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring()),
-    outputCommands = cms.untracked.vstring("drop *", "keep nanoaodFlatTable_*Table_*_*"),
-    compressionLevel = cms.untracked.int32(4),
-    compressionAlgorithm = cms.untracked.string("ZLIB"),
-)
-# process.outScout = cms.OutputModule("OrbitNanoAODOutputModule",
-#     fileName = cms.untracked.string("scoutingNano.root"),
-#     SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring()),
-#     skipEmptyBXs = cms.bool(True),
-#     outputCommands = cms.untracked.vstring("drop *", "keep l1ScoutingRun3OrbitFlatTable_*_*_*"),
-#     compressionLevel = cms.untracked.int32(4),
-#     compressionAlgorithm = cms.untracked.string("ZLIB"),
-# )
-process.e = cms.EndPath(process.outStandard)# + process.outScout)
+    process.e = cms.EndPath(process.outStandard)

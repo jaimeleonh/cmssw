@@ -7,6 +7,7 @@
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#include "FWCore/ParameterSet/interface/allowedValues.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/EDPutToken.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/Event.h"
@@ -28,30 +29,54 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
   class L1TScPhase2SCJets : public stream::EDProducer<> { // new class inheriting from stream::EDProducer -> construct once per stream, call produce() each event/orbit
   public:
     // constructor (declare consumed & produced products; read config param at job start & store in member variables)
-    L1TScPhase2SCJets(const edm::ParameterSet& params)
-        : EDProducer<>(params),
+   L1TScPhase2SCJets(const edm::ParameterSet& params)
+    : EDProducer<>(params),
 
-          // input tokens: declare what input product module will read (e.g. PuppiDeviceCollection from input tag "src")
-          src_candidates_token_{consumes(params.getParameter<edm::InputTag>("src"))},
-          bx_lookup_token_{consumes(params.getParameter<edm::InputTag>("src"))},
+      src_candidates_token_{consumes(params.getParameter<edm::InputTag>("src"))},
+      bx_lookup_token_{consumes(params.getParameter<edm::InputTag>("src"))},
 
-          // output tokens: declare products written by this module (tokens later used with event.emplace())
-          clusters_token_{produces()},
-          jetBXs_token_{produces()},
-          jets_token_{produces()},
-          map_token_{produces()},
+      clusters_token_{produces()},
+      jetBXs_token_{produces()},
+      jets_token_{produces()},
+      map_token_{produces()},
 
-          // module parameters (square radii once in constructor)
-          R2_{std::pow(params.getParameter<double>("rParam"), 2)},
-          nJets_{params.getParameter<unsigned int>("nJets")},
-          algo_{params.getParameter<std::string>("algo")},
-          RSeed2_{std::pow(params.getParameter<double>("RSeed"), 2)},
-          RCen2_{std::pow(params.getParameter<double>("RCen"), 2)},
-          RClu2_{std::pow(params.getParameter<double>("RClu"), 2)},
-          RLink2_{std::pow(params.getParameter<double>("RLink"), 2)},
-          alphaSeed_{params.getParameter<double>("alphaSeed")},
-          minSeedPt_{params.getParameter<double>("minSeedPt")},
-          nCentroidIters_{params.getParameter<unsigned int>("nCentroidIters")} {}
+      algo_{params.getParameter<std::string>("algo")},
+
+      // safe defaults; real values are filled below depending on algo_
+      R2_{0.0},
+      nJets_{0},
+      RSeed2_{0.0},
+      RCen2_{0.0},
+      RClu2_{0.0},
+      RLink2_{0.0},
+      alphaSeed_{0.0},
+      minSeedPt_{0.0},
+      nCentroidIters_{0} {
+      if (algo_ == "SCGreedy") {
+        R2_ = std::pow(params.getParameter<double>("rParam"), 2);
+        nJets_ = params.getParameter<unsigned int>("nJets");
+
+      } else if (algo_ == "SCNMS" || algo_ == "SCNMSWeighted") {
+        RSeed2_ = std::pow(params.getParameter<double>("RSeed"), 2);
+        RClu2_ = std::pow(params.getParameter<double>("RClu"), 2);
+
+      } else if (algo_ == "SCNMSWeightedMultiIter") {
+        RSeed2_ = std::pow(params.getParameter<double>("RSeed"), 2);
+        RCen2_ = std::pow(params.getParameter<double>("RCen"), 2);
+        RClu2_ = std::pow(params.getParameter<double>("RClu"), 2);
+        alphaSeed_ = params.getParameter<double>("alphaSeed");
+        minSeedPt_ = params.getParameter<double>("minSeedPt");
+        nCentroidIters_ = params.getParameter<unsigned int>("nCentroidIters");
+
+      } else if (algo_ == "LinkTree") {
+        RLink2_ = std::pow(params.getParameter<double>("RLink"), 2);
+        minSeedPt_ = params.getParameter<double>("minSeedPt");
+
+      } else {
+        throw cms::Exception("Configuration")
+            << "Unsupported algo '" << algo_ << "'";
+      }
+    }
 
     void produce(device::Event& event, const device::EventSetup& event_setup) override {
       // fetch inputs using token (corresponding to consumes() declarations)
@@ -63,24 +88,21 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
       auto clusters = ClustersDeviceCollection(nsrc, event.queue());
 
       // canonical names
-      const bool autoMode                   = (algo_ == "auto");
-      const bool wantSCGreedy               = (algo_ == "SCGreedy" || algo_ == "iterative");
-      const bool wantSCNMS                  = (algo_ == "SCNMS" || algo_ == "seededCone");
-      const bool wantSCNMSWeighted          = (algo_ == "SCNMSWeighted" || algo_ == "seededConeNMSWeighted");
+      const bool wantSCGreedy               = (algo_ == "SCGreedy");
+      const bool wantSCNMS                  = (algo_ == "SCNMS");
+      const bool wantSCNMSWeighted          = (algo_ == "SCNMSWeighted");
       const bool wantSCNMSWeightedMultiIter = (algo_ == "SCNMSWeightedMultiIter");
-      const bool wantLinkTree               = (algo_ == "LinkTree" || algo_ == "linkTree");
+      const bool wantLinkTree               = (algo_ == "LinkTree");
 
       // validate algo string
-      if (!autoMode &&
-          !wantSCGreedy &&
+      if (!wantSCGreedy &&
           !wantSCNMS &&
           !wantSCNMSWeighted &&
           !wantSCNMSWeightedMultiIter &&
           !wantLinkTree) {
         throw cms::Exception("Configuration")
             << "L1TScPhase2SCJets: unknown algo='" << algo_ << "'. "
-            << "Allowed: auto | SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree "
-            << "(legacy aliases also accepted: iterative | seededCone | seededConeNMSWeighted | linkTree)";
+            << "Allowed: SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree ";
       }
 
       // ----------------------------------------------------------------
@@ -154,10 +176,10 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
         event.emplace(map_token_, std::move(map));
 
       } else {
-        // old behaviour for auto / SCGreedy:
-        // if auto and nJets != 0 -> iterative SCGreedy
-        // if auto and nJets == 0 -> legacy single-radius non-iterative seeded cone
-        const bool doIter = wantSCGreedy || (autoMode && nJets_ != 0);
+        // old behaviour for SCGreedy:
+        // if nJets != 0 -> iterative SCGreedy
+        // if nJets == 0 -> legacy single-radius non-iterative seeded cone
+        const bool doIter = (nJets_ != 0);
 
         if (doIter) {
           auto [jetBXs, jets, map] = kernels_.run(event.queue(), src, bx_lookup, float(R2_), nJets_, clusters);
@@ -183,35 +205,37 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
 
       // define input parameters
       desc.add<edm::InputTag>("src");
-      desc.add<double>("rParam", 0.4);
-      desc.add<unsigned int>("nJets", 0);
 
       // canonical names:
-      // auto | SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree
-      // old aliases still accepted in produce()
-      desc.add<std::string>("algo", "auto");
+      // SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree
+      desc.ifValue(edm::ParameterDescription<std::string>("algo", "None", true,
+          edm::Comment("Allowed values: SCGreedy, SCNMS, SCNMSWeighted, SCNMSWeightedMultiIter, LinkTree")),
+        "SCGreedy" >> (edm::ParameterDescription<double>("rParam", 0.3, true) and
+          edm::ParameterDescription<unsigned int>("nJets", 0, true)
+        ) or
+        
+        "SCNMS" >> (edm::ParameterDescription<double>("RSeed", 0.3, true) and
+          edm::ParameterDescription<double>("RClu", 0.4, true)
+        ) or
+        
+        "SCNMSWeighted" >> (edm::ParameterDescription<double>("RSeed", 0.3, true) and
+          edm::ParameterDescription<double>("RClu", 0.4, true)
+        ) or
 
-      // seeded-cone radii
-      //
-      // SCNMS / SCNMSWeighted:
-      //   RSeed = seed finding + old centroid accumulation
-      //   RClu  = final assignment
-      //   RCen  = ignored
-      //
-      // SCNMSWeightedMultiIter:
-      //   RSeed / RCen / RClu are all used
-      desc.add<double>("RSeed", 0.3);
-      desc.add<double>("RCen", 0.4);
-      desc.add<double>("RClu", 0.4);
+        "SCNMSWeightedMultiIter" >> (edm::ParameterDescription<double>("RSeed", 0.3, true) and
+          edm::ParameterDescription<double>("RCen", 0.4, true) and
+          edm::ParameterDescription<double>("RClu", 0.4, true) and
+          edm::ParameterDescription<double>("alphaSeed", 2.0, true) and
+          edm::ParameterDescription<double>("minSeedPt", 0.0, true) and
+          edm::ParameterDescription<unsigned int>("nCentroidIters", 1, true)
+        ) or
+        
+        "LinkTree" >> (edm::ParameterDescription<double>("RLink", 0.3, true) and
+          edm::ParameterDescription<double>("minSeedPt", 0.0, true)
+        ) or 
 
-      // LinkTree radius
-      desc.add<double>("RLink", 0.3);
-
-      // weighted / threshold / iteration controls
-      // only used by SCNMSWeightedMultiIter or LinkTree as relevant
-      desc.add<double>("alphaSeed", 2.0);
-      desc.add<double>("minSeedPt", 0.0);
-      desc.add<unsigned int>("nCentroidIters", 1);
+        "None" >> edm::EmptyGroupDescription()
+      );
 
       // register this config schema for the default instance of the module -> python can now use these params
       descriptions.addWithDefaultLabel(desc);
@@ -233,10 +257,10 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc { // place module in backend-specif
     kernels::L1TScPhase2SCJetsKernels kernels_;
 
     // params
+    std::string algo_;
     double R2_;
     unsigned int nJets_;
 
-    std::string algo_;
     double RSeed2_, RCen2_, RClu2_, RLink2_;
     double alphaSeed_;
     double minSeedPt_;

@@ -1,5 +1,3 @@
-// header file = public interface for kernel helper class; declares what functions exist (and what inputs/outputs of those, what namespace they live)
-// include guard: prevent header being included multiple times
 #ifndef L1TriggerScouting_Phase2_plugins_alpaka_L1TScPhase2SCJetsKernels_h
 #define L1TriggerScouting_Phase2_plugins_alpaka_L1TScPhase2SCJetsKernels_h
 
