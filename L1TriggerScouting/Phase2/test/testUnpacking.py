@@ -156,11 +156,6 @@ process.scPFEndcapStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
     name = cms.string("L1PFUnpackEndcap"),
     doc = cms.string("L1PF candidates from Endcap, unpacked to OrbitCollection"),
 )
-process.scPFEndcapStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
-    src = cms.InputTag("unpackPFEndcap"),
-    name = cms.string("L1PFUnpackEndcap"),
-    doc = cms.string("L1PF candidates from Endcap, unpacked to OrbitCollection"),
-)
 process.scPuppiStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
     src = cms.InputTag("unpackPuppi"),
     name = cms.string("L1PuppiUnpack"),
