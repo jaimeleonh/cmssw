@@ -64,7 +64,7 @@ void ScPhase2PuppiPacker::produce(edm::Event &iEvent, const edm::EventSetup &iSe
             continue;
         } else {
             // Allocate space for candidates and optional header
-            auto nwords = (nCandsInFragment + (scoutingHeader_ ? 1 : 0)) * sizeof(uint64_t);
+            auto nwords = (nCandsInFragment + (scoutingHeader_ ? 1 : 0));
             fedData.resize(nwords * sizeof(uint64_t));
             uint64_t *output = reinterpret_cast<uint64_t *>(fedData.data());
             // Add header if needed
