@@ -75,12 +75,6 @@ void ScPhase2PuppiPacker::produce(edm::Event &iEvent, const edm::EventSetup &iSe
             // Pack candidates from startIdx to endIdx into a fragment
             for (unsigned int j = startIdx; j < endIdx; ++j) {
                 *output++ = (*puppiCandidates)[j].encodedPuppi64();
-                if ((*puppiCandidates)[j].pdgId() == 130) {
-                    auto p = (*puppiCandidates)[j];
-                    printf("Packing neutral hadron: pt=%.2f (%d), eta=%.2f, phi=%.2f, pdgId=%d, puppiw=%.3f, raw=%016lx\n",
-                           p.pt(), p.hwPt(), p.eta(), p.phi(), p.pdgId(), p.puppiWeight(), p.encodedPuppi64());
-                }
-                    // Charged candidate, pack additional info if needed
             }
         }
     }
