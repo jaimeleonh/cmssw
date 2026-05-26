@@ -40,19 +40,19 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   public:
     template <typename TAcc, typename = std::enable_if_t<alpaka::isAccelerator<TAcc>>>
     ALPAKA_FN_ACC void operator()(TAcc const& acc,
-                                  PuppiDeviceCollection::ConstView puppi, // original input p.
-                                  OffsetsSoA::ConstView bxLookup, // p. ranges per BX
-                                  BxIndexSoA::ConstView bxIndex, // BX label per BX
+                                  PuppiDeviceCollection::ConstView puppi,  // original input p.
+                                  OffsetsSoA::ConstView bxLookup,          // p. ranges per BX
+                                  BxIndexSoA::ConstView bxIndex,           // BX label per BX
                                   float RSeed,
                                   float RSeed2,
                                   float RClu2,
-                                  uint16_t* uieta, // tmp eta sort key
-                                  uint16_t* idx, // tmp sort index buffer
-                                  ClusterObjDeviceCollection::View work, // eta sorted working p. cp
-                                  ClustersDeviceCollection::View clusters, // output p. assignment info
-                                  ClusterObjDeviceCollection::View jets, // tmp jet collection
-                                  OffsetsSoA::View jetBxLookup, // number jets per BX
-                                  BxIndexSoA::View jetBxIndex, // BX labels for jet collection
+                                  uint16_t* uieta,                          // tmp eta sort key
+                                  uint16_t* idx,                            // tmp sort index buffer
+                                  ClusterObjDeviceCollection::View work,    // eta sorted working p. cp
+                                  ClustersDeviceCollection::View clusters,  // output p. assignment info
+                                  ClusterObjDeviceCollection::View jets,    // tmp jet collection
+                                  OffsetsSoA::View jetBxLookup,             // number jets per BX
+                                  BxIndexSoA::View jetBxIndex,              // BX labels for jet collection
                                   unsigned int* nJetsTotal) const {
       // check whether this backend runs 1 thread per block (for optimization with seed veto markers later)
       constexpr bool single_thread = requires_single_thread_per_block<TAcc>::value;
@@ -261,19 +261,19 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   public:
     template <typename TAcc, typename = std::enable_if_t<alpaka::isAccelerator<TAcc>>>
     ALPAKA_FN_ACC void operator()(TAcc const& acc,
-                                  PuppiDeviceCollection::ConstView puppi, // original input p.
-                                  OffsetsSoA::ConstView bxLookup, // p. ranges per BX
-                                  BxIndexSoA::ConstView bxIndex, // BX label per BX
+                                  PuppiDeviceCollection::ConstView puppi,  // original input p.
+                                  OffsetsSoA::ConstView bxLookup,          // p. ranges per BX
+                                  BxIndexSoA::ConstView bxIndex,           // BX label per BX
                                   float RSeed,
                                   float RSeed2,
                                   float RClu2,
-                                  uint16_t* uieta, // tmp eta sort key
-                                  uint16_t* idx, // tmp sort index buffer
-                                  ClusterObjDeviceCollection::View work, // eta sorted working p. cp
-                                  ClustersDeviceCollection::View clusters, // output p. assignment info
-                                  ClusterObjDeviceCollection::View jets, // tmp jet collection
-                                  OffsetsSoA::View jetBxLookup, // number jets per BX
-                                  BxIndexSoA::View jetBxIndex, // BX labels for jet collection
+                                  uint16_t* uieta,                          // tmp eta sort key
+                                  uint16_t* idx,                            // tmp sort index buffer
+                                  ClusterObjDeviceCollection::View work,    // eta sorted working p. cp
+                                  ClustersDeviceCollection::View clusters,  // output p. assignment info
+                                  ClusterObjDeviceCollection::View jets,    // tmp jet collection
+                                  OffsetsSoA::View jetBxLookup,             // number jets per BX
+                                  BxIndexSoA::View jetBxIndex,              // BX labels for jet collection
                                   unsigned int* nJetsTotal) const {
       // check whether this backend runs 1 thread per block (for optimization with seed veto markers later)
       constexpr bool single_thread = requires_single_thread_per_block<TAcc>::value;
@@ -527,32 +527,30 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   class JetKernelNMS {
   public:
     template <typename TAcc, typename = std::enable_if_t<alpaka::isAccelerator<TAcc>>>
-    ALPAKA_FN_ACC void operator()(
-        TAcc const& acc,
-        PuppiDeviceCollection::ConstView puppi,
-        OffsetsSoA::ConstView bxLookup,
-        BxIndexSoA::ConstView bxIndex,
-        float RSeed,
-        float RSeed2,
-        float RCen,
-        float RCen2,
-        float RClu,
-        float RClu2,
-        float alphaSeed,
-        float minSeedPt,
-        unsigned int nCentroidIters,
-        bool useWeightedAssignment,
-        uint16_t* uieta,
-        uint16_t* idx,
-        float* seedWeight,
-        uint16_t* seedPos,
-        ClusterObjDeviceCollection::View work,
-        ClustersDeviceCollection::View clusters,
-        ClusterObjDeviceCollection::View jetsNonZS,
-        OffsetsSoA::View jetBxLookup,
-        BxIndexSoA::View jetBxIndex,
-        unsigned int* nJetsTotal) const {
-
+    ALPAKA_FN_ACC void operator()(TAcc const& acc,
+                                  PuppiDeviceCollection::ConstView puppi,
+                                  OffsetsSoA::ConstView bxLookup,
+                                  BxIndexSoA::ConstView bxIndex,
+                                  float RSeed,
+                                  float RSeed2,
+                                  float RCen,
+                                  float RCen2,
+                                  float RClu,
+                                  float RClu2,
+                                  float alphaSeed,
+                                  float minSeedPt,
+                                  unsigned int nCentroidIters,
+                                  bool useWeightedAssignment,
+                                  uint16_t* uieta,
+                                  uint16_t* idx,
+                                  float* seedWeight,
+                                  uint16_t* seedPos,
+                                  ClusterObjDeviceCollection::View work,
+                                  ClustersDeviceCollection::View clusters,
+                                  ClusterObjDeviceCollection::View jetsNonZS,
+                                  OffsetsSoA::View jetBxLookup,
+                                  BxIndexSoA::View jetBxIndex,
+                                  unsigned int* nJetsTotal) const {
       if (cms::alpakatools::once_per_grid(acc))
         jetBxLookup.offsets()[0] = 0;
 
@@ -563,8 +561,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       // ============================================================
       for (uint32_t block_idx : independent_groups(acc, grid_dim)) {
         uint32_t begin = bxLookup.offsets()[block_idx];
-        uint32_t end   = bxLookup.offsets()[block_idx + 1];
-        if (end <= begin) continue;
+        uint32_t end = bxLookup.offsets()[block_idx + 1];
+        if (end <= begin)
+          continue;
 
         uint32_t block_dim = end - begin;
 
@@ -582,19 +581,20 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       // ============================================================
       for (uint32_t block_idx : independent_groups(acc, grid_dim)) {
         uint32_t begin = bxLookup.offsets()[block_idx];
-        uint32_t end   = bxLookup.offsets()[block_idx + 1];
-        if (end <= begin) continue;
+        uint32_t end = bxLookup.offsets()[block_idx + 1];
+        if (end <= begin)
+          continue;
 
         uint32_t block_dim = end - begin;
 
         for (uint32_t tid : independent_group_elements(acc, block_dim)) {
-          uint32_t ip   = tid + begin;
+          uint32_t ip = tid + begin;
           uint32_t isrc = idx[ip] + begin;
 
-          work.pt()[ip]      = puppi.pt()[isrc];
-          work.eta()[ip]     = puppi.eta()[isrc];
-          work.phi()[ip]     = puppi.phi()[isrc];
-          work.cluster()[ip] = isrc; // original particle index
+          work.pt()[ip] = puppi.pt()[isrc];
+          work.eta()[ip] = puppi.eta()[isrc];
+          work.phi()[ip] = puppi.phi()[isrc];
+          work.cluster()[ip] = isrc;  // original particle index
         }
       }
 
@@ -605,10 +605,10 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       // BX loop
       // ============================================================
       for (uint32_t block_idx : independent_groups(acc, grid_dim)) {
-
         uint32_t begin = bxLookup.offsets()[block_idx];
-        uint32_t end   = bxLookup.offsets()[block_idx + 1];
-        if (end <= begin) continue;
+        uint32_t end = bxLookup.offsets()[block_idx + 1];
+        if (end <= begin)
+          continue;
 
         uint32_t block_dim = end - begin;
 
@@ -621,10 +621,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         // Step 2: seed finding (local pT maxima within RSeed)
         // ============================================================
         for (uint32_t tid : independent_group_elements(acc, block_dim)) {
-
           uint32_t iseed = tid + begin;
 
-          float seed_pt  = work.pt()[iseed];
+          float seed_pt = work.pt()[iseed];
           if (seed_pt < minSeedPt)
             continue;
 
@@ -639,10 +638,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
             uint32_t ip = begin + (j - 1);
 
             float deta = work.eta()[ip] - seed_eta;
-            if (deta < -RSeed) break;
+            if (deta < -RSeed)
+              break;
 
             float dphi = cms::alpakatools::deltaPhi(acc, work.phi()[ip], seed_phi);
-            float dr2 = deta*deta + dphi*dphi;
+            float dr2 = deta * deta + dphi * dphi;
 
             if (dr2 < RSeed2) {
               float ptj = work.pt()[ip];
@@ -662,10 +662,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
               uint32_t ip = begin + j;
 
               float deta = work.eta()[ip] - seed_eta;
-              if (deta > RSeed) break;
+              if (deta > RSeed)
+                break;
 
               float dphi = cms::alpakatools::deltaPhi(acc, work.phi()[ip], seed_phi);
-              float dr2 = deta*deta + dphi*dphi;
+              float dr2 = deta * deta + dphi * dphi;
 
               if (dr2 < RSeed2) {
                 float ptj = work.pt()[ip];
@@ -684,22 +685,19 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
           // accepted seed -> create proto-jet using seed axis as initial axis
           uint32_t jlocal = alpaka::atomicAdd(acc, &nseeds, 1u, alpaka::hierarchy::Threads{});
-          uint32_t jseed  = begin + jlocal;
+          uint32_t jseed = begin + jlocal;
 
-          jetsNonZS.pt()[jseed]  = seed_pt;
+          jetsNonZS.pt()[jseed] = seed_pt;
           jetsNonZS.eta()[jseed] = seed_eta;
           jetsNonZS.phi()[jseed] = seed_phi;
-          jetsNonZS.cluster()[jseed] = jlocal; // local jet id inside BX
+          jetsNonZS.cluster()[jseed] = jlocal;  // local jet id inside BX
           jetsNonZS.numberOfDaughters()[jseed] = 0u;
 
           seedPos[jseed] = static_cast<uint16_t>(tid);
 
           // in unweighted mode this value is ignored
           {
-            float denom = alpaka::math::pow(
-                acc,
-                alpaka::math::max(acc, seed_pt, 1e-6f),
-                alphaSeed);
+            float denom = alpaka::math::pow(acc, alpaka::math::max(acc, seed_pt, 1e-6f), alphaSeed);
             seedWeight[jseed] = 1.f / denom;
           }
 
@@ -714,16 +712,14 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         // ============================================================
         if (nCentroidIters > 0u) {
           for (uint32_t j : independent_group_elements(acc, nseeds)) {
-
             uint32_t jseed = begin + j;
 
             float axis_eta = jetsNonZS.eta()[jseed];
             float axis_phi = jetsNonZS.phi()[jseed];
-            uint32_t pos   = static_cast<uint32_t>(seedPos[jseed]);
+            uint32_t pos = static_cast<uint32_t>(seedPos[jseed]);
 
             for (unsigned int iter = 0; iter < nCentroidIters; ++iter) {
-
-              float sum_pt  = 0.f;
+              float sum_pt = 0.f;
               float sum_eta = 0.f;
               float sum_sin = 0.f;
               float sum_cos = 0.f;
@@ -733,14 +729,15 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                 uint32_t ip = begin + static_cast<uint32_t>(k);
 
                 float deta = work.eta()[ip] - axis_eta;
-                if (deta < -RCen) break;
+                if (deta < -RCen)
+                  break;
 
                 float dphi = cms::alpakatools::deltaPhi(acc, work.phi()[ip], axis_phi);
-                float dr2 = deta*deta + dphi*dphi;
+                float dr2 = deta * deta + dphi * dphi;
 
                 if (dr2 < RCen2) {
                   float w = work.pt()[ip];
-                  sum_pt  += w;
+                  sum_pt += w;
                   sum_eta += w * work.eta()[ip];
 
                   float ph = work.phi()[ip];
@@ -754,14 +751,15 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                 uint32_t ip = begin + k;
 
                 float deta = work.eta()[ip] - axis_eta;
-                if (deta > RCen) break;
+                if (deta > RCen)
+                  break;
 
                 float dphi = cms::alpakatools::deltaPhi(acc, work.phi()[ip], axis_phi);
-                float dr2 = deta*deta + dphi*dphi;
+                float dr2 = deta * deta + dphi * dphi;
 
                 if (dr2 < RCen2) {
                   float w = work.pt()[ip];
-                  sum_pt  += w;
+                  sum_pt += w;
                   sum_eta += w * work.eta()[ip];
 
                   float ph = work.phi()[ip];
@@ -776,7 +774,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
                 // store refined proto-jet axis
                 // for weighted assignment we also use proto-jet pt from the centroid catchment
-                jetsNonZS.pt()[jseed]  = sum_pt;
+                jetsNonZS.pt()[jseed] = sum_pt;
                 jetsNonZS.eta()[jseed] = axis_eta;
                 jetsNonZS.phi()[jseed] = axis_phi;
               }
@@ -791,8 +789,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         // SCNMSWeightedMultiIter -> weighted distance = dr2 / pt_seed^alpha
         // ============================================================
         for (uint32_t tid : independent_group_elements(acc, block_dim)) {
-
-          uint32_t ip   = begin + tid;
+          uint32_t ip = begin + tid;
           uint32_t orig = static_cast<uint32_t>(work.cluster()[ip]);
 
           float eta_i = work.eta()[ip];
@@ -802,7 +799,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
           int bestJ = -1;
 
           for (uint32_t j = 0; j < nseeds; ++j) {
-
             uint32_t jseed = begin + j;
 
             float deta = jetsNonZS.eta()[jseed] - eta_i;
@@ -810,14 +806,14 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
               continue;
 
             float dphi = cms::alpakatools::deltaPhi(acc, jetsNonZS.phi()[jseed], phi_i);
-            float dr2 = deta*deta + dphi*dphi;
+            float dr2 = deta * deta + dphi * dphi;
 
             if (dr2 >= RClu2)
               continue;
 
             float score = dr2;
             if (useWeightedAssignment) {
-              score = dr2 * seedWeight[jseed]; // = dr2 / pt_seed^alpha
+              score = dr2 * seedWeight[jseed];  // = dr2 / pt_seed^alpha
             }
 
             if (score < bestScore) {
@@ -834,11 +830,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
             clusters.is_seed()[orig] = 0;
 
           if (bestJ >= 0) {
-            alpaka::atomicAdd(
-              acc,
-              &jetsNonZS.numberOfDaughters()[begin + bestJ],
-              1u,
-              alpaka::hierarchy::Threads{});
+            alpaka::atomicAdd(acc, &jetsNonZS.numberOfDaughters()[begin + bestJ], 1u, alpaka::hierarchy::Threads{});
           }
         }
 
@@ -858,29 +850,27 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   class JetKernelLinkTree {
   public:
     template <typename TAcc, typename = std::enable_if_t<alpaka::isAccelerator<TAcc>>>
-    ALPAKA_FN_ACC void operator()(
-        TAcc const& acc,
-        PuppiDeviceCollection::ConstView puppi,
-        OffsetsSoA::ConstView bxLookup,
-        BxIndexSoA::ConstView bxIndex,
-        float RLink,
-        float RLink2,
-        float ptMin,
-        uint16_t* uieta,
-        uint16_t* idx,
-        int32_t* parent,
-        int32_t* root,
-        int32_t* rootCid,
-        float* sumPx,
-        float* sumPy,
-        float* sumPz,
-        ClusterObjDeviceCollection::View work,
-        ClustersDeviceCollection::View clusters,
-        ClusterObjDeviceCollection::View jetsNonZS,
-        OffsetsSoA::View jetBxLookup,
-        BxIndexSoA::View jetBxIndex,
-        unsigned int* nJetsTotal) const {
-
+    ALPAKA_FN_ACC void operator()(TAcc const& acc,
+                                  PuppiDeviceCollection::ConstView puppi,
+                                  OffsetsSoA::ConstView bxLookup,
+                                  BxIndexSoA::ConstView bxIndex,
+                                  float RLink,
+                                  float RLink2,
+                                  float ptMin,
+                                  uint16_t* uieta,
+                                  uint16_t* idx,
+                                  int32_t* parent,
+                                  int32_t* root,
+                                  int32_t* rootCid,
+                                  float* sumPx,
+                                  float* sumPy,
+                                  float* sumPz,
+                                  ClusterObjDeviceCollection::View work,
+                                  ClustersDeviceCollection::View clusters,
+                                  ClusterObjDeviceCollection::View jetsNonZS,
+                                  OffsetsSoA::View jetBxLookup,
+                                  BxIndexSoA::View jetBxIndex,
+                                  unsigned int* nJetsTotal) const {
       if (cms::alpakatools::once_per_grid(acc))
         jetBxLookup.offsets()[0] = 0;
 
@@ -889,8 +879,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       // Step 0: sort PF by eta (per BX)
       for (uint32_t block_idx : independent_groups(acc, grid_dim)) {
         uint32_t begin = bxLookup.offsets()[block_idx];
-        uint32_t end   = bxLookup.offsets()[block_idx + 1];
-        if (end <= begin) continue;
+        uint32_t end = bxLookup.offsets()[block_idx + 1];
+        if (end <= begin)
+          continue;
 
         uint32_t block_dim = end - begin;
 
@@ -906,18 +897,19 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       // Step 1: rearrange into eta-sorted work array
       for (uint32_t block_idx : independent_groups(acc, grid_dim)) {
         uint32_t begin = bxLookup.offsets()[block_idx];
-        uint32_t end   = bxLookup.offsets()[block_idx + 1];
-        if (end <= begin) continue;
+        uint32_t end = bxLookup.offsets()[block_idx + 1];
+        if (end <= begin)
+          continue;
 
         uint32_t block_dim = end - begin;
 
         for (uint32_t tid : independent_group_elements(acc, block_dim)) {
-          uint32_t ip   = tid + begin;
+          uint32_t ip = tid + begin;
           uint32_t isrc = idx[ip] + begin;
 
-          work.pt()[ip]      = puppi.pt()[isrc];
-          work.eta()[ip]     = puppi.eta()[isrc];
-          work.phi()[ip]     = puppi.phi()[isrc];
+          work.pt()[ip] = puppi.pt()[isrc];
+          work.eta()[ip] = puppi.eta()[isrc];
+          work.phi()[ip] = puppi.phi()[isrc];
           work.cluster()[ip] = isrc;
         }
       }
@@ -926,10 +918,10 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
       // BX loop
       for (uint32_t block_idx : independent_groups(acc, grid_dim)) {
-
         uint32_t begin = bxLookup.offsets()[block_idx];
-        uint32_t end   = bxLookup.offsets()[block_idx + 1];
-        if (end <= begin) continue;
+        uint32_t end = bxLookup.offsets()[block_idx + 1];
+        if (end <= begin)
+          continue;
 
         uint32_t block_dim = end - begin;
 
@@ -940,7 +932,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         // Step 2: nearest-higher parent within RLink
         for (uint32_t tid : independent_group_elements(acc, block_dim)) {
-
           uint32_t ip = tid + begin;
 
           float pti = work.pt()[ip];
@@ -965,7 +956,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
               break;
 
             float dphi = cms::alpakatools::deltaPhi(acc, work.phi()[jp], phii);
-            float dr2  = deta * deta + dphi * dphi;
+            float dr2 = deta * deta + dphi * dphi;
 
             if (dr2 >= RLink2)
               continue;
@@ -992,7 +983,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
               break;
 
             float dphi = cms::alpakatools::deltaPhi(acc, work.phi()[jp], phii);
-            float dr2  = deta * deta + dphi * dphi;
+            float dr2 = deta * deta + dphi * dphi;
 
             if (dr2 >= RLink2)
               continue;
@@ -1020,7 +1011,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         // Step 3: root chasing
         for (uint32_t tid : independent_group_elements(acc, block_dim)) {
-
           uint32_t ip = tid + begin;
 
           if (parent[ip] < 0) {
@@ -1051,7 +1041,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         // Step 4: compact roots to cluster ids
         if (once_per_block(acc)) {
-
           nroots = 0u;
 
           for (uint32_t ip = begin; ip < end; ++ip) {
@@ -1066,7 +1055,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         // Step 5: initialize jet sums
         for (uint32_t tid : independent_group_elements(acc, nroots)) {
-
           uint32_t slot = begin + tid;
 
           sumPx[slot] = 0.f;
@@ -1084,8 +1072,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         // Step 6: accumulate jet momentum
         for (uint32_t tid : independent_group_elements(acc, block_dim)) {
-
-          uint32_t ip   = tid + begin;
+          uint32_t ip = tid + begin;
           uint32_t orig = static_cast<uint32_t>(work.cluster()[ip]);
 
           if (parent[ip] < 0 || root[ip] < 0) {
@@ -1094,17 +1081,16 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
             continue;
           }
 
-          int32_t r   = root[ip];
+          int32_t r = root[ip];
           int32_t cid = rootCid[r];
 
           clusters.cluster()[orig] = cid;
           clusters.is_seed()[orig] = (parent[ip] == static_cast<int32_t>(ip)) ? 1 : 0;
 
           if (cid >= 0) {
-
             uint32_t slot = begin + static_cast<uint32_t>(cid);
 
-            float pt  = work.pt()[ip];
+            float pt = work.pt()[ip];
             float phi = work.phi()[ip];
             float eta = work.eta()[ip];
 
@@ -1123,23 +1109,21 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         // Step 7: finalize jet kinematics
         if (once_per_block(acc)) {
-
           for (uint32_t j = 0; j < nroots; ++j) {
-
             uint32_t slot = begin + j;
 
             float px = sumPx[slot];
             float py = sumPy[slot];
             float pz = sumPz[slot];
 
-            float pt  = alpaka::math::sqrt(acc, px * px + py * py);
+            float pt = alpaka::math::sqrt(acc, px * px + py * py);
             float phi = alpaka::math::atan2(acc, py, px);
 
             float eta = 0.f;
             if (pt > 0.f)
               eta = alpaka::math::asinh(acc, pz / pt);
 
-            jetsNonZS.pt()[slot]  = pt;
+            jetsNonZS.pt()[slot] = pt;
             jetsNonZS.eta()[slot] = eta;
             jetsNonZS.phi()[slot] = phi;
             jetsNonZS.cluster()[slot] = j;
@@ -1271,19 +1255,18 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   public:
     template <typename TAcc, typename = std::enable_if_t<alpaka::isAccelerator<TAcc>>>
     ALPAKA_FN_ACC void operator()(TAcc const& acc,
-                                  ClusterObjDeviceCollection::View puppi, // current particle buffer
-                                  OffsetsSoA::ConstView bxLookup, // BX particle ranges
-                                  BxIndexSoA::ConstView bxIndex, // BX number for each block
+                                  ClusterObjDeviceCollection::View puppi,  // current particle buffer
+                                  OffsetsSoA::ConstView bxLookup,          // BX particle ranges
+                                  BxIndexSoA::ConstView bxIndex,           // BX number for each block
                                   float R2,
                                   unsigned int nIters,
-                                  ClustersDeviceCollection::View clusters, // particle -> jet assignment storage
-                                  uint32_t* tag, // tmp array for prefix scan compaction
-                                  ClusterObjDeviceCollection::View work2, // 2nd particle buffer
-                                  ClusterObjDeviceCollection::View jets, // tmp jets
-                                  OffsetsSoA::View jetBxLookup, // jet counts per BX
-                                  BxIndexSoA::View jetBxIndex, // BX numbers for jets
+                                  ClustersDeviceCollection::View clusters,  // particle -> jet assignment storage
+                                  uint32_t* tag,                            // tmp array for prefix scan compaction
+                                  ClusterObjDeviceCollection::View work2,   // 2nd particle buffer
+                                  ClusterObjDeviceCollection::View jets,    // tmp jets
+                                  OffsetsSoA::View jetBxLookup,             // jet counts per BX
+                                  BxIndexSoA::View jetBxIndex,              // BX numbers for jets
                                   unsigned int* nJetsTotal) const {
-
       if (cms::alpakatools::once_per_grid(acc))
         jetBxLookup.offsets()[0] = 0;
 
@@ -1481,7 +1464,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                                      const CounterDevice& nJetsTotalDevice,
                                      const ClusterObjDeviceCollection& jetsNonZS,
                                      BxLookupDeviceCollection& jetBxLookup) const {
-
     unsigned int nbx = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
     uint32_t threads_per_block = kThreadsPerBlock;
     uint32_t blocks_per_grid = nbx;
@@ -1671,14 +1653,12 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   // implementation, because this function is meant to preserve the old
   // SCNMS logic as closely as possible.
   // ----------------------------------------------------------------------
-  L1TScPhase2SCJetsKernels::return_type
-  L1TScPhase2SCJetsKernels::runSCNMS(
-      Queue& queue,
-      const PuppiDeviceCollection& src,
-      const BxLookupDeviceCollection& bxLookup,
-      float RSeed2,
-      float RClu2,
-      ClustersDeviceCollection& clusters) const {
+  L1TScPhase2SCJetsKernels::return_type L1TScPhase2SCJetsKernels::runSCNMS(Queue& queue,
+                                                                           const PuppiDeviceCollection& src,
+                                                                           const BxLookupDeviceCollection& bxLookup,
+                                                                           float RSeed2,
+                                                                           float RClu2,
+                                                                           ClustersDeviceCollection& clusters) const {
     unsigned int nbx = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
 
     uint32_t threads_per_block = kThreadsPerBlock;
@@ -1737,8 +1717,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   // part of this implementation, because this function is meant to preserve
   // the old weighted SCNMS logic as closely as possible.
   // ----------------------------------------------------------------------
-  L1TScPhase2SCJetsKernels::return_type
-  L1TScPhase2SCJetsKernels::runSCNMSWeighted(
+  L1TScPhase2SCJetsKernels::return_type L1TScPhase2SCJetsKernels::runSCNMSWeighted(
       Queue& queue,
       const PuppiDeviceCollection& src,
       const BxLookupDeviceCollection& bxLookup,
@@ -1791,8 +1770,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   // ----------------------------------------------------------------------
   // SCNMSWeightedMultiIter = newer weighted multi-radius NMS-style kernel
   // ----------------------------------------------------------------------
-  L1TScPhase2SCJetsKernels::return_type
-  L1TScPhase2SCJetsKernels::runSCNMSWeightedMultiIter(
+  L1TScPhase2SCJetsKernels::return_type L1TScPhase2SCJetsKernels::runSCNMSWeightedMultiIter(
       Queue& queue,
       const PuppiDeviceCollection& src,
       const BxLookupDeviceCollection& bxLookup,
@@ -1803,27 +1781,26 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       float minSeedPt,
       unsigned int nCentroidIters,
       ClustersDeviceCollection& clusters) const {
-
-    unsigned int nbx   = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
+    unsigned int nbx = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
     unsigned int npart = src.const_view().metadata().size();
 
     uint32_t threads_per_block = kThreadsPerBlock;
-    uint32_t blocks_per_grid   = nbx;
+    uint32_t blocks_per_grid = nbx;
     auto grid = cms::alpakatools::make_workdiv<Acc1D>(blocks_per_grid, threads_per_block);
 
     auto uieta_device = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
-    auto idx_device   = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
+    auto idx_device = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
     alpaka::memset(queue, idx_device, 0x00);
 
     auto seedWeight_device = alpaka::allocAsyncBuf<float, Idx>(queue, cms::alpakatools::Vec1D(npart));
-    auto seedPos_device    = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
+    auto seedPos_device = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
     alpaka::memset(queue, seedWeight_device, 0x00);
     alpaka::memset(queue, seedPos_device, 0x00);
 
     auto nJetsTotalDevice = CounterDevice(queue);
     nJetsTotalDevice.zeroInitialise(queue);
 
-    auto work      = ClusterObjDeviceCollection(npart, queue);
+    auto work = ClusterObjDeviceCollection(npart, queue);
     auto jetsNonZS = ClusterObjDeviceCollection(npart, queue);
     jetsNonZS.zeroInitialise(queue);
     clusters.zeroInitialise(queue);
@@ -1832,8 +1809,8 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     jetBxLookup.zeroInitialise(queue);
 
     float RSeed = std::sqrt(RSeed2);
-    float RCen  = std::sqrt(RCen2);
-    float RClu  = std::sqrt(RClu2);
+    float RCen = std::sqrt(RCen2);
+    float RClu = std::sqrt(RClu2);
 
     alpaka::exec<Acc1D>(queue,
                         grid,
@@ -1850,7 +1827,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
                         alphaSeed,
                         minSeedPt,
                         nCentroidIters,
-                        true,                    // weighted assignment
+                        true,  // weighted assignment
                         uieta_device.data(),
                         idx_device.data(),
                         seedWeight_device.data(),
@@ -1868,44 +1845,42 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   // ----------------------------------------------------------------------
   // LinkTree
   // ----------------------------------------------------------------------
-  L1TScPhase2SCJetsKernels::return_type
-  L1TScPhase2SCJetsKernels::runLinkTree(
-      Queue& queue,
-      const PuppiDeviceCollection& src,
-      const BxLookupDeviceCollection& bxLookup,
-      float RLink2,
-      float ptMin,
-      ClustersDeviceCollection& clusters) const {
-    unsigned int nbx   = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
+  L1TScPhase2SCJetsKernels::return_type L1TScPhase2SCJetsKernels::runLinkTree(Queue& queue,
+                                                                              const PuppiDeviceCollection& src,
+                                                                              const BxLookupDeviceCollection& bxLookup,
+                                                                              float RLink2,
+                                                                              float ptMin,
+                                                                              ClustersDeviceCollection& clusters) const {
+    unsigned int nbx = bxLookup.const_view<OffsetsSoA>().metadata().size() - 1;
     unsigned int npart = src.const_view().metadata().size();
 
     uint32_t threads_per_block = kThreadsPerBlock;
-    uint32_t blocks_per_grid   = nbx;
+    uint32_t blocks_per_grid = nbx;
     auto grid = cms::alpakatools::make_workdiv<Acc1D>(blocks_per_grid, threads_per_block);
 
     auto uieta_device = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
-    auto idx_device   = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
+    auto idx_device = alpaka::allocAsyncBuf<uint16_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
     alpaka::memset(queue, idx_device, 0x00);
 
-    auto parent_device  = alpaka::allocAsyncBuf<int32_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
-    auto root_device    = alpaka::allocAsyncBuf<int32_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
+    auto parent_device = alpaka::allocAsyncBuf<int32_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
+    auto root_device = alpaka::allocAsyncBuf<int32_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
     auto rootCid_device = alpaka::allocAsyncBuf<int32_t, Idx>(queue, cms::alpakatools::Vec1D(npart));
 
     auto sumPx_device = alpaka::allocAsyncBuf<float, Idx>(queue, cms::alpakatools::Vec1D(npart));
     auto sumPy_device = alpaka::allocAsyncBuf<float, Idx>(queue, cms::alpakatools::Vec1D(npart));
     auto sumPz_device = alpaka::allocAsyncBuf<float, Idx>(queue, cms::alpakatools::Vec1D(npart));
 
-    alpaka::memset(queue, parent_device,  0xFF);
-    alpaka::memset(queue, root_device,    0xFF);
+    alpaka::memset(queue, parent_device, 0xFF);
+    alpaka::memset(queue, root_device, 0xFF);
     alpaka::memset(queue, rootCid_device, 0xFF);
-    alpaka::memset(queue, sumPx_device,   0x00);
-    alpaka::memset(queue, sumPy_device,   0x00);
-    alpaka::memset(queue, sumPz_device,   0x00);
+    alpaka::memset(queue, sumPx_device, 0x00);
+    alpaka::memset(queue, sumPy_device, 0x00);
+    alpaka::memset(queue, sumPz_device, 0x00);
 
     auto nJetsTotalDevice = CounterDevice(queue);
     nJetsTotalDevice.zeroInitialise(queue);
 
-    auto work      = ClusterObjDeviceCollection(npart, queue);
+    auto work = ClusterObjDeviceCollection(npart, queue);
     auto jetsNonZS = ClusterObjDeviceCollection(npart, queue);
     jetsNonZS.zeroInitialise(queue);
     clusters.zeroInitialise(queue);

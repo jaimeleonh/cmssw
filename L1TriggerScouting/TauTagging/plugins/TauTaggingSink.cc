@@ -32,11 +32,8 @@ namespace l1sc {
         : pf_token_{consumes(params.getUntrackedParameter<edm::InputTag>("src"))},
           bx_lookup_token_{consumes(params.getUntrackedParameter<edm::InputTag>("src"))},
           clusters_token_{consumes(params.getUntrackedParameter<edm::InputTag>("clusters"))},
-<<<<<<< HEAD
-=======
           association_map_token_{consumes(params.getUntrackedParameter<edm::InputTag>("clusters"))},
           taus_token_{consumes(params.getUntrackedParameter<edm::InputTag>("taus"))},
->>>>>>> 9d93f69582b (Reorder TensorSoA [cls, vz, pt, charge], add model with wrapped sigmoid on top, refactor preprocessing step with new CLUE features)
           pf_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("src")))},
           bx_lookup_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("src")))},
           clusters_backend_{consumes(getBackendTag(params.getUntrackedParameter<edm::InputTag>("clusters")))},
@@ -112,7 +109,10 @@ namespace l1sc {
               auto const& bx_lookup = *bx_lookup_handle;
               auto const bx_lookup_backend = static_cast<Backend>(event.get(bx_lookup_backend_));
               assert(pf_backend == bx_lookup_backend);
-              print(pf.const_view(), bx_lookup.const_view<BxIndexSoA>(), bx_lookup.const_view<OffsetsSoA>(), toString(pf_backend));
+              print(pf.const_view(),
+                    bx_lookup.const_view<BxIndexSoA>(),
+                    bx_lookup.const_view<OffsetsSoA>(),
+                    toString(pf_backend));
             } else {
               // debug unpacker only
               print(pf.const_view(), toString(pf_backend));
@@ -149,8 +149,13 @@ namespace l1sc {
       const int max_entries = (environment_ > Environment::kTest) ? taus.metadata().size() : 5;
       for (int i = 0; i < taus.metadata().size() && i < max_entries; ++i) {
         const auto size = offsets.offsets()[i + 1] - offsets.offsets()[i];
-        fmt::print("| {:>7} | {:>7} | {:>9.4f} | {:>9.4f} | {:>9.4f} | {:>9.4f} |\n", 
-          i, size, taus.cls()[i], taus.vz()[i], taus.pt()[i], taus.charge()[i]);
+        fmt::print("| {:>7} | {:>7} | {:>9.4f} | {:>9.4f} | {:>9.4f} | {:>9.4f} |\n",
+                   i,
+                   size,
+                   taus.cls()[i],
+                   taus.vz()[i],
+                   taus.pt()[i],
+                   taus.charge()[i]);
       }
       if (max_entries < taus.metadata().size()) {
         fmt::print("| {:>7} | {:>7} | {:>9} | {:>9} | {:>9} | {:>9} |\n", "...", "...", "...", "...", "...", "...");
@@ -172,7 +177,11 @@ namespace l1sc {
         if (clusters.cluster()[i] > clusters_num)
           clusters_num = clusters.cluster()[i];
       }
+<<<<<<< HEAD
       fmt::print("[DEBUG] CLUETaus[{}] ({}) found {} clusters:\n", size, clusters_backend, clusters_num);
+=======
+      fmt::print("[DEBUG] CLUETaus[{}] ({}) found {} clusters:\n", size, clusters_backend, clusters_num + 1);
+>>>>>>> 3c088364af7 (scram code-checks and code-format)
 
       constexpr auto sep =
           "+---------+---------+---------+---------+---------+---------+---------+---------+---------+-------"
@@ -222,18 +231,17 @@ namespace l1sc {
       }
 
       if (max_entries < size) {
-        fmt::print(
-            "| {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} |\n",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...");
+        fmt::print("| {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} |\n",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...");
       }
 
       fmt::print("{}\n", sep);
@@ -434,19 +442,18 @@ namespace l1sc {
 
       // Ellipsis row if not all printed
       if (printed < size) {
-        fmt::print(
-            "| {:>5} | {:>9} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} |\n",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...",
-            "...");
+        fmt::print("| {:>5} | {:>9} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} | {:>7} |\n",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...",
+                   "...");
         // Print last 5 entries of the last BX only
         const int lastBxIdx = bx_index.metadata().size() - 1;
         const int start = offsets.offsets()[lastBxIdx];

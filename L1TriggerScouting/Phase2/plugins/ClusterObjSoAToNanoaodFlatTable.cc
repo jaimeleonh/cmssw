@@ -20,16 +20,15 @@
 #include "DataFormats/L1ScoutingSoA/interface/BxLookupHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
 
-
 class ClusterObjSoAToNanoaodFlatTable : public edm::global::EDProducer<> {
 public:
   // constructor and destructor
-  explicit ClusterObjSoAToNanoaodFlatTable(const edm::ParameterSet&);
+  explicit ClusterObjSoAToNanoaodFlatTable(const edm::ParameterSet &);
   ~ClusterObjSoAToNanoaodFlatTable() override {};
 
-  void produce(edm::StreamID, edm::Event&, edm::EventSetup const&) const override;
+  void produce(edm::StreamID, edm::Event &, edm::EventSetup const &) const override;
 
-  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+  static void fillDescriptions(edm::ConfigurationDescriptions &descriptions);
 
 private:
   // the tokens to access the data
@@ -41,7 +40,7 @@ private:
 
 // -------------------------------- constructor  -------------------------------
 
-ClusterObjSoAToNanoaodFlatTable::ClusterObjSoAToNanoaodFlatTable(const edm::ParameterSet& iConfig)
+ClusterObjSoAToNanoaodFlatTable::ClusterObjSoAToNanoaodFlatTable(const edm::ParameterSet &iConfig)
     : srcClusters_(consumes<l1sc::ClusterObjHostCollection>(iConfig.getParameter<edm::InputTag>("srcClusters"))),
       name_(iConfig.getParameter<std::string>("name")),
       doc_(iConfig.getParameter<std::string>("doc")) {
@@ -50,7 +49,7 @@ ClusterObjSoAToNanoaodFlatTable::ClusterObjSoAToNanoaodFlatTable(const edm::Para
 // -----------------------------------------------------------------------------
 
 // ----------------------- method called for each orbit  -----------------------
-void ClusterObjSoAToNanoaodFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm::EventSetup const&) const {
+void ClusterObjSoAToNanoaodFlatTable::produce(edm::StreamID, edm::Event &iEvent, edm::EventSetup const &) const {
   edm::Handle<l1sc::ClusterObjHostCollection> srcClusters;
   iEvent.getByToken(srcClusters_, srcClusters);
 
@@ -84,7 +83,7 @@ void ClusterObjSoAToNanoaodFlatTable::produce(edm::StreamID, edm::Event& iEvent,
   iEvent.put(std::move(out));
 }
 
-void ClusterObjSoAToNanoaodFlatTable::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+void ClusterObjSoAToNanoaodFlatTable::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
   edm::ParameterSetDescription desc;
   desc.add<edm::InputTag>("srcClusters");
   desc.add<std::string>("name");

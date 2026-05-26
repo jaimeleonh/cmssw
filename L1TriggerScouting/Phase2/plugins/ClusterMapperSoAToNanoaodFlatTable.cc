@@ -21,7 +21,6 @@
 #include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/AssociationMapHost.h"
 
-
 class ClusterMapperSoAToNanoaodFlatTable : public edm::global::EDProducer<> {
 public:
   // constructor and destructor
@@ -46,7 +45,7 @@ ClusterMapperSoAToNanoaodFlatTable::ClusterMapperSoAToNanoaodFlatTable(const edm
     : srcClusters_(consumes<l1sc::ClustersHostCollection>(iConfig.getParameter<edm::InputTag>("srcClusters"))),
       name_(iConfig.getParameter<std::string>("name")),
       clustering_name_(iConfig.getParameter<std::string>("clustering_name")),
-      doc_(iConfig.getParameter<std::string>("doc")){
+      doc_(iConfig.getParameter<std::string>("doc")) {
   produces<nanoaod::FlatTable>();
 }
 // -----------------------------------------------------------------------------
@@ -56,15 +55,16 @@ void ClusterMapperSoAToNanoaodFlatTable::produce(edm::StreamID, edm::Event& iEve
   edm::Handle<l1sc::ClustersHostCollection> srcClusters;
   iEvent.getByToken(srcClusters_, srcClusters);
 
-  const auto *cluster = srcClusters->const_view().cluster().data();
-  const auto *seed = srcClusters->const_view().is_seed().data();
+  const auto* cluster = srcClusters->const_view().cluster().data();
+  const auto* seed = srcClusters->const_view().is_seed().data();
   const unsigned int nclusters = srcClusters->const_view().metadata().size();
   std::vector<int32_t> clusters{cluster, cluster + nclusters};
   std::vector<int32_t> is_seed{seed, seed + nclusters};
 
   auto out = std::make_unique<nanoaod::FlatTable>(clusters.size(), name_, false, true);
   out->setDoc(doc_);
-  out->addColumn<int32_t>("clusterIndex" + clustering_name_, clusters, "associated cluster index for " + clustering_name_);
+  out->addColumn<int32_t>(
+      "clusterIndex" + clustering_name_, clusters, "associated cluster index for " + clustering_name_);
   out->addColumn<int32_t>("isSeed" + clustering_name_, is_seed, "cluster used as seed for " + clustering_name_);
   iEvent.put(std::move(out));
 }

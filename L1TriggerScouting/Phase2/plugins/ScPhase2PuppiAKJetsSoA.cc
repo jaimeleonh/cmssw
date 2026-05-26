@@ -42,12 +42,12 @@ private:
 
 ScPhase2PuppiAKJetsSoA::ScPhase2PuppiAKJetsSoA(const edm::ParameterSet &iConfig)
     : src_candidates_token_(consumes<l1sc::PuppiHostCollection>(iConfig.getParameter<edm::InputTag>("src"))),
-    bx_lookup_token_(consumes<l1sc::BxLookupHostCollection>(iConfig.getParameter<edm::InputTag>("src"))),
+      bx_lookup_token_(consumes<l1sc::BxLookupHostCollection>(iConfig.getParameter<edm::InputTag>("src"))),
       R_(iConfig.getParameter<double>("rParam")) {
-    produces<l1sc::AssociationMapHost>();
-    produces<l1sc::BxLookupHostCollection>();
-    produces<l1sc::ClustersHostCollection>();
-    produces<l1sc::ClusterObjHostCollection>();
+  produces<l1sc::AssociationMapHost>();
+  produces<l1sc::BxLookupHostCollection>();
+  produces<l1sc::ClustersHostCollection>();
+  produces<l1sc::ClusterObjHostCollection>();
 }
 
 ScPhase2PuppiAKJetsSoA::~ScPhase2PuppiAKJetsSoA() {};
@@ -61,13 +61,13 @@ void ScPhase2PuppiAKJetsSoA::produce(edm::Event &iEvent, const edm::EventSetup &
   iEvent.getByToken(src_candidates_token_, src);
   l1sc::PuppiHostCollection::ConstView candidates = src->const_view();
 
-   edm::Handle<l1sc::BxLookupHostCollection> bxLookup;
-  iEvent.getByToken(bx_lookup_token_, bxLookup); 
+  edm::Handle<l1sc::BxLookupHostCollection> bxLookup;
+  iEvent.getByToken(bx_lookup_token_, bxLookup);
   unsigned int nbx = bxLookup->view<l1sc::OffsetsSoA>().metadata().size() - 1;
   auto srcOffsets = bxLookup->const_view<l1sc::OffsetsSoA>().offsets();
   auto srcBx = bxLookup->const_view<l1sc::BxIndexSoA>().bx();
 
-  std::array<int32_t, 2> bxLookupSizes{{int32_t(nbx), int32_t(nbx+1)}};
+  std::array<int32_t, 2> bxLookupSizes{{int32_t(nbx), int32_t(nbx + 1)}};
   auto jetBxLookup = std::make_unique<l1sc::BxLookupHostCollection>(bxLookupSizes, cms::alpakatools::host());
   auto jetOffsets = jetBxLookup->view<l1sc::OffsetsSoA>().offsets();
   auto jetBx = jetBxLookup->view<l1sc::BxIndexSoA>().bx();
@@ -78,7 +78,8 @@ void ScPhase2PuppiAKJetsSoA::produce(edm::Event &iEvent, const edm::EventSetup &
   std::vector<float> eta;
   std::vector<float> phi;
   // clustering information
-  auto clusterInfo = std::make_unique<l1sc::ClustersHostCollection>(candidates.metadata().size(), cms::alpakatools::host());
+  auto clusterInfo =
+      std::make_unique<l1sc::ClustersHostCollection>(candidates.metadata().size(), cms::alpakatools::host());
   auto cluster = clusterInfo->view().cluster();
   auto is_seed = clusterInfo->view().is_seed();
 
@@ -95,18 +96,18 @@ void ScPhase2PuppiAKJetsSoA::produce(edm::Event &iEvent, const edm::EventSetup &
     uint32_t begin = srcOffsets[block_idx];
     uint32_t end = srcOffsets[block_idx + 1];
     if (end <= begin)
-        continue;
+      continue;
     uint32_t block_dim = end - begin;
 
     particles.clear();
     for (unsigned i = 0; i < block_dim; i++) {
-        unsigned int idx = begin + i;
-        cluster[idx] = -1;
-        is_seed[idx] = 0;
-        float mass = 0.13;
-        ROOT::Math::PtEtaPhiMVector p4(candidates.pt()[idx], candidates.eta()[idx], candidates.phi()[idx], mass); 
-        particles.emplace_back(p4.px(), p4.py(), p4.pz(), p4.energy());
-        particles.back().set_user_index(i);
+      unsigned int idx = begin + i;
+      cluster[idx] = -1;
+      is_seed[idx] = 0;
+      float mass = 0.13;
+      ROOT::Math::PtEtaPhiMVector p4(candidates.pt()[idx], candidates.eta()[idx], candidates.phi()[idx], mass);
+      particles.emplace_back(p4.px(), p4.py(), p4.pz(), p4.energy());
+      particles.back().set_user_index(i);
     }
 
     // run the clustering, extract the jets
@@ -114,17 +115,17 @@ void ScPhase2PuppiAKJetsSoA::produce(edm::Event &iEvent, const edm::EventSetup &
     auto jets = sorted_by_pt(cs.inclusive_jets());
 
     unsigned int icluster = 0;
-    for (auto j : jets) {
+    for (const auto &j : jets) {
       pt.push_back(j.pt());
       eta.push_back(j.eta());
       phi.push_back(reco::reducePhiRange(j.phi()));
-      const auto & constituents = j.constituents();
+      const auto &constituents = j.constituents();
       ndaughters.push_back(constituents.size());
-      for (const auto & dau : constituents) {
+      for (const auto &dau : constituents) {
         unsigned int idx = dau.user_index() + begin;
         cluster[idx] = icluster;
         indices.push_back(idx);
-      } 
+      }
       icluster++;
     }
 
@@ -135,7 +136,7 @@ void ScPhase2PuppiAKJetsSoA::produce(edm::Event &iEvent, const edm::EventSetup &
   int32_t nclustered = indices.size();
   int32_t njets = pt.size();
 
-  std::array<int32_t, 2> clusterInfoSizes{{nclustered, njets+1}};
+  std::array<int32_t, 2> clusterInfoSizes{{nclustered, njets + 1}};
   auto map = std::make_unique<l1sc::AssociationMapHost>(clusterInfoSizes, cms::alpakatools::host());
   auto jets = std::make_unique<l1sc::ClusterObjHostCollection>(njets, cms::alpakatools::host());
   auto jetsOut = jets->view();

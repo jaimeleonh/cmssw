@@ -8,8 +8,8 @@
 
 namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
-  template<typename TAcc, typename T>
-  inline ALPAKA_FN_ACC void swap(TAcc const& acc, T &a, T &b) {
+  template <typename TAcc, typename T>
+  inline ALPAKA_FN_ACC void swap(TAcc const& acc, T& a, T& b) {
     T temp = a;
     a = b;
     b = temp;
@@ -19,17 +19,16 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   class SortClustersKernel {
   public:
-    ALPAKA_FN_ACC void operator()(
-        Acc1D const& acc,
-        const float* weights,
-        IndexSoA::View indexes, 
-        OffsetsSoA::View offsets) const {
+    ALPAKA_FN_ACC void operator()(Acc1D const& acc,
+                                  const float* weights,
+                                  IndexSoA::View indexes,
+                                  OffsetsSoA::View offsets) const {
       const uint8_t kSharedMemSize = 128;
       auto& indices_shared = alpaka::declareSharedVar<int[kSharedMemSize], __COUNTER__>(acc);
-      auto& weights_shared = alpaka::declareSharedVar<float[kSharedMemSize], __COUNTER__>(acc); 
+      auto& weights_shared = alpaka::declareSharedVar<float[kSharedMemSize], __COUNTER__>(acc);
 
       // loop over clusters in parallel
-      for (uint32_t block_idx: independent_groups(acc, offsets.metadata().size() - 1)) {
+      for (uint32_t block_idx : independent_groups(acc, offsets.metadata().size() - 1)) {
         // bind range to hw block
         uint32_t begin = offsets.offsets()[block_idx];
         uint32_t end = offsets.offsets()[block_idx + 1];
@@ -82,20 +81,19 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   class CopyAssociatorKernel {
   public:
-    ALPAKA_FN_ACC void operator()(
-        Acc1D const& acc, 
-        clue::AssociationMapView associator, 
-        IndexSoA::View indexes, 
-        OffsetsSoA::View offsets, 
-        const float* weights) const {
+    ALPAKA_FN_ACC void operator()(Acc1D const& acc,
+                                  clue::AssociationMapView associator,
+                                  IndexSoA::View indexes,
+                                  OffsetsSoA::View offsets,
+                                  const float* weights) const {
       if (once_per_grid(acc)) {
         offsets.offsets()[0] = 0;
         for (int c_id = 0; c_id < offsets.metadata().size() - 1; c_id++) {
           auto span = associator[c_id];
-          offsets.offsets()[c_id+1] = span.size() + offsets.offsets()[c_id];
+          offsets.offsets()[c_id + 1] = span.size() + offsets.offsets()[c_id];
           auto begin = offsets.offsets()[c_id];
           for (int i = 0; i < span.size(); i++) {
-            indexes.indexes()[i+begin] = span[i];
+            indexes.indexes()[i + begin] = span[i];
           }
         }
       }
@@ -105,7 +103,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   CLUEsteringAlgo::CLUEsteringAlgo(float dc, float rhoc, float dm, bool wrap_coords)
       : dc_(dc), rhoc_(rhoc), dm_(dm), wrap_coords_(wrap_coords) {}
 
-  AssociationMapDevice CLUEsteringAlgo::run(Queue& queue, const PFCandidateDeviceCollection& pf, ClustersDeviceCollection& clusters) const {
+  AssociationMapDevice CLUEsteringAlgo::run(Queue& queue,
+                                            const PFCandidateDeviceCollection& pf,
+                                            ClustersDeviceCollection& clusters) const {
     const uint32_t n_points = pf.const_view().metadata().size();
 
     // buffers
@@ -125,35 +125,36 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     clue_algo.make_clusters(queue, points_device);
     auto associator = clue_algo.getClusters(queue, points_device);
 
-    auto association_soa = AssociationMapDevice({{static_cast<int>(n_points), static_cast<int>(associator.size()+1)}}, queue);
+    auto association_soa =
+        AssociationMapDevice({{static_cast<int>(n_points), static_cast<int>(associator.size() + 1)}}, queue);
     association_soa.zeroInitialise(queue);
 
     // copy clue::AssociationMapView (should be parallelized inside kernel)
-    alpaka::exec<Acc1D>(queue, 
-      make_workdiv<Acc1D>(1, 1), 
-      CopyAssociatorKernel{}, 
-      associator.view(), 
-      association_soa.view<IndexSoA>(), 
-      association_soa.view<OffsetsSoA>(),
-      pf.const_view().pt().data());
+    alpaka::exec<Acc1D>(queue,
+                        make_workdiv<Acc1D>(1, 1),
+                        CopyAssociatorKernel{},
+                        associator.view(),
+                        association_soa.view<IndexSoA>(),
+                        association_soa.view<OffsetsSoA>(),
+                        pf.const_view().pt().data());
 
     // sort clusters by pt
     // TODO: this will be done inside CLUE in the future, efficient copy required
     // right now all underlying buffers are private
-    alpaka::exec<Acc1D>(queue, 
-      make_workdiv<Acc1D>(associator.size(), 128), 
-      SortClustersKernel{}, 
-      pf.const_view().pt().data(),
-      association_soa.view<IndexSoA>(), 
-      association_soa.view<OffsetsSoA>());
+    alpaka::exec<Acc1D>(queue,
+                        make_workdiv<Acc1D>(associator.size(), 128),
+                        SortClustersKernel{},
+                        pf.const_view().pt().data(),
+                        association_soa.view<IndexSoA>(),
+                        association_soa.view<OffsetsSoA>());
 
     return association_soa;
   }
 
   AssociationMapDevice CLUEsteringAlgo::run(Queue& queue,
-                            const PFCandidateDeviceCollection& pf,
-                            const BxLookupDeviceCollection& bx_lookup,
-                            ClustersDeviceCollection& clusters) const {
+                                            const PFCandidateDeviceCollection& pf,
+                                            const BxLookupDeviceCollection& bx_lookup,
+                                            ClustersDeviceCollection& clusters) const {
     // TODO: CLUE is not yet adapted to run on multiple BXs and batch efficiently, for loop required.
     const auto nbx = static_cast<int32_t>(bx_lookup.const_view<BxIndexSoA>().metadata().size());
     auto bx_lookup_host = BxLookupHostCollection({{nbx, nbx + 1}}, queue);
@@ -163,7 +164,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     // allocate a big map to store all BXs associations, will be compacted at the end
     // by design the number of clusters is <= number of PF candidates
     const auto n_pf = pf.const_view().metadata().size();
-    auto association_nonzs = AssociationMapDevice({{n_pf, n_pf+1}}, queue);
+    auto association_nonzs = AssociationMapDevice({{n_pf, n_pf + 1}}, queue);
     association_nonzs.zeroInitialise(queue);
 
     unsigned int clustersTotal = 0, clusteredTotal = 0;
@@ -195,53 +196,50 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
       // concatenate the association maps (could be done better!)
       auto nclusters = associator.size();
       auto nclustered = associator.extents().values;
-      alpaka::exec<Acc1D>(queue, 
-        make_workdiv<Acc1D>(1, 1), 
-        [] ALPAKA_FN_ACC(Acc1D const& acc,
-                         clue::AssociationMapView associator, 
-                         IndexSoA::View indexes, 
-                         OffsetsSoA::View offsets,
-                         int nclusters,
-                         unsigned int begin_clusters,
-                         unsigned int begin_clustered) {
-          if (once_per_grid(acc)) {
-            offsets.offsets()[begin_clusters] = begin_clustered;
-            for (int c_id = 0; c_id < nclusters; c_id++) {
-              auto span = associator[c_id];
-              offsets.offsets()[begin_clusters+c_id+1] = span.size() + offsets.offsets()[begin_clusters+c_id];
-              auto begin = offsets.offsets()[begin_clusters+c_id];
-              for (int i = 0; i < span.size(); i++) {
-                indexes.indexes()[i+begin] = span[i];
+      alpaka::exec<Acc1D>(
+          queue,
+          make_workdiv<Acc1D>(1, 1),
+          [] ALPAKA_FN_ACC(Acc1D const& acc,
+                           clue::AssociationMapView associator,
+                           IndexSoA::View indexes,
+                           OffsetsSoA::View offsets,
+                           int nclusters,
+                           unsigned int begin_clusters,
+                           unsigned int begin_clustered) {
+            if (once_per_grid(acc)) {
+              offsets.offsets()[begin_clusters] = begin_clustered;
+              for (int c_id = 0; c_id < nclusters; c_id++) {
+                auto span = associator[c_id];
+                offsets.offsets()[begin_clusters + c_id + 1] = span.size() + offsets.offsets()[begin_clusters + c_id];
+                auto begin = offsets.offsets()[begin_clusters + c_id];
+                for (int i = 0; i < span.size(); i++) {
+                  indexes.indexes()[i + begin] = span[i];
+                }
               }
             }
-          }
-        },        
-        associator.view(), 
-        association_nonzs.view<IndexSoA>(), 
-        association_nonzs.view<OffsetsSoA>(),
-        nclusters,
-        clustersTotal,
-        clusteredTotal);
-        clustersTotal += nclusters;
-        clusteredTotal += nclustered;
+          },
+          associator.view(),
+          association_nonzs.view<IndexSoA>(),
+          association_nonzs.view<OffsetsSoA>(),
+          nclusters,
+          clustersTotal,
+          clusteredTotal);
+      clustersTotal += nclusters;
+      clusteredTotal += nclustered;
     }
 
     // make final association map copying only used entries
     // could be done better
-    auto association_soa = AssociationMapDevice({{int(clusteredTotal), int(clustersTotal+1)}}, queue);
+    auto association_soa = AssociationMapDevice({{int(clusteredTotal), int(clustersTotal + 1)}}, queue);
     association_soa.zeroInitialise(queue);
-    auto srcIdx = alpaka::createView(alpaka::getDev(queue), 
-                             association_nonzs.view<IndexSoA>().indexes().data(),
-                             Vec1D{clusteredTotal});
-    auto dstIdx = alpaka::createView(alpaka::getDev(queue), 
-                             association_soa.view<IndexSoA>().indexes().data(),
-                             Vec1D{clusteredTotal});                             
-    auto srcOffs = alpaka::createView(alpaka::getDev(queue), 
-                             association_nonzs.view<OffsetsSoA>().offsets().data(),
-                             Vec1D{clustersTotal});
-    auto dstOffs = alpaka::createView(alpaka::getDev(queue), 
-                             association_soa.view<OffsetsSoA>().offsets().data(),
-                             Vec1D{clustersTotal});                             
+    auto srcIdx = alpaka::createView(
+        alpaka::getDev(queue), association_nonzs.view<IndexSoA>().indexes().data(), Vec1D{clusteredTotal});
+    auto dstIdx = alpaka::createView(
+        alpaka::getDev(queue), association_soa.view<IndexSoA>().indexes().data(), Vec1D{clusteredTotal});
+    auto srcOffs = alpaka::createView(
+        alpaka::getDev(queue), association_nonzs.view<OffsetsSoA>().offsets().data(), Vec1D{clustersTotal});
+    auto dstOffs = alpaka::createView(
+        alpaka::getDev(queue), association_soa.view<OffsetsSoA>().offsets().data(), Vec1D{clustersTotal});
     alpaka::memcpy(queue, dstIdx, srcIdx);
     alpaka::memcpy(queue, dstOffs, srcOffs);
     return association_soa;

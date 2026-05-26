@@ -20,7 +20,6 @@
 #include "DataFormats/L1ScoutingSoA/interface/BxLookupHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
 
-
 class ClusterSoAToOrbitFlatTable : public edm::global::EDProducer<> {
 public:
   // constructor and destructor
@@ -58,18 +57,18 @@ void ClusterSoAToOrbitFlatTable::produce(edm::StreamID, edm::Event& iEvent, edm:
   edm::Handle<l1sc::ClustersHostCollection> srcClusters;
   iEvent.getByToken(srcClusters_, srcClusters);
 
-  const auto *bxs = srcBx->const_view<l1sc::OffsetsSoA>().offsets().data();
+  const auto* bxs = srcBx->const_view<l1sc::OffsetsSoA>().offsets().data();
   const unsigned int nbx = srcBx->const_view<l1sc::OffsetsSoA>().metadata().size();
   std::vector<unsigned int> bxOffsets;
   bxOffsets.push_back(0);
   bxOffsets.insert(bxOffsets.end(), bxs, bxs + nbx);
 
-  const auto *cluster = srcClusters->const_view().cluster().data();
-  const auto *seed = srcClusters->const_view().is_seed().data();
+  const auto* cluster = srcClusters->const_view().cluster().data();
+  const auto* seed = srcClusters->const_view().is_seed().data();
   const unsigned int nclusters = srcClusters->const_view().metadata().size();
   std::vector<int32_t> clusters{cluster, cluster + nclusters};
   std::vector<int32_t> is_seed{seed, seed + nclusters};
-  
+
   auto out = std::make_unique<l1ScoutingRun3::OrbitFlatTable>(bxOffsets, name_);
   out->setDoc(doc_);
   out->addColumn<int32_t>("cluster", clusters, "cluster index");

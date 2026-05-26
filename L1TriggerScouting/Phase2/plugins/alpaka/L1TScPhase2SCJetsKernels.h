@@ -1,15 +1,15 @@
 #ifndef L1TriggerScouting_Phase2_plugins_alpaka_L1TScPhase2SCJetsKernels_h
 #define L1TriggerScouting_Phase2_plugins_alpaka_L1TScPhase2SCJetsKernels_h
 
-#include <alpaka/alpaka.hpp> // main Alpaka library header
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h" // jet to const mapping
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDeviceCollection.h" // offset for BX
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h" // per-part cluster  and isSeed
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h" // per-part pt,eta,... on device
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/CounterDevice.h" // global counts (njets, clustered part) on device memory
-#include "HeterogeneousCore/AlpakaInterface/interface/config.h" // Aliases like Queue, Acc1D,...
+#include <alpaka/alpaka.hpp>                                                      // main Alpaka library header
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h"      // jet to const mapping
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDeviceCollection.h"  // offset for BX
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"  // per-part cluster  and isSeed
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h"     // per-part pt,eta,... on device
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/CounterDevice.h"  // global counts (njets, clustered part) on device memory
+#include "HeterogeneousCore/AlpakaInterface/interface/config.h"  // Aliases like Queue, Acc1D,...
 
-namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels { // backend-specific (Alpaka) namespace
+namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Alpaka) namespace
 
   using namespace ::l1sc;
 

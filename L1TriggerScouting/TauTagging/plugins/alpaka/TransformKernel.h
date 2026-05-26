@@ -37,16 +37,16 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   using namespace ::l1sc;
 
-  SoftTauInputDeviceTensor transform(Queue& queue, 
-                 const PFCandidateDeviceCollection& pf, 
-                 const BxLookupDeviceCollection& bx_lookup, 
-                 const ClustersDeviceCollection& clusters);
-  SoftTauInputDeviceTensor transform(Queue& queue, 
-                 const PFCandidateDeviceCollection& pf, 
-                 const ClustersDeviceCollection& clusters);
-  SoftTauInputDeviceTensor transform(Queue& queue, 
-                 const PFCandidateDeviceCollection& pf, 
-                 const AssociationMapDevice& association_map);
+  SoftTauInputDeviceTensor transform(Queue& queue,
+                                     const PFCandidateDeviceCollection& pf,
+                                     const BxLookupDeviceCollection& bx_lookup,
+                                     const ClustersDeviceCollection& clusters);
+  SoftTauInputDeviceTensor transform(Queue& queue,
+                                     const PFCandidateDeviceCollection& pf,
+                                     const ClustersDeviceCollection& clusters);
+  SoftTauInputDeviceTensor transform(Queue& queue,
+                                     const PFCandidateDeviceCollection& pf,
+                                     const AssociationMapDevice& association_map);
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels
 

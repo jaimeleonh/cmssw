@@ -4,7 +4,6 @@
 #include "HeterogeneousCore/AlpakaInterface/interface/radixSort.h"
 #include "HeterogeneousCore/AlpakaInterface/interface/workdivision.h"
 
-
 namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   using namespace cms::alpakatools;
@@ -26,11 +25,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   template <typename TAcc, typename T>
   ALPAKA_FN_ACC T energy(const TAcc& acc, T px, T py, T pz, T mass = 0.13957f) {
-    return alpaka::math::sqrt(acc, 
-        alpaka::math::pow(acc, px, 2) + 
-        alpaka::math::pow(acc, py, 2) + 
-        alpaka::math::pow(acc, pz, 2) + 
-        alpaka::math::pow(acc, mass, 2));
+    return alpaka::math::sqrt(acc,
+                              alpaka::math::pow(acc, px, 2) + alpaka::math::pow(acc, py, 2) +
+                                  alpaka::math::pow(acc, pz, 2) + alpaka::math::pow(acc, mass, 2));
   }
 
   template <typename TAcc, typename T>
@@ -65,13 +62,12 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   class ComputeClueTauFeaturesKernel {
   public:
-    ALPAKA_FN_ACC void operator()(
-        Acc1D const& acc,
-        PFCandidateDeviceCollection::ConstView pf,
-        IndexSoA::ConstView indexes, 
-        OffsetsSoA::ConstView offsets,
-        SoftTauInputDeviceTensor::View clue_taus) const {
-      for (uint32_t block_idx: independent_groups(acc, offsets.metadata().size() - 1)) {
+    ALPAKA_FN_ACC void operator()(Acc1D const& acc,
+                                  PFCandidateDeviceCollection::ConstView pf,
+                                  IndexSoA::ConstView indexes,
+                                  OffsetsSoA::ConstView offsets,
+                                  SoftTauInputDeviceTensor::View clue_taus) const {
+      for (uint32_t block_idx : independent_groups(acc, offsets.metadata().size() - 1)) {
         uint32_t begin = offsets.offsets()[block_idx];
         uint32_t end = offsets.offsets()[block_idx + 1];
         uint32_t block_dim = end - begin;
@@ -89,7 +85,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         // auto mass = 0.0f;
         if (once_per_block(acc)) {
           for (int i = 0; i < block_dim; i++) {
-            auto idx = indexes.indexes()[i+begin];
+            auto idx = indexes.indexes()[i + begin];
             auto px_v = px(acc, pf.pt()[idx], pf.phi()[idx]);
             auto py_v = py(acc, pf.pt()[idx], pf.phi()[idx]);
             auto pz_v = pz(acc, pf.pt()[idx], pf.eta()[idx]);
@@ -108,7 +104,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         auto clue_tau = clue_taus[block_idx];
         auto cluster_size = (block_dim > JetFeatures::RowsAtCompileTime) ? JetFeatures::RowsAtCompileTime : block_dim;
         for (uint32_t tid : independent_group_elements(acc, cluster_size)) {
-          auto thread_idx = tid + begin; 
+          auto thread_idx = tid + begin;
           auto index = indexes.indexes()[thread_idx];
 
           auto pdgid_abs = alpaka::math::abs(acc, static_cast<int>(pf.pdgid()[index]));
@@ -132,20 +128,20 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     }
   };
 
-  SoftTauInputDeviceTensor transform(Queue& queue, 
-                 const PFCandidateDeviceCollection& pf,
-                 const AssociationMapDevice& association_map) {
+  SoftTauInputDeviceTensor transform(Queue& queue,
+                                     const PFCandidateDeviceCollection& pf,
+                                     const AssociationMapDevice& association_map) {
     const auto kNumClusters = association_map.const_view<OffsetsSoA>().metadata().size() - 1;
     auto input_tensor = SoftTauInputDeviceTensor(kNumClusters, queue);
     input_tensor.zeroInitialise(queue);
 
-    alpaka::exec<Acc1D>(queue, 
-      make_workdiv<Acc1D>(kNumClusters, 128), 
-      ComputeClueTauFeaturesKernel{}, 
-      pf.const_view(),
-      association_map.view<IndexSoA>(),
-      association_map.view<OffsetsSoA>(),
-      input_tensor.view());
+    alpaka::exec<Acc1D>(queue,
+                        make_workdiv<Acc1D>(kNumClusters, 128),
+                        ComputeClueTauFeaturesKernel{},
+                        pf.const_view(),
+                        association_map.view<IndexSoA>(),
+                        association_map.view<OffsetsSoA>(),
+                        input_tensor.view());
 
     // alpaka::exec<Acc1D>(queue,
     //     make_workdiv<Acc1D>(1, 1),
@@ -174,21 +170,21 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
     return input_tensor;
   }
 
-  SoftTauInputDeviceTensor transform(Queue& queue, 
-                 const PFCandidateDeviceCollection& pf, 
-                 const BxLookupDeviceCollection& bx_lookup, 
-                 const ClustersDeviceCollection& clusters) {
+  SoftTauInputDeviceTensor transform(Queue& queue,
+                                     const PFCandidateDeviceCollection& pf,
+                                     const BxLookupDeviceCollection& bx_lookup,
+                                     const ClustersDeviceCollection& clusters) {
     auto input_tensor = SoftTauInputDeviceTensor(1, queue);
     input_tensor.zeroInitialise(queue);
-    return input_tensor; 
+    return input_tensor;
   }
 
-  SoftTauInputDeviceTensor transform(Queue& queue, 
-                 const PFCandidateDeviceCollection& pf, 
-                 const ClustersDeviceCollection& clusters) {
+  SoftTauInputDeviceTensor transform(Queue& queue,
+                                     const PFCandidateDeviceCollection& pf,
+                                     const ClustersDeviceCollection& clusters) {
     auto input_tensor = SoftTauInputDeviceTensor(1, queue);
     input_tensor.zeroInitialise(queue);
-    return input_tensor;     
+    return input_tensor;
   }
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels

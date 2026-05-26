@@ -91,6 +91,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
     const uint32_t max_batch_size_;
   };
 
-}  // namespace ALPAKA_ACCELERATOR_NAMESPACE::torchtest
+}  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc
 
 DEFINE_FWK_ALPAKA_MODULE(l1sc::SoftTauIdML);

@@ -105,7 +105,7 @@ namespace cms::alpakatools {
       const std::size_t warpMask = warpSize - 1;
 
       // Define the bin size (d=8 => 1 byte bin).
-      constexpr int binBits = 6, dataBits = 8 * sizeof(T), totalSortingPassses = (dataBits + binBits -1) / binBits;
+      constexpr int binBits = 6, dataBits = 8 * sizeof(T), totalSortingPassses = (dataBits + binBits - 1) / binBits;
       // Make sure the slices are data aligned
       // static_assert(0 == dataBits % binBits);
       // Make sure the NS parameter makes sense

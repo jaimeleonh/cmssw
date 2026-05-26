@@ -20,14 +20,13 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   public:
     explicit CLUEsteringAlgo(float dc, float rhoc, float dm, bool wrap_coords);
 
-    AssociationMapDevice run(
-        Queue& queue, 
-        const PFCandidateDeviceCollection& pf, 
-        ClustersDeviceCollection& clusters) const;
     AssociationMapDevice run(Queue& queue,
-             const PFCandidateDeviceCollection& pf,
-             const BxLookupDeviceCollection& bx_lookup,
-             ClustersDeviceCollection& clusters) const;
+                             const PFCandidateDeviceCollection& pf,
+                             ClustersDeviceCollection& clusters) const;
+    AssociationMapDevice run(Queue& queue,
+                             const PFCandidateDeviceCollection& pf,
+                             const BxLookupDeviceCollection& bx_lookup,
+                             ClustersDeviceCollection& clusters) const;
 
   private:
     float dc_, rhoc_, dm_;
