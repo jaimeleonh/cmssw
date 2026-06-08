@@ -10,6 +10,7 @@
 
 #include "DataFormats/L1ScoutingSoA/interface/ClustersSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/PuppiSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/VertexSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/TkEmSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/TkEleSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/SelectedBxSoA.h"
@@ -21,6 +22,7 @@
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/VertexDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/TkEmDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/TkEleDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/SelectedBxDeviceCollection.h"
