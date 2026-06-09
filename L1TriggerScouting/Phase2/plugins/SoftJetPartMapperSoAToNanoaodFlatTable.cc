@@ -41,7 +41,7 @@ private:
 // -------------------------------- constructor  -------------------------------
 
 SoftJetPartMapperSoAToNanoaodFlatTable::SoftJetPartMapperSoAToNanoaodFlatTable(const edm::ParameterSet& iConfig)
-    : srcSoftJetParT_(consumes<l1sc::SoftJetOutputHostTensor>(iConfig.getParameter<edm::InputTag>("srcSoftJetPart"))),
+    : srcSoftJetParT_(consumes<l1sc::SoftJetOutputHostTensor>(iConfig.getParameter<edm::InputTag>("src"))),
       name_(iConfig.getParameter<std::string>("name")),
       doc_(iConfig.getParameter<std::string>("doc")){
   produces<nanoaod::FlatTable>();
@@ -66,7 +66,7 @@ void SoftJetPartMapperSoAToNanoaodFlatTable::produce(edm::StreamID, edm::Event& 
 
 void SoftJetPartMapperSoAToNanoaodFlatTable::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
-  desc.add<edm::InputTag>("srcSoftJetParT");
+  desc.add<edm::InputTag>("src");
   desc.add<std::string>("name");
   desc.add<std::string>("doc");
   descriptions.addDefault(desc);

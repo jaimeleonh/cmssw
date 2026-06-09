@@ -143,7 +143,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         float etaSign = (shEta >= 0.0f) ? 1.0f : -1.0f;
 
-
         for (auto tid : independent_group_elements(acc, input_size)) {
           auto thread_idx = tid + begin; 
           auto p = clusters_cands.index()[thread_idx].index();

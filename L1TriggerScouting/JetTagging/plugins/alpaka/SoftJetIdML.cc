@@ -63,7 +63,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
 
       std::deque<BatchIO> batches;
       for (auto batch_idx = 0; batch_idx < num_batches; ++batch_idx) {
-        // std::cout << "Batch " << batch_idx << std::endl;
         BatchIO batch{cms::torch::alpakatools::TensorCollection<Queue>(batch_size, job_size),
                       cms::torch::alpakatools::TensorCollection<Queue>(batch_size, job_size)};
 
