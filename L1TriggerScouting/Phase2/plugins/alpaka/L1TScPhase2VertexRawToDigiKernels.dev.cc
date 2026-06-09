@@ -9,7 +9,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
   // Initialize device constant memory for the kernels.
   // Called only once (thread-safe)
-  void L1TScPhase2VertexRawToDigiKernels::initialize(Queue& queue) { }
+  void L1TScPhase2VertexRawToDigiKernels::initialize(Queue& queue) {}
 
   // Convert raw data to VertexDeviceCollection
   // Takes 64bit words and decodes them into real values for further analysis
@@ -46,9 +46,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         Vertex.quality()[idx] = quality;
         Vertex.multOut()[idx] = multOut;
         Vertex.unassigned()[idx] = unassigned;
-
-        // printf("%i %f %i %f %i %i %i\n", Vertex.valid()[idx], Vertex.z0()[idx], Vertex.multIn()[idx], Vertex.sumPt()[idx], Vertex.quality()[idx], Vertex.multOut()[idx], Vertex.unassigned()[idx]);
-
       }
     }
   };
