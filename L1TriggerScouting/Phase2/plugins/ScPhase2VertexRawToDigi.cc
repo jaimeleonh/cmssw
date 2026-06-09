@@ -43,10 +43,9 @@ ScPhase2VertexRawToDigi::ScPhase2VertexRawToDigi(const edm::ParameterSet &iConfi
     : rawToken_(consumes<SDSRawDataCollection>(iConfig.getParameter<edm::InputTag>("src"))),
       fedIDs_(iConfig.getParameter<std::vector<unsigned int>>("fedIDs")),
       splitFactor_(iConfig.getParameter<unsigned int>("splitFactor")) {
-
-    candBuffer_.resize(OrbitCollection<l1t::VertexWord>::NBX + 1);
-    produces<OrbitCollection<l1t::VertexWord>>();
-    produces<unsigned int>("nbx");
+  candBuffer_.resize(OrbitCollection<l1t::VertexWord>::NBX + 1);
+  produces<OrbitCollection<l1t::VertexWord>>();
+  produces<unsigned int>("nbx");
 }
 
 ScPhase2VertexRawToDigi::~ScPhase2VertexRawToDigi() {};
@@ -60,8 +59,8 @@ void ScPhase2VertexRawToDigi::produce(edm::Event &iEvent, const edm::EventSetup 
 
 template <typename T>
 std::unique_ptr<OrbitCollection<T>> ScPhase2VertexRawToDigi::unpackObj(unsigned int orbit,
-                                                                      const SDSRawDataCollection &feds,
-                                                                      std::vector<std::vector<T>> &buffer) {
+                                                                       const SDSRawDataCollection &feds,
+                                                                       std::vector<std::vector<T>> &buffer) {
   unsigned int ntot = 0;
   nbx_ = 0;
   std::array<uint8_t, OrbitCollection<T>::NBX> bxcount;
@@ -104,34 +103,35 @@ std::unique_ptr<OrbitCollection<T>> ScPhase2VertexRawToDigi::unpackObj(unsigned 
 }
 
 void ScPhase2VertexRawToDigi::unpackFromRaw(uint64_t data, std::vector<l1t::VertexWord> &outBuffer) {
-  l1t::VertexWord::vtxvalid_t valid = (data & ((int) std::pow(2.f, l1t::VertexWord::VertexBitWidths::kValidSize) - 1));
+  l1t::VertexWord::vtxvalid_t valid = (data & ((int)std::pow(2.f, l1t::VertexWord::VertexBitWidths::kValidSize) - 1));
 
-  ap_int<l1t::VertexWord::VertexBitWidths::kZ0Size> z0_tot = (data >> l1t::VertexWord::VertexBitLocations::kZ0LSB) & ((int) std::pow(2.f, l1t::VertexWord::VertexBitWidths::kZ0Size) - 1);
+  ap_int<l1t::VertexWord::VertexBitWidths::kZ0Size> z0_tot =
+      (data >> l1t::VertexWord::VertexBitLocations::kZ0LSB) &
+      ((int)std::pow(2.f, l1t::VertexWord::VertexBitWidths::kZ0Size) - 1);
   l1t::VertexWord::vtxz0_t z0;
   z0.range() = z0_tot;
 
-  l1t::VertexWord::vtxmultiplicity_t multIn = (data >> l1t::VertexWord::VertexBitLocations::kNTrackInPVLSB) & ((int) std::pow(2.f, l1t::VertexWord::VertexBitWidths::kNTrackInPVSize) - 1);
+  l1t::VertexWord::vtxmultiplicity_t multIn =
+      (data >> l1t::VertexWord::VertexBitLocations::kNTrackInPVLSB) &
+      ((int)std::pow(2.f, l1t::VertexWord::VertexBitWidths::kNTrackInPVSize) - 1);
 
-  auto sumpt_tot = (data >> l1t::VertexWord::VertexBitLocations::kSumPtLSB) & ((int) std::pow(2.f, l1t::VertexWord::VertexBitWidths::kSumPtSize) - 1);
+  auto sumpt_tot = (data >> l1t::VertexWord::VertexBitLocations::kSumPtLSB) &
+                   ((int)std::pow(2.f, l1t::VertexWord::VertexBitWidths::kSumPtSize) - 1);
   l1t::VertexWord::vtxsumpt_t sumpt;
   sumpt.range() = sumpt_tot;
 
-  l1t::VertexWord::vtxquality_t quality = (data >> l1t::VertexWord::VertexBitLocations::kQualityLSB) & ((int) std::pow(2.f, l1t::VertexWord::VertexBitWidths::kQualitySize) - 1);
+  l1t::VertexWord::vtxquality_t quality = (data >> l1t::VertexWord::VertexBitLocations::kQualityLSB) &
+                                          ((int)std::pow(2.f, l1t::VertexWord::VertexBitWidths::kQualitySize) - 1);
 
-  l1t::VertexWord::vtxinversemult_t multOut = (data >> l1t::VertexWord::VertexBitLocations::kNTrackOutPVLSB) & ((int) std::pow(2.f, l1t::VertexWord::VertexBitWidths::kNTrackOutPVSize) - 1);
+  l1t::VertexWord::vtxinversemult_t multOut =
+      (data >> l1t::VertexWord::VertexBitLocations::kNTrackOutPVLSB) &
+      ((int)std::pow(2.f, l1t::VertexWord::VertexBitWidths::kNTrackOutPVSize) - 1);
 
-  l1t::VertexWord::vtxunassigned_t unassigned = (data >> l1t::VertexWord::VertexBitLocations::kUnassignedLSB) & ((int) std::pow(2.f, l1t::VertexWord::VertexBitWidths::kUnassignedSize) - 1);
+  l1t::VertexWord::vtxunassigned_t unassigned =
+      (data >> l1t::VertexWord::VertexBitLocations::kUnassignedLSB) &
+      ((int)std::pow(2.f, l1t::VertexWord::VertexBitWidths::kUnassignedSize) - 1);
 
   outBuffer.emplace_back(valid, z0, multIn, sumpt, quality, multOut, unassigned);
-
-  // std::cout << outBuffer.back().valid() << " ";
-  // std::cout << outBuffer.back().z0() << " ";
-  // std::cout << outBuffer.back().multiplicity() << " ";
-  // std::cout << outBuffer.back().pt() << " ";
-  // std::cout << outBuffer.back().quality() << " ";
-  // std::cout << outBuffer.back().inverseMultiplicity() << " ";
-  // std::cout << outBuffer.back().unassigned() << std::endl;
-
 }
 
 void ScPhase2VertexRawToDigi::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
