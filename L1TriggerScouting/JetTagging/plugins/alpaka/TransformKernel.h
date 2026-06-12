@@ -15,6 +15,8 @@
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PFCandidateDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/VertexDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "HeterogeneousCore/AlpakaInterface/interface/config.h"
 
 // // These definitions are not stored in DataFormats/L1ScoutingSoA/
@@ -49,7 +51,10 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
   //                const ClustersDeviceCollection& clusters);
   SoftJetInputDeviceTensor transform(Queue& queue, 
                  const PFCandidateDeviceCollection& pf, 
-                 const AssociationMapDevice& association_map);
+                 const AssociationMapDevice& association_map,
+                 const BxLookupDevice& jetBxLookup,
+                 const VertexDeviceCollection& vertices,
+                 const BxLookupDevice& vertexBxLookup);
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels
 

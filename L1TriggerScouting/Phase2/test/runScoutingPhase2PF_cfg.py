@@ -29,6 +29,11 @@ options.register ('dumpClusters',
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.bool,         
                   'Dump clusters to options.outFile')
+options.register ('batchSize',
+                  32, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.int,
+                  'ParT batch size')
 
 options.parseArguments()
 if options.buNumStreams == []:
@@ -77,7 +82,9 @@ process.FastMonitoringService = cms.Service("FastMonitoringService")
 
 process.load( "HLTrigger.Timer.FastTimerService_cfi" )
 process.FastTimerService.writeJSONSummary = cms.untracked.bool(True)
-process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.uname()[1]}.{options.task}.json')
+#process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.uname()[1]}.{options.backend}.{options.numThreads}.{options.numFwkStreams}.{options.batchSize}.json')
+process.FastTimerService.jsonFileName = cms.untracked.string(f'results_part/resources.{os.uname()[1]}.{options.backend}.{options.numThreads}.{options.numFwkStreams}.{options.batchSize}.json')
+#process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.uname()[1]}.{options.task}.json')
 #process.MessageLogger.cerr.FastReport = cms.untracked.PSet( limit = cms.untracked.int32( 10000000 ) )
 
 fuDir = options.fuBaseDir+("/run%06d" % options.runNumber)
@@ -106,6 +113,7 @@ os.system("touch " + buDirs[0] + "/" + "fu.lock")
 process.load("L1TriggerScouting.Phase2.unpackers_cff")
 if "alpaka" in options.run.lower():
   process.load("Configuration.StandardSequences.Accelerators_cff")
+process.PyTorchService = cms.Service("PyTorchService")
 
 ## Configure unpackers
 process.scPhase2PFRawToDigiStruct = process.scPhase2PuppiRawToDigiStruct.clone(
@@ -126,11 +134,18 @@ process.scPhase2SC4PFDemo = cms.EDProducer("ScPhase2PuppiSCJetsDemo",
   minSeedPt = cms.double(options.minSeedPt)
 )
 
+## Configure unpackers
+process.scPhase2VertexRawToDigiStruct = process.scPhase2VertexRawToDigiStruct.clone(
+  fedIDs = [1],
+  splitFactor = cms.uint32(1)
+)
+
 # Alpaka modules
 if "alpaka" in options.run.lower():
   from L1TriggerScouting.Phase2.modules import (
       l1sc_L1TScPhase2PuppiRawToDigi_alpaka,
-      l1sc_L1TScPhase2SCJets_alpaka
+      l1sc_L1TScPhase2SCJets_alpaka,
+      l1sc_L1TScPhase2VertexRawToDigi_alpaka
   )
   # from L1TriggerScouting.TauTagging.modules import (
   #     l1sc_CLUETaus_alpaka,
@@ -145,6 +160,17 @@ if "alpaka" in options.run.lower():
       splitFactor = cms.uint32(len(pfStreamIDs) // options.timeslices),
       src = process.scPhase2PFRawToDigiStruct.src,
       environment = cms.untracked.int32(options.environment),
+  )
+
+  process.scPhase2VertexRawToDigiAlpaka = l1sc_L1TScPhase2VertexRawToDigi_alpaka(
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      streams = process.scPhase2VertexRawToDigiStruct.fedIDs,
+      splitFactor = 1,
+      src = process.scPhase2VertexRawToDigiStruct.src,
+      environment = cms.untracked.int32(options.environment),
+  )
+
+  process.p_vertexalpaka = cms.Path(
   )
 
   # process.CLUETaus = l1sc_CLUETaus_alpaka(
@@ -178,8 +204,15 @@ if "alpaka" in options.run.lower():
       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
       pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
       clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
+      jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
+      vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "candidates"),
+      vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
       model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique.pt"),
-      maxBatchSize = cms.uint32(32),
+      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique_cpu.pt"),
+      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_deepsets.pt"),
+      #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_minipart.pt"),
+      maxBatchSize = cms.uint32(options.batchSize),
+
   )
 
   process.goodOrbitsByNBX.unpackersAlpaka = [ "scPhase2PFRawToDigiAlpaka" ]
@@ -187,6 +220,7 @@ if "alpaka" in options.run.lower():
 
   process.p_unpackAlpaka = cms.Path(
     process.scPhase2PFRawToDigiAlpaka +
+    process.scPhase2VertexRawToDigiAlpaka +
     process.goodOrbitsByNBX
   )
   # process.p_clueAlpaka = cms.Path(
@@ -196,6 +230,7 @@ if "alpaka" in options.run.lower():
   # )
   process.p_sc4Alpaka = cms.Path(
     process.scPhase2PFRawToDigiAlpaka +
+    process.scPhase2VertexRawToDigiAlpaka +
     process.goodOrbitsByNBX +
     process.scPhase2SC4PFAlpaka +
     process.SoftJetIdSC4

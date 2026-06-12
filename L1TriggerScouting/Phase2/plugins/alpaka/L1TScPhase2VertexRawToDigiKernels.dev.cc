@@ -47,8 +47,6 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
         Vertex.multOut()[idx] = multOut;
         Vertex.unassigned()[idx] = unassigned;
 
-        // printf("%i %f %i %f %i %i %i\n", Vertex.valid()[idx], Vertex.z0()[idx], Vertex.multIn()[idx], Vertex.sumPt()[idx], Vertex.quality()[idx], Vertex.multOut()[idx], Vertex.unassigned()[idx]);
-
       }
     }
   };

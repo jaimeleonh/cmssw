@@ -3,6 +3,8 @@
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PFCandidateDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/VertexDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
@@ -28,8 +30,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
   public:
     SoftJetIdML(const edm::ParameterSet &params)
         : EDProducer<>(params),
-          pf_token_(consumes(params.getParameter<edm::InputTag>("pf"))),
+          pf_token_{consumes(params.getParameter<edm::InputTag>("pf"))},
           association_map_token_{consumes(params.getParameter<edm::InputTag>("clusters"))},
+          jet_bx_lookup_token_{consumes(params.getParameter<edm::InputTag>("jetBxLookup"))},
+          vertex_token_{consumes(params.getParameter<edm::InputTag>("vertices"))},
+          vertex_bx_lookup_token_{consumes(params.getParameter<edm::InputTag>("vertexBxLookup"))},
           soft_jet_token_{produces()},
           model_(params.getParameter<edm::FileInPath>("model").fullPath()),
           max_batch_size_{params.getParameter<uint32_t>("maxBatchSize")} {}
@@ -39,6 +44,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
       desc.add<edm::FileInPath>("model");
       desc.add<edm::InputTag>("pf");
       desc.add<edm::InputTag>("clusters");
+      desc.add<edm::InputTag>("jetBxLookup");
+      desc.add<edm::InputTag>("vertices");
+      desc.add<edm::InputTag>("vertexBxLookup");
       desc.add<uint32_t>("maxBatchSize", std::numeric_limits<uint32_t>::max());
       descriptions.addWithDefaultLabel(desc);
     }
@@ -47,7 +55,10 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
       // in/out collections
       const auto &pf = event.get(pf_token_);
       const auto &association_map = event.get(association_map_token_);
-      SoftJetInputDeviceTensor input_tensor = kernels::transform(event.queue(), pf, association_map);
+      const auto &jetBxLookup = event.get(jet_bx_lookup_token_);
+      const auto &vertices = event.get(vertex_token_);
+      const auto &vertexBxLookup = event.get(vertex_bx_lookup_token_);
+      SoftJetInputDeviceTensor input_tensor = kernels::transform(event.queue(), pf, association_map, jetBxLookup, vertices, vertexBxLookup);
 
       const auto job_size = association_map.const_view().offset().metadata().size() - 1;
       auto output_tensor = SoftJetOutputDeviceTensor(event.queue(), job_size);
@@ -101,6 +112,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
     // clustering output
     const device::EDGetToken<ClustersDeviceCollection> clusters_token_;
     const device::EDGetToken<AssociationMapDevice> association_map_token_;
+    const device::EDGetToken<BxLookupDevice> jet_bx_lookup_token_;
+    const device::EDGetToken<VertexDeviceCollection> vertex_token_;
+    const device::EDGetToken<BxLookupDevice> vertex_bx_lookup_token_;
     // put ml output into event
     const device::EDPutToken<SoftJetOutputDeviceTensor> soft_jet_token_;
     // model

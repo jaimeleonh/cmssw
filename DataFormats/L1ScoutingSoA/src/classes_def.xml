@@ -39,10 +39,8 @@
   <class name="edm::Wrapper<l1sc::PuppiHostCollection>" splitLevel="0"/>
 
   <!-- VertexHostCollection -->
-  <class name="l1sc::VertexSoA"/>
-  <class name="l1sc::VertexSoA::View"/>
-  <class name="l1sc::VertexSoA::ConstView"/>
-  <class name="l1sc::VertexHostCollection"/>
+  <class name="l1sc::VertexHostCollection" rntupleStreamerMode="true"/>
+  <class name="l1sc::VertexHostCollection::Layout"/>
   <class name="edm::Wrapper<l1sc::VertexHostCollection>" splitLevel="0"/>
 
   <!-- TkEmHostCollection -->
