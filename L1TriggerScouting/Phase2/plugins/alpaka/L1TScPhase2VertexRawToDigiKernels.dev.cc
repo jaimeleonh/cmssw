@@ -38,11 +38,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {
 
         // convert to real values
         Vertex.valid()[idx] = valid;
-        Vertex.z0()[idx] = z0 / std::pow(2., 9);
-        // Vertex.z0()[idx] = z0 / std::pow(2., l1t::VertexWord::VertexBitWidths::kZ0Size - l1t::VertexWord::VertexBitWidths::kZ0MagSize);
+        Vertex.z0()[idx] = static_cast<float>(z0) * (1.0f / 512.0f);
         Vertex.multIn()[idx] = multIn;
-        Vertex.sumPt()[idx] = sumPt / std::pow(2., 2);
-        // Vertex.sumPt()[idx] = sumPt / std::pow(2., l1t::VertexWord::VertexBitWidths::kSumPtSize - l1t::VertexWord::VertexBitWidths::kSumPtMagSize);
+        Vertex.sumPt()[idx] = static_cast<float>(sumPt) * 0.25f;
         Vertex.quality()[idx] = quality;
         Vertex.multOut()[idx] = multOut;
         Vertex.unassigned()[idx] = unassigned;
