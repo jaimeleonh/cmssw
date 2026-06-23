@@ -81,11 +81,11 @@ void ScPhase2VertexPacker::produce(edm::Event &iEvent, const edm::EventSetup &iS
 }
 
 uint64_t ScPhase2VertexPacker::packVertex(l1t::VertexWord vertex) {
-  return vertex.validBits() + ((uint64_t)vertex.z0Bits() << l1t::VertexWord::VertexBitLocations::kZ0LSB) +
-         ((uint64_t)vertex.multiplicityBits() << l1t::VertexWord::VertexBitLocations::kNTrackInPVLSB) +
-         ((uint64_t)vertex.ptBits() << l1t::VertexWord::VertexBitLocations::kSumPtLSB) +
-         ((uint64_t)vertex.qualityBits() << l1t::VertexWord::VertexBitLocations::kQualityLSB) +
-         ((uint64_t)vertex.inverseMultiplicityBits() << l1t::VertexWord::VertexBitLocations::kNTrackOutPVLSB) +
+  return vertex.validBits() | ((uint64_t)vertex.z0Bits() << l1t::VertexWord::VertexBitLocations::kZ0LSB) |
+         ((uint64_t)vertex.multiplicityBits() << l1t::VertexWord::VertexBitLocations::kNTrackInPVLSB) |
+         ((uint64_t)vertex.ptBits() << l1t::VertexWord::VertexBitLocations::kSumPtLSB) |
+         ((uint64_t)vertex.qualityBits() << l1t::VertexWord::VertexBitLocations::kQualityLSB) |
+         ((uint64_t)vertex.inverseMultiplicityBits() << l1t::VertexWord::VertexBitLocations::kNTrackOutPVLSB) |
          ((uint64_t)vertex.unassignedBits() << l1t::VertexWord::VertexBitLocations::kUnassignedLSB);
 }
 

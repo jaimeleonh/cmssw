@@ -21,6 +21,9 @@ process.options = cms.untracked.PSet(
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 10
 
+if options.buNumStreams == []:
+    options.buNumStreams = [1] * len(options.buBaseDir)
+
 if len(options.buNumStreams) != len(options.buBaseDir):
     raise RuntimeError("Mismatch between buNumStreams (%d) and buBaseDirs (%d)" % (len(options.buNumStreams), len(options.buBaseDir)))
 
@@ -70,7 +73,7 @@ process.source = cms.Source("DAQSource",
     )
 )
 
-os.system("touch " + buDirs[0] + "/" + "fu.lock")
+open(os.path.join(buDirs[0], "fu.lock"), "a").close()
 
 process.load("L1TriggerScouting.Phase2.unpackers_cff")
 process.load("Configuration.StandardSequences.Accelerators_cff")
