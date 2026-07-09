@@ -1,6 +1,6 @@
 #include "DataFormats/L1ScoutingRawData/interface/SDSRawDataCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/CounterHost.h"
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/VertexDeviceCollection.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -52,18 +52,20 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
       const auto nbx = static_cast<int32_t>(h_data_.size());
 
       // allocate memory buffers
-      auto bx_lookup = BxLookupDeviceCollection({{nbx, nbx + 1}}, event.queue());
-      auto vertices = VertexDeviceCollection(p_data_.size(), event.queue());
+      auto bx_lookup = BxLookupDevice(event.queue(), nbx, nbx + 1);
+      auto bx_sizes = BxLookupDevice(event.queue(), nbx, nbx);
+      auto vertices = VertexDeviceCollection(event.queue(), p_data_.size());
 
       // initialize device constant memory (called once)
       rtd_kernels_.initialize(event.queue());
 
       // decode raw data
-      kernels::decode(event.queue(), h_data_.data(), bx_lookup);
       kernels::decode(event.queue(), p_data_.data(), vertices);
+      kernels::decode_headers(event.queue(), h_data_.data(), bx_lookup, bx_sizes);
 
       // store data in the event (device-side products)
       event.emplace(bx_lookup_token_, std::move(bx_lookup));
+      event.emplace(bx_sizes_token_, std::move(bx_sizes));
       event.emplace(vertex_token_, std::move(vertices));
 
       // store nbx
@@ -147,7 +149,8 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
 
     // produce device-side products
     const device::EDPutToken<VertexDeviceCollection> vertex_token_;
-    const device::EDPutToken<BxLookupDeviceCollection> bx_lookup_token_;
+    const device::EDPutToken<BxLookupDevice> bx_lookup_token_;
+    const device::EDPutToken<BxLookupDevice> bx_sizes_token_;
 
     // produce host-side products
     const edm::EDPutTokenT<CounterHost> nbx_token_;

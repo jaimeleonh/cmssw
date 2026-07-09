@@ -1,7 +1,7 @@
 // Alpaka EDProducer wrapper around clustering kernels
 
 // includes for types, function/class declarations, utilities/macros
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
@@ -86,7 +86,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {  // place module in backend-speci
 
       // create collection object clusters; allocate storage (on device/queue associated with this event -> event.queue) for nsrc entries
       const auto nsrc = src.const_view().metadata().size();  // number of PF cands
-      auto clusters = ClustersDeviceCollection(nsrc, event.queue());
+      auto clusters = ClustersDeviceCollection(event.queue(), nsrc);
 
       // canonical names
       const bool wantSCGreedy = (algo_ == "SCGreedy");
@@ -229,11 +229,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {  // place module in backend-speci
     // get device pf data
     const device::EDGetToken<PuppiDeviceCollection> src_candidates_token_;
     // get BX lookup from same input tag
-    const device::EDGetToken<BxLookupDeviceCollection> bx_lookup_token_;
+    const device::EDGetToken<BxLookupDevice> bx_lookup_token_;
 
     // put device clustering data
     const device::EDPutToken<ClustersDeviceCollection> clusters_token_;
-    const device::EDPutToken<BxLookupDeviceCollection> jetBXs_token_;
+    const device::EDPutToken<BxLookupDevice> jetBXs_token_;
     const device::EDPutToken<ClusterObjDeviceCollection> jets_token_;
     const device::EDPutToken<AssociationMapDevice> map_token_;
 

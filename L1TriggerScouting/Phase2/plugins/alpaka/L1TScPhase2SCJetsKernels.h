@@ -3,7 +3,7 @@
 
 #include <alpaka/alpaka.hpp>                                                      // main Alpaka library header
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h"      // jet to const mapping
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDeviceCollection.h"  // offset for BX
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"  // offset for BX
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"  // per-part cluster  and isSeed
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h"     // per-part pt,eta,... on device
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/CounterDevice.h"  // global counts (njets, clustered part) on device memory
@@ -21,7 +21,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
 
     // short name for common return type of all algorithms
     // (BX lookup/offsets: where each BX's jets are in flat array; final jet collection; const-jet-map)
-    typedef std::tuple<BxLookupDeviceCollection, ClusterObjDeviceCollection, AssociationMapDevice> return_type;
+    typedef std::tuple<BxLookupDevice, ClusterObjDeviceCollection, AssociationMapDevice> return_type;
 
     // ------------------------------------------------------------------
     // legacy single-radius non-iterative seeded cone
@@ -30,7 +30,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
     // ------------------------------------------------------------------
     return_type run(Queue& queue,
                     const PuppiDeviceCollection& src,
-                    const BxLookupDeviceCollection& bx_lookup,
+                    const BxLookupDevice& bx_lookup,
                     float R2,
                     ClustersDeviceCollection& clusters) const;
 
@@ -39,7 +39,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
     // ------------------------------------------------------------------
     return_type run(Queue& queue,
                     const PuppiDeviceCollection& src,
-                    const BxLookupDeviceCollection& bx_lookup,
+                    const BxLookupDevice& bx_lookup,
                     float R2,
                     unsigned int nJets,
                     ClustersDeviceCollection& clusters) const;
@@ -56,7 +56,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
     // ------------------------------------------------------------------
     return_type runSCNMS(Queue& queue,
                          const PuppiDeviceCollection& src,
-                         const BxLookupDeviceCollection& bxLookup,
+                         const BxLookupDevice& bxLookup,
                          float RSeed2,
                          float RClu2,
                          ClustersDeviceCollection& clusters) const;
@@ -74,7 +74,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
     // ------------------------------------------------------------------
     return_type runSCNMSWeighted(Queue& queue,
                                  const PuppiDeviceCollection& src,
-                                 const BxLookupDeviceCollection& bxLookup,
+                                 const BxLookupDevice& bxLookup,
                                  float RSeed2,
                                  float RClu2,
                                  ClustersDeviceCollection& clusters) const;
@@ -86,7 +86,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
     // ------------------------------------------------------------------
     return_type runSCNMSWeightedMultiIter(Queue& queue,
                                           const PuppiDeviceCollection& src,
-                                          const BxLookupDeviceCollection& bxLookup,
+                                          const BxLookupDevice& bxLookup,
                                           float RSeed2,
                                           float RCen2,
                                           float RClu2,
@@ -100,7 +100,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
     // ------------------------------------------------------------------
     return_type runLinkTree(Queue& queue,
                             const PuppiDeviceCollection& src,
-                            const BxLookupDeviceCollection& bxLookup,
+                            const BxLookupDevice& bxLookup,
                             float RLink2,
                             float ptMin,
                             ClustersDeviceCollection& clusters) const;
@@ -109,11 +109,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels {  // backend-specific (Al
     // compact jets, build per-BX offsets, and create jet->const association map
     return_type finalize(Queue& queue,
                          const PuppiDeviceCollection& src,
-                         const BxLookupDeviceCollection& bx_lookup,
+                         const BxLookupDevice& bx_lookup,
                          const ClustersDeviceCollection& clusters,
                          const CounterDevice& nJetsTotalDevice,
                          const ClusterObjDeviceCollection& jetsNonZS,
-                         BxLookupDeviceCollection& jetBxLookup) const;
+                         BxLookupDevice& jetBxLookup) const;
   };
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels

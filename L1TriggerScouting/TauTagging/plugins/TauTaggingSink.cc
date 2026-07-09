@@ -3,7 +3,7 @@
 #include <fmt/format.h>
 
 #include "DataFormats/L1ScoutingSoA/interface/AssociationMapHost.h"
-#include "DataFormats/L1ScoutingSoA/interface/BxLookupHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/BxLookupHost.h"
 #include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/PFCandidateHostCollection.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -85,8 +85,8 @@ namespace l1sc {
               assert(pf_backend == bx_lookup_backend);
               assert(pf_backend == clusters_backend);
               print(pf.const_view(),
-                    bx_lookup.const_view<BxIndexSoA>(),
-                    bx_lookup.const_view<OffsetsSoA>(),
+                    bx_lookup.const_view(),
+                    bx_lookup.const_view(),
                     clusters.const_view(),
                     toString(bx_lookup_backend));
             } else {
@@ -97,7 +97,7 @@ namespace l1sc {
               if (taus_handle.isValid()) {
                 auto const& taus = *taus_handle;
                 auto const& taus_backend = static_cast<Backend>(event.get(taus_backend_));
-                print(association_map.const_view<OffsetsSoA>(), taus.const_view(), toString(taus_backend));
+                print(association_map.const_view(), taus.const_view(), toString(taus_backend));
               }
             }
           } else {
@@ -107,8 +107,8 @@ namespace l1sc {
               auto const bx_lookup_backend = static_cast<Backend>(event.get(bx_lookup_backend_));
               assert(pf_backend == bx_lookup_backend);
               print(pf.const_view(),
-                    bx_lookup.const_view<BxIndexSoA>(),
-                    bx_lookup.const_view<OffsetsSoA>(),
+                    bx_lookup.const_view(),
+                    bx_lookup.const_view(),
                     toString(pf_backend));
             } else {
               // debug unpacker only
@@ -119,22 +119,7 @@ namespace l1sc {
       }
     }
 
-<<<<<<< HEAD
-    void beginStream(edm::StreamID) override {
-      if (environment_ >= Environment::kDevelopment) {
-        fmt::print("=========================================================================\n");
-      }
-    }
-
-    void endStream() override {
-      fmt::print("=========================================================================\n");
-      fmt::print("[INFO] OK - TauTagging\n");
-      fmt::print("=========================================================================\n");
-
-    void print(const ClustersHostCollection::ConstView& clusters,
-=======
-    void print(const OffsetsSoA::ConstView& offsets,
->>>>>>> 9d93f69582b (Reorder TensorSoA [cls, vz, pt, charge], add model with wrapped sigmoid on top, refactor preprocessing step with new CLUE features)
+    void print(const BxLookupSoA::ConstView& offsets,
                const SoftTauOutputHostTensor::ConstView& taus,
                const std::string_view taus_backend) {
       fmt::print("[DEBUG] Taus[{}] ({})\n", taus.metadata().size(), taus_backend);
@@ -145,7 +130,7 @@ namespace l1sc {
 
       const int max_entries = (environment_ > Environment::kTest) ? taus.metadata().size() : 5;
       for (int i = 0; i < taus.metadata().size() && i < max_entries; ++i) {
-        const auto size = offsets.offsets()[i + 1] - offsets.offsets()[i];
+        const auto size = offsets.offset()[i + 1].offset() - offsets.offset()[i].offset();
         fmt::print("| {:>7} | {:>7} | {:>9.4f} | {:>9.4f} | {:>9.4f} | {:>9.4f} |\n",
                    i,
                    size,
@@ -174,11 +159,7 @@ namespace l1sc {
         if (clusters.cluster()[i] > clusters_num)
           clusters_num = clusters.cluster()[i];
       }
-<<<<<<< HEAD
-      fmt::print("[DEBUG] CLUETaus[{}] ({}) found {} clusters:\n", size, clusters_backend, clusters_num);
-=======
       fmt::print("[DEBUG] CLUETaus[{}] ({}) found {} clusters:\n", size, clusters_backend, clusters_num + 1);
->>>>>>> 3c088364af7 (scram code-checks and code-format)
 
       constexpr auto sep =
           "+---------+---------+---------+---------+---------+---------+---------+---------+---------+-------"
@@ -245,8 +226,8 @@ namespace l1sc {
     }
 
     void print(const PFCandidateHostCollection::ConstView& pf,
-               const BxIndexSoA::ConstView& bx_index,
-               const OffsetsSoA::ConstView& offsets,
+               const BxLookupSoA::ConstView& bx_index,
+               const BxLookupSoA::ConstView& offsets,
                const ClustersHostCollection::ConstView& clusters,
                const std::string_view pf_backend) {
       const auto size = pf.metadata().size();
@@ -255,9 +236,9 @@ namespace l1sc {
 
       int all_clusters_num = 0;
       for (int i = 0; i < bx_index.metadata().size(); ++i) {
-        auto bx_idx = bx_index.bx()[i];
-        auto begin = offsets.offsets()[bx_idx];
-        auto end = offsets.offsets()[bx_idx + 1];
+        auto bx_idx = bx_index.bx()[i].bx();
+        auto begin = offsets.offset()[bx_idx].offset();
+        auto end = offsets.offset()[bx_idx + 1].offset();
         int clusters_num = 0;
         for (uint32_t j = begin; j < end; ++j)
           if (clusters.cluster()[i] > clusters_num)
@@ -268,8 +249,8 @@ namespace l1sc {
       fmt::print("[DEBUG] PFCandidateCollection[{}] ({}) found {} clusters per BX (avg. across {} BXs):\n",
                  size,
                  pf_backend,
-                 static_cast<int>(all_clusters_num / bx_index.metadata().size()),
-                 bx_index.metadata().size());
+                 static_cast<int>(all_clusters_num / bx_index.bx()metadata().size()),
+                 bx_index.bx().metadata().size());
 
       constexpr auto sep =
           "+-------+-------+---------+---------+---------+---------+---------+---------+---------+-"
@@ -318,10 +299,10 @@ namespace l1sc {
       int printed = 0;
 
       // Print first 5 entries until max_entries
-      for (int i = 0; i < bx_index.metadata().size() && printed < max_entries; ++i) {
-        const int bx = bx_index.bx()[i];
-        const int start = offsets.offsets()[i];
-        const int end = offsets.offsets()[i + 1];
+      for (int i = 0; i < bx_index.bx().metadata().size() && printed < max_entries; ++i) {
+        const int bx = bx_index.bx()[i].bx();
+        const int start = offsets.offset()[i].offset();
+        const int end = offsets.offset()[i + 1].offset();
         const int range = end - start;
 
         for (int j = 0; j < range && printed < max_entries; ++j) {
@@ -352,14 +333,14 @@ namespace l1sc {
             "...");
         // Print last 5 entries of the last BX only
         const int lastBxIdx = bx_index.metadata().size() - 1;
-        const int start = offsets.offsets()[lastBxIdx];
-        const int end = offsets.offsets()[lastBxIdx + 1];
+        const int start = offsets.offset()[lastBxIdx].offset();
+        const int end = offsets.offset()[lastBxIdx + 1].offset();
         const int range = end - start;
         const int n_last = std::min(5, range);
 
         for (int j = range - n_last; j < range; ++j) {
           const int globalIdx = start + j;
-          printRow(bx_index.bx()[lastBxIdx], globalIdx, j, clusters[globalIdx], pf[globalIdx]);
+          printRow(bx_index.bx()[lastBxIdx].bx(), globalIdx, j, clusters[globalIdx], pf[globalIdx]);
         }
       }
 
@@ -367,8 +348,8 @@ namespace l1sc {
     }
 
     void print(const PFCandidateHostCollection::ConstView& pf,
-               const BxIndexSoA::ConstView& bx_index,
-               const OffsetsSoA::ConstView& offsets,
+               const BxLookupSoA::ConstView& bx_index,
+               const BxLookupSoA::ConstView& offsets,
                const std::string_view pf_backend) {
       const auto size = pf.metadata().size();
       if (size == 0)
@@ -423,9 +404,9 @@ namespace l1sc {
 
       // Print first 5 entries until max_entries
       for (int i = 0; i < bx_index.metadata().size() && printed < max_entries; ++i) {
-        const int bx = bx_index.bx()[i];
-        const int start = offsets.offsets()[i];
-        const int end = offsets.offsets()[i + 1];
+        const int bx = bx_index.bx()[i].bx();
+        const int start = offsets.offset()[i].offset();
+        const int end = offsets.offset()[i + 1].offset();
         const int range = end - start;
 
         for (int j = 0; j < range && printed < max_entries; ++j) {
@@ -452,15 +433,15 @@ namespace l1sc {
                    "...",
                    "...");
         // Print last 5 entries of the last BX only
-        const int lastBxIdx = bx_index.metadata().size() - 1;
-        const int start = offsets.offsets()[lastBxIdx];
-        const int end = offsets.offsets()[lastBxIdx + 1];
+        const int lastBxIdx = bx_index.bx().metadata().size() - 1;
+        const int start = offsets.offset()[lastBxIdx].offset();
+        const int end = offsets.offset()[lastBxIdx + 1].offset();
         const int range = end - start;
         const int n_last = std::min(5, range);
 
         for (int j = range - n_last; j < range; ++j) {
           const int globalIdx = start + j;
-          printRow(bx_index.bx()[lastBxIdx], globalIdx, j, pf[globalIdx]);
+          printRow(bx_index.bx()[lastBxIdx].bx(), globalIdx, j, pf[globalIdx]);
         }
       }
 
@@ -538,7 +519,7 @@ namespace l1sc {
   private:
     // get products
     const edm::EDGetTokenT<PFCandidateHostCollection> pf_token_;
-    const edm::EDGetTokenT<BxLookupHostCollection> bx_lookup_token_;
+    const edm::EDGetTokenT<BxLookupHost> bx_lookup_token_;
     const edm::EDGetTokenT<ClustersHostCollection> clusters_token_;
     const edm::EDGetTokenT<AssociationMapHost> association_map_token_;
     const edm::EDGetTokenT<SoftTauOutputHostTensor> taus_token_;
