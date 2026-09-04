@@ -1,0 +1,12 @@
+<library file="alpaka/*.cc" name="PhysicsToolsParticleTransformerAlpakaFP32Plugins">
+  <use name="alpaka"/>
+  <use name="eigen"/>
+  <use name="DataFormats/L1ScoutingSoA"/>
+  <use name="FWCore/Framework"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="FWCore/Utilities"/>
+  <use name="HeterogeneousCore/AlpakaCore"/>
+  <use name="HeterogeneousCore/AlpakaInterface"/>
+  <flags EDM_PLUGIN="1"/>
+  <flags ALPAKA_BACKENDS="1"/>
+</library>

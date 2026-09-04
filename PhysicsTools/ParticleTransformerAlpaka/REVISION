@@ -1,0 +1,21 @@
+ParticleTransformerAlpaka INT8
+Package API revision: 5
+Model source: net_best_epoch_state_q.pt (quantization-aware training)
+Model sha256: ff19bd5cacc7320f52f1581148f182f0f12eab21dba46494cf9b7cdda7f20e4c
+Exporter: scripts/export_qat_checkpoint.py
+Inference: one 256-thread Alpaka block per jet, whole event in a single launch
+Workspace: none; all activations in 43776 bytes of block shared memory
+Weights: 2108032 INT8 values; integer layers packed [k/4][out][4] on the host,
+         float layers transposed to [in][out];
+         the classifier stays FP32 in the parameter blob (FloatLinear)
+Arithmetic: INT8 activations and INT32 accumulators via dp4a on 99.8% of the
+         multiply-accumulates; the 15-input and 4-input projections keep FP32
+Activation scales: three per layer (key, query, value), used by the kernel
+
+Required source markers:
+  PARTICLE_TRANSFORMER_ALGO_API_REVISION 5
+  part::JetShared
+  kThreadsPerJet
+  part::transposeWeights
+  part::usesIntegerArithmetic
+  part::quantizeOne
