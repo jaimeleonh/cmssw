@@ -286,6 +286,11 @@ l1tLayer1HGCal = cms.EDProducer("L1TCorrelatorLayer1Producer",
         useMLAssociation = switchOnNNAssoc, #Enable Association Network
         NNVtxAssociation = NNVtxAssociationPSet,
     ),
+    pfSorterParameters = cms.PSet(
+        nLinks = cms.uint32(18),
+        nOutputs = cms.uint32(3),
+        nClocks = cms.uint32(162),
+    ),
     tkEgAlgoParameters = tkEgAlgoParameters.clone(
         nTRACK = 30,
         nTRACK_EGIN = 10,

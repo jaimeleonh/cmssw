@@ -22,6 +22,8 @@ namespace l1ct {
       l1ct::PFNeutralObjEmu neutral;
       l1ct::puppiWgt_t puppiWgt;  // weight of a neutral particle (1 = no puppi correction)
       l1ct::pt_t puppiPt;         // pt of a neutral particle after the weight
+      l1ct::eta_t hwEta;
+      l1ct::phi_t hwPhi;
 
       PFParticleEmu() { clear(); }
       explicit PFParticleEmu(const l1ct::PFChargedObjEmu &src) { set(src); }
@@ -33,6 +35,8 @@ namespace l1ct {
         neutral.clear();
         puppiWgt = 0;
         puppiPt = 0;
+        hwEta = 0;
+        hwPhi = 0;
       }
 
       void set(const l1ct::PFChargedObjEmu &src) {
@@ -41,6 +45,8 @@ namespace l1ct {
           return;
         kind = Charged;
         charged = src;
+        hwEta = charged.hwEta;
+        hwPhi = charged.hwPhi;
       }
 
       void set(const l1ct::PFNeutralObjEmu &src, l1ct::puppiWgt_t wgt = 1.0) {
@@ -51,6 +57,8 @@ namespace l1ct {
         neutral = src;
         puppiWgt = wgt;
         puppiPt = l1ct::pt_t(src.hwPt * wgt);
+        hwEta = neutral.hwEta;
+        hwPhi = neutral.hwPhi;
       }
 
       // pt the particle will have once converted (0 for an empty link)
@@ -82,8 +90,13 @@ namespace l1ct {
       return ret;
     }
 
-    // convert a whole PF region: charged particles, muons, photons and neutral hadrons, in
-    // this order, skipping the empty slots. Returns the number of particles appended.
+    // convert a whole PF region: charged particles, photons and neutral hadrons, in this
+    // order, skipping the empty slots. Returns the number of particles appended.
+    //
+    // Note that pf.pfmuon is deliberately NOT read: both PFAlgo2HGC and PFAlgo3 write a
+    // muon-matched track into pfcharged (with hwId.isMuon() set) as well as into pfmuon, so
+    // reading both would emit every muon twice. This matches what the rest of the chain
+    // does -- fetchPF() and linpuppi_ref() also take muons from pfcharged only.
     inline unsigned int toPFParticles(const l1ct::OutputRegion &pf,
                                       std::vector<PFParticleEmu> &out,
                                       l1ct::puppiWgt_t wgt = 1.0) {
@@ -91,12 +104,6 @@ namespace l1ct {
       for (const auto &c : pf.pfcharged) {
         if (c.hwPt != 0) {
           out.emplace_back(c);
-          n++;
-        }
-      }
-      for (const auto &m : pf.pfmuon) {
-        if (m.hwPt != 0) {
-          out.emplace_back(m);
           n++;
         }
       }
