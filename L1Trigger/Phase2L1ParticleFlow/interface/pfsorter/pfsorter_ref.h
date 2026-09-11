@@ -5,6 +5,11 @@
 #include "L1Trigger/Phase2L1ParticleFlow/interface/pfsorter/pfsorter_tree_elements_ref.h"
 #include "L1Trigger/Phase2L1ParticleFlow/interface/pfsorter/pfsorter_inputs_ref.h"
 
+#ifdef CMSSW_GIT_HASH
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#endif
+
 namespace l1ct {
 
   // Clock-cycle emulation of the pfsorter merge tree, built on the same fifo / staging
@@ -31,7 +36,7 @@ namespace l1ct {
   class PFSorterEmulatorT {
   public:
     PFSorterEmulatorT() : nevt_(0) {}
-    PFSorterEmulatorT(unsigned int nlinks, unsigned int noutputs = 3) : nevt_(0) {
+    PFSorterEmulatorT(unsigned int nlinks, unsigned int noutputs = 3, unsigned int nclocks = 162) : nevt_(0), nclocks_(nclocks) {
       buffer_.initFifos(nlinks, noutputs);
     }
 
@@ -77,10 +82,12 @@ namespace l1ct {
     const l1ct::pfsorter::RegionBuffer<T>& buffer() const { return buffer_; }
     l1ct::pfsorter::RegionBuffer<T>& buffer() { return buffer_; }
     unsigned int nEvents() const { return nevt_; }
+    unsigned int nClocks() const { return nclocks_; }
 
   private:
     l1ct::pfsorter::RegionBuffer<T> buffer_;
     unsigned int nevt_;
+    unsigned int nclocks_;
   };
 
   // The sorter as it is used in practice: it stores PuppiObj, and it can be fed either
@@ -91,6 +98,21 @@ namespace l1ct {
     typedef l1ct::pfsorter::PFParticleEmu PFParticle;
     using PFSorterEmulatorT<l1ct::PuppiObjEmu>::PFSorterEmulatorT;
     using PFSorterEmulatorT<l1ct::PuppiObjEmu>::step;
+
+#ifdef CMSSW_GIT_HASH
+    PFSorterEmulator(const edm::ParameterSet& iConfig)
+        : PFSorterEmulator(iConfig.getParameter<uint32_t>("nLinks"),
+                           iConfig.getParameter<uint32_t>("nOutputs"),
+                           iConfig.getParameter<uint32_t>("nClocks")) {}
+
+    static edm::ParameterSetDescription getParameterSetDescription() {
+      edm::ParameterSetDescription description;
+      description.add<uint32_t>("nLinks", 18);
+      description.add<uint32_t>("nOutputs", 3);
+      description.add<uint32_t>("nClocks", 162);
+      return description;
+    }
+#endif
 
     // single clock cycle taking one PF particle per link, each with the region it was
     // reconstructed in (PF coordinates are local to the region): the particles are
@@ -114,8 +136,84 @@ namespace l1ct {
               l1ct::PuppiObjEmu& out) {
       return step(newEvent, std::vector<l1ct::PFRegionEmu>(inputs.size(), region), inputs, out);
     }
-  };
 
+    struct PFLinkItem {
+      l1ct::pfsorter::PFParticleEmu particle;
+      l1ct::PFRegionEmu region;
+    };
+
+#ifdef CMSSW_GIT_HASH
+    void makePFLinks(const l1ct::Event &event,
+                                unsigned int nlinks,
+                                std::vector<std::vector<PFLinkItem>> &links,
+                                l1ct::puppiWgt_t wgt = 1.0) {
+      links.clear();
+      links.resize(nlinks);
+      // every output region must come with its input region, or the fiducial cut below has
+      // no geometry to cut on and would silently drop the whole region
+      assert(event.out.size() == event.pfinputs.size());
+      for (unsigned int ireg = 0, nreg = event.out.size(); ireg < nreg; ++ireg) {
+        const l1ct::PFRegionEmu &region = event.pfinputs[ireg].region;
+        std::vector<l1ct::pfsorter::PFParticleEmu> particles;
+        l1ct::pfsorter::toPFParticles(event.out[ireg], particles, wgt);
+        for (auto &p : particles) {
+          // Skip an empty slot, a neutral whose pt was zeroed by the puppi weight, and
+          // anything sitting in the overlap pad of the region: regions are padded by
+          // etaExtra/phiExtra, so a particle in the pad is reconstructed a second time by
+          // the neighbouring region that holds it as fiducial, and keeping both copies
+          // would duplicate it in the sorter output. This is the same cut that fetchPF()
+          // and linpuppi_ref() apply to these very same PF collections.
+          if (!p.valid() || !region.isFiducial(p))
+            continue;
+          links[ireg % nlinks].push_back(PFLinkItem{p, region});
+        }
+      }
+      return;
+    }
+
+    void run(const l1ct::Event &event,
+            std::vector<l1ct::PuppiObjEmu>& out) {
+      std::vector<std::vector<PFLinkItem>> links;
+      makePFLinks(event, event.pfinputs.size(), links);
+      l1ct::PuppiObjEmu outObj;
+      for (unsigned int iclock = 0; iclock < nClocks(); ++iclock) {
+        bool newevt = (iclock == 0);
+        std::vector<l1ct::pfsorter::PFParticleEmu> pfin( event.pfinputs.size());
+        std::vector<l1ct::PFRegionEmu> pfregions(event.pfinputs.size());
+        for (unsigned int l = 0; l < event.pfinputs.size(); ++l) {
+          if (iclock < links[l].size()) {
+            pfin[l] = links[l][iclock].particle;
+            pfregions[l] = links[l][iclock].region;
+          }
+        }
+        step(newevt, pfregions, pfin, outObj);
+        if (outObj.hwPt != 0)
+          out.push_back(outObj);
+      }
+    }
+#else
+    // standalone version: run from raw links (one vector of particles per link)
+    void run(const std::vector<l1ct::PFRegionEmu>& regions,
+             const std::vector<std::vector<PFParticle>>& links,
+             std::vector<l1ct::PuppiObjEmu>& out) {
+      l1ct::PuppiObjEmu outObj;
+      for (unsigned int iclock = 0; iclock < nClocks(); ++iclock) {
+        bool newevt = (iclock == 0);
+        std::vector<l1ct::pfsorter::PFParticleEmu> pfin(regions.size());
+        std::vector<l1ct::PFRegionEmu> pfregions(regions.size());
+        for (unsigned int l = 0; l < regions.size(); ++l) {
+          if (iclock < links[l].size()) {
+            pfin[l] = links[l][iclock];
+            pfregions[l] = regions[l];
+          }
+        }
+        step(newevt, pfregions, pfin, outObj);
+        if (outObj.hwPt != 0)
+          out.push_back(outObj);
+      }
+    }
+#endif
+  };
 }  // namespace l1ct
 
 #endif
