@@ -114,9 +114,19 @@ namespace l1ct {
     }
 #endif
 
+    // flush the tree and the conversion register
+    void reset() {
+      PFSorterEmulatorT<l1ct::PuppiObjEmu>::reset();
+      clearConverted_();
+    }
+
     // single clock cycle taking one PF particle per link, each with the region it was
     // reconstructed in (PF coordinates are local to the region): the particles are
     // converted into PuppiObj and then pushed into the fifos.
+    //
+    // The conversion costs one clock cycle, as it does in firmware (pf_to_puppi registers
+    // its output), so what is pushed into the fifos in this clock cycle is what was
+    // converted in the previous one, and newEvent is delayed by the same cycle.
     bool step(bool newEvent,
               const std::vector<l1ct::PFRegionEmu>& regions,
               const std::vector<PFParticle>& inputs,
@@ -126,7 +136,14 @@ namespace l1ct {
       for (unsigned int i = 0, n = inputs.size(); i < n; ++i) {
         l1ct::pfsorter::toPuppi(regions[i], inputs[i], converted[i]);
       }
-      return step(newEvent, converted, out);
+      if (converted_.size() != inputs.size()) {
+        converted_.resize(inputs.size());
+        clearConverted_();
+      }
+      bool ret = step(convertedNewEvent_, converted_, out);
+      converted_.swap(converted);
+      convertedNewEvent_ = newEvent;
+      return ret;
     }
 
     // same, when all the links carry particles of the same region
@@ -135,6 +152,20 @@ namespace l1ct {
               const std::vector<PFParticle>& inputs,
               l1ct::PuppiObjEmu& out) {
       return step(newEvent, std::vector<l1ct::PFRegionEmu>(inputs.size(), region), inputs, out);
+    }
+
+    // keep clocking with no new inputs until the tree is empty. The first of those clock
+    // cycles is the one that lets the last converted particles into the fifos.
+    unsigned int drain(std::vector<l1ct::PuppiObjEmu>& out, unsigned int maxclocks = 10000) {
+      unsigned int nclocks = 0;
+      if (!converted_.empty()) {
+        l1ct::PuppiObjEmu obj;
+        if (PFSorterEmulatorT<l1ct::PuppiObjEmu>::step(convertedNewEvent_, converted_, obj))
+          out.push_back(obj);
+        clearConverted_();
+        nclocks++;
+      }
+      return nclocks + PFSorterEmulatorT<l1ct::PuppiObjEmu>::drain(out, maxclocks);
     }
 
     struct PFLinkItem {
@@ -213,6 +244,18 @@ namespace l1ct {
       }
     }
 #endif
+
+  private:
+    // the output register of the conversion: what it holds enters the fifos on the next
+    // clock cycle, together with the newEvent that came with it
+    std::vector<l1ct::PuppiObjEmu> converted_;
+    bool convertedNewEvent_ = false;
+
+    void clearConverted_() {
+      for (auto& o : converted_)
+        o.clear();
+      convertedNewEvent_ = false;
+    }
   };
 }  // namespace l1ct
 
