@@ -450,7 +450,7 @@ void L1TCorrelatorLayer1Producer::fillDescriptions(edm::ConfigurationDescription
   // Puppi
   desc.ifValue(edm::ParameterDescription<std::string>("puAlgo", "LinearizedPuppi", true),
                "LinearizedPuppi" >> getParDesc<l1ct::LinPuppiEmulator>("puAlgo"));
-  // EGammaxw
+  // EGamma
   desc.add<edm::ParameterSetDescription>("tkEgAlgoParameters", l1ct::PFTkEGAlgoEmuConfig::getParameterSetDescription());
   // EGamma sort
   desc.ifValue(edm::ParameterDescription<std::string>("tkEgSorterAlgo", "Barrel", true),
@@ -686,7 +686,7 @@ void L1TCorrelatorLayer1Producer::produce(edm::Event &iEvent, const edm::EventSe
   if (isEndcap) {
     putSortedPF(iEvent, out_sorted_pf);
   }
-
+ 
   // save the EG objects
   putEgObjects(iEvent, l1tkegalgo_->writeEgSta(), "L1TkEm", "L1TkEmPerBoard", "L1TkEle", "L1TkElePerBoard");
 

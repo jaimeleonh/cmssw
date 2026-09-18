@@ -21,7 +21,8 @@ namespace l1ct {
       l1ct::PFChargedObjEmu charged;
       l1ct::PFNeutralObjEmu neutral;
       l1ct::puppiWgt_t puppiWgt;  // weight of a neutral particle (1 = no puppi correction)
-      l1ct::pt_t puppiPt;         // pt of a neutral particle after the weight
+      l1ct::pt_t puppiPt;         // pt of a neutral particle: the same as the PF one, the
+                                  // weight is only recorded, not applied
       l1ct::eta_t hwEta;
       l1ct::phi_t hwPhi;
 
@@ -56,7 +57,9 @@ namespace l1ct {
         kind = Neutral;
         neutral = src;
         puppiWgt = wgt;
-        puppiPt = l1ct::pt_t(src.hwPt * wgt);
+        // the pt is taken over unchanged from the PF candidate: eta and phi are the only
+        // values the conversion modifies, and the weight is only recorded in the payload
+        puppiPt = src.hwPt;
         hwEta = neutral.hwEta;
         hwPhi = neutral.hwPhi;
       }
@@ -74,7 +77,7 @@ namespace l1ct {
     };
 
     // convert one PF particle into a PuppiObj with global coordinates; an invalid particle
-    // (empty link, or one whose pt was zeroed by the puppi weight) gives an empty object
+    // (an empty link, or one with no pt) gives an empty object
     inline void toPuppi(const l1ct::PFRegionEmu &region, const PFParticleEmu &in, l1ct::PuppiObjEmu &out) {
       if (!in.valid()) {
         out.clear();
