@@ -87,7 +87,7 @@ namespace l1ct {
   private:
     l1ct::pfsorter::RegionBuffer<T> buffer_;
     unsigned int nevt_;
-    unsigned int nclocks_;
+    unsigned int nclocks_ = 162;  // also covers the default constructor
   };
 
   // The sorter as it is used in practice: it stores PuppiObj, and it can be fed either
@@ -173,20 +173,57 @@ namespace l1ct {
       l1ct::PFRegionEmu region;
     };
 
-#ifdef CMSSW_GIT_HASH
-    void makePFLinks(const l1ct::Event &event,
-                                unsigned int nlinks,
-                                std::vector<std::vector<PFLinkItem>> &links,
-                                l1ct::puppiWgt_t wgt = 1.0) {
+    // Collect the puppi candidates of an event and distribute them over 'nlinks' input
+    // links, one link per region, round robin if there are more regions than links.
+    // Returns the number of objects. If 'regionIndex' is given, it is filled in parallel
+    // to 'links' with the index of the region each object came from.
+    static unsigned int makeLinks(const l1ct::Event &event,
+                                  unsigned int nlinks,
+                                  std::vector<std::vector<l1ct::PuppiObjEmu>> &links,
+                                  std::vector<std::vector<unsigned int>> *regionIndex = nullptr) {
       links.clear();
       links.resize(nlinks);
+      if (regionIndex) {
+        regionIndex->clear();
+        regionIndex->resize(nlinks);
+      }
+      unsigned int nobj = 0;
+      for (unsigned int ireg = 0, nreg = event.out.size(); ireg < nreg; ++ireg) {
+        for (const auto &p : event.out[ireg].puppi) {
+          if (p.hwPt == 0)
+            continue;
+          links[ireg % nlinks].push_back(p);
+          if (regionIndex)
+            (*regionIndex)[ireg % nlinks].push_back(ireg);
+          nobj++;
+        }
+      }
+      return nobj;
+    }
+
+    // Same, taking the particles produced by the PF algorithm (charged, muons, photons and
+    // neutral hadrons of each region) instead of the puppi candidates. They are handed to
+    // the sorter as PF particles and converted into PuppiObj on the way in.
+    static unsigned int makePFLinks(const std::vector<l1ct::PFInputRegion> &pfinputs,
+                                const std::vector<l1ct::OutputRegion> &pfouts,
+                                unsigned int nlinks,
+                                std::vector<std::vector<PFLinkItem>> &links,
+                                l1ct::puppiWgt_t wgt = 1.0,
+                                std::vector<std::vector<unsigned int>> *regionIndex = nullptr) {
+      links.clear();
+      links.resize(nlinks);
+      if (regionIndex) {
+        regionIndex->clear();
+        regionIndex->resize(nlinks);
+      }
+      unsigned int nobj = 0;
       // every output region must come with its input region, or the fiducial cut below has
       // no geometry to cut on and would silently drop the whole region
-      assert(event.out.size() == event.pfinputs.size());
-      for (unsigned int ireg = 0, nreg = event.out.size(); ireg < nreg; ++ireg) {
-        const l1ct::PFRegionEmu &region = event.pfinputs[ireg].region;
+      assert(pfouts.size() == pfinputs.size());
+      for (unsigned int ireg = 0, nreg = pfouts.size(); ireg < nreg; ++ireg) {
+        const l1ct::PFRegionEmu &region = pfinputs[ireg].region;
         std::vector<l1ct::pfsorter::PFParticleEmu> particles;
-        l1ct::pfsorter::toPFParticles(event.out[ireg], particles, wgt);
+        l1ct::pfsorter::toPFParticles(pfouts[ireg], particles, wgt);
         for (auto &p : particles) {
           // Skip an empty slot, a neutral whose pt was zeroed by the puppi weight, and
           // anything sitting in the overlap pad of the region: regions are padded by
@@ -197,21 +234,45 @@ namespace l1ct {
           if (!p.valid() || !region.isFiducial(p))
             continue;
           links[ireg % nlinks].push_back(PFLinkItem{p, region});
+          if (regionIndex)
+            (*regionIndex)[ireg % nlinks].push_back(ireg);
+          nobj++;
         }
       }
-      return;
+      return nobj;
     }
 
-    void run(const l1ct::Event &event,
-            std::vector<l1ct::PuppiObjEmu>& out) {
+    // same, from a full event (the two vectors above are event.pfinputs and event.out)
+    static unsigned int makePFLinks(const l1ct::Event &event,
+                                unsigned int nlinks,
+                                std::vector<std::vector<PFLinkItem>> &links,
+                                l1ct::puppiWgt_t wgt = 1.0,
+                                std::vector<std::vector<unsigned int>> *regionIndex = nullptr) {
+      return makePFLinks(event.pfinputs, event.out, nlinks, links, wgt, regionIndex);
+    }
+
+    // Run the sorter over one event's worth of PF output, one link per region, and collect
+    // the sorted puppi candidates. This is the whole of the algorithm; callers that do not
+    // have an l1ct::Event at hand (a standalone testbench working region by region) can
+    // pass the two vectors directly.
+    //
+    // The tree is sized on the number of regions if it has not been sized already, or if it
+    // was sized for a different number of links, so that a default constructed emulator can
+    // be used as is.
+    void run(const std::vector<l1ct::PFInputRegion> &pfinputs,
+             const std::vector<l1ct::OutputRegion> &pfouts,
+             std::vector<l1ct::PuppiObjEmu> &out) {
+      const unsigned int nlinks = pfinputs.size();
+      if (buffer().nfifos() != nlinks)
+        initFifos(nlinks, buffer().noutputs() ? buffer().noutputs() : 3);
       std::vector<std::vector<PFLinkItem>> links;
-      makePFLinks(event, event.pfinputs.size(), links);
+      makePFLinks(pfinputs, pfouts, nlinks, links);
       l1ct::PuppiObjEmu outObj;
       for (unsigned int iclock = 0; iclock < nClocks(); ++iclock) {
         bool newevt = (iclock == 0);
-        std::vector<l1ct::pfsorter::PFParticleEmu> pfin( event.pfinputs.size());
-        std::vector<l1ct::PFRegionEmu> pfregions(event.pfinputs.size());
-        for (unsigned int l = 0; l < event.pfinputs.size(); ++l) {
+        std::vector<l1ct::pfsorter::PFParticleEmu> pfin(nlinks);
+        std::vector<l1ct::PFRegionEmu> pfregions(nlinks);
+        for (unsigned int l = 0; l < nlinks; ++l) {
           if (iclock < links[l].size()) {
             pfin[l] = links[l][iclock].particle;
             pfregions[l] = links[l][iclock].region;
@@ -221,6 +282,12 @@ namespace l1ct {
         if (outObj.hwPt != 0)
           out.push_back(outObj);
       }
+    }
+
+#ifdef CMSSW_GIT_HASH
+    // writes the sorted candidates into event.sortedpf, so 'event' can't be const here
+    void run(l1ct::Event &event) {
+      run(event.pfinputs, event.out, event.sortedpf);
     }
 #else
     // standalone version: run from raw links (one vector of particles per link)
