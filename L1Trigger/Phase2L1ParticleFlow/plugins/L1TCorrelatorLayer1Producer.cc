@@ -654,9 +654,8 @@ void L1TCorrelatorLayer1Producer::produce(edm::Event &iEvent, const edm::EventSe
     l1tkegalgo_->runIso(event_.pfinputs[ir], event_.pvs, event_.out[ir]);
   }
 
-  std::vector<l1ct::PuppiObjEmu> out_sorted_pf;
   if (isEndcap) {
-    l1pfsorter_->run(event_, out_sorted_pf);
+    l1pfsorter_->run(event_);
   }
 
   // Then run puppi (regionally)
@@ -684,7 +683,7 @@ void L1TCorrelatorLayer1Producer::produce(edm::Event &iEvent, const edm::EventSe
   // and save puppi
   putPuppi(iEvent);
   if (isEndcap) {
-    putSortedPF(iEvent, out_sorted_pf);
+    putSortedPF(iEvent, event_.sortedpf);
   }
  
   // save the EG objects
