@@ -5,6 +5,9 @@
 #include "L1Trigger/Phase2L1ParticleFlow/interface/pfsorter/pfsorter_tree_elements_ref.h"
 #include "L1Trigger/Phase2L1ParticleFlow/interface/pfsorter/pfsorter_inputs_ref.h"
 
+#include <algorithm>
+#include <vector>
+
 #ifdef CMSSW_GIT_HASH
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
@@ -99,20 +102,97 @@ namespace l1ct {
     using PFSorterEmulatorT<l1ct::PuppiObjEmu>::PFSorterEmulatorT;
     using PFSorterEmulatorT<l1ct::PuppiObjEmu>::step;
 
+    // The links are split in two groups: the first 'nlinksCharged' carry the charged PF
+    // candidates and the following 'nlinksNeutral' the neutral ones. Each region occupies
+    // a fixed slot of 'nobjperlink' clock cycles on every link, into which the
+    // 'nslotsCharged' charged and 'nslotsNeutral' neutral slots the PF algorithm outputs
+    // for the region are laid out as the firmware does (see makePFLinks).
+    PFSorterEmulator(unsigned int nlinksCharged,
+                     unsigned int nlinksNeutral,
+                     unsigned int noutputs,
+                     unsigned int nclocks,
+                     unsigned int nobjperlink,
+                     unsigned int nslotsCharged = l1ct::pfsorter::nSlotsCharged,
+                     unsigned int nslotsNeutral = l1ct::pfsorter::nSlotsNeutral)
+        : PFSorterEmulatorT<l1ct::PuppiObjEmu>(nlinksCharged + nlinksNeutral, noutputs, nclocks),
+          nLinksCharged_(nlinksCharged),
+          nLinksNeutral_(nlinksNeutral),
+          nObjPerLink_(nobjperlink),
+          nSlotsCharged_(nslotsCharged),
+          nSlotsNeutral_(nslotsNeutral) {}
+
 #ifdef CMSSW_GIT_HASH
     PFSorterEmulator(const edm::ParameterSet& iConfig)
-        : PFSorterEmulator(iConfig.getParameter<uint32_t>("nLinks"),
+        : PFSorterEmulator(iConfig.getParameter<uint32_t>("nLinksCharged"),
+                           iConfig.getParameter<uint32_t>("nLinksNeutral"),
                            iConfig.getParameter<uint32_t>("nOutputs"),
-                           iConfig.getParameter<uint32_t>("nClocks")) {}
+                           iConfig.getParameter<uint32_t>("nClocks"),
+                           iConfig.getParameter<uint32_t>("nObjPerLink"),
+                           iConfig.getParameter<uint32_t>("nSlotsCharged"),
+                           iConfig.getParameter<uint32_t>("nSlotsNeutral")) {}
 
     static edm::ParameterSetDescription getParameterSetDescription() {
       edm::ParameterSetDescription description;
-      description.add<uint32_t>("nLinks", 18);
+      description.add<uint32_t>("nLinksCharged", l1ct::pfsorter::nLinksCharged);
+      description.add<uint32_t>("nLinksNeutral", l1ct::pfsorter::nLinksNeutral);
+      description.add<uint32_t>("nObjPerLink", l1ct::pfsorter::nObjPerLink);
+      description.add<uint32_t>("nSlotsCharged", l1ct::pfsorter::nSlotsCharged);
+      description.add<uint32_t>("nSlotsNeutral", l1ct::pfsorter::nSlotsNeutral);
       description.add<uint32_t>("nOutputs", 3);
-      description.add<uint32_t>("nClocks", 162);
+      description.add<uint32_t>("nClocks", 0);  // 0 = nObjPerLink * (number of regions)
       return description;
     }
 #endif
+
+    unsigned int nLinksCharged() const { return nLinksCharged_; }
+    unsigned int nLinksNeutral() const { return nLinksNeutral_; }
+    unsigned int nLinks() const { return nLinksCharged_ + nLinksNeutral_; }
+    unsigned int nObjPerLink() const { return nObjPerLink_; }
+    unsigned int nSlotsCharged() const { return nSlotsCharged_; }
+    unsigned int nSlotsNeutral() const { return nSlotsNeutral_; }
+
+    // Where the firmware puts the PF slots of one region on the links of one group
+    // (charged or neutral): layout[link][cycle] is the index of the PF slot that link
+    // carries in that cycle of the region, or -1 for an empty cycle. It models the two
+    // stages of the tmux18 demonstrator between the PF algorithm and the sorter:
+    //
+    //  1. parallel2serial at 240 MHz, NWRITE = nwrite240 cycles per region: stream s
+    //     carries slots s*nwrite240 ... s*nwrite240+nwrite240-1, in this order;
+    //  2. stream_compress_9to6 at 360 MHz, after cdc_and_deserializer has replayed those
+    //     nwrite240 (6) cycles at the start of each 9-cycle region: every group of three
+    //     streams 3g, 3g+1, 3g+2 becomes two links 2g, 2g+1, the first two streams going
+    //     straight through in cycles 0-5 and the third one being queued and sent two per
+    //     cycle in cycles 6-8 (slots 0, 2, 4 on link 2g+1 and 1, 3, 5 on link 2g).
+    //
+    // With 30 charged slots that is link 0 = slots 0-5,13,15,17; link 1 = 6-11,12,14,16;
+    // link 2 = 18-23; link 3 = 24-29. The number of links it returns, ceil(nslots/9), must
+    // be the number of links of the group.
+    static std::vector<std::vector<int>> firmwareSlotLayout(unsigned int nslots,
+                                                            unsigned int nobjperlink = l1ct::pfsorter::nObjPerLink,
+                                                            unsigned int nwrite240 = l1ct::pfsorter::nWrite240) {
+      // stream_compress_9to6 is hard wired for 6 cycles in and 9 out
+      assert(nwrite240 == 6 && nobjperlink == 9);
+      const unsigned int nstream240 = (nslots + nwrite240 - 1) / nwrite240;
+      auto in = [&](unsigned int stream, unsigned int cycle) -> int {
+        unsigned int slot = stream * nwrite240 + cycle;
+        return (stream < nstream240 && slot < nslots) ? int(slot) : -1;
+      };
+      const unsigned int ngroups = (nslots + 17) / 18;
+      const unsigned int nlinks = (nslots + nobjperlink - 1) / nobjperlink;
+      std::vector<std::vector<int>> out(2 * ngroups, std::vector<int>(nobjperlink, -1));
+      for (unsigned int g = 0; g < ngroups; ++g) {
+        for (unsigned int c = 0; c < nwrite240; ++c) {
+          out[2 * g][c] = in(3 * g, c);
+          out[2 * g + 1][c] = in(3 * g + 1, c);
+        }
+        for (unsigned int k = 0; k < (nobjperlink - nwrite240); ++k) {
+          out[2 * g + 1][nwrite240 + k] = in(3 * g + 2, 2 * k);
+          out[2 * g][nwrite240 + k] = in(3 * g + 2, 2 * k + 1);
+        }
+      }
+      out.resize(nlinks);  // the compressor only drives ceil(nslots/9) links
+      return out;
+    }
 
     // flush the tree and the conversion register
     void reset() {
@@ -201,54 +281,135 @@ namespace l1ct {
       return nobj;
     }
 
-    // Same, taking the particles produced by the PF algorithm (charged, muons, photons and
-    // neutral hadrons of each region) instead of the puppi candidates. They are handed to
-    // the sorter as PF particles and converted into PuppiObj on the way in.
+    // Distribute the particles produced by the PF algorithm over the input links, laid out
+    // exactly as the tmux18 demonstrator firmware lays them out. They are handed to the
+    // sorter as PF particles and converted into PuppiObj on the way in.
+    //
+    // The links are split in two groups, 'nlinksCharged' for the charged candidates
+    // followed by 'nlinksNeutral' for the neutral ones, and the event is laid out region
+    // by region: each region gets a slot of 'nobjperlink' consecutive clock cycles on every
+    // link. Within it, the PF slots of the region keep their position: charged slot i is
+    // pfcharged[i] and neutral slot i is pfneutral[i], empty slots included, and they go
+    // where firmwareSlotLayout() puts them. An empty slot or cycle is an empty object.
+    //
+    // A region with more than 'nslotsCharged' / 'nslotsNeutral' slots cannot be laid out:
+    // the extra slots are dropped and, if 'ndropped' is given, the non-empty ones among
+    // them are counted there (the PF algorithm is configured with exactly as many slots as
+    // the firmware carries, so this is expected to stay 0).
+    //
+    // Returns the number of non-empty particles written into the links.
     static unsigned int makePFLinks(const std::vector<l1ct::PFInputRegion> &pfinputs,
-                                const std::vector<l1ct::OutputRegion> &pfouts,
-                                unsigned int nlinks,
-                                std::vector<std::vector<PFLinkItem>> &links,
-                                l1ct::puppiWgt_t wgt = 1.0,
-                                std::vector<std::vector<unsigned int>> *regionIndex = nullptr) {
+                                    const std::vector<l1ct::OutputRegion> &pfouts,
+                                    unsigned int nlinksCharged,
+                                    unsigned int nlinksNeutral,
+                                    unsigned int nobjperlink,
+                                    unsigned int nslotsCharged,
+                                    unsigned int nslotsNeutral,
+                                    std::vector<std::vector<PFLinkItem>> &links,
+                                    l1ct::puppiWgt_t wgt = 1.0,
+                                    std::vector<std::vector<unsigned int>> *regionIndex = nullptr,
+                                    unsigned int *ndropped = nullptr) {
+      const std::vector<std::vector<int>> layoutCharged = firmwareSlotLayout(nslotsCharged, nobjperlink);
+      const std::vector<std::vector<int>> layoutNeutral = firmwareSlotLayout(nslotsNeutral, nobjperlink);
+      // the link counts must be the ones the firmware drives
+      assert(layoutCharged.size() == nlinksCharged);
+      assert(layoutNeutral.size() == nlinksNeutral);
+      const unsigned int nlinks = nlinksCharged + nlinksNeutral;
+      const unsigned int nreg = pfouts.size();
       links.clear();
       links.resize(nlinks);
       if (regionIndex) {
         regionIndex->clear();
         regionIndex->resize(nlinks);
       }
-      unsigned int nobj = 0;
-      // every output region must come with its input region, or the fiducial cut below has
-      // no geometry to cut on and would silently drop the whole region
+      // every output region must come with its input region, or the conversion has no
+      // centre to move the particles to global coordinates
       assert(pfouts.size() == pfinputs.size());
-      for (unsigned int ireg = 0, nreg = pfouts.size(); ireg < nreg; ++ireg) {
+      unsigned int nobj = 0, ndrop = 0;
+      for (unsigned int ireg = 0; ireg < nreg; ++ireg) {
         const l1ct::PFRegionEmu &region = pfinputs[ireg].region;
-        std::vector<l1ct::pfsorter::PFParticleEmu> particles;
-        l1ct::pfsorter::toPFParticles(pfouts[ireg], particles, wgt);
-        for (auto &p : particles) {
-          // Skip an empty slot, a neutral whose pt was zeroed by the puppi weight, and
-          // anything sitting in the overlap pad of the region: regions are padded by
-          // etaExtra/phiExtra, so a particle in the pad is reconstructed a second time by
-          // the neighbouring region that holds it as fiducial, and keeping both copies
-          // would duplicate it in the sorter output. This is the same cut that fetchPF()
-          // and linpuppi_ref() apply to these very same PF collections.
-          if (!p.valid() || !region.isFiducial(p))
-            continue;
-          links[ireg % nlinks].push_back(PFLinkItem{p, region});
+        const l1ct::OutputRegion &pf = pfouts[ireg];
+        const unsigned int base = ireg * nobjperlink;
+        for (unsigned int l = 0; l < nlinks; ++l) {
+          links[l].resize(base + nobjperlink);  // pad with empty objects
           if (regionIndex)
-            (*regionIndex)[ireg % nlinks].push_back(ireg);
-          nobj++;
+            (*regionIndex)[l].resize(base + nobjperlink, ireg);
         }
+        for (unsigned int l = 0; l < nlinksCharged; ++l) {
+          for (unsigned int c = 0; c < nobjperlink; ++c) {
+            int slot = layoutCharged[l][c];
+            if (slot < 0 || unsigned(slot) >= pf.pfcharged.size())
+              continue;
+            PFLinkItem item{l1ct::pfsorter::PFParticleEmu(pf.pfcharged[slot]), region};
+            if (item.particle.valid())
+              nobj++;
+            links[l][base + c] = item;
+          }
+        }
+        for (unsigned int l = 0; l < nlinksNeutral; ++l) {
+          for (unsigned int c = 0; c < nobjperlink; ++c) {
+            int slot = layoutNeutral[l][c];
+            if (slot < 0 || unsigned(slot) >= pf.pfneutral.size())
+              continue;
+            PFLinkItem item{l1ct::pfsorter::PFParticleEmu(pf.pfneutral[slot], wgt), region};
+            if (item.particle.valid())
+              nobj++;
+            links[nlinksCharged + l][base + c] = item;
+          }
+        }
+        // slots beyond what the links carry
+        for (unsigned int i = nslotsCharged; i < pf.pfcharged.size(); ++i)
+          ndrop += (pf.pfcharged[i].hwPt != 0);
+        for (unsigned int i = nslotsNeutral; i < pf.pfneutral.size(); ++i)
+          ndrop += (pf.pfneutral[i].hwPt != 0);
       }
+      if (ndropped)
+        *ndropped = ndrop;
       return nobj;
     }
 
     // same, from a full event (the two vectors above are event.pfinputs and event.out)
     static unsigned int makePFLinks(const l1ct::Event &event,
-                                unsigned int nlinks,
-                                std::vector<std::vector<PFLinkItem>> &links,
-                                l1ct::puppiWgt_t wgt = 1.0,
-                                std::vector<std::vector<unsigned int>> *regionIndex = nullptr) {
-      return makePFLinks(event.pfinputs, event.out, nlinks, links, wgt, regionIndex);
+                                    unsigned int nlinksCharged,
+                                    unsigned int nlinksNeutral,
+                                    unsigned int nobjperlink,
+                                    unsigned int nslotsCharged,
+                                    unsigned int nslotsNeutral,
+                                    std::vector<std::vector<PFLinkItem>> &links,
+                                    l1ct::puppiWgt_t wgt = 1.0,
+                                    std::vector<std::vector<unsigned int>> *regionIndex = nullptr,
+                                    unsigned int *ndropped = nullptr) {
+      return makePFLinks(event.pfinputs,
+                         event.out,
+                         nlinksCharged,
+                         nlinksNeutral,
+                         nobjperlink,
+                         nslotsCharged,
+                         nslotsNeutral,
+                         links,
+                         wgt,
+                         regionIndex,
+                         ndropped);
+    }
+
+    // same, using the link shape this emulator was configured with
+    unsigned int makePFLinks(const std::vector<l1ct::PFInputRegion> &pfinputs,
+                             const std::vector<l1ct::OutputRegion> &pfouts,
+                             std::vector<std::vector<PFLinkItem>> &links,
+                             l1ct::puppiWgt_t wgt = 1.0,
+                             std::vector<std::vector<unsigned int>> *regionIndex = nullptr,
+                             unsigned int *ndropped = nullptr) const {
+      return makePFLinks(pfinputs,
+                         pfouts,
+                         nLinksCharged_,
+                         nLinksNeutral_,
+                         nObjPerLink_,
+                         nSlotsCharged_,
+                         nSlotsNeutral_,
+                         links,
+                         wgt,
+                         regionIndex,
+                         ndropped);
     }
 
     // Run the sorter over one event's worth of PF output, one link per region, and collect
@@ -262,13 +423,52 @@ namespace l1ct {
     void run(const std::vector<l1ct::PFInputRegion> &pfinputs,
              const std::vector<l1ct::OutputRegion> &pfouts,
              std::vector<l1ct::PuppiObjEmu> &out) {
-      const unsigned int nlinks = pfinputs.size();
+      std::vector<l1ct::PuppiObjEmu> stream;
+      runStream(pfinputs, pfouts, stream);
+      for (const auto &o : stream) {
+        if (o.hwPt != 0)
+          out.push_back(o);
+      }
+    }
+
+    // Same, but keeping the output link as it is in firmware: one entry per clock cycle,
+    // empty (hwPt == 0) in the cycles where nothing leaves the tree; run() above is this
+    // one with the empty cycles dropped.
+    //
+    // By default each event is self contained: the tree starts empty and is drained at the
+    // end, so 'stream' has the event's clock cycles plus however many it took to empty the
+    // tree. That is what CMSSW needs, where nothing may outlive the event it came from.
+    //
+    // With 'continuous' the sorter runs as the firmware does, events back to back: no
+    // reset and no drain, exactly nClocks() entries per event with newEvent on the first
+    // one, and whatever is still in the tree at the end of an event handled by the next
+    // one. Use it to write pattern files that line up frame by frame with the firmware.
+    void runStream(const std::vector<l1ct::PFInputRegion> &pfinputs,
+                   const std::vector<l1ct::OutputRegion> &pfouts,
+                   std::vector<l1ct::PuppiObjEmu> &stream,
+                   bool continuous = false) {
+      const unsigned int nlinks = nLinks();
       if (buffer().nfifos() != nlinks)
         initFifos(nlinks, buffer().noutputs() ? buffer().noutputs() : 3);
+      if (continuous) {
+        runContinuous_(pfinputs, pfouts, stream);
+        return;
+      }
+      // Start from an empty tree AND an empty conversion register. The newEvent flag alone
+      // is not enough: it only reaches the tree one clock cycle later, because it travels
+      // with the particles through the conversion, so without this reset the objects left
+      // in the conversion register by the previous event would be pushed into the fifos in
+      // the first clock cycle of this one and could be read out before the flush.
+      reset();
       std::vector<std::vector<PFLinkItem>> links;
-      makePFLinks(pfinputs, pfouts, nlinks, links);
+      makePFLinks(pfinputs, pfouts, links);
+      // the links are nObjPerLink clock cycles per region long; nClocks() is only a floor,
+      // so that a pattern file can be padded to a fixed frame count
+      const unsigned int nclk = std::max<unsigned int>(nClocks(), links.empty() ? 0 : links[0].size());
+      stream.clear();
+      stream.reserve(nclk);
       l1ct::PuppiObjEmu outObj;
-      for (unsigned int iclock = 0; iclock < nClocks(); ++iclock) {
+      for (unsigned int iclock = 0; iclock < nclk; ++iclock) {
         bool newevt = (iclock == 0);
         std::vector<l1ct::pfsorter::PFParticleEmu> pfin(nlinks);
         std::vector<l1ct::PFRegionEmu> pfregions(nlinks);
@@ -279,8 +479,21 @@ namespace l1ct {
           }
         }
         step(newevt, pfregions, pfin, outObj);
-        if (outObj.hwPt != 0)
-          out.push_back(outObj);
+        stream.push_back(outObj);
+      }
+      // The links are over, but the conversion register and the tree still hold objects:
+      // keep clocking with empty links until they are all out, so that nothing of this
+      // event is lost. These cycles are appended to the stream like any other, one entry
+      // per clock cycle, empty where nothing came out.
+      const std::vector<l1ct::pfsorter::PFParticleEmu> nopf(nlinks);
+      const std::vector<l1ct::PFRegionEmu> noregions(nlinks);
+      // the first of these cycles is the one that lets the last converted particles into
+      // the fifos, so it always has to be run
+      step(false, noregions, nopf, outObj);
+      stream.push_back(outObj);
+      while (buffer().inFlight() != 0) {
+        step(false, noregions, nopf, outObj);
+        stream.push_back(outObj);
       }
     }
 
@@ -313,6 +526,40 @@ namespace l1ct {
 #endif
 
   private:
+    unsigned int nLinksCharged_ = l1ct::pfsorter::nLinksCharged;
+    unsigned int nLinksNeutral_ = l1ct::pfsorter::nLinksNeutral;
+    unsigned int nObjPerLink_ = l1ct::pfsorter::nObjPerLink;
+    unsigned int nSlotsCharged_ = l1ct::pfsorter::nSlotsCharged;
+    unsigned int nSlotsNeutral_ = l1ct::pfsorter::nSlotsNeutral;
+
+    // one event of the continuous mode of runStream(): exactly nClocks() clock cycles,
+    // newEvent on the first, links shorter than that padded with empty objects
+    void runContinuous_(const std::vector<l1ct::PFInputRegion> &pfinputs,
+                        const std::vector<l1ct::OutputRegion> &pfouts,
+                        std::vector<l1ct::PuppiObjEmu> &stream) {
+      const unsigned int nlinks = nLinks();
+      std::vector<std::vector<PFLinkItem>> links;
+      makePFLinks(pfinputs, pfouts, links);
+      const unsigned int nclk = nClocks();
+      // an event longer than the period would overlap the next one
+      assert(links.empty() || links[0].size() <= nclk);
+      stream.clear();
+      stream.reserve(nclk);
+      l1ct::PuppiObjEmu outObj;
+      for (unsigned int iclock = 0; iclock < nclk; ++iclock) {
+        std::vector<l1ct::pfsorter::PFParticleEmu> pfin(nlinks);
+        std::vector<l1ct::PFRegionEmu> pfregions(nlinks);
+        for (unsigned int l = 0; l < nlinks; ++l) {
+          if (iclock < links[l].size()) {
+            pfin[l] = links[l][iclock].particle;
+            pfregions[l] = links[l][iclock].region;
+          }
+        }
+        step(iclock == 0, pfregions, pfin, outObj);
+        stream.push_back(outObj);
+      }
+    }
+
     // the output register of the conversion: what it holds enters the fifos on the next
     // clock cycle, together with the newEvent that came with it
     std::vector<l1ct::PuppiObjEmu> converted_;
