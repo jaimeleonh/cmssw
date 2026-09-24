@@ -221,6 +221,16 @@ namespace l1ct {
         clearConverted_();
       }
       bool ret = step(convertedNewEvent_, converted_, out);
+      // The firmware drops whatever is still in the readout path when the event rolls: on
+      // roll the rolling_fifo resets its read pointer and fifo_merge2_full discards its
+      // staging queues, forwarding only the live input. The tree flushes one clock cycle
+      // after newEvent (the conversion costs one cycle, so the flag reaches the tree
+      // delayed), which means the object the tree pops in *this* cycle -- the last of the
+      // event that is ending -- is the one the firmware discards. Drop it to match.
+      if (newEvent) {
+        out.clear();
+        ret = false;
+      }
       converted_.swap(converted);
       convertedNewEvent_ = newEvent;
       return ret;
