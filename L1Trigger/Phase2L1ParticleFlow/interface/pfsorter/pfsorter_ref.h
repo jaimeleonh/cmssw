@@ -52,13 +52,13 @@ namespace l1ct {
       nevt_ = 0;
     }
 
-    // single clock emulation; on a new event the tree is emptied first.
+    // single clock emulation; on a new event the tree rolls over as the firmware does.
     // 'inputs' must have one (possibly empty, i.e. hwPt == 0) object per link, and they go
     // into the fifo with the same index. 'out' is the object leaving the tree in this clock
     // cycle; the return value says whether it is a valid one.
     bool step(bool newEvent, const std::vector<T>& inputs, T& out) {
       if (newEvent) {
-        buffer_.flush();
+        buffer_.roll();
         nevt_++;
       }
       assert(inputs.size() == buffer_.nfifos());
@@ -221,16 +221,6 @@ namespace l1ct {
         clearConverted_();
       }
       bool ret = step(convertedNewEvent_, converted_, out);
-      // The firmware drops whatever is still in the readout path when the event rolls: on
-      // roll the rolling_fifo resets its read pointer and fifo_merge2_full discards its
-      // staging queues, forwarding only the live input. The tree flushes one clock cycle
-      // after newEvent (the conversion costs one cycle, so the flag reaches the tree
-      // delayed), which means the object the tree pops in *this* cycle -- the last of the
-      // event that is ending -- is the one the firmware discards. Drop it to match.
-      if (newEvent) {
-        out.clear();
-        ret = false;
-      }
       converted_.swap(converted);
       convertedNewEvent_ = newEvent;
       return ret;

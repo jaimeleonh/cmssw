@@ -80,6 +80,10 @@ namespace l1ct {
       // one fifo per link, merged down to 'noutputs' output nodes (at most 3);
       void initFifos(unsigned int nfifos, unsigned int noutputs = 3);
       void flush();
+      // roll to a new event, as the firmware does: the link fifos are double buffered, so
+      // their contents survive and drain into the new event; the merge nodes discard their
+      // staging areas and queues on roll. So only the queues are cleared, not the fifos.
+      void roll();
       // flush() + reset the dropped-object and postponed-readout counters
       void reset();
       void maybe_push(int fifo, const T& t);

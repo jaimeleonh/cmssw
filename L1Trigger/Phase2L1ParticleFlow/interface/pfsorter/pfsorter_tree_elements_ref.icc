@@ -34,6 +34,18 @@ void l1ct::pfsorter::RegionBuffer<T>::flush() {
 }
 
 template <typename T>
+void l1ct::pfsorter::RegionBuffer<T>::roll() {
+  // the merge nodes discard their staging areas and queues on roll; the link fifos are
+  // double buffered and keep their contents, which drain into the new event
+  for (auto& p : queues_) {
+    for (auto& t : p.first)
+      t.clear();
+    for (auto& t : p.second)
+      t.clear();
+  }
+}
+
+template <typename T>
 void l1ct::pfsorter::RegionBuffer<T>::reset() {
   flush();
 }
