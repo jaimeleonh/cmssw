@@ -28,6 +28,13 @@ namespace l1ct {
   // One buffer per link (1:1:1 link / buffer / fifo of the first layer), any number of
   // links, at most 3 output nodes, one object per node.
   //
+  // The link fifos are double buffered: there are two sets of fifos, with a read pointer
+  // on the set the links are written into and a write pointer on the set the merge tree
+  // is drained from. On every new event the two pointers swap sets, so an event is read
+  // in while the previous one is still being written out. In the event-by-event mode
+  // (continuous = false, the CMSSW default) both pointers are kept on the same set, so
+  // that each event is self contained.
+  //
   // Usage:
   //    l1ct::PFSorterEmulator sorter(/*nlinks=*/12, /*noutputs=*/3);
   //    l1ct::PuppiObjEmu out;
@@ -86,11 +93,17 @@ namespace l1ct {
     l1ct::pfsorter::RegionBuffer<T>& buffer() { return buffer_; }
     unsigned int nEvents() const { return nevt_; }
     unsigned int nClocks() const { return nclocks_; }
+    // continuous = true runs events back to back as the firmware does, the read and write
+    // pointers swapping to opposite fifo sets on every new event; false is the
+    // event-by-event CMSSW mode, where both pointers stay on the same set
+    bool continuous() const { return continuous_; }
+    void setContinuous(bool continuous) { continuous_ = continuous; }
 
   private:
     l1ct::pfsorter::RegionBuffer<T> buffer_;
     unsigned int nevt_;
     unsigned int nclocks_ = 162;  // also covers the default constructor
+    bool continuous_ = false;
   };
 
   // The sorter as it is used in practice: it stores PuppiObj, and it can be fed either
@@ -438,11 +451,14 @@ namespace l1ct {
     // By default each event is self contained: the tree starts empty and is drained at the
     // end, so 'stream' has the event's clock cycles plus however many it took to empty the
     // tree. That is what CMSSW needs, where nothing may outlive the event it came from.
+    // The read and write pointers are kept on the same set of fifos, so the objects of
+    // the event are read out of the very fifos they were written into.
     //
     // With 'continuous' the sorter runs as the firmware does, events back to back: no
     // reset and no drain, exactly nClocks() entries per event with newEvent on the first
-    // one, and whatever is still in the tree at the end of an event handled by the next
-    // one. Use it to write pattern files that line up frame by frame with the firmware.
+    // one, the read and write pointers swapping to opposite fifo sets on every new event,
+    // and whatever is still in the tree at the end of an event handled by the next one.
+    // Use it to write pattern files that line up frame by frame with the firmware.
     void runStream(const std::vector<l1ct::PFInputRegion> &pfinputs,
                    const std::vector<l1ct::OutputRegion> &pfouts,
                    std::vector<l1ct::PuppiObjEmu> &stream,
@@ -450,6 +466,7 @@ namespace l1ct {
       const unsigned int nlinks = nLinks();
       if (buffer().nfifos() != nlinks)
         initFifos(nlinks, buffer().noutputs() ? buffer().noutputs() : 3);
+      this->setContinuous(continuous);
       if (continuous) {
         runContinuous_(pfinputs, pfouts, stream);
         return;
@@ -460,6 +477,9 @@ namespace l1ct {
       // in the conversion register by the previous event would be pushed into the fifos in
       // the first clock cycle of this one and could be read out before the flush.
       reset();
+      // event-by-event mode: the read and write pointers point to the same set of fifos,
+      // so that the event is read out of the same fifos it is being written into
+      buffer().setWriteToRead();
       std::vector<std::vector<PFLinkItem>> links;
       makePFLinks(pfinputs, pfouts, links);
       // the links are nObjPerLink clock cycles per region long; nClocks() is only a floor,

@@ -77,15 +77,21 @@ namespace l1ct {
     class RegionBuffer {
     public:
       RegionBuffer() : nfifos_(0), noutputs_(0)  {}
-      // one fifo per link, merged down to 'noutputs' output nodes (at most 3);
+      // one fifo per link in each of the two banks, merged down to 'noutputs' output
+      // nodes (at most 3)
       void initFifos(unsigned int nfifos, unsigned int noutputs = 3);
       void flush();
       // roll to a new event, as the firmware does: the link fifos are double buffered, so
-      // their contents survive and drain into the new event; the merge nodes discard their
-      // staging areas and queues on roll. So only the queues are cleared, not the fifos.
+      // the read and write pointers swap banks and the contents of the new write bank
+      // survive and drain into the new event; the merge nodes discard their staging areas
+      // and queues on roll. So only the queues are cleared, not the fifos.
       void roll();
       // flush() + reset the dropped-object and postponed-readout counters
       void reset();
+      // point the write pointer at the bank the read pointer is on, so that pushes and
+      // pops share the same set of fifos. This is the event-by-event mode CMSSW uses;
+      // the firmware instead keeps the two on opposite banks (see roll()).
+      void setWriteToRead() { iwrite_ = iread_; }
       void maybe_push(int fifo, const T& t);
       T pop();
 
@@ -93,9 +99,15 @@ namespace l1ct {
       unsigned int nfifos() const { return nfifos_; }
       unsigned int noutputs() const { return noutputs_; }
       unsigned int nstages() const { return queues_.size(); }
-      unsigned int fifoSize(unsigned int i) const { return fifos_[i].size(); }
+      // the banks the read and write pointers are on: inputs go into bank iread(), the
+      // output is popped out of bank iwrite()
+      unsigned int iread() const { return iread_; }
+      unsigned int iwrite() const { return iwrite_; }
+      unsigned int fifoSize(unsigned int i) const { return fifos_[iread_][i].size(); }
       // the object that will be popped first out of fifo i
-      const T* fifoHead(unsigned int i) const { return fifos_[i].empty() ? nullptr : &fifos_[i].back(); }
+      const T* fifoHead(unsigned int i) const {
+        return fifos_[iread_][i].empty() ? nullptr : &fifos_[iread_][i].back();
+      }
       const std::vector<T>& stage(unsigned int i) const { return queues_[i].first; }
       const std::vector<T>& queue(unsigned int i) const { return queues_[i].second; }
       // objects still inside the fifos and the merge stages
@@ -106,7 +118,11 @@ namespace l1ct {
 
     private:
       unsigned int nfifos_, noutputs_;
-      std::vector<std::list<T>> fifos_;
+      // two banks of link fifos, one per event in flight: the read pointer iread_ is on
+      // the bank the links are written into, the write pointer iwrite_ on the one the
+      // merge tree is drained from, and the two swap on every roll()
+      std::vector<std::list<T>> fifos_[2];
+      unsigned int iread_ = 0, iwrite_ = 1;
       std::vector<std::pair<std::vector<T>, std::vector<T>>> queues_;
 
       T pop_next_trivial_();
