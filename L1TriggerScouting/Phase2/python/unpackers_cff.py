@@ -1,0 +1,40 @@
+import FWCore.ParameterSet.Config as cms
+
+scPhase2PuppiRawToDigiStruct = cms.EDProducer('ScPhase2PuppiRawToDigi',
+  src = cms.InputTag('rawDataCollector'),
+  fedIDs = cms.vuint32(),
+)
+
+scPhase2TkEmRawToDigiStruct = cms.EDProducer('ScPhase2TkEmRawToDigi',
+  src = cms.InputTag('rawDataCollector'),
+  fedIDs = cms.vuint32(),
+)
+
+scPhase2TrackerMuonRawToDigiStruct = cms.EDProducer('ScPhase2TrackerMuonRawToDigi',
+  src = cms.InputTag('rawDataCollector'),
+  fedIDs = cms.vuint32(),
+)
+
+scPhase2VertexRawToDigiStruct = cms.EDProducer('ScPhase2VertexRawToDigi',
+  src = cms.InputTag('rawDataCollector'),
+  fedIDs = cms.vuint32(),
+)
+
+goodOrbitsByNBX = cms.EDFilter("GoodOrbitNBxSelector",
+    unpackers = cms.VInputTag(
+                    cms.InputTag("scPhase2PuppiRawToDigiStruct"),
+                    cms.InputTag("scPhase2VertexRawToDigiStruct"),
+                    cms.InputTag("scPhase2TkEmRawToDigiStruct"),
+                    cms.InputTag("scPhase2TrackerMuonRawToDigiStruct"),
+                ),
+    unpackersAlpaka = cms.VInputTag(),
+    nbxMin = cms.uint32(3564)
+)
+
+s_unpackers = cms.Sequence(
+   scPhase2PuppiRawToDigiStruct +
+   scPhase2VertexRawToDigiStruct +
+   scPhase2TkEmRawToDigiStruct +
+   scPhase2TrackerMuonRawToDigiStruct +
+   goodOrbitsByNBX 
+)

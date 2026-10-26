@@ -1,0 +1,70 @@
+#include <array>
+#include <cstdint>
+#include <fstream>
+#include <string>
+#include <vector>
+
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/Utilities/interface/Exception.h"
+#include "FWCore/Utilities/interface/FileInPath.h"
+#include "PhysicsTools/PyTorch/interface/Model.h"
+
+class TorchScriptPTQTest : public edm::one::EDAnalyzer<> {
+public:
+  explicit TorchScriptPTQTest(edm::ParameterSet const& params)
+      : modelPath_(params.getParameter<edm::FileInPath>("model").fullPath()),
+        fixturePath_(params.getParameter<edm::FileInPath>("fixture").fullPath()),
+        device_(params.getParameter<std::string>("device")) {}
+
+  void analyze(edm::Event const&, edm::EventSetup const&) override {
+    std::ifstream stream(fixturePath_, std::ios::binary);
+    std::array<char, 4> magic{};
+    std::uint32_t batch = 0, particles = 0;
+    stream.read(magic.data(), magic.size());
+    stream.read(reinterpret_cast<char*>(&batch), sizeof(batch));
+    stream.read(reinterpret_cast<char*>(&particles), sizeof(particles));
+    if (!stream || std::string(magic.data(), magic.size()) != "PTQ1" || batch == 0 || particles == 0)
+      throw cms::Exception("PTQTestFixture") << "Invalid fixture: " << fixturePath_;
+
+    auto readTensor = [&](std::vector<std::int64_t> const& shape) {
+      std::size_t size = 1;
+      for (auto dimension : shape)
+        size *= dimension;
+      std::vector<float> values(size);
+      stream.read(reinterpret_cast<char*>(values.data()), values.size() * sizeof(float));
+      if (!stream)
+        throw cms::Exception("PTQTestFixture") << "Truncated fixture: " << fixturePath_;
+      return torch::from_blob(values.data(), shape, torch::kFloat32).clone();
+    };
+
+    std::vector<torch::jit::IValue> inputs;
+    for (auto channels : {2, 15, 4})
+      inputs.emplace_back(readTensor({batch, particles, channels}).to(device_));
+    inputs.emplace_back(readTensor({batch, particles}).to(device_));
+    auto expected = readTensor({batch, 1});
+    at::set_num_threads(1);
+    c10::InferenceMode inference(true);
+    // Exercise the same load/to/forward wrapper as the scouting producer.
+    cms::torch::Model model(modelPath_);
+    model.to(device_);
+    auto actual = model.forward(inputs).toTensor().to(torch::kCPU);
+    if (actual.sizes() != expected.sizes() || !torch::isfinite(actual).all().item<bool>())
+      throw cms::Exception("PTQTestOutput") << "Invalid output shape or nonfinite scores";
+    auto difference = (actual - expected).abs().max().item<float>();
+    if (difference > 1e-5f)
+      throw cms::Exception("PTQTestOutput") << "Score difference " << difference << " exceeds 1e-5";
+    edm::LogPrint("TorchScriptPTQTest") << "PASS device=" << device_.str() << " jets=" << batch
+                                       << " maximum score difference=" << difference;
+  }
+
+private:
+  std::string modelPath_, fixturePath_;
+  torch::Device device_;
+};
+
+DEFINE_FWK_MODULE(TorchScriptPTQTest);

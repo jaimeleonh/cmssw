@@ -1,0 +1,25 @@
+<use name="DataFormats/L1Trigger"/>
+<use name="DataFormats/L1Scouting"/>
+<use name="DataFormats/L1ScoutingSoA"/>
+<use name="DataFormats/L1TParticleFlow"/>
+<use name="DataFormats/NanoAOD"/>
+<use name="FWCore/Framework"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/PluginManager"/>
+<use name="L1TriggerScouting/Phase2"/>
+<use name="L1TriggerScouting/Utilities"/>
+
+<library file="alpaka/*.cc" name="L1TScoutingJetTaggingPluginsPortable">
+  <use name="alpaka"/>
+  <use name="pytorch"/>
+  <use name="pytorch-rocm" for="alpaka/rocm"/>
+  <use name="pytorch-cuda" for="alpaka/cuda"/>
+  <use name="FWCore/Utilities"/>
+  <use name="HeterogeneousCore/AlpakaCore"/>
+  <use name="HeterogeneousCore/AlpakaInterface"/>
+  <use name="PhysicsTools/PyTorchAlpaka"/>
+  <use name="PerfTools/Perfetto"/>
+  <flags ALPAKA_BACKENDS="serial cuda"/>
+  <flags EDM_PLUGIN="1"/>
+</library>
+

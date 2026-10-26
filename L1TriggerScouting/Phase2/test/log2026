@@ -1,0 +1,9 @@
+Analyses set to ['w3pi', 'hphijpsi', 'h2rho', 'h2phi']
+makeDirectoryEntries called with runDir run000042,
+ baseDirs = {
+   /mnt/ramdisk/jleonhol/raw,
+}
+, numSources = { 
+   2,
+}
+

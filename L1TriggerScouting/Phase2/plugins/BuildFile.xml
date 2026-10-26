@@ -1,0 +1,23 @@
+<use name="FWCore/Framework"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/PluginManager"/>
+<use name="DataFormats/L1Trigger"/>
+<use name="DataFormats/L1Scouting"/>
+<use name="DataFormats/L1TParticleFlow"/>
+<use name="DataFormats/NanoAOD"/>
+<use name="L1TriggerScouting/Utilities"/>
+<use name="L1TriggerScouting/Phase2"/>
+<library file="*.cc" name="L1ScoutingPhase2">
+  <flags EDM_PLUGIN="1"/>
+  <use name="fastjet"/>
+</library>
+
+<library file="alpaka/*.cc" name="L1ScoutingPhase2Portable">
+  <use name="alpaka"/>
+  <use name="DataFormats/L1ScoutingSoA"/>
+  <use name="FWCore/Utilities"/>
+  <use name="HeterogeneousCore/AlpakaCore"/>
+  <use name="HeterogeneousCore/AlpakaInterface"/>
+  <flags ALPAKA_BACKENDS="serial cuda"/>
+  <flags EDM_PLUGIN="1"/>
+</library>

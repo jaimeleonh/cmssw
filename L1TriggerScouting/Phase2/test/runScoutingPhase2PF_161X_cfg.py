@@ -1,0 +1,364 @@
+from __future__ import print_function
+import FWCore.ParameterSet.Config as cms
+import os
+
+from L1TriggerScouting.Phase2.options_cff import options, VarParsing
+options.register ('njets',
+                  16, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.int,         
+                  'Number of jet seeds to reconstruct with SeededCone'
+)
+options.register ('minSeedPt',
+                  0.0, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.float,
+                  'Minimum pt cut for seeded-cone jet seeds')
+options.register ('jetR',
+                  0.4, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.float,
+                  'Jet radius')
+options.register ('jetReFitR',
+                  0.0, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.float,
+                  'Jet radius (after ReFit)')
+options.register ('dumpClusters',
+                  False, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.bool,         
+                  'Dump clusters to options.outFile')
+options.register ('batchSize',
+                  32, 
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.int,
+                  'ParT batch size')
+options.register ('jetTagModel',
+                  'L1TriggerScouting/JetTagging/data/softjet_part_ptq_int8.pt',
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.string,
+                  'Jet tagger TorchScript model; custom operators must be preloaded at launch')
+
+options.parseArguments()
+if options.buNumStreams == []:
+    options.buNumStreams.append(1)
+analyses = options.analyses if options.analyses else ["w3pi", "hphijpsi", "h2rho", "h2phi"]
+print(f"Analyses set to {analyses}")
+
+if options.run not in ("unpack", "ak4", "sc4", "unpackAlpaka", "clueAlpaka", "sc4Alpaka", "sc4AlpakaTaus"):
+    raise RuntimeError("Unsupported run mode %r" % options.run)
+process = cms.Process("SCPU")
+process.maxEvents = cms.untracked.PSet(
+    input = cms.untracked.int32(options.maxEvents)
+)
+
+process.options = cms.untracked.PSet(
+    numberOfThreads = cms.untracked.uint32(options.numThreads),
+    numberOfStreams = cms.untracked.uint32(options.numFwkStreams),
+    numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(1),
+    wantSummary = cms.untracked.bool(True)
+)
+process.load("FWCore.MessageService.MessageLogger_cfi")
+process.MessageLogger.cerr.FwkReport.reportEvery = 10
+
+if len(options.buNumStreams) != len(options.buBaseDir):
+    raise RuntimeError("Mismatch between buNumStreams (%d) and buBaseDirs (%d)" % (len(options.buNumStreams), len(options.buBaseDir)))
+
+if options.pfBarrelStreamIDs == [] and options.pfEndcapStreamIDs == []:
+    pfStreamIDs = list(range(sum(options.buNumStreams))) # take all
+else:
+    pfStreamIDs = options.pfBarrelStreamIDs + options.pfEndcapStreamIDs
+
+process.EvFDaqDirector = cms.Service("EvFDaqDirector",
+    useFileBroker = cms.untracked.bool(options.broker != "none"),
+    fileBrokerHostFromCfg = cms.untracked.bool(False),
+    fileBrokerHost = cms.untracked.string(options.broker.split(":")[0] if options.broker != "none" else "htcp40.cern.ch"),
+    fileBrokerPort = cms.untracked.string(options.broker.split(":")[1] if options.broker != "none" else "8080"),
+    runNumber = cms.untracked.uint32(options.runNumber),
+    baseDir = cms.untracked.string(options.fuBaseDir),
+    buBaseDir = cms.untracked.string(options.buBaseDir[0]),
+    buBaseDirsAll = cms.untracked.vstring(*options.buBaseDir),
+    buBaseDirsNumStreams = cms.untracked.vint32(*options.buNumStreams),
+    directorIsBU = cms.untracked.bool(False),
+)
+
+process.FastMonitoringService = cms.Service("FastMonitoringService")
+
+process.load( "HLTrigger.Timer.FastTimerService_cfi" )
+process.FastTimerService.writeJSONSummary = cms.untracked.bool(True)
+#process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.uname()[1]}.{options.backend}.{options.numThreads}.{options.numFwkStreams}.{options.batchSize}.json')
+process.FastTimerService.jsonFileName = cms.untracked.string(f'results_part_2p5k_throughput/resources.{os.uname()[1]}.{options.backend}.{options.numThreads}.{options.numFwkStreams}.{options.batchSize}.json')
+# process.FastTimerService.jsonFileName = cms.untracked.string(f'results_partJJ12/resources.{os.uname()[1]}.{options.backend}.{options.numThreads}.{options.numFwkStreams}.{options.batchSize}.json')
+#process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.uname()[1]}.{options.task}.json')
+#process.MessageLogger.cerr.FastReport = cms.untracked.PSet( limit = cms.untracked.int32( 10000000 ) )
+
+fuDir = options.fuBaseDir+("/run%06d" % options.runNumber)
+buDirs = [b+("/run%06d" % options.runNumber) for b in options.buBaseDir]
+for d in [fuDir, options.fuBaseDir] + buDirs + options.buBaseDir:
+  if not os.path.isdir(d):
+    os.makedirs(d)
+
+process.source = cms.Source("DAQSource",
+    testing = cms.untracked.bool(True),
+    dataMode = cms.untracked.string(options.daqSourceMode),
+    verifyChecksum = cms.untracked.bool(True),
+    useL1EventID = cms.untracked.bool(False),
+    eventChunkBlock = cms.untracked.uint32(2 * 1024),
+    eventChunkSize = cms.untracked.uint32(2 * 1024),
+    maxChunkSize = cms.untracked.uint32(4 * 1024),
+    numBuffers = cms.untracked.uint32(4),
+    maxBufferedFiles = cms.untracked.uint32(4),
+    fileListMode = cms.untracked.bool(options.broker == "none"),
+    fileNames = cms.untracked.vstring(
+        buDirs[0] + "/" + "run%06d_ls%04d_index%06d_stream00.raw" % (options.runNumber, options.lumiNumber, 1),
+    )
+)
+os.system("touch " + buDirs[0] + "/" + "fu.lock")
+
+process.load("L1TriggerScouting.Phase2.unpackers_cff")
+if "alpaka" in options.run.lower():
+  process.load("Configuration.StandardSequences.Accelerators_cff")
+process.PyTorchService = cms.Service("PyTorchService")
+
+## Configure unpackers
+process.scPhase2PFRawToDigiStruct = process.scPhase2PuppiRawToDigiStruct.clone(
+  fedIDs = [*pfStreamIDs],
+  splitFactor = cms.uint32(len(pfStreamIDs) // options.timeslices)
+)
+process.goodOrbitsByNBX.nbxMin = 3564 * options.timeslices // options.tmuxPeriod
+process.goodOrbitsByNBX.unpackers = [ "scPhase2PFRawToDigiStruct" ]
+
+process.scPhase2AK4PFDemo = cms.EDProducer("ScPhase2PuppiAKJetsDemo",
+  src = cms.InputTag("scPhase2PFRawToDigiStruct"),
+  rParam = cms.double(options.jetR)
+)
+process.scPhase2SC4PFDemo = cms.EDProducer("ScPhase2PuppiSCJetsDemo",
+  src = cms.InputTag("scPhase2PFRawToDigiStruct"),
+  rParam = cms.double(options.jetR),
+  nJets = cms.uint32(options.njets),
+  minSeedPt = cms.double(options.minSeedPt)
+)
+
+## Configure unpackers
+process.scPhase2VertexRawToDigiStruct = process.scPhase2VertexRawToDigiStruct.clone(
+  fedIDs = [1],
+  splitFactor = cms.uint32(1)
+)
+
+# Alpaka modules
+if "alpaka" in options.run.lower():
+  from L1TriggerScouting.Phase2.modules import (
+      l1sc_L1TScPhase2PuppiRawToDigi_alpaka,
+      l1sc_L1TScPhase2SCJets_alpaka,
+      l1sc_L1TScPhase2VertexRawToDigi_alpaka
+  )
+  # from L1TriggerScouting.TauTagging.modules import (
+  #     l1sc_CLUETaus_alpaka,
+  #     l1sc_SoftTauIdML_alpaka,
+  # )
+  from L1TriggerScouting.JetTagging.modules import (
+      l1sc_SoftJetIdML_alpaka, l1sc_SoftJetIdMLTorchScript_alpaka
+  )
+  process.scPhase2PFRawToDigiAlpaka = l1sc_L1TScPhase2PuppiRawToDigi_alpaka(
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      streams = process.scPhase2PFRawToDigiStruct.fedIDs,
+      splitFactor = cms.uint32(len(pfStreamIDs) // options.timeslices),
+      src = process.scPhase2PFRawToDigiStruct.src,
+      environment = cms.untracked.int32(options.environment),
+  )
+
+  process.scPhase2VertexRawToDigiAlpaka = l1sc_L1TScPhase2VertexRawToDigi_alpaka(
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      streams = process.scPhase2VertexRawToDigiStruct.fedIDs,
+      splitFactor = 1,
+      src = process.scPhase2VertexRawToDigiStruct.src,
+      environment = cms.untracked.int32(options.environment),
+  )
+
+  process.p_vertexalpaka = cms.Path(
+  )
+
+  # process.CLUETaus = l1sc_CLUETaus_alpaka(
+  #     alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+  #     src = 'scPhase2PFRawToDigiAlpaka',
+  #     dc = cms.double(0.2),
+  #     rhoc = cms.double(5.0),
+  #     dm = cms.double(0.4),
+  #     wrapCoords = cms.bool(False),
+  #     run_scout = cms.bool(True),
+  # )
+
+  process.scPhase2SC4PFAlpaka = l1sc_L1TScPhase2SCJets_alpaka(
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      src = cms.InputTag("scPhase2PFRawToDigiAlpaka", "candidates"),
+      bxLookup = cms.InputTag("scPhase2PFRawToDigiAlpaka", "bxLookup"),
+      rParam = cms.double(options.jetR),
+      # rReFitParam = cms.double(options.jetReFitR),
+      nJets = cms.uint32(options.njets),
+  )
+
+  # process.SoftTauIdSC4 = l1sc_SoftTauIdML_alpaka(
+  #     alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+  #     pf = 'scPhase2PFRawToDigiAlpaka',
+  #     clusters = 'scPhase2SC4PFAlpaka',
+  #     model = cms.FileInPath("L1TriggerScouting/TauTagging/data/softtauid_sigmoid.pt"),
+  #     maxBatchSize = cms.uint32(64),
+  # )
+
+  # import ctypes
+  # _part_int8_ops = ctypes.CDLL(
+  #   os.path.join(
+  #       os.environ["CMSSW_BASE"],
+  #       "src/L1TriggerScouting/JetTagging/data/"
+  #       "softjet_part_cuda_int8_ops_cmssw/libpart_int8.so",
+  #   ),
+  #   mode=os.RTLD_NOW | os.RTLD_GLOBAL,
+  # )
+
+  process.SoftJetIdSC4 = l1sc_SoftJetIdMLTorchScript_alpaka(
+  # process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
+      clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
+      jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
+      vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "candidates"),
+      vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
+      model = cms.FileInPath("L1TriggerScouting/JetTagging/data/part_2p5k_throughput.pt"),
+      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/part_10k_12const_cuda.pt"),
+      # model = cms.FileInPath(options.jetTagModel),
+      jets = cms.InputTag('scPhase2SC4PFAlpaka'),
+      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_full_int8.pt"),
+      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique.pt"),
+      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique_cpu.pt"),
+      #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_deepsets.pt"),
+      #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_minipart.pt"),
+      maxBatchSize = cms.uint32(options.batchSize),
+
+  )
+
+  from PhysicsTools.ParticleTransformerAlpakaFP32.modules import ParticleTransformerFP32Producer_alpaka
+  from PhysicsTools.ParticleTransformerAlpaka.modules import ParticleTransformerProducer_alpaka, GraphInferenceProducer_alpaka
+  # process.SoftJetIdSC4 = ParticleTransformerProducer_alpaka(
+  # process.SoftJetIdSC4 = ParticleTransformerFP32Producer_alpaka(
+  # process.SoftJetIdSC4 = GraphInferenceProducer_alpaka(
+  #     alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+  #     pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
+  #     clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
+  #     jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
+  #     vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "candidates"),
+  #     vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
+  #     maxBlocks = cms.uint32(options.batchSize),
+  #     modelFile=cms.string("PhysicsTools/ParticleTransformerAlpaka/data/softjet_part_float.nnm"),
+  #     # modelFile=cms.string("PhysicsTools/ParticleTransformerAlpaka/data/b_kinadd.nnm"),
+  #     #modelFile=cms.string("PhysicsTools/ParticleTransformerAlpaka/data/model_deepsets.nnm"),
+  # )
+
+  process.goodOrbitsByNBX.unpackersAlpaka = [ "scPhase2PFRawToDigiAlpaka" ]
+  process.goodOrbitsByNBX.unpackers = []
+
+  process.p_unpackAlpaka = cms.Path(
+    process.scPhase2PFRawToDigiAlpaka +
+    process.scPhase2VertexRawToDigiAlpaka +
+    process.goodOrbitsByNBX
+  )
+  # process.p_clueAlpaka = cms.Path(
+  #   process.scPhase2PFRawToDigiAlpaka +
+  #   process.goodOrbitsByNBX +
+  #   process.CLUETaus
+  # )
+  process.p_sc4Alpaka = cms.Path(
+    process.scPhase2PFRawToDigiAlpaka +
+    process.scPhase2VertexRawToDigiAlpaka +
+    process.goodOrbitsByNBX +
+    process.scPhase2SC4PFAlpaka +
+    process.SoftJetIdSC4
+  )
+  # process.p_sc4AlpakaTaus = cms.Path(
+  #   process.scPhase2PFRawToDigiAlpaka +
+  #   process.goodOrbitsByNBX +
+  #   process.scPhase2SC4PFAlpaka +
+  #   process.SoftTauIdSC4 
+  # )
+
+process.p_unpack = cms.Path(
+  process.scPhase2PFRawToDigiStruct +
+  process.goodOrbitsByNBX
+)
+process.p_ak4 = cms.Path(
+  process.scPhase2PFRawToDigiStruct +
+  process.goodOrbitsByNBX +
+  process.scPhase2AK4PFDemo
+)
+process.p_sc4 = cms.Path(
+  process.scPhase2PFRawToDigiStruct +
+  process.goodOrbitsByNBX +
+  process.scPhase2SC4PFDemo
+)
+
+if options.run not in ("both","inclusive","selected"): 
+  sched = [ getattr(process, "p_" + options.run)]
+  if options.dumpClusters:
+    process.scPhase2PFStructToTable = cms.EDProducer("ScPuppiToOrbitFlatTable",
+       src = cms.InputTag("scPhase2PFRawToDigiStruct"),
+       name = cms.string("L1PF"),
+       doc = cms.string("L1PF candidates from Correlator Layer 1"),
+    )
+    process.p_pfTab = cms.Path(
+       process.scPhase2PFRawToDigiStruct +
+       process.scPhase2PFStructToTable
+    )
+    sched.append(process.p_pfTab)
+    process.out = cms.OutputModule("OrbitNanoAODOutputModule",
+     fileName = cms.untracked.string(options.outFile),
+     SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring()),
+     outputCommands = cms.untracked.vstring("drop *", 
+       "keep l1ScoutingRun3OrbitFlatTable_*_*_*")
+    )
+    process.p_out = cms.EndPath(process.out)
+    if options.run in ("sc4Alpaka",):
+      process.dumpClusters = cms.EDProducer("ClusterSoAToOrbitFlatTable",
+          srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka", "bxLookup"),
+          srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
+          name = cms.string("SC4AlpakaClusters"),
+          doc = cms.string("")
+      )
+      process.dumpJets = cms.EDProducer("ClusterObjSoAToOrbitFlatTable",
+          srcBx = cms.InputTag("scPhase2SC4PFAlpaka"),
+          srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
+          name = cms.string("SC4AlpakaJets"),
+          doc = cms.string(""),
+      )
+      process.softJetTable = cms.EDProducer("ScPhase2SoftJetOutputTensorToOrbitFlatTable",
+          srcBxClustersMap = cms.InputTag("scPhase2SC4PFAlpaka"),
+          srcOutput = cms.InputTag("SoftJetIdSC4"), 
+          # name = process.dumpJets.name, 
+          name = cms.string("SC4AlpakaJetsScore"),
+          doc = cms.string(""),
+      )
+      process.p_dump = cms.Path(process.dumpClusters + process.dumpJets + process.softJetTable)
+      sched.append(process.p_dump)
+    if options.run in ("clueAlpaka",):
+      process.dumpClusters = cms.EDProducer("ClusterSoAToOrbitFlatTable",
+          srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
+          srcClusters = cms.InputTag("CLUETaus"),
+          name = cms.string("ClueClusters"),
+          doc = cms.string("")
+      )
+      #process.dumpJets = cms.EDProducer("ClusterObjSoAToOrbitFlatTable",
+      #    srcBx = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
+      #    srcClusters = cms.InputTag("scPhase2SC4PFAlpaka"),
+      #    name = cms.string("SC4AlpakaJets"),
+      #    doc = cms.string(""),
+      #)
+      process.p_dump = cms.Path(process.dumpClusters)
+      sched.append(process.p_dump)      
+    sched.append(process.p_out)
+else:
+  sched = [ process.p_inclusive, process.p_selected ]
+  if options.run in ("inclusive", "selected"):
+    sched = [ getattr(process, "p_" + options.run) ]
+  if options.outMode != "none":
+    sched.append(getattr(process, "o_"+options.outMode))
+
+process.schedule = cms.Schedule(*sched)

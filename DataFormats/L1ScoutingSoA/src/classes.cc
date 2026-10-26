@@ -1,0 +1,32 @@
+#include "DataFormats/L1ScoutingSoA/src/classes.h"
+#include "DataFormats/Portable/interface/PortableHostCollectionReadRules.h"
+#include "DataFormats/Portable/interface/PortableHostObjectReadRules.h"
+#include "DataFormats/L1ScoutingSoA/interface/AssociationMapHost.h"
+#include "DataFormats/L1ScoutingSoA/interface/BxLookupHost.h"
+#include "DataFormats/L1ScoutingSoA/interface/ClustersHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/PuppiHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/VertexHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/TkEmHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/TkEleHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/SelectedBxHostCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/W3PiHostTable.h"
+#include "DataFormats/L1ScoutingSoA/interface/CounterHost.h"
+#include "DataFormats/L1ScoutingSoA/interface/SoftTauHostTensor.h"
+#include "DataFormats/L1ScoutingSoA/interface/SoftJetHostTensor.h"
+
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::AssociationMapHost);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::BxLookupHost);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::ClustersHostCollection);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::ClusterObjHostCollection);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::PuppiHostCollection);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::VertexHostCollection);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::TkEmHostCollection);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::TkEleHostCollection);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SelectedBxHostCollection);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::W3PiHostTable);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftTauInputHostTensor);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftTauOutputHostTensor);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftJetInputHostTensor);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftJetNewInputHostTensor);
+SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftJetOutputHostTensor);
+SET_PORTABLEHOSTOBJECT_READ_RULES(l1sc::CounterHost);

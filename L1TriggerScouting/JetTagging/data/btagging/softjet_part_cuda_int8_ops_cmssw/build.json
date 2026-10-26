@@ -1,0 +1,13 @@
+{
+  "torch": "2.6.0a0",
+  "torch_cuda": "12.9",
+  "torch_root": "/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/lib/python3.9/site-packages/torch",
+  "cxx": [
+    "c++"
+  ],
+  "abi": 1,
+  "cpu_only": false,
+  "cuda_home": "/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/cuda/12.9.1-cff83d5f72da96ebfea8cafd87a05296",
+  "cuda_arch": "8.9",
+  "source_sha256": "d55674d92e2e86292941d4ab3f1b5bd18d2ce0e03e1256c67fc5814880cb7b0f"
+}

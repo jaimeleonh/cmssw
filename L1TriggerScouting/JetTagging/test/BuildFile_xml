@@ -1,0 +1,10 @@
+<library file="TorchScriptPTQTest.cc" name="L1TriggerScoutingJetTaggingPTQTestPlugins">
+  <use name="FWCore/Framework"/>
+  <use name="FWCore/MessageLogger"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="FWCore/Utilities"/>
+  <use name="PhysicsTools/PyTorch"/>
+  <use name="pytorch"/>
+  <use name="pytorch-cuda"/>
+  <flags EDM_PLUGIN="1"/>
+</library>

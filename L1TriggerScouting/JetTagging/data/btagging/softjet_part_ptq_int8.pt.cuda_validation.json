@@ -1,0 +1,108 @@
+{
+  "model": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/L1TriggerScouting/JetTagging/data/softjet_part_ptq_int8.pt",
+  "model_sha256": "1d10c30595c583395ccef215c02869f4734108e2aa72bc7535802fdcfc587f26",
+  "source": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/L1TriggerScouting/JetTagging/data/softjet_part_unique.pt",
+  "gpu": "NVIDIA L4",
+  "device": "cuda:0",
+  "torch": "2.6.0a0",
+  "cuda": "12.9",
+  "validation": {
+    "jets": 1024,
+    "max_score_error": 0.028689086437225342,
+    "mean_score_error": 0.0029891536105424166,
+    "p99_score_error": 0.015034971758723259,
+    "class_decision_agreement": 0.9931640625,
+    "signal_jets": 137,
+    "background_jets": 887,
+    "fp32_roc_auc": 0.6326171216023831,
+    "int8_roc_auc": 0.6321974341461006
+  },
+  "timings": [
+    {
+      "batch": 1,
+      "fp32": {
+        "median_ms": 2.491596794128418,
+        "samples_ms": [
+          2.4909231185913088,
+          2.491596794128418,
+          2.4936960220336912
+        ]
+      },
+      "int8": {
+        "median_ms": 3.903598403930664,
+        "samples_ms": [
+          3.906800079345703,
+          3.9016559600830076,
+          3.903598403930664
+        ]
+      },
+      "speedup": 0.6382820506380845
+    },
+    {
+      "batch": 32,
+      "fp32": {
+        "median_ms": 2.6546159744262696,
+        "samples_ms": [
+          2.6546159744262696,
+          2.6585439682006835,
+          2.6514095306396483
+        ]
+      },
+      "int8": {
+        "median_ms": 3.6373504638671874,
+        "samples_ms": [
+          3.607603073120117,
+          3.6373504638671874,
+          3.7052944183349608
+        ]
+      },
+      "speedup": 0.729821335831333
+    },
+    {
+      "batch": 128,
+      "fp32": {
+        "median_ms": 3.4250240325927734,
+        "samples_ms": [
+          3.420979309082031,
+          3.4250240325927734,
+          3.438332748413086
+        ]
+      },
+      "int8": {
+        "median_ms": 4.405230331420898,
+        "samples_ms": [
+          4.405230331420898,
+          4.413793563842773,
+          4.403262329101563
+        ]
+      },
+      "speedup": 0.7774903410074449
+    },
+    {
+      "batch": 512,
+      "fp32": {
+        "median_ms": 11.978177642822265,
+        "samples_ms": [
+          11.964585876464843,
+          11.978177642822265,
+          12.358236694335938
+        ]
+      },
+      "int8": {
+        "median_ms": 10.826334381103516,
+        "samples_ms": [
+          10.837554931640625,
+          10.817485046386718,
+          10.826334381103516
+        ]
+      },
+      "speedup": 1.1063927291705675
+    }
+  ],
+  "warmup": 10,
+  "iterations": 20,
+  "repeats": 3,
+  "allow_tf32_matmul": false,
+  "allow_tf32_cudnn": true,
+  "timing": "CUDA events around warmed forward calls; no input loading or host-to-device copies"
+}

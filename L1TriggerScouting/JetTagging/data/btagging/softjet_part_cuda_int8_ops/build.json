@@ -1,0 +1,13 @@
+{
+  "torch": "2.8.0+cu128",
+  "torch_cuda": "12.8",
+  "torch_root": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/particle_transformer/env/lib/python3.9/site-packages/torch",
+  "cxx": [
+    "c++"
+  ],
+  "abi": 1,
+  "cpu_only": false,
+  "cuda_home": "/usr/local/cuda-12.9",
+  "cuda_arch": "8.9",
+  "source_sha256": "d55674d92e2e86292941d4ab3f1b5bd18d2ce0e03e1256c67fc5814880cb7b0f"
+}

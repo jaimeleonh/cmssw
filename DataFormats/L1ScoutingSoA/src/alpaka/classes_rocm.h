@@ -1,0 +1,34 @@
+#ifndef DataFormats_L1ScoutingSoA_src_alpaka_classes_rocm_h
+#define DataFormats_L1ScoutingSoA_src_alpaka_classes_rocm_h
+
+// these first to make sure they get included before any SoA header
+#include <Eigen/Core>
+#include <Eigen/Dense>
+
+#include "DataFormats/Common/interface/Wrapper.h"
+#include "DataFormats/Common/interface/DeviceProduct.h"
+
+#include "DataFormats/L1ScoutingSoA/interface/ClustersSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/PuppiSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/VertexSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/TkEmSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/TkEleSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/SelectedBxSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/W3PiTable.h"
+#include "DataFormats/L1ScoutingSoA/interface/SoftTauTensorSoA.h"
+#include "DataFormats/L1ScoutingSoA/interface/SoftJetTensorSoA.h"
+
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/AssociationMapDevice.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/VertexDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/TkEmDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/TkEleDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/SelectedBxDeviceCollection.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/W3PiDeviceTable.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/CounterDevice.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/SoftTauDeviceTensor.h"
+#include "DataFormats/L1ScoutingSoA/interface/alpaka/SoftJetDeviceTensor.h"
+
+#endif  // DataFormats_L1ScoutingSoA_src_alpaka_classes_rocm_h
