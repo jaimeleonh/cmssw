@@ -1,0 +1,22 @@
+import FWCore.ParameterSet.Config as cms
+from FWCore.ParameterSet.VarParsing import VarParsing
+
+options = VarParsing("analysis")
+options.register("device", "cpu", VarParsing.multiplicity.singleton, VarParsing.varType.string,
+                 "cpu or cuda:0")
+options.register("model", "L1TriggerScouting/JetTagging/data/softjet_part_ptq_int8.pt",
+                 VarParsing.multiplicity.singleton, VarParsing.varType.string,
+                 "TorchScript model; fixture is read from <model>.fixture.bin")
+options.parseArguments()
+
+process = cms.Process("PTQTEST")
+process.load("FWCore.MessageService.MessageLogger_cfi")
+process.source = cms.Source("EmptySource")
+process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(1))
+process.ptqTest = cms.EDAnalyzer(
+    "TorchScriptPTQTest",
+    model=cms.FileInPath(options.model),
+    fixture=cms.FileInPath(options.model + ".fixture.bin"),
+    device=cms.string(options.device),
+)
+process.check = cms.Path(process.ptqTest)

@@ -1,0 +1,4 @@
+<test name="testSoftJetTaggingONNXSerialSync" command="cmsRun ${LOCALTOP}/src/L1TriggerScouting/JetTagging/test/runSoftJetTaggingONNXTest.py backend=serial_sync"/>
+<test name="testSoftJetTaggingONNXCudaAsync" command="cmsRun ${LOCALTOP}/src/L1TriggerScouting/JetTagging/test/runSoftJetTaggingONNXTest.py backend=cuda_async">
+  <use name="cuda"/>
+</test>
