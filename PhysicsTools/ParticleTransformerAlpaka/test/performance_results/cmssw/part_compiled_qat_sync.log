@@ -1,0 +1,2273 @@
+Analyses set to ['w3pi', 'hphijpsi', 'h2rho', 'h2phi']
+%MSG-i AlpakaService:  (NoModuleName) 15-Oct-2026 17:57:32 CEST pre-events
+AlpakaServiceSerialSync succesfully initialised.
+Found 1 device:
+  - AMD EPYC 9654 96-Core Processor
+%MSG
+%MSG-i CUDAService:  (NoModuleName) 15-Oct-2026 17:57:33 CEST pre-events
+CUDA runtime version 12.9, driver version 13.1, NVIDIA driver version 590.48.01
+CUDA device 0: NVIDIA L4 (sm_89)
+%MSG
+%MSG-i AlpakaService:  (NoModuleName) 15-Oct-2026 17:57:33 CEST pre-events
+AlpakaServiceCudaAsync succesfully initialised.
+Found 1 device:
+  - NVIDIA L4
+%MSG
+makeDirectoryEntries called with runDir run000041,
+ baseDirs = {
+   /mnt/ramdisk/jleonhol/raw,
+}
+, numSources = { 
+   2,
+}
+
+Begin processing the 1st record. Run 41, Event 1, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:33.486 CEST
+Processed 1 orbits, of which 0 truncated, and 3564 events.
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.2 ms         0.2 ms       +1595 kB          -1 kB  source
+FastReport       371.9 ms       372.7 ms      +30581 kB       -3989 kB  process SCPU
+FastReport       361.5 ms       362.2 ms       +7640 kB        -385 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.1 ms         0.1 ms          +2 kB          -2 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         8.8 ms         8.9 ms      +22270 kB       -3184 kB    scPhase2PFRawToDigiAlpaka
+FastReport         1.2 ms         1.2 ms        +255 kB         -91 kB    scPhase2SC4PFAlpaka
+FastReport         0.3 ms         0.3 ms        +411 kB        -325 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       372.1 ms       372.9 ms      +32181 kB       -5593 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.2 ms         0.2 ms       +1595 kB          -1 kB  source
+FastReport       371.9 ms       372.7 ms      +30581 kB       -3989 kB  process SCPU
+FastReport       371.9 ms       372.7 ms      +30581 kB       -3989 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       371.9 ms       372.7 ms      +30581 kB       -3989 kB  p_sc4Alpaka (including dependencies)
+FastReport       372.1 ms       372.9 ms      +32181 kB       -5593 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       357.6 ms       358.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       355.7 ms       356.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.9 ms         0.9 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       357.8 ms       358.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       357.6 ms       358.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       357.6 ms       358.2 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       357.6 ms       358.2 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       357.8 ms       358.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.9 ms       366.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.1 ms       364.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       366.1 ms       366.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.9 ms       366.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.9 ms       366.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.9 ms       366.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       366.1 ms       366.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.4 ms       364.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       361.6 ms       362.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       363.6 ms       364.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.4 ms       364.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.4 ms       364.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       363.4 ms       364.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       363.6 ms       364.3 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       358.6 ms       359.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       356.8 ms       357.4 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       358.8 ms       359.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       358.6 ms       359.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       358.6 ms       359.2 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       358.6 ms       359.2 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       358.8 ms       359.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.8 ms       367.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.0 ms       365.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.0 ms       367.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.8 ms       367.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.8 ms       367.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       366.8 ms       367.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.0 ms       367.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       362.7 ms       363.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       360.9 ms       361.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       362.8 ms       363.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       362.7 ms       363.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.7 ms       363.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       362.7 ms       363.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       362.8 ms       363.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       361.6 ms       362.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       359.8 ms       360.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       361.8 ms       362.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       361.6 ms       362.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       361.6 ms       362.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       361.6 ms       362.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       361.8 ms       362.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.9 ms       366.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.1 ms       365.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       366.1 ms       367.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.9 ms       366.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.9 ms       366.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.9 ms       366.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       366.1 ms       367.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       361.3 ms       362.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       359.5 ms       360.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       361.4 ms       362.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       361.3 ms       362.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       361.3 ms       362.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       361.3 ms       362.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       361.4 ms       362.3 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 11th record. Run 41, Event 11, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:37.138 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.7 ms       364.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       361.9 ms       363.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       363.8 ms       364.9 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.7 ms       364.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.6 ms       364.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       363.6 ms       364.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       363.8 ms       364.9 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.5 ms       366.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.7 ms       364.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.6 ms       366.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.5 ms       366.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.5 ms       366.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.5 ms       366.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.6 ms       366.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       360.5 ms       361.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       358.7 ms       360.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       360.6 ms       362.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       360.5 ms       361.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       360.5 ms       361.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       360.5 ms       361.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       360.6 ms       362.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.8 ms       364.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.0 ms       363.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.0 ms       364.9 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.8 ms       364.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.8 ms       364.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       363.8 ms       364.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.0 ms       364.9 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.4 ms       366.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.6 ms       364.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.7 ms         0.7 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.5 ms       366.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.4 ms       366.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.4 ms       366.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.4 ms       366.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.5 ms       366.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       362.4 ms       363.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       360.6 ms       361.9 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       362.6 ms       363.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       362.4 ms       363.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.4 ms       363.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       362.4 ms       363.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       362.6 ms       363.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.9 ms       365.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.2 ms       363.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.1 ms       365.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.9 ms       365.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.9 ms       365.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       363.9 ms       365.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.1 ms       365.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.1 ms       365.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.3 ms       363.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.2 ms       365.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.1 ms       365.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.1 ms       365.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.1 ms       365.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.2 ms       365.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.2 ms       365.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.4 ms       363.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.3 ms       365.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.2 ms       365.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.2 ms       365.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.2 ms       365.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.3 ms       365.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.2 ms       366.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.4 ms       364.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.3 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.2 ms       366.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.2 ms       366.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.2 ms       366.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.3 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 21st record. Run 41, Event 21, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:40.796 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.6 ms       365.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.8 ms       363.6 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.7 ms       365.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.6 ms       365.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.5 ms       365.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.5 ms       365.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.7 ms       365.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.6 ms       365.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.8 ms       363.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.8 ms       365.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.6 ms       365.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.6 ms       365.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.6 ms       365.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.8 ms       365.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.5 ms       365.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.8 ms       363.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.7 ms       365.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.5 ms       365.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.5 ms       365.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.5 ms       365.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.7 ms       365.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.9 ms       364.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.1 ms       362.9 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.0 ms       364.9 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       363.9 ms       364.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.8 ms       364.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       363.8 ms       364.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.0 ms       364.9 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.5 ms       364.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.4 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.4 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.1 ms       366.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.3 ms       364.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.3 ms       366.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.1 ms       366.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.1 ms       366.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.1 ms       366.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.3 ms       366.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.6 ms       365.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.8 ms       363.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       364.7 ms       365.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.6 ms       365.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.6 ms       365.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.6 ms       365.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       364.7 ms       365.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.3 ms       366.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.2 ms       368.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.2 ms       368.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.7 ms       364.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.8 ms       366.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.8 ms       366.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.6 ms         0.6 ms       +1595 kB          -1 kB  source
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       362.8 ms       363.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.9 ms         0.9 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.4 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.6 ms         0.6 ms       +1595 kB          -1 kB  source
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.4 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 31st record. Run 41, Event 31, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:44.463 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.8 ms       366.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.0 ms       364.9 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.9 ms       366.9 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.8 ms       366.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.8 ms       366.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.8 ms       366.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.9 ms       366.9 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.7 ms       364.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.6 ms       366.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.5 ms       366.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.6 ms       366.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.6 ms       366.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.8 ms       364.6 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.8 ms       366.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.6 ms       366.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.6 ms       366.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.6 ms       366.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.8 ms       366.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.2 ms       366.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.2 ms       368.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.0 ms       367.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.0 ms       367.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.2 ms       368.0 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.0 ms       363.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.0 ms       365.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       364.8 ms       365.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.0 ms       365.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.4 ms       367.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.6 ms       365.4 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       366.6 ms       367.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.4 ms       367.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.4 ms       367.2 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       366.4 ms       367.2 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       366.6 ms       367.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.8 ms       368.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.0 ms       366.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.0 ms       368.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.8 ms       368.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.8 ms       368.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.8 ms       368.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.0 ms       368.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.9 ms       364.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.8 ms       366.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.8 ms       366.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.2 ms       366.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.2 ms       368.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.0 ms       367.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.2 ms       368.0 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.1 ms       366.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.3 ms       365.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       366.3 ms       367.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.1 ms       366.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.1 ms       366.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       366.1 ms       366.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       366.3 ms       367.1 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 41st record. Run 41, Event 41, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:48.141 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.9 ms       364.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.8 ms       366.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.7 ms       366.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.8 ms       366.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.6 ms       368.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.8 ms       366.9 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.8 ms       368.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.6 ms       368.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.6 ms       368.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.6 ms       368.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.8 ms       368.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.6 ms       368.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.8 ms       366.6 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.7 ms       368.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.6 ms       368.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.6 ms       368.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.6 ms       368.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.7 ms       368.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       363.5 ms       364.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       365.4 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       365.3 ms       366.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       365.4 ms       366.3 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.2 ms       368.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.4 ms       366.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.4 ms       368.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.2 ms       368.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.2 ms       368.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.2 ms       368.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.4 ms       368.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.3 ms       367.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.3 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.3 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.1 ms       367.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       364.3 ms       365.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       366.3 ms       367.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       366.1 ms       367.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.1 ms       367.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       366.1 ms       367.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       366.3 ms       367.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.5 ms       367.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.5 ms       369.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.5 ms       369.3 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.5 ms       368.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       365.7 ms       366.6 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.7 ms       368.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.5 ms       368.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.5 ms       368.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.5 ms       368.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       367.7 ms       368.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.8 ms       368.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.0 ms       367.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.0 ms       368.9 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       367.8 ms       368.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.8 ms       368.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       367.8 ms       368.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.0 ms       368.9 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 51st record. Run 41, Event 51, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:51.829 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.3 ms       367.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.5 ms       367.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.5 ms       369.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.3 ms       369.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.5 ms       369.3 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.0 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.2 ms       367.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.0 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.0 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.0 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.7 ms       369.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.9 ms       367.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.9 ms       369.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.7 ms       369.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.7 ms       369.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.7 ms       369.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.9 ms       369.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.3 ms       367.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.0 ms       369.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.2 ms       368.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.2 ms       370.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.0 ms       369.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.0 ms       369.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.0 ms       369.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.2 ms       370.0 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.3 ms       367.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.1 ms       368.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.2 ms       369.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.3 ms       370.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.4 ms       368.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.4 ms       370.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.3 ms       370.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.2 ms       370.2 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.2 ms       370.2 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.4 ms       370.3 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.1 ms       370.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.3 ms       368.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.3 ms       370.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.1 ms       370.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.1 ms       370.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.1 ms       370.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.3 ms       370.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.3 ms       370.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.4 ms       368.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.5 ms       370.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.3 ms       370.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.3 ms       370.2 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.3 ms       370.2 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.5 ms       370.3 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 61st record. Run 41, Event 61, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:55.531 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.7 ms       369.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       366.8 ms       367.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       368.9 ms       369.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       368.7 ms       369.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.7 ms       369.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       368.7 ms       369.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       368.9 ms       369.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.2 ms       370.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.4 ms       368.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.4 ms       370.3 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.2 ms       370.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.2 ms       370.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.2 ms       370.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.4 ms       370.3 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.9 ms       368.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.9 ms       370.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.9 ms       370.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.4 ms       370.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.6 ms       368.6 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.6 ms       370.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.4 ms       370.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.4 ms       370.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.4 ms       370.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.6 ms       370.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.8 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.0 ms       368.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.9 ms       370.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.8 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.8 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.8 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.9 ms       370.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.9 ms       368.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.8 ms       370.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.7 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.8 ms       370.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.3 ms       371.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.5 ms       369.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.5 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.3 ms       371.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.3 ms       371.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.3 ms       371.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.5 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.5 ms       370.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.7 ms       368.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.7 ms       370.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.5 ms       370.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.5 ms       370.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.5 ms       370.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.7 ms       370.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.9 ms       370.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.0 ms       368.9 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.0 ms       370.9 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.9 ms       370.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.8 ms       370.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.8 ms       370.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.0 ms       370.9 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.4 ms       371.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.6 ms       369.6 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.5 ms       371.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.4 ms       371.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.4 ms       371.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.4 ms       371.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.5 ms       371.6 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 71st record. Run 41, Event 71, LumiSection 1 on stream 0 at 15-Oct-2026 17:57:59.245 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.8 ms       370.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.0 ms       369.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.0 ms       371.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.8 ms       370.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.8 ms       370.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.8 ms       370.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.0 ms       371.0 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.3 ms       371.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.5 ms       369.4 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.4 ms       371.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.3 ms       371.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.3 ms       371.2 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.3 ms       371.2 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.4 ms       371.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.0 ms       370.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.2 ms       369.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.1 ms       371.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.0 ms       370.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.0 ms       370.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.0 ms       370.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.1 ms       371.0 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.3 ms       369.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.3 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.1 ms       371.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.1 ms       371.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.3 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.5 ms       371.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.7 ms       369.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.6 ms       371.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.5 ms       371.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.5 ms       371.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.5 ms       371.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.6 ms       371.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.2 ms       371.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.4 ms       369.3 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.3 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.2 ms       371.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.2 ms       371.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.2 ms       371.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.3 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.6 ms       371.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.8 ms       369.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.7 ms       371.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.6 ms       371.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.6 ms       371.6 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.6 ms       371.6 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.7 ms       371.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.9 ms       370.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.1 ms       368.9 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.1 ms       370.9 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.9 ms       370.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.9 ms       370.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.9 ms       370.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.1 ms       370.9 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.9 ms       369.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.8 ms       371.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.8 ms       371.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       371.0 ms       371.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.2 ms       370.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       371.1 ms       372.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       371.0 ms       371.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       371.0 ms       371.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       371.0 ms       371.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       371.1 ms       372.0 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 81st record. Run 41, Event 81, LumiSection 1 on stream 0 at 15-Oct-2026 17:58:02.965 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.3 ms       369.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.3 ms         0.3 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.3 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.3 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.9 ms       371.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.0 ms       369.8 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       371.0 ms       371.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.9 ms       371.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.9 ms       371.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.9 ms       371.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       371.0 ms       371.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.9 ms       369.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.8 ms       371.6 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.7 ms       371.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.8 ms       371.6 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.3 ms       369.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.3 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.3 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.6 ms       373.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.8 ms       371.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       372.8 ms       373.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.6 ms       373.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       372.6 ms       373.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       372.6 ms       373.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       372.8 ms       373.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.4 ms       369.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.4 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.2 ms       371.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.4 ms       371.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.6 ms       371.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.8 ms       369.6 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.7 ms       371.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.6 ms       371.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.6 ms       371.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.6 ms       371.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.7 ms       371.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.2 ms       373.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.4 ms       371.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       372.4 ms       373.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.2 ms       373.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       372.2 ms       373.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       372.2 ms       373.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       372.4 ms       373.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.6 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       367.8 ms       368.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       369.7 ms       370.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.6 ms       370.5 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.6 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.6 ms       370.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       369.7 ms       370.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       371.1 ms       372.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.3 ms       370.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       371.3 ms       372.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       371.1 ms       372.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       371.1 ms       372.0 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       371.1 ms       372.0 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       371.3 ms       372.2 ms       +2388 kB       -2388 kB  total
+
+
+Begin processing the 91st record. Run 41, Event 91, LumiSection 1 on stream 0 at 15-Oct-2026 17:58:06.689 CEST
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.7 ms       373.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.9 ms       371.7 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       372.9 ms       373.7 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.7 ms       373.6 ms        +790 kB        -786 kB  process SCPU
+FastReport       372.7 ms       373.5 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       372.7 ms       373.5 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       372.9 ms       373.7 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.2 ms       369.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.2 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.0 ms       370.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.0 ms       370.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.2 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.2 ms       373.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.3 ms       371.2 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       372.3 ms       373.2 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.2 ms       373.1 ms        +790 kB        -786 kB  process SCPU
+FastReport       372.1 ms       373.1 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       372.1 ms       373.1 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       372.3 ms       373.2 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.5 ms       374.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       371.7 ms       372.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       373.7 ms       374.5 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.5 ms       374.4 ms        +790 kB        -786 kB  process SCPU
+FastReport       373.5 ms       374.4 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       373.5 ms       374.4 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       373.7 ms       374.5 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.8 ms       370.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.0 ms       368.9 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.0 ms       370.8 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       369.8 ms       370.7 ms        +790 kB        -786 kB  process SCPU
+FastReport       369.8 ms       370.7 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       369.8 ms       370.7 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.0 ms       370.8 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.0 ms       373.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       371.2 ms       372.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       373.2 ms       374.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.0 ms       373.9 ms        +790 kB        -786 kB  process SCPU
+FastReport       373.0 ms       373.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       373.0 ms       373.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       373.2 ms       374.0 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.0 ms       373.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       371.1 ms       372.0 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       373.1 ms       374.0 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.0 ms       373.8 ms        +790 kB        -786 kB  process SCPU
+FastReport       373.0 ms       373.8 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       373.0 ms       373.8 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       373.1 ms       374.0 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       368.3 ms       369.1 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       370.3 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       370.1 ms       371.0 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       370.1 ms       370.9 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       370.3 ms       371.1 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.4 ms       374.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       371.6 ms       372.5 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       373.6 ms       374.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       373.4 ms       374.3 ms        +790 kB        -786 kB  process SCPU
+FastReport       373.4 ms       374.3 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       373.4 ms       374.3 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       373.6 ms       374.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport --------------------------- Event Summary ---------------------------
+FastReport       CPU time      Real time      Allocated    Deallocated  Modules
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.4 ms       373.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       370.6 ms       371.4 ms          +1 kB          -4 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms        +519 kB        -515 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms          +8 kB          -7 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms        +260 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       372.6 ms       373.4 ms       +2388 kB       -2388 kB  total
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Processes and Paths
+FastReport         0.1 ms         0.1 ms       +1595 kB          -1 kB  source
+FastReport       372.4 ms       373.2 ms        +790 kB        -786 kB  process SCPU
+FastReport       372.4 ms       373.2 ms        +790 kB        -786 kB  p_sc4Alpaka (only scheduled modules)
+FastReport       372.4 ms       373.2 ms        +790 kB        -786 kB  p_sc4Alpaka (including dependencies)
+FastReport       372.6 ms       373.4 ms       +2388 kB       -2388 kB  total
+
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Transition
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB  run 41, lumisection 1
+
+FastReport --------------------------- run 41 Summary --------------------------
+FastReport   CPU time avg.      when run  Real time avg.      when run     Alloc. avg.      when run   Dealloc. avg.      when run  Modules
+FastReport         0.1 ms                        0.1 ms                      +1595 kB                         -1 kB                 source
+FastReport       367.7 ms                      368.6 ms                      +1088 kB                       -818 kB                 process SCPU
+FastReport       365.8 ms       365.8 ms       366.7 ms       366.7 ms         +77 kB         +77 kB          -8 kB          -8 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms         0.0 ms         0.0 ms          +0 kB          +0 kB          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms         0.0 ms         0.0 ms          +0 kB          +0 kB          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms         0.0 ms         0.0 ms          +0 kB          +0 kB          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms         0.9 ms         0.9 ms        +737 kB        +737 kB        -542 kB        -542 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms         0.8 ms         0.8 ms         +11 kB         +11 kB          -8 kB          -8 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms         0.2 ms         0.2 ms        +262 kB        +262 kB        -259 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.9 ms                      368.8 ms                      +2686 kB                      -2420 kB                 total
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 eventsetup
+FastReport         0.1 ms                        0.1 ms                         +2 kB                      -1600 kB                 cleanup
+FastReport         0.6 ms                        0.6 ms                        +15 kB                        -15 kB                 other
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 idle
+
+FastReport     CPU time sched. / depend.    Real time sched. / depend.       Alloc. sched. / depend.     Dealloc. sched. / depend.  Processes and Paths
+FastReport         0.1 ms                        0.1 ms                      +1595 kB                         -1 kB                 source
+FastReport       367.7 ms                      368.6 ms                      +1088 kB                       -818 kB                 process SCPU
+FastReport       367.7 ms       367.7 ms       368.6 ms       368.6 ms       +1088 kB       +1088 kB        -818 kB        -818 kB    p_sc4Alpaka
+FastReport       367.9 ms                      368.8 ms                      +2686 kB                      -2420 kB                 total
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 eventsetup
+FastReport         0.1 ms                        0.1 ms                         +2 kB                      -1600 kB                 cleanup
+FastReport         0.6 ms                        0.6 ms                        +15 kB                        -15 kB                 other
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 idle
+
+FastReport       CPU time      Real time      Allocated    Deallocated  Transition
+FastReport         0.0 ms         0.0 ms          +0 kB          +0 kB  run 41
+
+Processed 100 orbits, of which 0 truncated, and 356400 events.
+
+FastReport ---------------------------- Job Summary ----------------------------
+FastReport   CPU time avg.      when run  Real time avg.      when run     Alloc. avg.      when run   Dealloc. avg.      when run  Modules
+FastReport         0.1 ms                        0.1 ms                      +1595 kB                         -1 kB                 source
+FastReport       367.7 ms                      368.6 ms                      +1088 kB                       -818 kB                 process SCPU
+FastReport       365.8 ms       365.8 ms       366.7 ms       366.7 ms         +77 kB         +77 kB          -8 kB          -8 kB    SoftJetIdSC4
+FastReport         0.0 ms         0.0 ms         0.0 ms         0.0 ms          +0 kB          +0 kB          +0 kB          +0 kB    TriggerResults
+FastReport         0.0 ms         0.0 ms         0.0 ms         0.0 ms          +0 kB          +0 kB          +0 kB          +0 kB    goodOrbitsByNBX
+FastReport         0.0 ms         0.0 ms         0.0 ms         0.0 ms          +0 kB          +0 kB          +0 kB          +0 kB    p_sc4Alpaka
+FastReport         0.8 ms         0.8 ms         0.9 ms         0.9 ms        +737 kB        +737 kB        -542 kB        -542 kB    scPhase2PFRawToDigiAlpaka
+FastReport         0.8 ms         0.8 ms         0.8 ms         0.8 ms         +11 kB         +11 kB          -8 kB          -8 kB    scPhase2SC4PFAlpaka
+FastReport         0.2 ms         0.2 ms         0.2 ms         0.2 ms        +262 kB        +262 kB        -259 kB        -259 kB    scPhase2VertexRawToDigiAlpaka
+FastReport       367.9 ms                      368.8 ms                      +2686 kB                      -2420 kB                 total
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 eventsetup
+FastReport         0.1 ms                        0.1 ms                         +2 kB                      -1600 kB                 cleanup
+FastReport         3.5 ms                        5.8 ms                     +85021 kB                       -531 kB                 other
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 idle
+
+FastReport     CPU time sched. / depend.    Real time sched. / depend.       Alloc. sched. / depend.     Dealloc. sched. / depend.  Processes and Paths
+FastReport         0.1 ms                        0.1 ms                      +1595 kB                         -1 kB                 source
+FastReport       367.7 ms                      368.6 ms                      +1088 kB                       -818 kB                 process SCPU
+FastReport       367.7 ms       367.7 ms       368.6 ms       368.6 ms       +1088 kB       +1088 kB        -818 kB        -818 kB    p_sc4Alpaka
+FastReport       367.9 ms                      368.8 ms                      +2686 kB                      -2420 kB                 total
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 eventsetup
+FastReport         0.1 ms                        0.1 ms                         +2 kB                      -1600 kB                 cleanup
+FastReport         3.5 ms                        5.8 ms                     +85021 kB                       -531 kB                 other
+FastReport         0.0 ms                        0.0 ms                         +0 kB                         +0 kB                 idle
+
+
+
+TrigReport ---------- Event  Summary ------------
+TrigReport Events total = 100 passed = 100 failed = 0
+
+TrigReport ---------- Path   Summary ------------
+TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+TrigReport     1    0        100        100          0          0 p_sc4Alpaka
+
+
+TrigReport -------End-Path   Summary ------------
+TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+
+
+TrigReport ---------- Modules in Path: p_sc4Alpaka ------------
+TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+TrigReport     1    0        100        100          0          0 scPhase2PFRawToDigiAlpaka
+TrigReport     1    1        100        100          0          0 scPhase2VertexRawToDigiAlpaka
+TrigReport     1    2        100        100          0          0 goodOrbitsByNBX
+TrigReport     1    3        100        100          0          0 scPhase2SC4PFAlpaka
+TrigReport     1    4        100        100          0          0 SoftJetIdSC4
+
+
+TrigReport ---------- Module Summary ------------
+TrigReport    Visited   Executed     Passed     Failed      Error Name
+TrigReport        100        100        100          0          0 SoftJetIdSC4
+TrigReport        100        100        100          0          0 TriggerResults
+TrigReport        100        100        100          0          0 goodOrbitsByNBX
+TrigReport        100        100        100          0          0 p_sc4Alpaka
+TrigReport        100        100        100          0          0 scPhase2PFRawToDigiAlpaka
+TrigReport        100        100        100          0          0 scPhase2SC4PFAlpaka
+TrigReport        100        100        100          0          0 scPhase2VertexRawToDigiAlpaka
+
+
+TimeReport ---------- Event  Summary ---[sec]----
+TimeReport       event loop CPU/event = 0.370858
+TimeReport      event loop Real/event = 0.371478
+TimeReport     sum Streams Real/event = 0.368771
+TimeReport efficiency CPU/Real/thread = 0.998330
+
+TimeReport ---------- Path   Summary ---[Real sec]----
+TimeReport  per event     per exec  Name
+TimeReport   0.368616     0.368616  p_sc4Alpaka
+
+TimeReport  per event     per exec  Name
+
+TimeReport -------End-Path   Summary ---[Real sec]----
+TimeReport  per event     per exec  Name
+
+TimeReport  per event     per exec  Name
+
+TimeReport ---------- Modules in Path: p_sc4Alpaka ---[Real sec]----
+TimeReport  per event    per visit  Name
+TimeReport   0.000851     0.000851  scPhase2PFRawToDigiAlpaka
+TimeReport   0.000215     0.000215  scPhase2VertexRawToDigiAlpaka
+TimeReport   0.000003     0.000003  goodOrbitsByNBX
+TimeReport   0.000820     0.000820  scPhase2SC4PFAlpaka
+TimeReport   0.366680     0.366680  SoftJetIdSC4
+
+TimeReport  per event    per visit  Name
+
+TimeReport ---------- Module Summary ---[Real sec]----
+TimeReport  per event     per exec    per visit  Name
+TimeReport   0.366680     0.366680     0.366680  SoftJetIdSC4
+TimeReport   0.000002     0.000002     0.000002  TriggerResults
+TimeReport   0.000003     0.000003     0.000003  goodOrbitsByNBX
+TimeReport   0.000004     0.000004     0.000004  p_sc4Alpaka
+TimeReport   0.000851     0.000851     0.000851  scPhase2PFRawToDigiAlpaka
+TimeReport   0.000820     0.000820     0.000820  scPhase2SC4PFAlpaka
+TimeReport   0.000215     0.000215     0.000215  scPhase2VertexRawToDigiAlpaka
+
+TimeReport  per event     per exec    per visit  Name
+
+T---Report end!
+
+

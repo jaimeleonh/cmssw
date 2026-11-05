@@ -1,0 +1,14 @@
+{
+  "max_registers_per_multiprocessor": {
+    "status": 0,
+    "value": 65536
+  },
+  "multiprocessor_count": {
+    "status": 0,
+    "value": 58
+  },
+  "max_shared_memory_per_multiprocessor": {
+    "status": 0,
+    "value": 102400
+  }
+}

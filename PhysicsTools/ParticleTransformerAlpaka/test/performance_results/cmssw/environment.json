@@ -1,0 +1,163 @@
+{
+  "host": "cms-p2scout-ngt-01",
+  "captured_utc": "2026-10-15T16:10:59.627007+00:00",
+  "cmssw": "CMSSW_16_1_0_pre3",
+  "gpu": "one NVIDIA L4, GPU 0; GPU 1 unused",
+  "runtime": "Torch 2.6.0a0, CUDA 12.9, driver 590.48.01",
+  "git_head": "6528f688dd81201c3b1fb86341577a711406da59",
+  "final_harness_and_runtime_files": [
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/L1TriggerScouting/Phase2/test/run_benchmark.sh",
+      "bytes": 1507,
+      "sha256": "29c535cdad14aec95e62302250c7edabb1d8c7fd126cc66c8551f5938099f053"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/L1TriggerScouting/Phase2/test/runScoutingPhase2PF_cfg.py",
+      "bytes": 15314,
+      "sha256": "61354b909ff2b82aeee5525f34f592c131c71b4a481434d02df4369f57bce34b"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/PyTorchAlpaka/interface/alpaka/AlpakaModel.h",
+      "bytes": 4251,
+      "sha256": "271426a5d63ebcf6300768f42c8537017167824de886e77dc0377cbd3950214c"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/PyTorchAlpaka/interface/SoAConversion.h",
+      "bytes": 2901,
+      "sha256": "9eaf45087ec14fbc04b2a3e409b9b7bdd2504a6558d8bedd990ad8ebf71db7f9"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc",
+      "bytes": 11159,
+      "sha256": "d35460ab7e7f178b7ef5257822b43c7ed71aed5b33801ab8d6d440e47e771388"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/GraphInferenceProducer.cc",
+      "bytes": 14326,
+      "sha256": "95db2cba901500b52d9de6060b91d1026a9db8f8e670bf266dbf817319f37b8a"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/GraphInferenceAlgo.dev.cc",
+      "bytes": 8682,
+      "sha256": "05f5e8544751b958395a81a8b78da44740c9cc8e98dd5855d23b22ffd51d7678"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/TransformKernel.dev.cc",
+      "bytes": 13683,
+      "sha256": "23b295b86b922132c44f56ba4298875efb0d292f741d6395a0435e2e9c8c674f"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/cmssw_benchmark/run_cfg.py",
+      "bytes": 3653,
+      "sha256": "da45e716f9562f60cc30f3bddfb368225136a4e6be1244a3d950023af1aa7eaa"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/cmssw_benchmark/run.py",
+      "bytes": 6067,
+      "sha256": "0ed1f7a694913a15bbb375496ac48798b7f1bbeb79d8aef8b785dfcad044fd4e"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/cmssw_benchmark/summarize.py",
+      "bytes": 3243,
+      "sha256": "44ef4f214b50af1d2198fb4f8dee8f3d0d3ce995976ae9d6ec26c42535ed2073"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/cmssw_benchmark/run_matrix.sh",
+      "bytes": 2230,
+      "sha256": "4850973df8bad23b8c66b6367b455725eaaa070d2fd647ab333c64d0373ea4ea"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/cmssw_benchmark/run_followup.sh",
+      "bytes": 2828,
+      "sha256": "7ca5a79fc1b9bbe054569c54135b540700874563835d8accf231227568641387"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkInputs.dev.cc",
+      "bytes": 169,
+      "sha256": "f07740c53e91c617baf6834be4b53b2ec2c548bc66e4de7232cfdddec56ef993"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkProducers.cc",
+      "bytes": 7538,
+      "sha256": "acd42931210359c8889206fbae507e63a91a646d861e2734ffd64cc1bc910f8a"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/BuildFile.xml",
+      "bytes": 836,
+      "sha256": "57337d5400c2d391d992b93ba5092816c072f7a7808b3d41a8b89c966b378886"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/BenchmarkTimingService.cc",
+      "bytes": 1458,
+      "sha256": "f18db3f7c927e0271fc1f0c9d35095466a0fbf6f5847224380a7791283b2a9bd"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/L1TriggerScouting/JetTagging/data/softjet_deepsets_cpu.pt",
+      "bytes": 16334,
+      "sha256": "1f8ea1d45c62998b11c205b24090c740efe80d977fab110bf25ea68f626543a5"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/L1TriggerScouting/JetTagging/data/softjet_part_unique_cpu.pt",
+      "bytes": 8651308,
+      "sha256": "d3a488c0b0bbd9c990caae01cbd77ce9c4df53271a7972e496cc8b72700c4cac"
+    },
+    {
+      "path": "/tmp/benchmark_deepsets_float.nnm",
+      "bytes": 12000,
+      "sha256": "55b824e98497ffc4c903d5f35ff234ceb43331e1538bbfb2ac5aaa6da846f1a4"
+    },
+    {
+      "path": "/tmp/benchmark_part_float.nnm",
+      "bytes": 8586800,
+      "sha256": "30e7937d53d4824929af9cf1a369bcfe6536d3e165e7fa96d161849ff916040d"
+    },
+    {
+      "path": "/tmp/benchmark_part_int8.nnm",
+      "bytes": 2312656,
+      "sha256": "d45c33c326f97ae5424c5d38a13cb8e2c7b03c62d252bdeb9df4a7ab1691170c"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/data/b_kinadd.nnm",
+      "bytes": 2322096,
+      "sha256": "78df66bac6a69233dbddb1f4d9b25d4ae9b0c5f06c8f28003d0d142176330e53"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/lib/el9_amd64_gcc13/pluginParticleTransformerBenchmarkTimingService.so",
+      "bytes": 57376,
+      "sha256": "270850e2b451929a0225087f698d734057fec5fcb5681e59e3064f327bca3129"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/lib/el9_amd64_gcc13/pluginParticleTransformerCMSSWBenchmarkPluginsSerialSync.so",
+      "bytes": 394520,
+      "sha256": "ec4e8d19be1cc77f96f4a503e440b6222f3df97754813d666c6a1815e7530f89"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/lib/el9_amd64_gcc13/pluginParticleTransformerCMSSWBenchmarkPluginsCudaAsync.so",
+      "bytes": 1816328,
+      "sha256": "3eacb59d9bbee13a8fca8acbb89d940bcce3ceae6709c6e2aa2ed1e4d05bc0fb"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/lib/el9_amd64_gcc13/pluginPhysicsToolsParticleTransformerAlpakaPluginsCudaAsync.so",
+      "bytes": 46612768,
+      "sha256": "1bc1753d089a7d6d0020fb3961b8cc264262f6a9143dc3abcfbd3d38752c8397"
+    },
+    {
+      "path": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/performance_results/cmssw/compiled_cache_fix.patch",
+      "bytes": 2456,
+      "sha256": "f1dc470824445665540b7e926ed8511d15d6762c0d137b7acb522c24af00f712"
+    }
+  ],
+  "raw_inputs": [
+    {
+      "path": "/mnt/ramdisk/jleonhol/raw/run000041/run000041_ls0001_index000001_stream00.raw",
+      "bytes": 1493016032,
+      "sha256": "5edfec9c8c7d5fbf30bba2ae9b9a714cc23945afba19da355a158b0b825634fa"
+    },
+    {
+      "path": "/mnt/ramdisk/jleonhol/raw/run000041/run000041_ls0001_index000001_stream01.raw",
+      "bytes": 57048032,
+      "sha256": "6f507e18649f96383dfca4dc76b8869236c982338fab89152d22725177e8af9b"
+    }
+  ],
+  "note": "Fingerprints captured after the compiled-cache lifetime fix. Earlier failed diagnostic files retain pre-fix outcomes. Numerical kernels and source checkpoints were unchanged by that fix."
+}

@@ -1,0 +1,46 @@
+>> Local Products Rules ..... started
+>> Local Products Rules ..... done
+------- copying files from src/PhysicsTools/ParticleTransformerAlpaka/scripts -------
+>> Entering Package PhysicsTools/ParticleTransformerAlpaka
+>> Creating project symlinks
+>> Entering Package DataFormats/L1ScoutingSoA
+>> Entering Package PhysicsTools/PyTorch
+>> Compiling alpaka/cuda edm plugin src/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc
+>> Compiling alpaka/rocm edm plugin src/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc
+>> Compiling alpaka/serial edm plugin src/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc
+>> Building alpaka/serial edm plugin tmp/el9_amd64_gcc13/src/PhysicsTools/ParticleTransformerAlpaka/plugins/PhysicsToolsParticleTransformerAlpakaPluginsSerialSync/libPhysicsToolsParticleTransformerAlpakaPluginsSerialSync.so
+>> Building alpaka/cuda edm plugin tmp/el9_amd64_gcc13/src/PhysicsTools/ParticleTransformerAlpaka/plugins/PhysicsToolsParticleTransformerAlpakaPluginsCudaAsync/libPhysicsToolsParticleTransformerAlpakaPluginsCudaAsync.so
+>> Building alpaka/rocm edm plugin tmp/el9_amd64_gcc13/src/PhysicsTools/ParticleTransformerAlpaka/plugins/PhysicsToolsParticleTransformerAlpakaPluginsROCmAsync/libPhysicsToolsParticleTransformerAlpakaPluginsROCmAsync.so
+Leaving library rule at src/PhysicsTools/ParticleTransformerAlpaka/plugins
+@@@@ Running EDM write config for PhysicsToolsParticleTransformerAlpakaPluginsSerialSync
+alpaka_serial_syncParticleTransformerProducer
+particleTransformerProducer
+alpaka_serial_syncGraphInferenceProducer
+graphInferenceProducer
+--- Registered EDM Plugin: PhysicsToolsParticleTransformerAlpakaPluginsSerialSync
+Leaving library rule at src/PhysicsTools/ParticleTransformerAlpaka/plugins
+@@@@ Running EDM write config for PhysicsToolsParticleTransformerAlpakaPluginsCudaAsync
+alpaka_cuda_asyncParticleTransformerProducer
+alpaka_cuda_asyncGraphInferenceProducer
+--- Registered EDM Plugin: PhysicsToolsParticleTransformerAlpakaPluginsCudaAsync
+Leaving library rule at src/PhysicsTools/ParticleTransformerAlpaka/plugins
+@@@@ Running EDM write config for PhysicsToolsParticleTransformerAlpakaPluginsROCmAsync
+alpaka_rocm_asyncGraphInferenceProducer
+alpaka_rocm_asyncParticleTransformerProducer
+--- Registered EDM Plugin: PhysicsToolsParticleTransformerAlpakaPluginsROCmAsync
+>> Leaving Package PhysicsTools/ParticleTransformerAlpaka
+>> Package PhysicsTools/ParticleTransformerAlpaka built
+gmake[1]: Entering directory '/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3'
+>> Local Products Rules ..... started
+>> Local Products Rules ..... done
+@@@@ Refreshing Plugins:edmPluginRefresh for lib/el9_amd64_gcc13
+>> Done generating edm plugin poisoned information
+>> Creating project symlinks
+>> Done python_symlink
+>> Compiling python3 modules cfipython/el9_amd64_gcc13/PhysicsTools/ParticleTransformerAlpaka
+>> Compiling python3 modules python
+>> Compiling python3 modules src/PhysicsTools/ParticleTransformerAlpaka/python
+>> Compiling python3 modules src/PhysicsTools/ParticleTransformerAlpakaFP32/python
+>> All python modules compiled
+>> Plugins of all types refreshed.
+gmake[1]: Leaving directory '/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3'

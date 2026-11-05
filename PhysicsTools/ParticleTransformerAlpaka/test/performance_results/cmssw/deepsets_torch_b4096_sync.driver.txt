@@ -1,0 +1,95 @@
+{
+  "settings": {
+    "engine": "torch",
+    "model": "deepsets",
+    "batch": 4096,
+    "graph": null,
+    "events": 100,
+    "threads": 1,
+    "streams": 1,
+    "sync": true,
+    "validate": false,
+    "tf32": false,
+    "timeout": 1200,
+    "output": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/performance_results/cmssw/deepsets_torch_b4096_sync"
+  },
+  "returncode": 0,
+  "wall_seconds": 4.683431148529053,
+  "steady_skip": 5,
+  "steady": {
+    "SoftJetIdSC4": {
+      "mean_ms": 4.9,
+      "median_ms": 4.9,
+      "min_ms": 4.9,
+      "max_ms": 4.9,
+      "events": 95
+    },
+    "TriggerResults": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "goodOrbitsByNBX": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "p_sc4Alpaka": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "process SCPU": {
+      "mean_ms": 6.6,
+      "median_ms": 6.6,
+      "min_ms": 6.6,
+      "max_ms": 6.6,
+      "events": 95
+    },
+    "scPhase2PFRawToDigiAlpaka": {
+      "mean_ms": 0.6978947368421052,
+      "median_ms": 0.7,
+      "min_ms": 0.6,
+      "max_ms": 0.7,
+      "events": 95
+    },
+    "scPhase2SC4PFAlpaka": {
+      "mean_ms": 0.8,
+      "median_ms": 0.8,
+      "min_ms": 0.8,
+      "max_ms": 0.8,
+      "events": 95
+    },
+    "scPhase2VertexRawToDigiAlpaka": {
+      "mean_ms": 0.2,
+      "median_ms": 0.2,
+      "min_ms": 0.2,
+      "max_ms": 0.2,
+      "events": 95
+    },
+    "source": {
+      "mean_ms": 0.1,
+      "median_ms": 0.1,
+      "min_ms": 0.1,
+      "max_ms": 0.1,
+      "events": 95
+    },
+    "total": {
+      "mean_ms": 6.7,
+      "median_ms": 6.7,
+      "min_ms": 6.7,
+      "max_ms": 6.7,
+      "events": 95
+    }
+  },
+  "gpu_idle_bytes": 491651072,
+  "gpu_peak_sampled_bytes": 1018036224,
+  "rss_peak_sampled_bytes": 2961149952,
+  "memory_sampling_interval_seconds": 0.02
+}

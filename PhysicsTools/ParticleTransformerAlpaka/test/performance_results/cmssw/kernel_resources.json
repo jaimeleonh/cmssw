@@ -1,0 +1,28 @@
+{
+  "source": "cuobjdump --dump-resource-usage of installed production plugin",
+  "architecture": "sm_89",
+  "kernels": [
+    {
+      "kernel": "graph_block",
+      "REG": 246,
+      "STACK": 496,
+      "SHARED": 47840,
+      "LOCAL": 0
+    },
+    {
+      "kernel": "graph_warp",
+      "REG": 254,
+      "STACK": 392,
+      "SHARED": 43776,
+      "LOCAL": 0
+    },
+    {
+      "kernel": "compiled_qat",
+      "REG": 255,
+      "STACK": 1824,
+      "SHARED": 47872,
+      "LOCAL": 0
+    }
+  ],
+  "note": "Static register/stack figures for the actual CMSSW binary; distinct from the standalone CUDA-shim bridge build. LOCAL:0 does not include the nonzero stack or its callees."
+}

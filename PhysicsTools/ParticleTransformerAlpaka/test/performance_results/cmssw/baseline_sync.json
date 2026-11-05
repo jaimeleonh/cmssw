@@ -1,0 +1,4796 @@
+{
+  "settings": {
+    "engine": "none",
+    "model": "deepsets",
+    "batch": 0,
+    "graph": null,
+    "events": 100,
+    "threads": 1,
+    "streams": 1,
+    "sync": true,
+    "validate": false,
+    "tf32": false,
+    "timeout": 1200,
+    "output": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/performance_results/cmssw/baseline_sync"
+  },
+  "command": [
+    "cmsRun",
+    "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/cmssw_benchmark/run_cfg.py",
+    "buBaseDir=/mnt/ramdisk/jleonhol/raw",
+    "fuBaseDir=/tmp/particle_transformer_cmssw_fu",
+    "buNumStreams=2",
+    "runNumber=41",
+    "maxEvents=100",
+    "run=sc4Alpaka",
+    "backend=cuda_async",
+    "numThreads=1",
+    "numFwkStreams=1",
+    "batchSize=0"
+  ],
+  "returncode": 0,
+  "wall_seconds": 3.629533216357231,
+  "events": [
+    {
+      "source": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "process SCPU": {
+        "cpu_ms": 9.9,
+        "real_ms": 9.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 8.3,
+        "real_ms": 8.4
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 1.2,
+        "real_ms": 1.2
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.3,
+        "real_ms": 0.3
+      },
+      "total": {
+        "cpu_ms": 10.2,
+        "real_ms": 10.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.3
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.7,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.7,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.1
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 1.6,
+        "real_ms": 1.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.6,
+        "real_ms": 0.6
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 1.8,
+        "real_ms": 2.2
+      }
+    }
+  ],
+  "steady_skip": 5,
+  "steady": {
+    "TriggerResults": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "goodOrbitsByNBX": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "p_sc4Alpaka": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "process SCPU": {
+      "mean_ms": 1.6042105263157895,
+      "median_ms": 1.6,
+      "min_ms": 1.6,
+      "max_ms": 1.7,
+      "events": 95
+    },
+    "scPhase2PFRawToDigiAlpaka": {
+      "mean_ms": 0.6378947368421052,
+      "median_ms": 0.6,
+      "min_ms": 0.6,
+      "max_ms": 0.7,
+      "events": 95
+    },
+    "scPhase2SC4PFAlpaka": {
+      "mean_ms": 0.7957894736842106,
+      "median_ms": 0.8,
+      "min_ms": 0.7,
+      "max_ms": 0.8,
+      "events": 95
+    },
+    "scPhase2VertexRawToDigiAlpaka": {
+      "mean_ms": 0.20105263157894737,
+      "median_ms": 0.2,
+      "min_ms": 0.2,
+      "max_ms": 0.3,
+      "events": 95
+    },
+    "source": {
+      "mean_ms": 0.1,
+      "median_ms": 0.1,
+      "min_ms": 0.1,
+      "max_ms": 0.1,
+      "events": 95
+    },
+    "total": {
+      "mean_ms": 2.186315789473684,
+      "median_ms": 2.2,
+      "min_ms": 2.1,
+      "max_ms": 2.2,
+      "events": 95
+    }
+  },
+  "gpu_idle_bytes": 491651072,
+  "gpu_peak_sampled_bytes": 785252352,
+  "rss_peak_sampled_bytes": 2364231680,
+  "memory_sampling_interval_seconds": 0.02,
+  "memory_samples": [
+    [
+      0.0035,
+      491651072,
+      331776
+    ],
+    [
+      0.0237,
+      491651072,
+      24948736
+    ],
+    [
+      0.0439,
+      491651072,
+      40853504
+    ],
+    [
+      0.064,
+      491651072,
+      44236800
+    ],
+    [
+      0.0842,
+      491651072,
+      44576768
+    ],
+    [
+      0.1044,
+      491651072,
+      44720128
+    ],
+    [
+      0.1246,
+      491651072,
+      45047808
+    ],
+    [
+      0.1447,
+      491651072,
+      50716672
+    ],
+    [
+      0.1649,
+      491651072,
+      50962432
+    ],
+    [
+      0.1851,
+      491651072,
+      51216384
+    ],
+    [
+      0.2053,
+      491651072,
+      54624256
+    ],
+    [
+      0.2254,
+      491651072,
+      54964224
+    ],
+    [
+      0.2456,
+      491651072,
+      55431168
+    ],
+    [
+      0.2658,
+      491716608,
+      55590912
+    ],
+    [
+      0.294,
+      491716608,
+      55590912
+    ],
+    [
+      0.3196,
+      507379712,
+      55590912
+    ],
+    [
+      0.34,
+      507904000,
+      55590912
+    ],
+    [
+      0.3602,
+      518914048,
+      55590912
+    ],
+    [
+      0.3805,
+      653131776,
+      55590912
+    ],
+    [
+      0.4008,
+      650117120,
+      55590912
+    ],
+    [
+      0.4211,
+      494665728,
+      55590912
+    ],
+    [
+      0.4413,
+      491651072,
+      55590912
+    ],
+    [
+      0.4614,
+      491651072,
+      55001088
+    ],
+    [
+      0.4816,
+      491651072,
+      65470464
+    ],
+    [
+      0.5017,
+      491651072,
+      112144384
+    ],
+    [
+      0.5219,
+      491651072,
+      119992320
+    ],
+    [
+      0.5421,
+      491651072,
+      126083072
+    ],
+    [
+      0.5622,
+      491651072,
+      135389184
+    ],
+    [
+      0.5824,
+      491651072,
+      142864384
+    ],
+    [
+      0.6026,
+      491651072,
+      147505152
+    ],
+    [
+      0.6228,
+      491651072,
+      155578368
+    ],
+    [
+      0.6429,
+      491651072,
+      160423936
+    ],
+    [
+      0.6631,
+      491651072,
+      169345024
+    ],
+    [
+      0.6833,
+      491651072,
+      185110528
+    ],
+    [
+      0.7034,
+      491651072,
+      215289856
+    ],
+    [
+      0.7236,
+      491651072,
+      222199808
+    ],
+    [
+      0.7438,
+      491651072,
+      226394112
+    ],
+    [
+      0.7639,
+      491651072,
+      230883328
+    ],
+    [
+      0.7841,
+      491651072,
+      254529536
+    ],
+    [
+      0.8043,
+      491651072,
+      308146176
+    ],
+    [
+      0.8244,
+      491651072,
+      342196224
+    ],
+    [
+      0.8446,
+      491651072,
+      392290304
+    ],
+    [
+      0.8648,
+      491651072,
+      402030592
+    ],
+    [
+      0.885,
+      491651072,
+      404144128
+    ],
+    [
+      0.9051,
+      491651072,
+      408387584
+    ],
+    [
+      0.9253,
+      491651072,
+      414015488
+    ],
+    [
+      0.9455,
+      491651072,
+      424194048
+    ],
+    [
+      0.9656,
+      491651072,
+      430395392
+    ],
+    [
+      0.9858,
+      491651072,
+      432590848
+    ],
+    [
+      1.006,
+      491651072,
+      440000512
+    ],
+    [
+      1.0261,
+      491651072,
+      449900544
+    ],
+    [
+      1.0463,
+      491651072,
+      523997184
+    ],
+    [
+      1.0665,
+      491651072,
+      559833088
+    ],
+    [
+      1.0866,
+      491651072,
+      566743040
+    ],
+    [
+      1.1068,
+      491651072,
+      577814528
+    ],
+    [
+      1.127,
+      491651072,
+      589606912
+    ],
+    [
+      1.1471,
+      491651072,
+      596598784
+    ],
+    [
+      1.1673,
+      491651072,
+      605655040
+    ],
+    [
+      1.1875,
+      491651072,
+      608616448
+    ],
+    [
+      1.2077,
+      491651072,
+      609054720
+    ],
+    [
+      1.2279,
+      491651072,
+      620412928
+    ],
+    [
+      1.2638,
+      491716608,
+      622624768
+    ],
+    [
+      1.284,
+      494665728,
+      642269184
+    ],
+    [
+      1.3048,
+      507904000,
+      699211776
+    ],
+    [
+      1.3252,
+      508428288,
+      699342848
+    ],
+    [
+      1.3454,
+      692977664,
+      750653440
+    ],
+    [
+      1.3655,
+      692977664,
+      756707328
+    ],
+    [
+      1.3857,
+      692977664,
+      756707328
+    ],
+    [
+      1.4059,
+      692977664,
+      756699136
+    ],
+    [
+      1.426,
+      692977664,
+      759103488
+    ],
+    [
+      1.4462,
+      692977664,
+      767885312
+    ],
+    [
+      1.4664,
+      692977664,
+      770449408
+    ],
+    [
+      1.4865,
+      692977664,
+      770449408
+    ],
+    [
+      1.5067,
+      692977664,
+      858693632
+    ],
+    [
+      1.5269,
+      692977664,
+      1011785728
+    ],
+    [
+      1.547,
+      692977664,
+      1169072128
+    ],
+    [
+      1.5672,
+      692977664,
+      1324261376
+    ],
+    [
+      1.5873,
+      692977664,
+      1481547776
+    ],
+    [
+      1.6075,
+      692977664,
+      1638834176
+    ],
+    [
+      1.6277,
+      692977664,
+      1794023424
+    ],
+    [
+      1.6478,
+      692977664,
+      1951309824
+    ],
+    [
+      1.668,
+      692977664,
+      2108596224
+    ],
+    [
+      1.6882,
+      692977664,
+      2263785472
+    ],
+    [
+      1.7083,
+      751697920,
+      2364207104
+    ],
+    [
+      1.7285,
+      751697920,
+      2364211200
+    ],
+    [
+      1.7487,
+      785252352,
+      2364211200
+    ],
+    [
+      1.7688,
+      751697920,
+      2364211200
+    ],
+    [
+      1.789,
+      785252352,
+      2364215296
+    ],
+    [
+      1.8091,
+      785252352,
+      2364215296
+    ],
+    [
+      1.8293,
+      751697920,
+      2364219392
+    ],
+    [
+      1.8495,
+      785252352,
+      2364219392
+    ],
+    [
+      1.8696,
+      751697920,
+      2364219392
+    ],
+    [
+      1.8898,
+      785252352,
+      2364223488
+    ],
+    [
+      1.9099,
+      785252352,
+      2364227584
+    ],
+    [
+      1.9301,
+      751697920,
+      2364231680
+    ],
+    [
+      1.9503,
+      785252352,
+      2364231680
+    ],
+    [
+      1.9704,
+      751697920,
+      2364231680
+    ],
+    [
+      1.9906,
+      751697920,
+      2364231680
+    ],
+    [
+      2.0108,
+      751697920,
+      2364231680
+    ],
+    [
+      2.0309,
+      751697920,
+      2364231680
+    ],
+    [
+      2.0511,
+      751697920,
+      2364231680
+    ],
+    [
+      2.0713,
+      751697920,
+      2364231680
+    ],
+    [
+      2.0914,
+      751697920,
+      2364231680
+    ],
+    [
+      2.1116,
+      751697920,
+      2364231680
+    ],
+    [
+      2.1318,
+      751697920,
+      2364231680
+    ],
+    [
+      2.1519,
+      751697920,
+      2364231680
+    ],
+    [
+      2.1721,
+      751697920,
+      2364231680
+    ],
+    [
+      2.1923,
+      751697920,
+      2364231680
+    ],
+    [
+      2.2124,
+      751697920,
+      2364231680
+    ],
+    [
+      2.2326,
+      751697920,
+      2364231680
+    ],
+    [
+      2.2528,
+      751697920,
+      2364231680
+    ],
+    [
+      2.2729,
+      751697920,
+      2364231680
+    ],
+    [
+      2.2931,
+      751697920,
+      2364231680
+    ],
+    [
+      2.3133,
+      751697920,
+      2364231680
+    ],
+    [
+      2.3334,
+      751697920,
+      2364231680
+    ],
+    [
+      2.3536,
+      751697920,
+      2364231680
+    ],
+    [
+      2.3738,
+      751697920,
+      2364231680
+    ],
+    [
+      2.394,
+      751697920,
+      2364231680
+    ],
+    [
+      2.4141,
+      751697920,
+      2364231680
+    ],
+    [
+      2.4343,
+      751697920,
+      2364231680
+    ],
+    [
+      2.4545,
+      751697920,
+      2364231680
+    ],
+    [
+      2.4746,
+      751697920,
+      2364231680
+    ],
+    [
+      2.4948,
+      751697920,
+      2364231680
+    ],
+    [
+      2.5149,
+      751697920,
+      2364125184
+    ],
+    [
+      2.5351,
+      751697920,
+      2364125184
+    ],
+    [
+      2.5553,
+      751697920,
+      2364125184
+    ],
+    [
+      2.5755,
+      751697920,
+      2364125184
+    ],
+    [
+      2.5956,
+      751697920,
+      2364125184
+    ],
+    [
+      2.6158,
+      751697920,
+      2364125184
+    ],
+    [
+      2.636,
+      751697920,
+      2364125184
+    ],
+    [
+      2.6561,
+      751697920,
+      2364125184
+    ],
+    [
+      2.6763,
+      751697920,
+      2364125184
+    ],
+    [
+      2.6965,
+      751697920,
+      2364125184
+    ],
+    [
+      2.7166,
+      751697920,
+      2364125184
+    ],
+    [
+      2.7368,
+      751697920,
+      2364125184
+    ],
+    [
+      2.757,
+      751697920,
+      2364125184
+    ],
+    [
+      2.7771,
+      751697920,
+      2364125184
+    ],
+    [
+      2.7973,
+      751697920,
+      2364125184
+    ],
+    [
+      2.8174,
+      751697920,
+      2364125184
+    ],
+    [
+      2.8376,
+      751697920,
+      2364125184
+    ],
+    [
+      2.8578,
+      751697920,
+      2364125184
+    ],
+    [
+      2.8779,
+      751697920,
+      2364125184
+    ],
+    [
+      2.8981,
+      751697920,
+      2364125184
+    ],
+    [
+      2.9183,
+      751697920,
+      2364125184
+    ],
+    [
+      2.9384,
+      751697920,
+      2364125184
+    ],
+    [
+      2.9586,
+      751697920,
+      2364125184
+    ],
+    [
+      2.9788,
+      751697920,
+      2364125184
+    ],
+    [
+      2.9989,
+      751697920,
+      2364125184
+    ],
+    [
+      3.0191,
+      751697920,
+      2364125184
+    ],
+    [
+      3.0393,
+      751697920,
+      2364125184
+    ],
+    [
+      3.0594,
+      751697920,
+      2364125184
+    ],
+    [
+      3.0796,
+      751697920,
+      2364125184
+    ],
+    [
+      3.0998,
+      751697920,
+      2364125184
+    ],
+    [
+      3.1199,
+      751697920,
+      2364125184
+    ],
+    [
+      3.1401,
+      751697920,
+      2364125184
+    ],
+    [
+      3.1603,
+      751697920,
+      2364125184
+    ],
+    [
+      3.1804,
+      751697920,
+      2364125184
+    ],
+    [
+      3.2006,
+      751697920,
+      2364125184
+    ],
+    [
+      3.2208,
+      751697920,
+      2364125184
+    ],
+    [
+      3.2409,
+      751697920,
+      2364125184
+    ],
+    [
+      3.2611,
+      751697920,
+      2364125184
+    ],
+    [
+      3.2813,
+      751697920,
+      2364125184
+    ],
+    [
+      3.3015,
+      751697920,
+      2364125184
+    ],
+    [
+      3.3216,
+      751697920,
+      2364125184
+    ],
+    [
+      3.3418,
+      751697920,
+      2364125184
+    ],
+    [
+      3.362,
+      751697920,
+      2364125184
+    ],
+    [
+      3.3821,
+      751697920,
+      2364125184
+    ],
+    [
+      3.4023,
+      751697920,
+      2364125184
+    ],
+    [
+      3.4224,
+      751697920,
+      2364125184
+    ],
+    [
+      3.4426,
+      751697920,
+      2364125184
+    ],
+    [
+      3.4628,
+      751697920,
+      2364125184
+    ],
+    [
+      3.483,
+      751697920,
+      2364125184
+    ],
+    [
+      3.5032,
+      686686208,
+      2345525248
+    ],
+    [
+      3.5237,
+      679739392,
+      2339168256
+    ],
+    [
+      3.5439,
+      677117952,
+      2289033216
+    ],
+    [
+      3.5641,
+      494665728,
+      2281476096
+    ],
+    [
+      3.5843,
+      494665728,
+      2281537536
+    ],
+    [
+      3.6045,
+      494665728,
+      0
+    ]
+  ]
+}

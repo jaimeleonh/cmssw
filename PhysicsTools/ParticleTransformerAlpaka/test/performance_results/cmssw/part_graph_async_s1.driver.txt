@@ -1,0 +1,181 @@
+{
+  "settings": {
+    "engine": "graph",
+    "model": "part",
+    "batch": 0,
+    "graph": null,
+    "events": 30,
+    "threads": 1,
+    "streams": 1,
+    "sync": false,
+    "validate": false,
+    "tf32": false,
+    "observer": true,
+    "force_ieee": false,
+    "timeout": 1200,
+    "output": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/performance_results/cmssw/part_graph_async_s1"
+  },
+  "nvidia_tf32_override": null,
+  "returncode": 0,
+  "wall_seconds": 58.603584829717875,
+  "steady_skip": 5,
+  "steady": {},
+  "gpu_idle_bytes": 491651072,
+  "gpu_peak_sampled_bytes": 929955840,
+  "rss_peak_sampled_bytes": 2393317376,
+  "memory_sampling_interval_seconds": 0.02,
+  "completion_throughput": {
+    "warmup_events": 5,
+    "intervals": 25,
+    "seconds": 46.042557441,
+    "events_per_second": 0.5429759203110205,
+    "ms_per_event": 1841.7022976399999
+  },
+  "timer_summary": {
+    "modules": [
+      {
+        "events": 30,
+        "label": "source",
+        "mem_alloc": 47870,
+        "mem_free": 55,
+        "time_real": 3.587261,
+        "time_thread": 3.52634,
+        "type": "DAQSource"
+      },
+      {
+        "events": 30,
+        "label": "TriggerResults",
+        "mem_alloc": 5,
+        "mem_free": 0,
+        "time_real": 0.0604,
+        "time_thread": 0.060631,
+        "type": "TriggerResultInserter"
+      },
+      {
+        "events": 30,
+        "label": "p_sc4Alpaka",
+        "mem_alloc": 2,
+        "mem_free": 0,
+        "time_real": 0.070325,
+        "time_thread": 0.070386,
+        "type": "PathStatusInserter"
+      },
+      {
+        "events": 30,
+        "label": "scPhase2PFRawToDigiAlpaka",
+        "mem_alloc": 37349,
+        "mem_free": 18130,
+        "time_real": 33.185004,
+        "time_thread": 32.903322,
+        "type": "l1sc::L1TScPhase2PuppiRawToDigi@alpaka"
+      },
+      {
+        "events": 30,
+        "label": "scPhase2VertexRawToDigiAlpaka",
+        "mem_alloc": 7972,
+        "mem_free": 7840,
+        "time_real": 6.556455,
+        "time_thread": 6.519927,
+        "type": "l1sc::L1TScPhase2VertexRawToDigi@alpaka"
+      },
+      {
+        "events": 30,
+        "label": "goodOrbitsByNBX",
+        "mem_alloc": 2,
+        "mem_free": 2,
+        "time_real": 0.169798,
+        "time_thread": 0.170455,
+        "type": "GoodOrbitNBxSelector"
+      },
+      {
+        "events": 30,
+        "label": "scPhase2SC4PFAlpaka",
+        "mem_alloc": 512,
+        "mem_free": 309,
+        "time_real": 23.674337,
+        "time_thread": 23.587027,
+        "type": "l1sc::L1TScPhase2SCJets@alpaka"
+      },
+      {
+        "events": 30,
+        "label": "SoftJetIdSC4",
+        "mem_alloc": 18625,
+        "mem_free": 10957,
+        "time_real": 17.939135,
+        "time_thread": 17.873986,
+        "type": "GraphInferenceProducer@alpaka"
+      },
+      {
+        "events": 30,
+        "label": "cleanup",
+        "mem_alloc": 81,
+        "mem_free": 48119,
+        "time_real": 55092.019524,
+        "time_thread": 6.201069,
+        "type": "cleanup"
+      },
+      {
+        "events": 30,
+        "label": "other",
+        "mem_alloc": 8500679,
+        "mem_free": 51692,
+        "time_real": 500.389509,
+        "time_thread": 296.495049,
+        "type": "other"
+      },
+      {
+        "events": 30,
+        "label": "eventsetup",
+        "mem_alloc": 0,
+        "mem_free": 0,
+        "time_real": 0.0,
+        "time_thread": 0.0,
+        "type": "eventsetup"
+      },
+      {
+        "events": 30,
+        "label": "idle",
+        "mem_alloc": 33,
+        "mem_free": 33,
+        "time_real": 2.200291,
+        "time_thread": 1.058818,
+        "type": "idle"
+      }
+    ],
+    "resources": [
+      {
+        "description": "real time",
+        "name": "time_real",
+        "title": "Time",
+        "unit": "ms"
+      },
+      {
+        "description": "cpu time",
+        "name": "time_thread",
+        "title": "Time",
+        "unit": "ms"
+      },
+      {
+        "description": "allocated memory",
+        "name": "mem_alloc",
+        "title": "Memory",
+        "unit": "kB"
+      },
+      {
+        "description": "deallocated memory",
+        "name": "mem_free",
+        "title": "Memory",
+        "unit": "kB"
+      }
+    ],
+    "total": {
+      "events": 30,
+      "label": "SCPU",
+      "mem_alloc": 8613135,
+      "mem_free": 137142,
+      "time_real": 55679.852039,
+      "time_thread": 388.46701,
+      "type": "Job"
+    }
+  }
+}

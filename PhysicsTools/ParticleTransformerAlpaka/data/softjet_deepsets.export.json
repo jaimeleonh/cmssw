@@ -1,0 +1,201 @@
+{
+  "frontend": "torchscript",
+  "source": "torchscript",
+  "source_sha256": "1f8ea1d45c62998b11c205b24090c740efe80d977fab110bf25ea68f626543a5",
+  "file": "data/softjet_deepsets.nnm",
+  "file_sha256": "55b824e98497ffc4c903d5f35ff234ceb43331e1538bbfb2ac5aaa6da846f1a4",
+  "bytes": 12000,
+  "ops": 12,
+  "buffers": 9,
+  "int8_weights": 0,
+  "float_params": 2690,
+  "arena_floats_used": 1024,
+  "arena_floats_available": 10560,
+  "arena_int8_used": 0,
+  "arena_int8_available": 4096,
+  "topology": "torchscript",
+  "max_particles": 16,
+  "input_features": 15,
+  "sequence": true,
+  "batched": true,
+  "mask_argument": true,
+  "padding": "fixed length",
+  "token_tile": 16,
+  "precision": "float32",
+  "classes": 1,
+  "outputs": [
+    1
+  ],
+  "signature": {
+    "arity": 4,
+    "batched": true,
+    "mask_shape": [
+      1,
+      -1
+    ],
+    "features_at": 1,
+    "mask_at": 3,
+    "auxiliary": {
+      "0": 2,
+      "2": 4
+    },
+    "mask_multiplicative": true
+  },
+  "layers": [
+    {
+      "op": "linear",
+      "in": 15,
+      "out": 32
+    },
+    {
+      "op": "aten::relu"
+    },
+    {
+      "op": "linear",
+      "in": 32,
+      "out": 32
+    },
+    {
+      "op": "aten::relu"
+    },
+    {
+      "op": "reduce",
+      "kind": "aten::sum",
+      "size": 32,
+      "weighted": false
+    },
+    {
+      "op": "linear",
+      "in": 32,
+      "out": 32
+    },
+    {
+      "op": "aten::relu"
+    },
+    {
+      "op": "linear",
+      "in": 32,
+      "out": 2
+    },
+    {
+      "op": "softmax",
+      "over": "channel"
+    }
+  ],
+  "tensors": {
+    "linear.0": {
+      "shape": [
+        32,
+        15
+      ],
+      "storage": "float32"
+    },
+    "linear.2": {
+      "shape": [
+        32,
+        32
+      ],
+      "storage": "float32"
+    },
+    "linear.5": {
+      "shape": [
+        32,
+        32
+      ],
+      "storage": "float32"
+    },
+    "linear.7": {
+      "shape": [
+        2,
+        32
+      ],
+      "storage": "float32"
+    }
+  },
+  "allocation": [
+    {
+      "name": "linear.0.1",
+      "arena": "float",
+      "offset": 0,
+      "size": 512,
+      "rows": 16,
+      "cols": 32,
+      "live": [
+        1,
+        3
+      ]
+    },
+    {
+      "name": "linear.5.4",
+      "arena": "float",
+      "offset": 0,
+      "size": 32,
+      "rows": 1,
+      "cols": 32,
+      "live": [
+        6,
+        8
+      ]
+    },
+    {
+      "name": "output",
+      "arena": "float",
+      "offset": 0,
+      "size": 1,
+      "rows": 1,
+      "cols": 1,
+      "live": [
+        10,
+        11
+      ]
+    },
+    {
+      "name": "pool.4.3",
+      "arena": "float",
+      "offset": 32,
+      "size": 32,
+      "rows": 1,
+      "cols": 32,
+      "live": [
+        5,
+        6
+      ]
+    },
+    {
+      "name": "linear.7.5",
+      "arena": "float",
+      "offset": 32,
+      "size": 2,
+      "rows": 1,
+      "cols": 2,
+      "live": [
+        8,
+        10
+      ]
+    },
+    {
+      "name": "linear.2.2",
+      "arena": "float",
+      "offset": 512,
+      "size": 512,
+      "rows": 16,
+      "cols": 32,
+      "live": [
+        3,
+        5
+      ]
+    },
+    {
+      "name": "input",
+      "arena": "float",
+      "offset": 512,
+      "size": 240,
+      "rows": 16,
+      "cols": 15,
+      "live": [
+        0,
+        1
+      ]
+    }
+  ]
+}

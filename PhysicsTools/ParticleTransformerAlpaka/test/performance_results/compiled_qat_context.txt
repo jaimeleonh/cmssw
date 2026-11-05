@@ -1,0 +1,2 @@
+compiled kernel: shared 47872 B
+56052 jets: best 577.662 ms, mean 581.964 ms over 7 launches

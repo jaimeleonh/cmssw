@@ -1,0 +1,29 @@
+{
+  "gpu": "NVIDIA L4",
+  "compute_capability": [
+    8,
+    9
+  ],
+  "multiprocessors": 58,
+  "global_memory_bytes": 23661248512,
+  "torch": "2.6.0a0",
+  "cuda_build": "12.9",
+  "torch_cpp11_abi": true,
+  "hostname": "cms-p2scout-ngt-01",
+  "threads": 1,
+  "cuda_timing_stream": "default CUDA stream",
+  "compiler_flags_graph": "nvcc -O3 -std=c++20 -arch=sm_89 -Xcompiler -fPIC -shared; default FMA contraction; no relocatable device code",
+  "compiler_flags_torch": "c++ -O3 -std=c++17 -fPIC -shared; same C++ ABI as installed Torch",
+  "source_sha256": {
+    "test/benchmark_runtime_comparison.py": "b228f1a88391d0cf4c3972091126a71fbd42a72a9f12bb0f2f5fcf1178a1ef4b",
+    "test/benchmark_runtime_bridge.cu": "3fc91774f2d6a1a2ed86837f185d128a056fbfefd7a59b96163ed188891ad598",
+    "test/benchmark_torch_bridge.cc": "875d5cffbe9dd3259756c1039a0dc09304019fa08e3883fa59afa1c41a20c9dd",
+    "test/build_runtime_benchmark.sh": "401b197d04f7629c094d5249e2c2de01919b83381da1eaf07aa0548be2bc1d8c"
+  },
+  "bridges_sha256": {
+    "/tmp/particle_transformer_benchmark_graph.so": "c335288fe28056fcf08b9a39c35e9bcef2d85a7e061dba2e2c6bf16dcd992085",
+    "/tmp/particle_transformer_benchmark_torch.so": "22eb8ac1f41ada121579953a6988dd1fb8e02e56fa5d2d7b29ce5b912b72a4ac"
+  },
+  "soa_alignment_bytes": 128,
+  "early_contiguous_runs": "Earlier bridge ABI without SoA support; identical inference arithmetic. Main comparison uses final aligned SoA bridge."
+}

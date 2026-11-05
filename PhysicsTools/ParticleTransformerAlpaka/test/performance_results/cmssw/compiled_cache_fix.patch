@@ -1,0 +1,41 @@
+diff --git a/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc b/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc
+index c1cb9696e3f..be40f8e346c 100644
+--- a/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc
++++ b/PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/ParticleTransformerProducer.cc
+@@ -39,9 +39,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE {
+   namespace {
+ 
+     using DeviceWeights = decltype(cms::alpakatools::make_device_buffer<std::int8_t[]>(
+-        std::declval<Queue const&>(), std::declval<std::size_t>()));
++        std::declval<Device const&>(), std::declval<std::size_t>()));
+     using DeviceFloats = decltype(
+-        cms::alpakatools::make_device_buffer<float[]>(std::declval<Queue const&>(), std::declval<std::size_t>()));
++        cms::alpakatools::make_device_buffer<float[]>(std::declval<Device const&>(), std::declval<std::size_t>()));
+ 
+     // The transposed model is 2.1 MB of INT8 weights plus 237 kB of FP32
+     // scales, biases and normalisation parameters, and it is read by every
+@@ -66,8 +66,11 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE {
+     }
+ 
+     std::vector<ModelRegistryEntry>& modelRegistry() {
+-      static std::vector<ModelRegistryEntry> registry;
+-      return registry;
++      // CMSSW tears down CUDA and its caching allocator before function-local
++      // statics. Match GraphInferenceProducer: retain a device-owned cache for
++      // process lifetime, without queue-cached blocks surviving that allocator.
++      static auto* registry = new std::vector<ModelRegistryEntry>();
++      return *registry;
+     }
+ 
+     template <typename T>
+@@ -119,8 +122,8 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE {
+       }
+ 
+       auto model = std::make_shared<ResidentModel>(ResidentModel{
+-          cms::alpakatools::make_device_buffer<std::int8_t[]>(queue, ::part::generated::weights_size),
+-          cms::alpakatools::make_device_buffer<float[]>(queue, ::part::generated::params_size)});
++          cms::alpakatools::make_device_buffer<std::int8_t[]>(device, ::part::generated::weights_size),
++          cms::alpakatools::make_device_buffer<float[]>(device, ::part::generated::params_size)});
+       alpaka::memcpy(queue, model->weights, columnMajor);
+       alpaka::memcpy(queue, model->params, parameters);
+       // Complete the upload while still holding the lock: another stream that

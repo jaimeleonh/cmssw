@@ -1,0 +1,6203 @@
+{
+  "settings": {
+    "engine": "torch",
+    "model": "deepsets",
+    "batch": 128,
+    "graph": null,
+    "events": 100,
+    "threads": 1,
+    "streams": 1,
+    "sync": true,
+    "validate": false,
+    "tf32": false,
+    "timeout": 1200,
+    "output": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/performance_results/cmssw/deepsets_torch_b128_sync"
+  },
+  "command": [
+    "cmsRun",
+    "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/cmssw_benchmark/run_cfg.py",
+    "buBaseDir=/mnt/ramdisk/jleonhol/raw",
+    "fuBaseDir=/tmp/particle_transformer_cmssw_fu",
+    "buNumStreams=2",
+    "runNumber=41",
+    "maxEvents=100",
+    "run=sc4Alpaka",
+    "backend=cuda_async",
+    "numThreads=1",
+    "numFwkStreams=1",
+    "batchSize=128"
+  ],
+  "returncode": 0,
+  "wall_seconds": 7.672337831929326,
+  "events": [
+    {
+      "source": {
+        "cpu_ms": 0.3,
+        "real_ms": 0.3
+      },
+      "process SCPU": {
+        "cpu_ms": 161.6,
+        "real_ms": 163.9
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 145.1,
+        "real_ms": 147.3
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 14.9,
+        "real_ms": 15.0
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 1.2,
+        "real_ms": 1.2
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.3,
+        "real_ms": 0.3
+      },
+      "total": {
+        "cpu_ms": 162.0,
+        "real_ms": 164.3
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 48.9,
+        "real_ms": 50.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 47.1,
+        "real_ms": 49.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 49.0,
+        "real_ms": 50.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 36.0,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.8,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.8,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 36.0,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.8,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.1,
+        "real_ms": 37.3
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.5,
+        "real_ms": 35.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 36.0,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.8,
+        "real_ms": 38.0
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.2,
+        "real_ms": 37.3
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.5,
+        "real_ms": 35.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 36.0,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.8,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.2,
+        "real_ms": 37.3
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.5,
+        "real_ms": 35.6
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.2,
+        "real_ms": 37.3
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.5,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 36.0,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.8,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.8
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.1
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.9
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.9,
+        "real_ms": 36.0
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.7,
+        "real_ms": 37.8
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.5
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.7,
+        "real_ms": 35.8
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.5,
+        "real_ms": 37.7
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.9,
+        "real_ms": 38.1
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 36.2,
+        "real_ms": 36.4
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 38.1,
+        "real_ms": 38.2
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.3,
+        "real_ms": 37.4
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.6,
+        "real_ms": 35.7
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      }
+    },
+    {
+      "source": {
+        "cpu_ms": 0.1,
+        "real_ms": 0.1
+      },
+      "process SCPU": {
+        "cpu_ms": 37.4,
+        "real_ms": 37.6
+      },
+      "SoftJetIdSC4": {
+        "cpu_ms": 35.8,
+        "real_ms": 35.9
+      },
+      "TriggerResults": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "goodOrbitsByNBX": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "p_sc4Alpaka": {
+        "cpu_ms": 0.0,
+        "real_ms": 0.0
+      },
+      "scPhase2PFRawToDigiAlpaka": {
+        "cpu_ms": 0.7,
+        "real_ms": 0.7
+      },
+      "scPhase2SC4PFAlpaka": {
+        "cpu_ms": 0.8,
+        "real_ms": 0.8
+      },
+      "scPhase2VertexRawToDigiAlpaka": {
+        "cpu_ms": 0.2,
+        "real_ms": 0.2
+      },
+      "total": {
+        "cpu_ms": 37.6,
+        "real_ms": 37.7
+      }
+    }
+  ],
+  "steady_skip": 5,
+  "steady": {
+    "SoftJetIdSC4": {
+      "mean_ms": 35.87157894736842,
+      "median_ms": 35.9,
+      "min_ms": 35.6,
+      "max_ms": 36.4,
+      "events": 95
+    },
+    "TriggerResults": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "goodOrbitsByNBX": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "p_sc4Alpaka": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "process SCPU": {
+      "mean_ms": 37.55789473684211,
+      "median_ms": 37.5,
+      "min_ms": 37.3,
+      "max_ms": 38.1,
+      "events": 95
+    },
+    "scPhase2PFRawToDigiAlpaka": {
+      "mean_ms": 0.7,
+      "median_ms": 0.7,
+      "min_ms": 0.7,
+      "max_ms": 0.7,
+      "events": 95
+    },
+    "scPhase2SC4PFAlpaka": {
+      "mean_ms": 0.8,
+      "median_ms": 0.8,
+      "min_ms": 0.8,
+      "max_ms": 0.8,
+      "events": 95
+    },
+    "scPhase2VertexRawToDigiAlpaka": {
+      "mean_ms": 0.2,
+      "median_ms": 0.2,
+      "min_ms": 0.2,
+      "max_ms": 0.2,
+      "events": 95
+    },
+    "source": {
+      "mean_ms": 0.1,
+      "median_ms": 0.1,
+      "min_ms": 0.1,
+      "max_ms": 0.1,
+      "events": 95
+    },
+    "total": {
+      "mean_ms": 37.68421052631579,
+      "median_ms": 37.7,
+      "min_ms": 37.4,
+      "max_ms": 38.2,
+      "events": 95
+    }
+  },
+  "gpu_idle_bytes": 491651072,
+  "gpu_peak_sampled_bytes": 973996032,
+  "rss_peak_sampled_bytes": 2962178048,
+  "memory_sampling_interval_seconds": 0.02,
+  "memory_samples": [
+    [
+      0.0032,
+      491651072,
+      323584
+    ],
+    [
+      0.0235,
+      491651072,
+      26738688
+    ],
+    [
+      0.0436,
+      491651072,
+      43515904
+    ],
+    [
+      0.0638,
+      491651072,
+      44281856
+    ],
+    [
+      0.084,
+      491651072,
+      44621824
+    ],
+    [
+      0.1041,
+      491651072,
+      44830720
+    ],
+    [
+      0.1243,
+      491651072,
+      45277184
+    ],
+    [
+      0.1445,
+      491651072,
+      50790400
+    ],
+    [
+      0.1647,
+      491651072,
+      51007488
+    ],
+    [
+      0.1848,
+      491651072,
+      52207616
+    ],
+    [
+      0.2051,
+      491651072,
+      54702080
+    ],
+    [
+      0.2253,
+      491651072,
+      55287808
+    ],
+    [
+      0.2455,
+      491651072,
+      55644160
+    ],
+    [
+      0.266,
+      491716608,
+      55644160
+    ],
+    [
+      0.2935,
+      491716608,
+      55644160
+    ],
+    [
+      0.3198,
+      507379712,
+      55644160
+    ],
+    [
+      0.3402,
+      507904000,
+      55644160
+    ],
+    [
+      0.3604,
+      518914048,
+      55644160
+    ],
+    [
+      0.3809,
+      653131776,
+      55644160
+    ],
+    [
+      0.4011,
+      650117120,
+      55644160
+    ],
+    [
+      0.4214,
+      494600192,
+      55644160
+    ],
+    [
+      0.4416,
+      491651072,
+      55644160
+    ],
+    [
+      0.4618,
+      491651072,
+      55705600
+    ],
+    [
+      0.4819,
+      491651072,
+      68780032
+    ],
+    [
+      0.5021,
+      491651072,
+      116396032
+    ],
+    [
+      0.5223,
+      491651072,
+      122994688
+    ],
+    [
+      0.5425,
+      491651072,
+      127270912
+    ],
+    [
+      0.5626,
+      491651072,
+      133935104
+    ],
+    [
+      0.5828,
+      491651072,
+      142913536
+    ],
+    [
+      0.603,
+      491651072,
+      147804160
+    ],
+    [
+      0.6231,
+      491651072,
+      156147712
+    ],
+    [
+      0.6434,
+      491651072,
+      160538624
+    ],
+    [
+      0.6636,
+      491651072,
+      172290048
+    ],
+    [
+      0.6838,
+      491651072,
+      190197760
+    ],
+    [
+      0.7039,
+      491651072,
+      220381184
+    ],
+    [
+      0.7241,
+      491651072,
+      233402368
+    ],
+    [
+      0.7443,
+      491651072,
+      294404096
+    ],
+    [
+      0.7644,
+      491651072,
+      338743296
+    ],
+    [
+      0.7846,
+      491651072,
+      393388032
+    ],
+    [
+      0.8048,
+      491651072,
+      401895424
+    ],
+    [
+      0.8249,
+      491651072,
+      406114304
+    ],
+    [
+      0.8451,
+      491651072,
+      408252416
+    ],
+    [
+      0.8653,
+      491651072,
+      415387648
+    ],
+    [
+      0.8854,
+      491651072,
+      428683264
+    ],
+    [
+      0.9056,
+      491651072,
+      430354432
+    ],
+    [
+      0.9257,
+      491651072,
+      439439360
+    ],
+    [
+      0.9459,
+      491651072,
+      449761280
+    ],
+    [
+      0.9661,
+      491651072,
+      518197248
+    ],
+    [
+      0.9863,
+      491651072,
+      558964736
+    ],
+    [
+      1.0065,
+      491651072,
+      565309440
+    ],
+    [
+      1.0267,
+      491651072,
+      576491520
+    ],
+    [
+      1.047,
+      491651072,
+      589168640
+    ],
+    [
+      1.0672,
+      491651072,
+      595992576
+    ],
+    [
+      1.0874,
+      491651072,
+      603271168
+    ],
+    [
+      1.1077,
+      491651072,
+      608870400
+    ],
+    [
+      1.1279,
+      491651072,
+      609656832
+    ],
+    [
+      1.1483,
+      491716608,
+      620654592
+    ],
+    [
+      1.182,
+      491716608,
+      622862336
+    ],
+    [
+      1.2056,
+      494665728,
+      638156800
+    ],
+    [
+      1.2259,
+      507904000,
+      697360384
+    ],
+    [
+      1.2465,
+      508362752,
+      697491456
+    ],
+    [
+      1.2667,
+      692977664,
+      748384256
+    ],
+    [
+      1.2869,
+      692977664,
+      754794496
+    ],
+    [
+      1.3072,
+      692977664,
+      754794496
+    ],
+    [
+      1.3274,
+      692977664,
+      754790400
+    ],
+    [
+      1.3476,
+      692977664,
+      757198848
+    ],
+    [
+      1.3678,
+      692977664,
+      766005248
+    ],
+    [
+      1.388,
+      692977664,
+      768606208
+    ],
+    [
+      1.4081,
+      692977664,
+      768606208
+    ],
+    [
+      1.4283,
+      692977664,
+      801103872
+    ],
+    [
+      1.4485,
+      692977664,
+      824528896
+    ],
+    [
+      1.4686,
+      692977664,
+      978571264
+    ],
+    [
+      1.4889,
+      692977664,
+      1003827200
+    ],
+    [
+      1.5091,
+      692977664,
+      1142439936
+    ],
+    [
+      1.5293,
+      692977664,
+      1293434880
+    ],
+    [
+      1.5495,
+      692977664,
+      1446526976
+    ],
+    [
+      1.5696,
+      692977664,
+      1603813376
+    ],
+    [
+      1.5898,
+      692977664,
+      1761099776
+    ],
+    [
+      1.61,
+      692977664,
+      1918390272
+    ],
+    [
+      1.6302,
+      692977664,
+      2075676672
+    ],
+    [
+      1.6504,
+      692977664,
+      2232963072
+    ],
+    [
+      1.6706,
+      692977664,
+      2388152320
+    ],
+    [
+      1.6908,
+      692977664,
+      2545438720
+    ],
+    [
+      1.711,
+      785252352,
+      2611171328
+    ],
+    [
+      1.7312,
+      888012800,
+      2669965312
+    ],
+    [
+      1.7514,
+      888012800,
+      2681675776
+    ],
+    [
+      1.7716,
+      917372928,
+      2745237504
+    ],
+    [
+      1.7918,
+      917372928,
+      2846904320
+    ],
+    [
+      1.812,
+      917372928,
+      2944729088
+    ],
+    [
+      1.8321,
+      917372928,
+      2960793600
+    ],
+    [
+      1.8523,
+      917372928,
+      2960793600
+    ],
+    [
+      1.8724,
+      973996032,
+      2960764928
+    ],
+    [
+      1.8926,
+      973996032,
+      2960764928
+    ],
+    [
+      1.9128,
+      973996032,
+      2962157568
+    ],
+    [
+      1.9329,
+      973996032,
+      2962157568
+    ],
+    [
+      1.9531,
+      973996032,
+      2962157568
+    ],
+    [
+      1.9733,
+      973996032,
+      2962157568
+    ],
+    [
+      1.9934,
+      973996032,
+      2962157568
+    ],
+    [
+      2.0136,
+      973996032,
+      2962157568
+    ],
+    [
+      2.0337,
+      973996032,
+      2962157568
+    ],
+    [
+      2.0539,
+      973996032,
+      2962157568
+    ],
+    [
+      2.0742,
+      973996032,
+      2962157568
+    ],
+    [
+      2.0944,
+      973996032,
+      2962157568
+    ],
+    [
+      2.1146,
+      973996032,
+      2962157568
+    ],
+    [
+      2.1348,
+      973996032,
+      2962157568
+    ],
+    [
+      2.155,
+      973996032,
+      2962157568
+    ],
+    [
+      2.1752,
+      973996032,
+      2962157568
+    ],
+    [
+      2.1954,
+      973996032,
+      2962157568
+    ],
+    [
+      2.2155,
+      973996032,
+      2962157568
+    ],
+    [
+      2.2358,
+      973996032,
+      2962157568
+    ],
+    [
+      2.256,
+      940441600,
+      2962157568
+    ],
+    [
+      2.2763,
+      973996032,
+      2962157568
+    ],
+    [
+      2.2965,
+      973996032,
+      2962157568
+    ],
+    [
+      2.3167,
+      973996032,
+      2962157568
+    ],
+    [
+      2.3369,
+      973996032,
+      2962157568
+    ],
+    [
+      2.357,
+      973996032,
+      2962157568
+    ],
+    [
+      2.3772,
+      973996032,
+      2962157568
+    ],
+    [
+      2.3974,
+      973996032,
+      2962157568
+    ],
+    [
+      2.4175,
+      973996032,
+      2962157568
+    ],
+    [
+      2.4377,
+      973996032,
+      2962157568
+    ],
+    [
+      2.4579,
+      973996032,
+      2962157568
+    ],
+    [
+      2.478,
+      973996032,
+      2962157568
+    ],
+    [
+      2.4982,
+      973996032,
+      2962157568
+    ],
+    [
+      2.5184,
+      973996032,
+      2962157568
+    ],
+    [
+      2.5386,
+      973996032,
+      2962157568
+    ],
+    [
+      2.5588,
+      973996032,
+      2962157568
+    ],
+    [
+      2.5789,
+      973996032,
+      2962157568
+    ],
+    [
+      2.5991,
+      973996032,
+      2962157568
+    ],
+    [
+      2.6193,
+      973996032,
+      2962157568
+    ],
+    [
+      2.6395,
+      940441600,
+      2962157568
+    ],
+    [
+      2.6596,
+      973996032,
+      2962157568
+    ],
+    [
+      2.6798,
+      973996032,
+      2962157568
+    ],
+    [
+      2.7,
+      973996032,
+      2962157568
+    ],
+    [
+      2.7201,
+      973996032,
+      2962157568
+    ],
+    [
+      2.7403,
+      973996032,
+      2962157568
+    ],
+    [
+      2.7605,
+      973996032,
+      2962157568
+    ],
+    [
+      2.7806,
+      973996032,
+      2962157568
+    ],
+    [
+      2.8008,
+      973996032,
+      2962157568
+    ],
+    [
+      2.821,
+      973996032,
+      2962157568
+    ],
+    [
+      2.8413,
+      973996032,
+      2962157568
+    ],
+    [
+      2.8615,
+      973996032,
+      2962157568
+    ],
+    [
+      2.8816,
+      973996032,
+      2962157568
+    ],
+    [
+      2.9018,
+      973996032,
+      2962157568
+    ],
+    [
+      2.922,
+      973996032,
+      2962157568
+    ],
+    [
+      2.9421,
+      973996032,
+      2962157568
+    ],
+    [
+      2.9623,
+      973996032,
+      2962157568
+    ],
+    [
+      2.9825,
+      973996032,
+      2962157568
+    ],
+    [
+      3.0026,
+      973996032,
+      2962157568
+    ],
+    [
+      3.0228,
+      940441600,
+      2962157568
+    ],
+    [
+      3.0429,
+      973996032,
+      2962157568
+    ],
+    [
+      3.0631,
+      973996032,
+      2962161664
+    ],
+    [
+      3.0833,
+      973996032,
+      2962161664
+    ],
+    [
+      3.1034,
+      973996032,
+      2962161664
+    ],
+    [
+      3.1236,
+      973996032,
+      2962161664
+    ],
+    [
+      3.1438,
+      973996032,
+      2962161664
+    ],
+    [
+      3.164,
+      973996032,
+      2962161664
+    ],
+    [
+      3.1841,
+      973996032,
+      2962161664
+    ],
+    [
+      3.2043,
+      973996032,
+      2962161664
+    ],
+    [
+      3.2245,
+      973996032,
+      2962161664
+    ],
+    [
+      3.2446,
+      973996032,
+      2962161664
+    ],
+    [
+      3.2649,
+      973996032,
+      2962161664
+    ],
+    [
+      3.2851,
+      973996032,
+      2962161664
+    ],
+    [
+      3.3053,
+      973996032,
+      2962161664
+    ],
+    [
+      3.3255,
+      973996032,
+      2962161664
+    ],
+    [
+      3.3457,
+      973996032,
+      2962165760
+    ],
+    [
+      3.3658,
+      973996032,
+      2962165760
+    ],
+    [
+      3.386,
+      973996032,
+      2962165760
+    ],
+    [
+      3.4062,
+      940441600,
+      2962165760
+    ],
+    [
+      3.4264,
+      973996032,
+      2962165760
+    ],
+    [
+      3.4465,
+      973996032,
+      2962165760
+    ],
+    [
+      3.4667,
+      973996032,
+      2962165760
+    ],
+    [
+      3.487,
+      973996032,
+      2962165760
+    ],
+    [
+      3.5072,
+      973996032,
+      2962165760
+    ],
+    [
+      3.5273,
+      973996032,
+      2962165760
+    ],
+    [
+      3.5475,
+      973996032,
+      2962165760
+    ],
+    [
+      3.5677,
+      973996032,
+      2962169856
+    ],
+    [
+      3.5879,
+      973996032,
+      2962169856
+    ],
+    [
+      3.6081,
+      973996032,
+      2962169856
+    ],
+    [
+      3.6282,
+      973996032,
+      2962169856
+    ],
+    [
+      3.6484,
+      973996032,
+      2962169856
+    ],
+    [
+      3.6686,
+      973996032,
+      2962169856
+    ],
+    [
+      3.6887,
+      973996032,
+      2962169856
+    ],
+    [
+      3.7089,
+      973996032,
+      2962169856
+    ],
+    [
+      3.7291,
+      973996032,
+      2962169856
+    ],
+    [
+      3.7492,
+      973996032,
+      2962169856
+    ],
+    [
+      3.7694,
+      973996032,
+      2962169856
+    ],
+    [
+      3.7896,
+      940441600,
+      2962169856
+    ],
+    [
+      3.8097,
+      973996032,
+      2962169856
+    ],
+    [
+      3.8299,
+      973996032,
+      2962169856
+    ],
+    [
+      3.85,
+      973996032,
+      2962169856
+    ],
+    [
+      3.8702,
+      973996032,
+      2962169856
+    ],
+    [
+      3.8904,
+      973996032,
+      2962169856
+    ],
+    [
+      3.9106,
+      973996032,
+      2962169856
+    ],
+    [
+      3.9307,
+      973996032,
+      2962169856
+    ],
+    [
+      3.9509,
+      973996032,
+      2962169856
+    ],
+    [
+      3.971,
+      973996032,
+      2962169856
+    ],
+    [
+      3.9912,
+      973996032,
+      2962169856
+    ],
+    [
+      4.0115,
+      973996032,
+      2962169856
+    ],
+    [
+      4.0317,
+      973996032,
+      2962169856
+    ],
+    [
+      4.0519,
+      973996032,
+      2962169856
+    ],
+    [
+      4.0721,
+      973996032,
+      2962169856
+    ],
+    [
+      4.0923,
+      973996032,
+      2962169856
+    ],
+    [
+      4.1124,
+      973996032,
+      2962169856
+    ],
+    [
+      4.1326,
+      973996032,
+      2962169856
+    ],
+    [
+      4.1528,
+      973996032,
+      2962169856
+    ],
+    [
+      4.173,
+      940441600,
+      2962169856
+    ],
+    [
+      4.1932,
+      973996032,
+      2962169856
+    ],
+    [
+      4.2133,
+      973996032,
+      2962169856
+    ],
+    [
+      4.2335,
+      973996032,
+      2962169856
+    ],
+    [
+      4.2537,
+      973996032,
+      2962169856
+    ],
+    [
+      4.2738,
+      973996032,
+      2962169856
+    ],
+    [
+      4.294,
+      973996032,
+      2962169856
+    ],
+    [
+      4.3142,
+      973996032,
+      2962169856
+    ],
+    [
+      4.3344,
+      973996032,
+      2962169856
+    ],
+    [
+      4.3546,
+      973996032,
+      2962169856
+    ],
+    [
+      4.3747,
+      973996032,
+      2962169856
+    ],
+    [
+      4.3949,
+      973996032,
+      2962169856
+    ],
+    [
+      4.4151,
+      973996032,
+      2962169856
+    ],
+    [
+      4.4352,
+      973996032,
+      2962169856
+    ],
+    [
+      4.4554,
+      973996032,
+      2962169856
+    ],
+    [
+      4.4756,
+      973996032,
+      2962169856
+    ],
+    [
+      4.4957,
+      973996032,
+      2962169856
+    ],
+    [
+      4.5159,
+      973996032,
+      2962169856
+    ],
+    [
+      4.5361,
+      973996032,
+      2962173952
+    ],
+    [
+      4.5563,
+      940441600,
+      2962173952
+    ],
+    [
+      4.5765,
+      973996032,
+      2962173952
+    ],
+    [
+      4.5966,
+      973996032,
+      2962173952
+    ],
+    [
+      4.6168,
+      973996032,
+      2962173952
+    ],
+    [
+      4.637,
+      973996032,
+      2962173952
+    ],
+    [
+      4.6572,
+      973996032,
+      2962173952
+    ],
+    [
+      4.6773,
+      973996032,
+      2962173952
+    ],
+    [
+      4.6976,
+      973996032,
+      2962173952
+    ],
+    [
+      4.7178,
+      973996032,
+      2962173952
+    ],
+    [
+      4.738,
+      973996032,
+      2962173952
+    ],
+    [
+      4.7583,
+      973996032,
+      2962173952
+    ],
+    [
+      4.7785,
+      973996032,
+      2962173952
+    ],
+    [
+      4.7987,
+      973996032,
+      2962173952
+    ],
+    [
+      4.8189,
+      973996032,
+      2962173952
+    ],
+    [
+      4.8391,
+      973996032,
+      2962173952
+    ],
+    [
+      4.8592,
+      973996032,
+      2962173952
+    ],
+    [
+      4.8794,
+      973996032,
+      2962173952
+    ],
+    [
+      4.8996,
+      973996032,
+      2962173952
+    ],
+    [
+      4.9198,
+      973996032,
+      2962173952
+    ],
+    [
+      4.9399,
+      973996032,
+      2962173952
+    ],
+    [
+      4.9601,
+      973996032,
+      2962173952
+    ],
+    [
+      4.9803,
+      973996032,
+      2962173952
+    ],
+    [
+      5.0004,
+      973996032,
+      2962173952
+    ],
+    [
+      5.0206,
+      973996032,
+      2962173952
+    ],
+    [
+      5.0408,
+      973996032,
+      2962173952
+    ],
+    [
+      5.0609,
+      973996032,
+      2962173952
+    ],
+    [
+      5.0811,
+      973996032,
+      2962173952
+    ],
+    [
+      5.1013,
+      973996032,
+      2962173952
+    ],
+    [
+      5.1214,
+      973996032,
+      2962173952
+    ],
+    [
+      5.1416,
+      973996032,
+      2962173952
+    ],
+    [
+      5.1618,
+      973996032,
+      2962173952
+    ],
+    [
+      5.182,
+      973996032,
+      2962173952
+    ],
+    [
+      5.2021,
+      973996032,
+      2962173952
+    ],
+    [
+      5.2223,
+      973996032,
+      2962173952
+    ],
+    [
+      5.2425,
+      973996032,
+      2962173952
+    ],
+    [
+      5.2627,
+      973996032,
+      2962173952
+    ],
+    [
+      5.2829,
+      973996032,
+      2962173952
+    ],
+    [
+      5.3031,
+      973996032,
+      2962173952
+    ],
+    [
+      5.3233,
+      940441600,
+      2962173952
+    ],
+    [
+      5.3435,
+      973996032,
+      2962173952
+    ],
+    [
+      5.3637,
+      973996032,
+      2962173952
+    ],
+    [
+      5.3838,
+      973996032,
+      2962173952
+    ],
+    [
+      5.404,
+      973996032,
+      2962173952
+    ],
+    [
+      5.4242,
+      973996032,
+      2962173952
+    ],
+    [
+      5.4444,
+      973996032,
+      2962173952
+    ],
+    [
+      5.4645,
+      973996032,
+      2962173952
+    ],
+    [
+      5.4847,
+      973996032,
+      2962173952
+    ],
+    [
+      5.5049,
+      973996032,
+      2962173952
+    ],
+    [
+      5.5252,
+      973996032,
+      2962173952
+    ],
+    [
+      5.5454,
+      973996032,
+      2962173952
+    ],
+    [
+      5.5656,
+      973996032,
+      2962173952
+    ],
+    [
+      5.5858,
+      973996032,
+      2962173952
+    ],
+    [
+      5.606,
+      973996032,
+      2962173952
+    ],
+    [
+      5.6262,
+      973996032,
+      2962173952
+    ],
+    [
+      5.6465,
+      973996032,
+      2962173952
+    ],
+    [
+      5.6667,
+      973996032,
+      2962173952
+    ],
+    [
+      5.6869,
+      940441600,
+      2962178048
+    ],
+    [
+      5.7072,
+      940441600,
+      2962178048
+    ],
+    [
+      5.7274,
+      940441600,
+      2962178048
+    ],
+    [
+      5.7476,
+      940441600,
+      2962178048
+    ],
+    [
+      5.7679,
+      940441600,
+      2962178048
+    ],
+    [
+      5.7881,
+      940441600,
+      2962178048
+    ],
+    [
+      5.8083,
+      940441600,
+      2962178048
+    ],
+    [
+      5.8286,
+      940441600,
+      2962178048
+    ],
+    [
+      5.8488,
+      940441600,
+      2962178048
+    ],
+    [
+      5.869,
+      940441600,
+      2962178048
+    ],
+    [
+      5.8892,
+      940441600,
+      2962178048
+    ],
+    [
+      5.9095,
+      940441600,
+      2962178048
+    ],
+    [
+      5.9297,
+      940441600,
+      2962178048
+    ],
+    [
+      5.9499,
+      940441600,
+      2962178048
+    ],
+    [
+      5.9702,
+      940441600,
+      2962178048
+    ],
+    [
+      5.9904,
+      940441600,
+      2962178048
+    ],
+    [
+      6.0107,
+      940441600,
+      2962178048
+    ],
+    [
+      6.0308,
+      940441600,
+      2962178048
+    ],
+    [
+      6.051,
+      940441600,
+      2962178048
+    ],
+    [
+      6.0712,
+      940441600,
+      2962178048
+    ],
+    [
+      6.0914,
+      940441600,
+      2962178048
+    ],
+    [
+      6.1116,
+      940441600,
+      2962178048
+    ],
+    [
+      6.1317,
+      940441600,
+      2962178048
+    ],
+    [
+      6.1519,
+      940441600,
+      2962178048
+    ],
+    [
+      6.1721,
+      940441600,
+      2962178048
+    ],
+    [
+      6.1922,
+      940441600,
+      2962178048
+    ],
+    [
+      6.2125,
+      940441600,
+      2962178048
+    ],
+    [
+      6.2327,
+      940441600,
+      2962178048
+    ],
+    [
+      6.2529,
+      940441600,
+      2962178048
+    ],
+    [
+      6.2732,
+      940441600,
+      2962178048
+    ],
+    [
+      6.2934,
+      940441600,
+      2962178048
+    ],
+    [
+      6.3136,
+      940441600,
+      2962178048
+    ],
+    [
+      6.3338,
+      940441600,
+      2962178048
+    ],
+    [
+      6.354,
+      940441600,
+      2962178048
+    ],
+    [
+      6.3742,
+      940441600,
+      2962178048
+    ],
+    [
+      6.3943,
+      940441600,
+      2962178048
+    ],
+    [
+      6.4145,
+      940441600,
+      2962178048
+    ],
+    [
+      6.4348,
+      940441600,
+      2962178048
+    ],
+    [
+      6.4551,
+      940441600,
+      2962178048
+    ],
+    [
+      6.4752,
+      940441600,
+      2962178048
+    ],
+    [
+      6.4954,
+      940441600,
+      2955821056
+    ],
+    [
+      6.5156,
+      940441600,
+      2955821056
+    ],
+    [
+      6.5358,
+      940441600,
+      2955821056
+    ],
+    [
+      6.5559,
+      940441600,
+      2955821056
+    ],
+    [
+      6.5761,
+      940441600,
+      2955821056
+    ],
+    [
+      6.5963,
+      940441600,
+      2955821056
+    ],
+    [
+      6.6164,
+      940441600,
+      2955821056
+    ],
+    [
+      6.6366,
+      940441600,
+      2955821056
+    ],
+    [
+      6.6568,
+      940441600,
+      2955821056
+    ],
+    [
+      6.6769,
+      940441600,
+      2955821056
+    ],
+    [
+      6.6971,
+      940441600,
+      2955821056
+    ],
+    [
+      6.7172,
+      940441600,
+      2955821056
+    ],
+    [
+      6.7374,
+      940441600,
+      2955821056
+    ],
+    [
+      6.7576,
+      940441600,
+      2955821056
+    ],
+    [
+      6.7777,
+      940441600,
+      2955821056
+    ],
+    [
+      6.7979,
+      940441600,
+      2955821056
+    ],
+    [
+      6.8181,
+      940441600,
+      2955821056
+    ],
+    [
+      6.8382,
+      940441600,
+      2955821056
+    ],
+    [
+      6.8584,
+      940441600,
+      2955821056
+    ],
+    [
+      6.8786,
+      940441600,
+      2955821056
+    ],
+    [
+      6.8987,
+      940441600,
+      2955821056
+    ],
+    [
+      6.9189,
+      940441600,
+      2955821056
+    ],
+    [
+      6.9391,
+      940441600,
+      2955821056
+    ],
+    [
+      6.9592,
+      940441600,
+      2955821056
+    ],
+    [
+      6.9794,
+      940441600,
+      2955821056
+    ],
+    [
+      6.9996,
+      940441600,
+      2955821056
+    ],
+    [
+      7.0197,
+      940441600,
+      2955821056
+    ],
+    [
+      7.0399,
+      940441600,
+      2955821056
+    ],
+    [
+      7.0601,
+      940441600,
+      2955821056
+    ],
+    [
+      7.0802,
+      940441600,
+      2955821056
+    ],
+    [
+      7.1004,
+      940441600,
+      2955821056
+    ],
+    [
+      7.1206,
+      940441600,
+      2955821056
+    ],
+    [
+      7.1409,
+      940441600,
+      2955821056
+    ],
+    [
+      7.1611,
+      940441600,
+      2955821056
+    ],
+    [
+      7.1813,
+      940441600,
+      2955821056
+    ],
+    [
+      7.2015,
+      940441600,
+      2955821056
+    ],
+    [
+      7.2218,
+      940441600,
+      2955821056
+    ],
+    [
+      7.242,
+      940441600,
+      2955821056
+    ],
+    [
+      7.2622,
+      940441600,
+      2955821056
+    ],
+    [
+      7.2823,
+      940441600,
+      2955821056
+    ],
+    [
+      7.3026,
+      940441600,
+      2955821056
+    ],
+    [
+      7.3228,
+      940441600,
+      2955821056
+    ],
+    [
+      7.343,
+      940441600,
+      2955821056
+    ],
+    [
+      7.3632,
+      940441600,
+      2955821056
+    ],
+    [
+      7.3834,
+      940441600,
+      2955821056
+    ],
+    [
+      7.4035,
+      940441600,
+      2955821056
+    ],
+    [
+      7.4237,
+      940441600,
+      2955821056
+    ],
+    [
+      7.444,
+      940441600,
+      2955821056
+    ],
+    [
+      7.4642,
+      940441600,
+      2955821056
+    ],
+    [
+      7.4845,
+      940441600,
+      2955821056
+    ],
+    [
+      7.5047,
+      749600768,
+      2947559424
+    ],
+    [
+      7.5255,
+      739115008,
+      2932088832
+    ],
+    [
+      7.5457,
+      736100352,
+      2932170752
+    ],
+    [
+      7.5659,
+      494665728,
+      2833166336
+    ],
+    [
+      7.5861,
+      494665728,
+      2879496192
+    ],
+    [
+      7.6062,
+      494665728,
+      2880438272
+    ],
+    [
+      7.6264,
+      494665728,
+      0
+    ],
+    [
+      7.6466,
+      494665728,
+      0
+    ]
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "v1_status": 0,
+  "v1": {
+    "total": 24152899584,
+    "free": 23661248512,
+    "used": 491651072
+  },
+  "v2_status": 0,
+  "v2": {
+    "version": 33554472,
+    "total": 24152899584,
+    "reserved": 491651072,
+    "free": 23661248512,
+    "used": 0
+  },
+  "note": "Idle-device snapshot. NVML v1 used includes driver-reserved memory, unlike the v2 used field. Benchmark traces consistently use v1; subtract their own recorded idle baseline for additional workload memory."
+}

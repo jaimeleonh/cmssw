@@ -1,0 +1,2039 @@
+{
+  "frontend": "legacy_generated",
+  "source": "interface/alpaka/GeneratedModel.h",
+  "source_sha256": "09f8f790d54ae02d06d1e42c01a63cb70bd7e9f0278a7b1ee5266e24fad65251",
+  "file": "/tmp/jleonhol/claude-124088/-afs-cern-ch-work-j-jleonhol-private/34b34569-4e8f-46c3-a85a-83a2c5d237f6/scratchpad/b_kinadd_new.nnm",
+  "file_sha256": "78df66bac6a69233dbddb1f4d9b25d4ae9b0c5f06c8f28003d0d142176330e53",
+  "bytes": 2322096,
+  "ops": 258,
+  "buffers": 167,
+  "int8_weights": 2108032,
+  "float_params": 47176,
+  "arena_floats_used": 10304,
+  "arena_floats_available": 10560,
+  "arena_int8_used": 4096,
+  "arena_int8_available": 4096,
+  "topology": "particle_transformer",
+  "max_particles": 16,
+  "input_features": 15,
+  "embed_dim": 128,
+  "heads": 8,
+  "head_dim": 16,
+  "ffn_dim": 512,
+  "particle_blocks": 8,
+  "class_blocks": 2,
+  "classes": 2,
+  "pair_features": 4,
+  "token_tile": 8,
+  "pair_tile": 32,
+  "pair_final_gelu": false,
+  "transpose_scaled_heads": false,
+  "precision": "int8_weights_fp32_activations",
+  "migrated_from": "interface/alpaka/GeneratedModel.h",
+  "source_checkpoint_sha256": "ff19bd5cacc7320f52f1581148f182f0f12eab21dba46494cf9b7cdda7f20e4c",
+  "tensors": {
+    "embed.embed.1": {
+      "shape": [
+        128,
+        15
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "embed.embed.4": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "embed.embed.7": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "pair_embed.embed.1": {
+      "shape": [
+        64,
+        4
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "pair_embed.embed.4": {
+      "shape": [
+        64,
+        64
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "pair_embed.embed.7": {
+      "shape": [
+        64,
+        64
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "pair_embed.embed.10": {
+      "shape": [
+        8,
+        64
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.0.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.0.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.0.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.0.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.1.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.1.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.1.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.1.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.2.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.2.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.2.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.2.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.3.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.3.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.3.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.3.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.4.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.4.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.4.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.4.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.5.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.5.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.5.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.5.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.6.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.6.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.6.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.6.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.7.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.7.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.7.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "blocks.7.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.0.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.0.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.0.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.0.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.1.attn.in_proj": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.1.attn.out_proj": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.1.fc1": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "cls_blocks.1.fc2": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "int8 (carried over)"
+    },
+    "fc.0": {
+      "shape": [
+        2,
+        128
+      ],
+      "storage": "float32"
+    }
+  },
+  "activation_scales": {
+    "embed.embed.1": [
+      0.03375925123691559,
+      0.03375925123691559,
+      0.03375925123691559
+    ],
+    "embed.embed.4": [
+      0.04748593270778656,
+      0.04748593270778656,
+      0.04748593270778656
+    ],
+    "embed.embed.7": [
+      0.06250383704900742,
+      0.06250383704900742,
+      0.06250383704900742
+    ],
+    "pair_embed.embed.1": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "pair_embed.embed.4": [
+      0.06145648658275604,
+      0.06145648658275604,
+      0.06145648658275604
+    ],
+    "pair_embed.embed.7": [
+      0.06855815649032593,
+      0.06855815649032593,
+      0.06855815649032593
+    ],
+    "pair_embed.embed.10": [
+      0.08121328055858612,
+      0.08121328055858612,
+      0.08121328055858612
+    ],
+    "blocks.0.attn.in_proj": [
+      0.05566635727882385,
+      0.05566635727882385,
+      0.05566635727882385
+    ],
+    "blocks.0.attn.out_proj": [
+      0.045215167105197906,
+      0.045215167105197906,
+      0.045215167105197906
+    ],
+    "blocks.0.fc1": [
+      0.057749126106500626,
+      0.057749126106500626,
+      0.057749126106500626
+    ],
+    "blocks.0.fc2": [
+      0.06523536890745163,
+      0.06523536890745163,
+      0.06523536890745163
+    ],
+    "blocks.1.attn.in_proj": [
+      0.052632275968790054,
+      0.052632275968790054,
+      0.052632275968790054
+    ],
+    "blocks.1.attn.out_proj": [
+      0.040913861244916916,
+      0.040913861244916916,
+      0.040913861244916916
+    ],
+    "blocks.1.fc1": [
+      0.04908148944377899,
+      0.04908148944377899,
+      0.04908148944377899
+    ],
+    "blocks.1.fc2": [
+      0.07006660848855972,
+      0.07006660848855972,
+      0.07006660848855972
+    ],
+    "blocks.2.attn.in_proj": [
+      0.04730061814188957,
+      0.04730061814188957,
+      0.04730061814188957
+    ],
+    "blocks.2.attn.out_proj": [
+      0.043629806488752365,
+      0.043629806488752365,
+      0.043629806488752365
+    ],
+    "blocks.2.fc1": [
+      0.04513174667954445,
+      0.04513174667954445,
+      0.04513174667954445
+    ],
+    "blocks.2.fc2": [
+      0.09281550347805023,
+      0.09281550347805023,
+      0.09281550347805023
+    ],
+    "blocks.3.attn.in_proj": [
+      0.04328486695885658,
+      0.04328486695885658,
+      0.04328486695885658
+    ],
+    "blocks.3.attn.out_proj": [
+      0.037766508758068085,
+      0.037766508758068085,
+      0.037766508758068085
+    ],
+    "blocks.3.fc1": [
+      0.042278628796339035,
+      0.042278628796339035,
+      0.042278628796339035
+    ],
+    "blocks.3.fc2": [
+      0.1081160381436348,
+      0.1081160381436348,
+      0.1081160381436348
+    ],
+    "blocks.4.attn.in_proj": [
+      0.043461523950099945,
+      0.043461523950099945,
+      0.043461523950099945
+    ],
+    "blocks.4.attn.out_proj": [
+      0.04816420003771782,
+      0.04816420003771782,
+      0.04816420003771782
+    ],
+    "blocks.4.fc1": [
+      0.042230185121297836,
+      0.042230185121297836,
+      0.042230185121297836
+    ],
+    "blocks.4.fc2": [
+      0.14337415993213654,
+      0.14337415993213654,
+      0.14337415993213654
+    ],
+    "blocks.5.attn.in_proj": [
+      0.04259537532925606,
+      0.04259537532925606,
+      0.04259537532925606
+    ],
+    "blocks.5.attn.out_proj": [
+      0.04199589416384697,
+      0.04199589416384697,
+      0.04199589416384697
+    ],
+    "blocks.5.fc1": [
+      0.04218532145023346,
+      0.04218532145023346,
+      0.04218532145023346
+    ],
+    "blocks.5.fc2": [
+      0.1384049654006958,
+      0.1384049654006958,
+      0.1384049654006958
+    ],
+    "blocks.6.attn.in_proj": [
+      0.04237055405974388,
+      0.04237055405974388,
+      0.04237055405974388
+    ],
+    "blocks.6.attn.out_proj": [
+      0.04554053023457527,
+      0.04554053023457527,
+      0.04554053023457527
+    ],
+    "blocks.6.fc1": [
+      0.04162042587995529,
+      0.04162042587995529,
+      0.04162042587995529
+    ],
+    "blocks.6.fc2": [
+      0.1346253901720047,
+      0.1346253901720047,
+      0.1346253901720047
+    ],
+    "blocks.7.attn.in_proj": [
+      0.04232213273644447,
+      0.04232213273644447,
+      0.04232213273644447
+    ],
+    "blocks.7.attn.out_proj": [
+      0.04170083999633789,
+      0.04170083999633789,
+      0.04170083999633789
+    ],
+    "blocks.7.fc1": [
+      0.042439159005880356,
+      0.042439159005880356,
+      0.042439159005880356
+    ],
+    "blocks.7.fc2": [
+      0.1491474211215973,
+      0.1491474211215973,
+      0.1491474211215973
+    ],
+    "cls_blocks.0.attn.in_proj": [
+      0.045836396515369415,
+      0.0007928772829473019,
+      0.045836396515369415
+    ],
+    "cls_blocks.0.attn.out_proj": [
+      0.044806480407714844,
+      0.044806480407714844,
+      0.044806480407714844
+    ],
+    "cls_blocks.0.fc1": [
+      0.0433015413582325,
+      0.0433015413582325,
+      0.0433015413582325
+    ],
+    "cls_blocks.0.fc2": [
+      0.11044933646917343,
+      0.11044933646917343,
+      0.11044933646917343
+    ],
+    "cls_blocks.1.attn.in_proj": [
+      0.05015934631228447,
+      0.3174690902233124,
+      0.05015934631228447
+    ],
+    "cls_blocks.1.attn.out_proj": [
+      0.05680415779352188,
+      0.05680415779352188,
+      0.05680415779352188
+    ],
+    "cls_blocks.1.fc1": [
+      0.04901069775223732,
+      0.04901069775223732,
+      0.04901069775223732
+    ],
+    "cls_blocks.1.fc2": [
+      0.0659056156873703,
+      0.0659056156873703,
+      0.0659056156873703
+    ]
+  },
+  "allocation": [
+    {
+      "name": "x",
+      "arena": "float",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        6,
+        237
+      ]
+    },
+    {
+      "name": "embed linear 2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        12,
+        13
+      ]
+    },
+    {
+      "name": "blocks.0 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        54,
+        55
+      ]
+    },
+    {
+      "name": "blocks.1 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        75,
+        76
+      ]
+    },
+    {
+      "name": "blocks.2 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        96,
+        97
+      ]
+    },
+    {
+      "name": "blocks.3 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        117,
+        118
+      ]
+    },
+    {
+      "name": "blocks.4 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        138,
+        139
+      ]
+    },
+    {
+      "name": "blocks.5 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        159,
+        160
+      ]
+    },
+    {
+      "name": "blocks.6 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        180,
+        181
+      ]
+    },
+    {
+      "name": "blocks.7 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        201,
+        202
+      ]
+    },
+    {
+      "name": "pair linear 1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": 32,
+      "cols": 64,
+      "live": [
+        24,
+        25
+      ]
+    },
+    {
+      "name": "pair linear 2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": 32,
+      "cols": 64,
+      "live": [
+        28,
+        29
+      ]
+    },
+    {
+      "name": "pair linear 3.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": 32,
+      "cols": 64,
+      "live": [
+        32,
+        33
+      ]
+    },
+    {
+      "name": "blocks.0 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        43,
+        44
+      ]
+    },
+    {
+      "name": "blocks.1 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        64,
+        65
+      ]
+    },
+    {
+      "name": "blocks.2 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        85,
+        86
+      ]
+    },
+    {
+      "name": "blocks.3 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        106,
+        107
+      ]
+    },
+    {
+      "name": "blocks.4 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        127,
+        128
+      ]
+    },
+    {
+      "name": "blocks.5 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        148,
+        149
+      ]
+    },
+    {
+      "name": "blocks.6 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        169,
+        170
+      ]
+    },
+    {
+      "name": "blocks.7 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        190,
+        191
+      ]
+    },
+    {
+      "name": "embed linear 1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "blocks.0 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        39,
+        40
+      ]
+    },
+    {
+      "name": "blocks.0 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        50,
+        51
+      ]
+    },
+    {
+      "name": "blocks.1 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        60,
+        61
+      ]
+    },
+    {
+      "name": "blocks.1 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        71,
+        72
+      ]
+    },
+    {
+      "name": "blocks.2 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        81,
+        82
+      ]
+    },
+    {
+      "name": "blocks.2 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        92,
+        93
+      ]
+    },
+    {
+      "name": "blocks.3 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        102,
+        103
+      ]
+    },
+    {
+      "name": "blocks.3 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        113,
+        114
+      ]
+    },
+    {
+      "name": "blocks.4 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        123,
+        124
+      ]
+    },
+    {
+      "name": "blocks.4 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        134,
+        135
+      ]
+    },
+    {
+      "name": "blocks.5 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        144,
+        145
+      ]
+    },
+    {
+      "name": "blocks.5 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        155,
+        156
+      ]
+    },
+    {
+      "name": "blocks.6 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        165,
+        166
+      ]
+    },
+    {
+      "name": "blocks.6 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        176,
+        177
+      ]
+    },
+    {
+      "name": "blocks.7 qkv.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        186,
+        187
+      ]
+    },
+    {
+      "name": "blocks.7 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        197,
+        198
+      ]
+    },
+    {
+      "name": "cls_blocks.0 kv (particles).q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        211,
+        212
+      ]
+    },
+    {
+      "name": "cls_blocks.1 kv (particles).q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        235,
+        236
+      ]
+    },
+    {
+      "name": "cls_blocks.1.hidden",
+      "arena": "float",
+      "offset": 0,
+      "size": 512,
+      "rows": 1,
+      "cols": 512,
+      "live": [
+        248,
+        251
+      ]
+    },
+    {
+      "name": "cls_blocks.0 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 512,
+      "rows": 1,
+      "cols": 512,
+      "live": [
+        227,
+        228
+      ]
+    },
+    {
+      "name": "cls_blocks.1 fc2.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 512,
+      "rows": 1,
+      "cols": 512,
+      "live": [
+        251,
+        252
+      ]
+    },
+    {
+      "name": "embed.pre",
+      "arena": "float",
+      "offset": 0,
+      "size": 240,
+      "rows": -1,
+      "cols": 15,
+      "live": [
+        1,
+        4
+      ]
+    },
+    {
+      "name": "cls_blocks.1.scratch",
+      "arena": "float",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        242,
+        247
+      ]
+    },
+    {
+      "name": "cls_blocks.0 kv (class token).q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        207,
+        208
+      ]
+    },
+    {
+      "name": "cls_blocks.0 query.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        214,
+        215
+      ]
+    },
+    {
+      "name": "cls_blocks.0 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        217,
+        218
+      ]
+    },
+    {
+      "name": "cls_blocks.0 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        223,
+        224
+      ]
+    },
+    {
+      "name": "cls_blocks.1 kv (class token).q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        231,
+        232
+      ]
+    },
+    {
+      "name": "cls_blocks.1 query.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        238,
+        239
+      ]
+    },
+    {
+      "name": "cls_blocks.1.query",
+      "arena": "float",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        239,
+        240
+      ]
+    },
+    {
+      "name": "cls_blocks.1 out proj.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        241,
+        242
+      ]
+    },
+    {
+      "name": "cls_blocks.1 fc1.q8",
+      "arena": "int8",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        247,
+        248
+      ]
+    },
+    {
+      "name": "final",
+      "arena": "float",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        254,
+        255
+      ]
+    },
+    {
+      "name": "logits",
+      "arena": "float",
+      "offset": 128,
+      "size": 2,
+      "rows": 1,
+      "cols": 2,
+      "live": [
+        255,
+        257
+      ]
+    },
+    {
+      "name": "features",
+      "arena": "float",
+      "offset": 240,
+      "size": 240,
+      "rows": -1,
+      "cols": 15,
+      "live": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "cls_blocks.1.merged",
+      "arena": "float",
+      "offset": 512,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        240,
+        253
+      ]
+    },
+    {
+      "name": "pair.bias",
+      "arena": "float",
+      "offset": 2048,
+      "size": 1088,
+      "rows": -3,
+      "cols": 8,
+      "live": [
+        18,
+        189
+      ]
+    },
+    {
+      "name": "cls_blocks.0.kv",
+      "arena": "float",
+      "offset": 2048,
+      "size": 4352,
+      "rows": -2,
+      "cols": 256,
+      "live": [
+        208,
+        216
+      ]
+    },
+    {
+      "name": "cls_blocks.1.kv",
+      "arena": "float",
+      "offset": 2048,
+      "size": 4352,
+      "rows": -2,
+      "cols": 256,
+      "live": [
+        232,
+        240
+      ]
+    },
+    {
+      "name": "embed.0",
+      "arena": "float",
+      "offset": 2048,
+      "size": 2048,
+      "rows": -1,
+      "cols": 128,
+      "live": [
+        4,
+        16
+      ]
+    },
+    {
+      "name": "blocks.7.hidden",
+      "arena": "float",
+      "offset": 2048,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        198,
+        201
+      ]
+    },
+    {
+      "name": "blocks.7.prefc",
+      "arena": "float",
+      "offset": 2048,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        196,
+        197
+      ]
+    },
+    {
+      "name": "blocks.7.fcout",
+      "arena": "float",
+      "offset": 2048,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        202,
+        203
+      ]
+    },
+    {
+      "name": "cls_blocks.0.hidden",
+      "arena": "float",
+      "offset": 2048,
+      "size": 512,
+      "rows": 1,
+      "cols": 512,
+      "live": [
+        224,
+        227
+      ]
+    },
+    {
+      "name": "cls_blocks.0.scratch",
+      "arena": "float",
+      "offset": 2048,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        218,
+        223
+      ]
+    },
+    {
+      "name": "cls_blocks.0.clsnorm",
+      "arena": "float",
+      "offset": 2048,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        206,
+        207
+      ]
+    },
+    {
+      "name": "cls_blocks.1.clsnorm",
+      "arena": "float",
+      "offset": 2048,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        230,
+        231
+      ]
+    },
+    {
+      "name": "blocks.0.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        37,
+        47
+      ]
+    },
+    {
+      "name": "blocks.1.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        58,
+        68
+      ]
+    },
+    {
+      "name": "blocks.2.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        79,
+        89
+      ]
+    },
+    {
+      "name": "blocks.3.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        100,
+        110
+      ]
+    },
+    {
+      "name": "blocks.4.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        121,
+        131
+      ]
+    },
+    {
+      "name": "blocks.5.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        142,
+        152
+      ]
+    },
+    {
+      "name": "blocks.6.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        163,
+        173
+      ]
+    },
+    {
+      "name": "blocks.7.qkv",
+      "arena": "float",
+      "offset": 3136,
+      "size": 6144,
+      "rows": -1,
+      "cols": 384,
+      "live": [
+        184,
+        194
+      ]
+    },
+    {
+      "name": "blocks.0.hidden",
+      "arena": "float",
+      "offset": 3136,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        51,
+        54
+      ]
+    },
+    {
+      "name": "blocks.1.hidden",
+      "arena": "float",
+      "offset": 3136,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        72,
+        75
+      ]
+    },
+    {
+      "name": "blocks.2.hidden",
+      "arena": "float",
+      "offset": 3136,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        93,
+        96
+      ]
+    },
+    {
+      "name": "blocks.3.hidden",
+      "arena": "float",
+      "offset": 3136,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        114,
+        117
+      ]
+    },
+    {
+      "name": "blocks.4.hidden",
+      "arena": "float",
+      "offset": 3136,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        135,
+        138
+      ]
+    },
+    {
+      "name": "blocks.5.hidden",
+      "arena": "float",
+      "offset": 3136,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        156,
+        159
+      ]
+    },
+    {
+      "name": "blocks.6.hidden",
+      "arena": "float",
+      "offset": 3136,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        177,
+        180
+      ]
+    },
+    {
+      "name": "pair.h0",
+      "arena": "float",
+      "offset": 3136,
+      "size": 2048,
+      "rows": 32,
+      "cols": 64,
+      "live": [
+        21,
+        24
+      ]
+    },
+    {
+      "name": "pair.h1",
+      "arena": "float",
+      "offset": 3136,
+      "size": 2048,
+      "rows": 32,
+      "cols": 64,
+      "live": [
+        25,
+        28
+      ]
+    },
+    {
+      "name": "pair.h2",
+      "arena": "float",
+      "offset": 3136,
+      "size": 2048,
+      "rows": 32,
+      "cols": 64,
+      "live": [
+        29,
+        32
+      ]
+    },
+    {
+      "name": "blocks.0.prefc",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        49,
+        50
+      ]
+    },
+    {
+      "name": "blocks.0.fcout",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        55,
+        56
+      ]
+    },
+    {
+      "name": "blocks.1.prefc",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        70,
+        71
+      ]
+    },
+    {
+      "name": "blocks.1.fcout",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        76,
+        77
+      ]
+    },
+    {
+      "name": "blocks.2.prefc",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        91,
+        92
+      ]
+    },
+    {
+      "name": "blocks.2.fcout",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        97,
+        98
+      ]
+    },
+    {
+      "name": "blocks.3.prefc",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        112,
+        113
+      ]
+    },
+    {
+      "name": "blocks.3.fcout",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        118,
+        119
+      ]
+    },
+    {
+      "name": "blocks.4.prefc",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        133,
+        134
+      ]
+    },
+    {
+      "name": "blocks.4.fcout",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        139,
+        140
+      ]
+    },
+    {
+      "name": "blocks.5.prefc",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        154,
+        155
+      ]
+    },
+    {
+      "name": "blocks.5.fcout",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        160,
+        161
+      ]
+    },
+    {
+      "name": "blocks.6.prefc",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        175,
+        176
+      ]
+    },
+    {
+      "name": "blocks.6.fcout",
+      "arena": "float",
+      "offset": 3136,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        181,
+        182
+      ]
+    },
+    {
+      "name": "pair.h3",
+      "arena": "float",
+      "offset": 3136,
+      "size": 256,
+      "rows": 32,
+      "cols": 8,
+      "live": [
+        33,
+        35
+      ]
+    },
+    {
+      "name": "embed.h0",
+      "arena": "float",
+      "offset": 4096,
+      "size": 4096,
+      "rows": 8,
+      "cols": 512,
+      "live": [
+        9,
+        12
+      ]
+    },
+    {
+      "name": "embed.h1",
+      "arena": "float",
+      "offset": 4096,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        13,
+        15
+      ]
+    },
+    {
+      "name": "pair.raw",
+      "arena": "float",
+      "offset": 5184,
+      "size": 128,
+      "rows": 32,
+      "cols": 4,
+      "live": [
+        19,
+        21
+      ]
+    },
+    {
+      "name": "cls",
+      "arena": "float",
+      "offset": 6400,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        205,
+        254
+      ]
+    },
+    {
+      "name": "cls_blocks.0.pre",
+      "arena": "float",
+      "offset": 6528,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        210,
+        211
+      ]
+    },
+    {
+      "name": "cls_blocks.1.pre",
+      "arena": "float",
+      "offset": 6528,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        234,
+        235
+      ]
+    },
+    {
+      "name": "cls_blocks.0.merged",
+      "arena": "float",
+      "offset": 6528,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        216,
+        229
+      ]
+    },
+    {
+      "name": "cls_blocks.0.query",
+      "arena": "float",
+      "offset": 6656,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        215,
+        216
+      ]
+    },
+    {
+      "name": "p4",
+      "arena": "float",
+      "offset": 8192,
+      "size": 64,
+      "rows": -1,
+      "cols": 4,
+      "live": [
+        0,
+        36
+      ]
+    },
+    {
+      "name": "blocks.0.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        38,
+        39
+      ]
+    },
+    {
+      "name": "blocks.1.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        59,
+        60
+      ]
+    },
+    {
+      "name": "blocks.2.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        80,
+        81
+      ]
+    },
+    {
+      "name": "blocks.3.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        101,
+        102
+      ]
+    },
+    {
+      "name": "blocks.4.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        122,
+        123
+      ]
+    },
+    {
+      "name": "blocks.5.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        143,
+        144
+      ]
+    },
+    {
+      "name": "blocks.6.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        164,
+        165
+      ]
+    },
+    {
+      "name": "blocks.7.pre",
+      "arena": "float",
+      "offset": 9280,
+      "size": 1024,
+      "rows": 8,
+      "cols": 128,
+      "live": [
+        185,
+        186
+      ]
+    }
+  ]
+}

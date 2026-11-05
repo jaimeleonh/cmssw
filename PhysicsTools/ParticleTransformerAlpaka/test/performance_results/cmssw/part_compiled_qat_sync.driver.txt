@@ -1,0 +1,243 @@
+{
+  "settings": {
+    "engine": "compiled",
+    "model": "part",
+    "batch": 0,
+    "graph": null,
+    "events": 100,
+    "threads": 1,
+    "streams": 1,
+    "sync": true,
+    "validate": false,
+    "tf32": false,
+    "observer": false,
+    "timeout": 1200,
+    "output": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/PhysicsTools/ParticleTransformerAlpaka/test/performance_results/cmssw/part_compiled_qat_sync"
+  },
+  "returncode": 0,
+  "wall_seconds": 40.671787509694695,
+  "steady_skip": 5,
+  "steady": {
+    "SoftJetIdSC4": {
+      "mean_ms": 367.00315789473683,
+      "median_ms": 367.1,
+      "min_ms": 360.1,
+      "max_ms": 372.5,
+      "events": 95
+    },
+    "TriggerResults": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "goodOrbitsByNBX": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "p_sc4Alpaka": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "events": 95
+    },
+    "process SCPU": {
+      "mean_ms": 368.81684210526316,
+      "median_ms": 368.9,
+      "min_ms": 361.9,
+      "max_ms": 374.4,
+      "events": 95
+    },
+    "scPhase2PFRawToDigiAlpaka": {
+      "mean_ms": 0.8,
+      "median_ms": 0.8,
+      "min_ms": 0.7,
+      "max_ms": 0.9,
+      "events": 95
+    },
+    "scPhase2SC4PFAlpaka": {
+      "mean_ms": 0.8,
+      "median_ms": 0.8,
+      "min_ms": 0.8,
+      "max_ms": 0.8,
+      "events": 95
+    },
+    "scPhase2VertexRawToDigiAlpaka": {
+      "mean_ms": 0.20105263157894737,
+      "median_ms": 0.2,
+      "min_ms": 0.2,
+      "max_ms": 0.3,
+      "events": 95
+    },
+    "source": {
+      "mean_ms": 0.10526315789473685,
+      "median_ms": 0.1,
+      "min_ms": 0.1,
+      "max_ms": 0.6,
+      "events": 95
+    },
+    "total": {
+      "mean_ms": 368.98315789473685,
+      "median_ms": 369.1,
+      "min_ms": 362.1,
+      "max_ms": 374.5,
+      "events": 95
+    }
+  },
+  "gpu_idle_bytes": 491651072,
+  "gpu_peak_sampled_bytes": 994967552,
+  "rss_peak_sampled_bytes": 2384916480,
+  "memory_sampling_interval_seconds": 0.02,
+  "timer_summary": {
+    "modules": [
+      {
+        "events": 100,
+        "label": "source",
+        "mem_alloc": 159567,
+        "mem_free": 184,
+        "time_real": 11.373172,
+        "time_thread": 11.352147,
+        "type": "DAQSource"
+      },
+      {
+        "events": 100,
+        "label": "TriggerResults",
+        "mem_alloc": 18,
+        "mem_free": 2,
+        "time_real": 0.280042,
+        "time_thread": 0.279921,
+        "type": "TriggerResultInserter"
+      },
+      {
+        "events": 100,
+        "label": "p_sc4Alpaka",
+        "mem_alloc": 7,
+        "mem_free": 2,
+        "time_real": 0.519153,
+        "time_thread": 0.514251,
+        "type": "PathStatusInserter"
+      },
+      {
+        "events": 100,
+        "label": "scPhase2PFRawToDigiAlpaka",
+        "mem_alloc": 73747,
+        "mem_free": 54207,
+        "time_real": 85.239633,
+        "time_thread": 84.843374,
+        "type": "l1sc::L1TScPhase2PuppiRawToDigi@alpaka"
+      },
+      {
+        "events": 100,
+        "label": "scPhase2VertexRawToDigiAlpaka",
+        "mem_alloc": 26222,
+        "mem_free": 25980,
+        "time_real": 21.583072,
+        "time_thread": 21.515918,
+        "type": "l1sc::L1TScPhase2VertexRawToDigi@alpaka"
+      },
+      {
+        "events": 100,
+        "label": "goodOrbitsByNBX",
+        "mem_alloc": 4,
+        "mem_free": 3,
+        "time_real": 0.389827,
+        "time_thread": 0.388144,
+        "type": "GoodOrbitNBxSelector"
+      },
+      {
+        "events": 100,
+        "label": "scPhase2SC4PFAlpaka",
+        "mem_alloc": 1132,
+        "mem_free": 835,
+        "time_real": 82.094538,
+        "time_thread": 81.719998,
+        "type": "l1sc::L1TScPhase2SCJets@alpaka"
+      },
+      {
+        "events": 100,
+        "label": "SoftJetIdSC4",
+        "mem_alloc": 7748,
+        "mem_free": 802,
+        "time_real": 36668.441101,
+        "time_thread": 36581.718769,
+        "type": "ParticleTransformerProducer@alpaka"
+      },
+      {
+        "events": 100,
+        "label": "cleanup",
+        "mem_alloc": 208,
+        "mem_free": 160048,
+        "time_real": 5.171724,
+        "time_thread": 5.147518,
+        "type": "cleanup"
+      },
+      {
+        "events": 100,
+        "label": "other",
+        "mem_alloc": 8502144,
+        "mem_free": 53155,
+        "time_real": 581.297611,
+        "time_thread": 352.803485,
+        "type": "other"
+      },
+      {
+        "events": 100,
+        "label": "eventsetup",
+        "mem_alloc": 0,
+        "mem_free": 0,
+        "time_real": 0.0,
+        "time_thread": 0.0,
+        "type": "eventsetup"
+      },
+      {
+        "events": 100,
+        "label": "idle",
+        "mem_alloc": 24,
+        "mem_free": 25,
+        "time_real": 0.756195,
+        "time_thread": 0.751668,
+        "type": "idle"
+      }
+    ],
+    "resources": [
+      {
+        "description": "real time",
+        "name": "time_real",
+        "title": "Time",
+        "unit": "ms"
+      },
+      {
+        "description": "cpu time",
+        "name": "time_thread",
+        "title": "Time",
+        "unit": "ms"
+      },
+      {
+        "description": "allocated memory",
+        "name": "mem_alloc",
+        "title": "Memory",
+        "unit": "kB"
+      },
+      {
+        "description": "deallocated memory",
+        "name": "mem_free",
+        "title": "Memory",
+        "unit": "kB"
+      }
+    ],
+    "total": {
+      "events": 100,
+      "label": "SCPU",
+      "mem_alloc": 8770825,
+      "mem_free": 295248,
+      "time_real": 37457.146068,
+      "time_thread": 37141.035193,
+      "type": "Job"
+    }
+  }
+}

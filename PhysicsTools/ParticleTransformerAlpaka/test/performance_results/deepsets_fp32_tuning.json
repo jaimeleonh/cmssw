@@ -1,0 +1,162 @@
+{
+  "scope": "CUDA inference engine only: production graph headers vs C++ TorchScript; CMSSW adapters, preprocessing and transfers excluded",
+  "model": "deepsets",
+  "source": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3/src/L1TriggerScouting/JetTagging/data/softjet_deepsets_cpu.pt",
+  "source_sha256": "1f8ea1d45c62998b11c205b24090c740efe80d977fab110bf25ea68f626543a5",
+  "graph": "/tmp/benchmark_deepsets_float.nnm",
+  "graph_sha256": "55b824e98497ffc4c903d5f35ff234ceb43331e1538bbfb2ac5aaa6da846f1a4",
+  "precision": "float32",
+  "tf32": false,
+  "multiplicity": "full",
+  "torch": "2.6.0a0",
+  "cuda": "12.9",
+  "gpu": "NVIDIA L4",
+  "device_total_bytes": 23661248512,
+  "native_uploaded_bytes": 11744,
+  "torch_model_initial_allocated_bytes": 12800,
+  "seed": 20261015,
+  "repeats": 7,
+  "records": [
+    {
+      "median_ms": 10.452288309733072,
+      "min_ms": 10.449920018513998,
+      "samples_ms": [
+        10.456010818481445,
+        10.452309290568033,
+        10.452288309733072,
+        10.451285044352213,
+        10.450922648111979,
+        10.449920018513998,
+        10.453674952189127
+      ],
+      "torch_baseline_bytes": 80429568,
+      "torch_peak_allocated_bytes": 80429568,
+      "torch_peak_reserved_bytes": 92274688,
+      "temporary_peak_bytes": 0,
+      "device_used_before_bytes": 327155712,
+      "device_used_after_bytes": 327155712,
+      "shared_bytes_per_block": 47840,
+      "local_bytes_per_thread": 136,
+      "registers_per_thread": 128,
+      "max_resident_blocks_per_sm": 2,
+      "engine": "graph",
+      "jets": 56052,
+      "layout": "block",
+      "native_model_bytes": 11744,
+      "jets_per_second": 5362653.453388279
+    },
+    {
+      "median_ms": 2.2500693003336587,
+      "min_ms": 2.202997366587321,
+      "samples_ms": [
+        2.202997366587321,
+        2.2463146845499673,
+        2.2500693003336587,
+        2.249728043874105,
+        2.3992320696512857,
+        2.4077653884887695,
+        2.408031940460205
+      ],
+      "torch_baseline_bytes": 80429568,
+      "torch_peak_allocated_bytes": 80429568,
+      "torch_peak_reserved_bytes": 92274688,
+      "temporary_peak_bytes": 0,
+      "device_used_before_bytes": 327155712,
+      "device_used_after_bytes": 327155712,
+      "shared_bytes_per_block": 43776,
+      "local_bytes_per_thread": 136,
+      "registers_per_thread": 128,
+      "max_resident_blocks_per_sm": 2,
+      "engine": "graph",
+      "jets": 56052,
+      "layout": "warp",
+      "native_model_bytes": 11744,
+      "jets_per_second": 24911232.73033775
+    },
+    {
+      "median_ms": 4.1595414479573565,
+      "min_ms": 4.154368082682292,
+      "samples_ms": [
+        4.162965456644694,
+        4.159754753112793,
+        4.1595414479573565,
+        4.155733426411946,
+        4.154368082682292,
+        4.1605119705200195,
+        4.154421488444011
+      ],
+      "torch_baseline_bytes": 88949248,
+      "torch_peak_allocated_bytes": 98386432,
+      "torch_peak_reserved_bytes": 115343360,
+      "temporary_peak_bytes": 9437184,
+      "device_used_before_bytes": 360710144,
+      "device_used_after_bytes": 360710144,
+      "engine": "torchscript_cpp",
+      "jets": 56052,
+      "batch": 2048,
+      "jets_per_second": 13475523.853122246,
+      "max_abs_difference": 8.046627044677734e-07,
+      "mean_abs_difference": 4.600072855964754e-08,
+      "finite": true
+    },
+    {
+      "median_ms": 4.011349360148112,
+      "min_ms": 3.8475093841552734,
+      "samples_ms": [
+        3.8475093841552734,
+        3.879253387451172,
+        3.9396692911783853,
+        4.011349360148112,
+        4.0417172114054365,
+        4.098389307657878,
+        4.0980478922526045
+      ],
+      "torch_baseline_bytes": 89173504,
+      "torch_peak_allocated_bytes": 123776512,
+      "torch_peak_reserved_bytes": 153092096,
+      "temporary_peak_bytes": 34603008,
+      "device_used_before_bytes": 398458880,
+      "device_used_after_bytes": 398458880,
+      "engine": "torchscript_cpp",
+      "jets": 56052,
+      "batch": 8192,
+      "jets_per_second": 13973352.846517056,
+      "max_abs_difference": 8.046627044677734e-07,
+      "mean_abs_difference": 4.594733482576885e-08,
+      "finite": true
+    }
+  ],
+  "conversion": {
+    "topology": "torchscript",
+    "source": "torchscript",
+    "max_particles": 16,
+    "input_features": 15,
+    "sequence": true,
+    "batched": true,
+    "mask_argument": true,
+    "padding": "fixed length",
+    "token_tile": 16,
+    "precision": "float32",
+    "classes": 1,
+    "outputs": [
+      1
+    ],
+    "signature": {
+      "arity": 4,
+      "batched": true,
+      "mask_shape": [
+        1,
+        -1
+      ],
+      "features_at": 1,
+      "mask_at": 3,
+      "auxiliary": {
+        "0": 2,
+        "2": 4
+      },
+      "mask_multiplicative": true
+    }
+  },
+  "input_layout": "contiguous",
+  "measurement_date": "2026-10-15"
+}

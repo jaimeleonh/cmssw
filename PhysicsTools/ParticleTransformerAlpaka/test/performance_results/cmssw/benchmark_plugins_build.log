@@ -1,0 +1,116 @@
+>> Local Products Rules ..... started
+>> Local Products Rules ..... done
+------- copying files from src/PhysicsTools/ParticleTransformerAlpaka/scripts -------
+>> Entering Package PhysicsTools/ParticleTransformerAlpaka
+>> Creating project symlinks
+>> Entering Package DataFormats/L1ScoutingSoA
+>> Entering Package PhysicsTools/PyTorch
+Entering library rule at src/PhysicsTools/ParticleTransformerAlpaka/test
+>> Compiling edm plugin src/PhysicsTools/ParticleTransformerAlpaka/test/BenchmarkTimingService.cc
+Entering library rule at src/PhysicsTools/ParticleTransformerAlpaka/test
+Entering library rule at src/PhysicsTools/ParticleTransformerAlpaka/test
+>> Compiling alpaka/serial edm plugin src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkInputs.dev.cc
+>> Compiling alpaka/serial edm plugin src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkProducers.cc
+>> Compiling alpaka/cuda src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkInputs.dev.cc
+>> Compiling alpaka/cuda edm plugin src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkProducers.cc
+>> Building edm plugin tmp/el9_amd64_gcc13/src/PhysicsTools/ParticleTransformerAlpaka/test/ParticleTransformerBenchmarkTimingService/libParticleTransformerBenchmarkTimingService.so
+Leaving library rule at src/PhysicsTools/ParticleTransformerAlpaka/test
+@@@@ Running EDM write config for ParticleTransformerBenchmarkTimingService
+--- Registered EDM Plugin: ParticleTransformerBenchmarkTimingService
+In file included from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef.h:631,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/WrapDimUtils.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/TensorNames.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/NamedTensorUtils.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/autograd/variable.h:11,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/autograd/autograd.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/autograd.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/all.h:7,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/torch.h:3,
+                 from src/PhysicsTools/PyTorch/interface/TorchInterface.h:8,
+                 from src/PhysicsTools/PyTorch/interface/ScriptModuleLoad.h:8,
+                 from src/PhysicsTools/PyTorch/interface/Model.h:7,
+                 from src/PhysicsTools/PyTorchAlpaka/interface/alpaka/AlpakaModel.h:7,
+                 from src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkProducers.cc:20:
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef_inl.h: In static member function 'static c10::detail::IListRefConstRef<at::OptionalTensorRef> c10::detail::IListRefTagImpl<c10::IListRefTag::Boxed, at::OptionalTensorRef>::iterator_get(const c10::List<std::optional<at::Tensor> >::const_iterator&)':
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef_inl.h:171:17: warning: possibly dangling reference to a temporary [-Wdangling-reference]
+  171 |     const auto& ivalue = (*it).get();
+      |                 ^~~~~~
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef_inl.h:171:35: note: the temporary was destroyed at the end of the full expression '(& it)->c10::impl::ListIterator<std::optional<at::Tensor>, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::operator*().c10::impl::ListElementReference<std::optional<at::Tensor>, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::get()'
+  171 |     const auto& ivalue = (*it).get();
+      |                          ~~~~~~~~~^~
+In file included from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/OperatorEntry.h:11,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/Dispatcher.h:6,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/library.h:63,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/autograd/autograd_not_implemented_fallback.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/autograd.h:4:
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/DispatchKeyExtractor.h: In lambda function:
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/DispatchKeyExtractor.h:154:32: warning: possibly dangling reference to a temporary [-Wdangling-reference]
+  154 |         for (const at::Tensor& tensor : ivalue.toTensorList()) {
+      |                                ^~~~~~
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/DispatchKeyExtractor.h:154:61: note: the temporary was destroyed at the end of the full expression '__for_begin .c10::impl::ListIterator<at::Tensor, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::operator*().c10::impl::ListElementReference<at::Tensor, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::operator std::conditional_t<true, const at::Tensor&, at::Tensor>()'
+  154 |         for (const at::Tensor& tensor : ivalue.toTensorList()) {
+      |                                                             ^
+In file included from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef.h:631,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/WrapDimUtils.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/TensorNames.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/NamedTensorUtils.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/autograd/variable.h:11,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/autograd/autograd.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/autograd.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/all.h:7,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/torch.h:3,
+                 from src/PhysicsTools/PyTorch/interface/TorchInterface.h:8,
+                 from src/PhysicsTools/PyTorch/interface/ScriptModuleLoad.h:8,
+                 from src/PhysicsTools/PyTorch/interface/Model.h:7,
+                 from src/PhysicsTools/PyTorchAlpaka/interface/alpaka/AlpakaModel.h:7,
+                 from src/PhysicsTools/ParticleTransformerAlpaka/test/alpaka/BenchmarkProducers.cc:20:
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef_inl.h: In static member function 'static c10::detail::IListRefConstRef<at::OptionalTensorRef> c10::detail::IListRefTagImpl<c10::IListRefTag::Boxed, at::OptionalTensorRef>::iterator_get(const c10::List<std::optional<at::Tensor> >::const_iterator&)':
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef_inl.h:171:17: warning: possibly dangling reference to a temporary [-Wdangling-reference]
+  171 |     const auto& ivalue = (*it).get();
+      |                 ^~~~~~
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/IListRef_inl.h:171:35: note: the temporary was destroyed at the end of the full expression '(& it)->c10::impl::ListIterator<std::optional<at::Tensor>, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::operator*().c10::impl::ListElementReference<std::optional<at::Tensor>, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::get()'
+  171 |     const auto& ivalue = (*it).get();
+      |                          ~~~~~~~~~^~
+In file included from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/OperatorEntry.h:11,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/Dispatcher.h:6,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/library.h:63,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/autograd/autograd_not_implemented_fallback.h:3,
+                 from /cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/torch/csrc/api/include/torch/autograd.h:4:
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/DispatchKeyExtractor.h: In lambda function:
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/DispatchKeyExtractor.h:154:32: warning: possibly dangling reference to a temporary [-Wdangling-reference]
+  154 |         for (const at::Tensor& tensor : ivalue.toTensorList()) {
+      |                                ^~~~~~
+/cvmfs/cms.cern.ch/el9_amd64_gcc13/external/py3-torch/2.6.0-b3d7548bbeb8e4d0ce9584334636045b/include/ATen/core/dispatch/DispatchKeyExtractor.h:154:61: note: the temporary was destroyed at the end of the full expression '__for_begin .c10::impl::ListIterator<at::Tensor, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::operator*().c10::impl::ListElementReference<at::Tensor, __gnu_cxx::__normal_iterator<c10::IValue*, std::vector<c10::IValue> > >::operator std::conditional_t<true, const at::Tensor&, at::Tensor>()'
+  154 |         for (const at::Tensor& tensor : ivalue.toTensorList()) {
+      |                                                             ^
+>> Building alpaka/serial edm plugin tmp/el9_amd64_gcc13/src/PhysicsTools/ParticleTransformerAlpaka/test/ParticleTransformerCMSSWBenchmarkPluginsSerialSync/libParticleTransformerCMSSWBenchmarkPluginsSerialSync.so
+Leaving library rule at src/PhysicsTools/ParticleTransformerAlpaka/test
+@@@@ Running EDM write config for ParticleTransformerCMSSWBenchmarkPluginsSerialSync
+alpaka_serial_syncBenchmarkPyTorchProducer
+benchmarkPyTorchProducer
+alpaka_serial_syncBenchmarkScoreInspector
+benchmarkScoreInspector
+--- Registered EDM Plugin: ParticleTransformerCMSSWBenchmarkPluginsSerialSync
+>> Cuda Device Link tmp/el9_amd64_gcc13/src/PhysicsTools/ParticleTransformerAlpaka/test/ParticleTransformerCMSSWBenchmarkPluginsCudaAsync/ParticleTransformerCMSSWBenchmarkPluginsCudaAsync_cudadlink.o 
+>> Building alpaka/cuda edm plugin tmp/el9_amd64_gcc13/src/PhysicsTools/ParticleTransformerAlpaka/test/ParticleTransformerCMSSWBenchmarkPluginsCudaAsync/libParticleTransformerCMSSWBenchmarkPluginsCudaAsync.so
+Leaving library rule at src/PhysicsTools/ParticleTransformerAlpaka/test
+@@@@ Running EDM write config for ParticleTransformerCMSSWBenchmarkPluginsCudaAsync
+alpaka_cuda_asyncBenchmarkPyTorchProducer
+alpaka_cuda_asyncBenchmarkScoreInspector
+--- Registered EDM Plugin: ParticleTransformerCMSSWBenchmarkPluginsCudaAsync
+>> Leaving Package PhysicsTools/ParticleTransformerAlpaka
+>> Package PhysicsTools/ParticleTransformerAlpaka built
+gmake[1]: Entering directory '/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3'
+>> Local Products Rules ..... started
+>> Local Products Rules ..... done
+@@@@ Refreshing Plugins:edmPluginRefresh for lib/el9_amd64_gcc13
+>> Done generating edm plugin poisoned information
+>> Creating project symlinks
+>> Done python_symlink
+>> Compiling python3 modules cfipython/el9_amd64_gcc13/PhysicsTools/ParticleTransformerAlpaka
+>> Compiling python3 modules python
+>> Compiling python3 modules src/PhysicsTools/ParticleTransformerAlpaka/python
+>> Compiling python3 modules src/PhysicsTools/ParticleTransformerAlpakaFP32/python
+>> All python modules compiled
+>> Plugins of all types refreshed.
+gmake[1]: Leaving directory '/afs/cern.ch/work/j/jleonhol/private/l1scouting/clustering/nano/CMSSW_16_1_0_pre3'

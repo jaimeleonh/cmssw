@@ -1,0 +1,3 @@
+occupancy: multiplicity uniform in [16, 16]
+model data/b_kinadd.nnm: 258 ops, 167 buffers, 16 tokens, 2 outputs, arena used 10304 floats, layout block, shared 47840 B/block
+56052 jets: best 673.081 ms, mean 675.661 ms over 7 launches

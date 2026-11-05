@@ -1,0 +1,146 @@
+// Test-only CMSSW PyTorchAlpaka producer and score/input inspector.
+// The common transform is the unmodified ParticleTransformerAlpaka production
+// implementation. Inference uses the actual AlpakaModel/TensorCollection API.
+#include <cmath>
+#include <deque>
+#include <fstream>
+#include <iomanip>
+#include <limits>
+#include <string>
+#include <algorithm>
+#include <ATen/Context.h>
+#include "DataFormats/L1ScoutingSoA/interface/SoftJetHostTensor.h"
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#include "FWCore/Utilities/interface/FileInPath.h"
+#include "HeterogeneousCore/AlpakaCore/interface/alpaka/stream/EDProducer.h"
+#include "HeterogeneousCore/AlpakaCore/interface/alpaka/Event.h"
+#include "HeterogeneousCore/AlpakaCore/interface/alpaka/MakerMacros.h"
+#include "PhysicsTools/ParticleTransformerAlpaka/plugins/alpaka/TransformKernel.h"
+#include "PhysicsTools/PyTorchAlpaka/interface/alpaka/AlpakaModel.h"
+
+namespace ALPAKA_ACCELERATOR_NAMESPACE {
+namespace {
+  void inputDescription(edm::ParameterSetDescription& d) {
+    for (auto name : {"pf", "clusters", "jetBxLookup", "vertices", "vertexBxLookup"})
+      d.add<edm::InputTag>(name);
+  }
+  struct Inputs {
+    device::EDGetToken<l1sc::PFCandidateDeviceCollection> pf;
+    device::EDGetToken<l1sc::AssociationMapDevice> clusters;
+    device::EDGetToken<l1sc::BxLookupDevice> jetBx;
+    device::EDGetToken<l1sc::VertexDeviceCollection> vertices;
+    device::EDGetToken<l1sc::BxLookupDevice> vertexBx;
+  };
+}
+class BenchmarkPyTorchProducer : public stream::EDProducer<> {
+public:
+  explicit BenchmarkPyTorchProducer(edm::ParameterSet const& p)
+      : EDProducer<>(p),
+        inputs_{consumes(p.getParameter<edm::InputTag>("pf")),
+                consumes(p.getParameter<edm::InputTag>("clusters")),
+                consumes(p.getParameter<edm::InputTag>("jetBxLookup")),
+                consumes(p.getParameter<edm::InputTag>("vertices")),
+                consumes(p.getParameter<edm::InputTag>("vertexBxLookup"))},
+        output_(produces()),
+        modelPath_(p.getParameter<edm::FileInPath>("model").fullPath()),
+        batch_(p.getParameter<unsigned>("maxBatchSize")) {
+    if (!batch_) throw cms::Exception("Configuration") << "maxBatchSize must be positive";
+    at::globalContext().setAllowTF32CuBLAS(p.getParameter<bool>("tf32"));
+    at::globalContext().setAllowTF32CuDNN(p.getParameter<bool>("tf32"));
+  }
+  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+    edm::ParameterSetDescription d;
+    inputDescription(d);
+    d.add<edm::FileInPath>("model"); d.add<unsigned>("maxBatchSize", 256);
+    d.add<bool>("tf32", false); descriptions.addWithDefaultLabel(d);
+  }
+  void produce(device::Event& event, device::EventSetup const&) override {
+    auto const& associations = event.get(inputs_.clusters);
+    auto input = part::makeParticleTransformerInputs(event.queue(), event.get(inputs_.pf), associations,
+        event.get(inputs_.jetBx), event.get(inputs_.vertices), event.get(inputs_.vertexBx));
+    auto const offsets = associations.const_view().offset().metadata().size();
+    auto const n = offsets ? offsets - 1 : 0;
+    l1sc::SoftJetOutputDeviceTensor output(event.queue(), n); output.zeroInitialise(event.queue());
+    if (n) {
+      auto in = input.view().records(); auto out = output.view().records();
+      struct Batch { cms::torch::alpakatools::TensorCollection<Queue> in, out; };
+      std::deque<Batch> batches;
+      auto const b = std::min<unsigned>(n, batch_);
+      for (unsigned i = 0; i < (n+b-1)/b; ++i) {
+        Batch x{cms::torch::alpakatools::TensorCollection<Queue>(b,n),
+                cms::torch::alpakatools::TensorCollection<Queue>(b,n)};
+        x.in.add<l1sc::SoftJetInputTensorSoA>("pf_points",i,in.points());
+        x.in.add<l1sc::SoftJetInputTensorSoA>("pf_features",i,in.features());
+        x.in.add<l1sc::SoftJetInputTensorSoA>("pf_vectors",i,in.vectors());
+        x.in.add<l1sc::SoftJetInputTensorSoA>("pf_mask",i,in.mask());
+        x.out.add<l1sc::SoftJetOutputTensorSoA>("softmax",i,out.output());
+        batches.push_back(std::move(x));
+      }
+      // Keep model migration on the framework queue as well as forward().
+      cms::torch::alpakatools::QueueGuard<Queue> queueGuard(event.queue());
+      c10::InferenceMode inference(true);
+      // Frozen constants cannot be moved by Module::to(); load-map them
+      // through the supported queue constructor on the first event.
+      if (!model_) model_ = std::make_unique<torch::AlpakaModel>(modelPath_,event.queue());
+      for (auto& x : batches) model_->forward(event.queue(), x.in, x.out);
+    }
+    event.emplace(output_,std::move(output));
+  }
+private:
+  Inputs inputs_;
+  device::EDPutToken<l1sc::SoftJetOutputDeviceTensor> output_;
+  std::string modelPath_;
+  std::unique_ptr<torch::AlpakaModel> model_;
+  unsigned batch_;
+};
+
+class BenchmarkScoreInspector : public stream::EDProducer<> {
+public:
+  explicit BenchmarkScoreInspector(edm::ParameterSet const& p)
+      : EDProducer<>(p),
+        inputs_{consumes(p.getParameter<edm::InputTag>("pf")),
+                consumes(p.getParameter<edm::InputTag>("clusters")),
+                consumes(p.getParameter<edm::InputTag>("jetBxLookup")),
+                consumes(p.getParameter<edm::InputTag>("vertices")),
+                consumes(p.getParameter<edm::InputTag>("vertexBxLookup"))},
+        scores_(consumes(p.getParameter<edm::InputTag>("src"))),
+        file_(p.getParameter<std::string>("output")) {}
+  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+    edm::ParameterSetDescription d; inputDescription(d);
+    d.add<edm::InputTag>("src"); d.add<std::string>("output"); descriptions.addWithDefaultLabel(d);
+  }
+  void produce(device::Event& event, device::EventSetup const&) override {
+    auto const& scores = event.get(scores_);
+    auto const& associations = event.get(inputs_.clusters);
+    auto input = part::makeParticleTransformerInputs(event.queue(), event.get(inputs_.pf), associations,
+        event.get(inputs_.jetBx),event.get(inputs_.vertices),event.get(inputs_.vertexBx));
+    auto const n = scores.const_view().metadata().size();
+    ::l1sc::SoftJetOutputHostTensor host(event.queue(),n);
+    ::l1sc::SoftJetInputHostTensor hostInput(event.queue(),n);
+    alpaka::memcpy(event.queue(),host.buffer(),scores.buffer());
+    alpaka::memcpy(event.queue(),hostInput.buffer(),input.buffer());
+    alpaka::wait(event.queue());
+    unsigned valid[17] = {}; unsigned nonfinite=0, zeros=0; double sum=0;
+    auto view=host.const_view(); auto iv=hostInput.const_view();
+    file_ << std::setprecision(9) << "{\"event\":" << event.id().event() << ",\"jets\":" << n << ",\"scores\":[";
+    for (int i=0;i<n;++i) {
+      float v=view.output()[i]; if (i) file_ << ',';
+      if (std::isfinite(v)) { file_ << v; sum+=v; } else { file_ << "null"; ++nonfinite; }
+      if (v==0) ++zeros;
+      unsigned count=0; for (int j=0;j<16;++j) if (iv[i].mask()(j)>0) ++count;
+      ++valid[count];
+    }
+    file_ << "],\"mask_population_histogram\":[";
+    for (int i=0;i<=16;++i) { if(i)file_<<','; file_<<valid[i]; }
+    file_ << "],\"nonfinite\":" << nonfinite << ",\"zeros\":" << zeros << ",\"sum\":" << sum << "}\n";
+    file_.flush();
+  }
+private:
+  Inputs inputs_;
+  device::EDGetToken<l1sc::SoftJetOutputDeviceTensor> scores_;
+  std::ofstream file_;
+};
+}
+DEFINE_FWK_ALPAKA_MODULE(BenchmarkPyTorchProducer);
+DEFINE_FWK_ALPAKA_MODULE(BenchmarkScoreInspector);

@@ -1,0 +1,584 @@
+{
+  "frontend": "torchscript",
+  "source": "torchscript",
+  "source_sha256": "2c597a7d65a37a8220ea91d501e5e85f3ac31a7b94bf450fcd7becc1b76d2982",
+  "file": "/tmp/jleonhol/claude-124088/-afs-cern-ch-work-j-jleonhol-private/34b34569-4e8f-46c3-a85a-83a2c5d237f6/scratchpad/tau.nnm",
+  "file_sha256": "4cd6a26866e8e4c225ac1546c95bd41dbdabd4a24196d5b8cb21b45d94bf331c",
+  "bytes": 1411296,
+  "ops": 47,
+  "buffers": 29,
+  "int8_weights": 0,
+  "float_params": 351737,
+  "arena_floats_used": 10240,
+  "arena_floats_available": 10560,
+  "arena_int8_used": 0,
+  "arena_int8_available": 4096,
+  "topology": "torchscript",
+  "max_particles": 16,
+  "input_features": 10,
+  "sequence": true,
+  "batched": true,
+  "mask_argument": true,
+  "padding": "fixed length",
+  "token_tile": 4,
+  "precision": "float32",
+  "classes": 4,
+  "outputs": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "signature": {
+    "arity": 2,
+    "batched": true,
+    "mask_shape": [
+      1,
+      -1
+    ],
+    "features_at": 0,
+    "mask_at": 1,
+    "auxiliary": {},
+    "mask_multiplicative": false
+  },
+  "check_trials": 32,
+  "check_largest_difference": 3.814697265625e-06,
+  "check_noise_floor": 2.86102294921875e-06,
+  "layers": [
+    {
+      "op": "attention",
+      "heads": 8,
+      "masked": true
+    },
+    {
+      "op": "layer_norm",
+      "size": 10,
+      "unbiased": false,
+      "eps_outside": false,
+      "in_place": true
+    },
+    {
+      "op": "linear",
+      "in": 10,
+      "out": 128
+    },
+    {
+      "op": "aten::gelu"
+    },
+    {
+      "op": "layer_norm",
+      "size": 128,
+      "unbiased": false,
+      "eps_outside": false,
+      "in_place": true
+    },
+    {
+      "op": "linear",
+      "in": 128,
+      "out": 512
+    },
+    {
+      "op": "aten::gelu"
+    },
+    {
+      "op": "layer_norm",
+      "size": 512,
+      "unbiased": false,
+      "eps_outside": false,
+      "in_place": true
+    },
+    {
+      "op": "linear",
+      "in": 512,
+      "out": 128
+    },
+    {
+      "op": "aten::gelu"
+    },
+    {
+      "op": "linear",
+      "in": 128,
+      "out": 128
+    },
+    {
+      "op": "layer_norm",
+      "size": 128,
+      "unbiased": true,
+      "eps_outside": true,
+      "in_place": false
+    },
+    {
+      "op": "residual",
+      "size": 128
+    },
+    {
+      "op": "layer_norm",
+      "size": 128,
+      "unbiased": true,
+      "eps_outside": true,
+      "in_place": false
+    },
+    {
+      "op": "linear",
+      "in": 128,
+      "out": 512
+    },
+    {
+      "op": "aten::relu"
+    },
+    {
+      "op": "linear",
+      "in": 512,
+      "out": 128
+    },
+    {
+      "op": "residual",
+      "size": 128
+    },
+    {
+      "op": "layer_norm",
+      "size": 128,
+      "unbiased": true,
+      "eps_outside": true,
+      "in_place": true
+    },
+    {
+      "op": "linear",
+      "in": 128,
+      "out": 64
+    },
+    {
+      "op": "aten::tanh"
+    },
+    {
+      "op": "linear",
+      "in": 64,
+      "out": 1
+    },
+    {
+      "op": "softmax",
+      "over": "token"
+    },
+    {
+      "op": "reduce",
+      "kind": "aten::sum",
+      "size": 128,
+      "weighted": true
+    },
+    {
+      "op": "linear",
+      "in": 128,
+      "out": 64
+    },
+    {
+      "op": "aten::relu"
+    },
+    {
+      "op": "linear",
+      "in": 64,
+      "out": 32
+    },
+    {
+      "op": "aten::relu"
+    },
+    {
+      "op": "linear",
+      "in": 32,
+      "out": 1
+    },
+    {
+      "op": "linear",
+      "in": 32,
+      "out": 1
+    },
+    {
+      "op": "linear",
+      "in": 32,
+      "out": 1
+    },
+    {
+      "op": "linear",
+      "in": 32,
+      "out": 1
+    },
+    {
+      "op": "aten::sigmoid"
+    },
+    {
+      "op": "aten::sigmoid"
+    }
+  ],
+  "tensors": {
+    "linear.2": {
+      "shape": [
+        128,
+        10
+      ],
+      "storage": "float32"
+    },
+    "linear.5": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "float32"
+    },
+    "linear.8": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "float32"
+    },
+    "attention.3.qkv": {
+      "shape": [
+        384,
+        128
+      ],
+      "storage": "float32"
+    },
+    "linear.10": {
+      "shape": [
+        128,
+        128
+      ],
+      "storage": "float32"
+    },
+    "linear.14": {
+      "shape": [
+        512,
+        128
+      ],
+      "storage": "float32"
+    },
+    "linear.16": {
+      "shape": [
+        128,
+        512
+      ],
+      "storage": "float32"
+    },
+    "linear.19": {
+      "shape": [
+        64,
+        128
+      ],
+      "storage": "float32"
+    },
+    "linear.21": {
+      "shape": [
+        1,
+        64
+      ],
+      "storage": "float32"
+    },
+    "linear.24": {
+      "shape": [
+        64,
+        128
+      ],
+      "storage": "float32"
+    },
+    "linear.26": {
+      "shape": [
+        32,
+        64
+      ],
+      "storage": "float32"
+    },
+    "linear.28": {
+      "shape": [
+        1,
+        32
+      ],
+      "storage": "float32"
+    },
+    "linear.29": {
+      "shape": [
+        1,
+        32
+      ],
+      "storage": "float32"
+    },
+    "linear.30": {
+      "shape": [
+        1,
+        32
+      ],
+      "storage": "float32"
+    },
+    "linear.31": {
+      "shape": [
+        1,
+        32
+      ],
+      "storage": "float32"
+    }
+  },
+  "allocation": [
+    {
+      "name": "linear.16.10",
+      "arena": "float",
+      "offset": 0,
+      "size": 2048,
+      "rows": 16,
+      "cols": 128,
+      "live": [
+        15,
+        25
+      ]
+    },
+    {
+      "name": "linear.2.1",
+      "arena": "float",
+      "offset": 0,
+      "size": 2048,
+      "rows": 16,
+      "cols": 128,
+      "live": [
+        2,
+        11
+      ]
+    },
+    {
+      "name": "linear.19.12",
+      "arena": "float",
+      "offset": 0,
+      "size": 1024,
+      "rows": 16,
+      "cols": 64,
+      "live": [
+        27,
+        29
+      ]
+    },
+    {
+      "name": "pool.23.14",
+      "arena": "float",
+      "offset": 0,
+      "size": 128,
+      "rows": 1,
+      "cols": 128,
+      "live": [
+        31,
+        32
+      ]
+    },
+    {
+      "name": "linear.26.16",
+      "arena": "float",
+      "offset": 0,
+      "size": 32,
+      "rows": 1,
+      "cols": 32,
+      "live": [
+        34,
+        39
+      ]
+    },
+    {
+      "name": "output",
+      "arena": "float",
+      "offset": 0,
+      "size": 4,
+      "rows": 1,
+      "cols": 4,
+      "live": [
+        42,
+        46
+      ]
+    },
+    {
+      "name": "linear.28.17",
+      "arena": "float",
+      "offset": 32,
+      "size": 1,
+      "rows": 1,
+      "cols": 1,
+      "live": [
+        36,
+        42
+      ]
+    },
+    {
+      "name": "linear.29.18",
+      "arena": "float",
+      "offset": 36,
+      "size": 1,
+      "rows": 1,
+      "cols": 1,
+      "live": [
+        37,
+        43
+      ]
+    },
+    {
+      "name": "linear.30.19",
+      "arena": "float",
+      "offset": 40,
+      "size": 1,
+      "rows": 1,
+      "cols": 1,
+      "live": [
+        38,
+        44
+      ]
+    },
+    {
+      "name": "linear.31.20",
+      "arena": "float",
+      "offset": 44,
+      "size": 1,
+      "rows": 1,
+      "cols": 1,
+      "live": [
+        39,
+        45
+      ]
+    },
+    {
+      "name": "linear.24.15",
+      "arena": "float",
+      "offset": 128,
+      "size": 64,
+      "rows": 1,
+      "cols": 64,
+      "live": [
+        32,
+        34
+      ]
+    },
+    {
+      "name": "linear.21.13",
+      "arena": "float",
+      "offset": 1024,
+      "size": 16,
+      "rows": 16,
+      "cols": 1,
+      "live": [
+        29,
+        31
+      ]
+    },
+    {
+      "name": "linear.8.3",
+      "arena": "float",
+      "offset": 2048,
+      "size": 2048,
+      "rows": 16,
+      "cols": 128,
+      "live": [
+        3,
+        12
+      ]
+    },
+    {
+      "name": "linear.10.5",
+      "arena": "float",
+      "offset": 2048,
+      "size": 2048,
+      "rows": 16,
+      "cols": 128,
+      "live": [
+        14,
+        23
+      ]
+    },
+    {
+      "name": "residual.17.11",
+      "arena": "float",
+      "offset": 2048,
+      "size": 2048,
+      "rows": 16,
+      "cols": 128,
+      "live": [
+        24,
+        31
+      ]
+    },
+    {
+      "name": "input",
+      "arena": "float",
+      "offset": 2048,
+      "size": 160,
+      "rows": 16,
+      "cols": 10,
+      "live": [
+        0,
+        2
+      ]
+    },
+    {
+      "name": "residual.12.7",
+      "arena": "float",
+      "offset": 4096,
+      "size": 2048,
+      "rows": 16,
+      "cols": 128,
+      "live": [
+        15,
+        24
+      ]
+    },
+    {
+      "name": "attention.3.qkv",
+      "arena": "float",
+      "offset": 4096,
+      "size": 6144,
+      "rows": 16,
+      "cols": 384,
+      "live": [
+        12,
+        14
+      ]
+    },
+    {
+      "name": "linear.5.2",
+      "arena": "float",
+      "offset": 4096,
+      "size": 2048,
+      "rows": 4,
+      "cols": 512,
+      "live": [
+        6,
+        9
+      ]
+    },
+    {
+      "name": "linear.14.9",
+      "arena": "float",
+      "offset": 6144,
+      "size": 2048,
+      "rows": 4,
+      "cols": 512,
+      "live": [
+        20,
+        22
+      ]
+    },
+    {
+      "name": "layer_norm.11.6",
+      "arena": "float",
+      "offset": 6144,
+      "size": 512,
+      "rows": 4,
+      "cols": 128,
+      "live": [
+        16,
+        18
+      ]
+    },
+    {
+      "name": "layer_norm.13.8",
+      "arena": "float",
+      "offset": 8192,
+      "size": 512,
+      "rows": 4,
+      "cols": 128,
+      "live": [
+        19,
+        20
+      ]
+    }
+  ]
+}

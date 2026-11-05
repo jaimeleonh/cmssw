@@ -1,0 +1,145 @@
+{
+  "frontend": "deepset",
+  "source": "/afs/cern.ch/work/j/jleonhol/private/l1scouting/quantization/training/btagl1/deepset/20261021-100751_deepset_int8_ranger_lr0.01_batch1024/net_epoch-79_state.pt",
+  "source_sha256": "eb1884c55a2a9f3fd0e4a1cb9dfc3bd28e113d352d68a31f2f3ef54c08752d77",
+  "file": "/tmp/deepset_int8.nnm",
+  "file_sha256": "2963a0a19b52192e2bc8c24a2bd690655d5b16cf9c4b5546878ef31be80a6232",
+  "bytes": 5952,
+  "ops": 11,
+  "buffers": 6,
+  "int8_weights": 2048,
+  "float_params": 706,
+  "arena_floats_used": 1024,
+  "arena_floats_available": 10560,
+  "arena_int8_used": 0,
+  "arena_int8_available": 4096,
+  "topology": "deepset_int8",
+  "max_particles": 16,
+  "input_features": 15,
+  "embed_dim": 32,
+  "classes": 2,
+  "int8_inputs": false,
+  "bn_folded": true,
+  "precision": "int8_weights_fp32_activations",
+  "tensors": {
+    "phi.1": {
+      "folded_into": "phi.0"
+    },
+    "phi.0": {
+      "shape": [
+        32,
+        15
+      ],
+      "storage": "float32"
+    },
+    "phi.4": {
+      "folded_into": "phi.3"
+    },
+    "phi.3": {
+      "shape": [
+        32,
+        32
+      ],
+      "max_abs_error": 0.005179241299629211,
+      "mean_abs_error": 0.0014020982198417187,
+      "storage": "int8 (weight-only)"
+    },
+    "rho.1": {
+      "folded_into": "rho.0"
+    },
+    "rho.0": {
+      "shape": [
+        32,
+        32
+      ],
+      "max_abs_error": 0.00406952528283,
+      "mean_abs_error": 0.0013063156511634588,
+      "storage": "int8 (weight-only)"
+    },
+    "rho.3": {
+      "shape": [
+        2,
+        32
+      ],
+      "storage": "float32"
+    }
+  },
+  "activation_scales": {
+    "phi.3": 0.12075249979815145,
+    "rho.0": 0.1653734342319759
+  },
+  "allocation": [
+    {
+      "name": "phi.h0",
+      "arena": "float",
+      "offset": 0,
+      "size": 512,
+      "rows": -1,
+      "cols": 32,
+      "live": [
+        1,
+        3
+      ]
+    },
+    {
+      "name": "rho.h0",
+      "arena": "float",
+      "offset": 0,
+      "size": 32,
+      "rows": 1,
+      "cols": 32,
+      "live": [
+        6,
+        8
+      ]
+    },
+    {
+      "name": "pooled",
+      "arena": "float",
+      "offset": 32,
+      "size": 32,
+      "rows": 1,
+      "cols": 32,
+      "live": [
+        5,
+        6
+      ]
+    },
+    {
+      "name": "logits",
+      "arena": "float",
+      "offset": 32,
+      "size": 2,
+      "rows": 1,
+      "cols": 2,
+      "live": [
+        8,
+        10
+      ]
+    },
+    {
+      "name": "phi.h1",
+      "arena": "float",
+      "offset": 512,
+      "size": 512,
+      "rows": -1,
+      "cols": 32,
+      "live": [
+        3,
+        5
+      ]
+    },
+    {
+      "name": "features",
+      "arena": "float",
+      "offset": 512,
+      "size": 240,
+      "rows": -1,
+      "cols": 15,
+      "live": [
+        0,
+        1
+      ]
+    }
+  ]
+}

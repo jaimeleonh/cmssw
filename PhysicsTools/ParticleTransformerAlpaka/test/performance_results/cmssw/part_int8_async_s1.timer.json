@@ -1,0 +1,147 @@
+{
+  "modules": [
+    {
+      "events": 30,
+      "label": "source",
+      "mem_alloc": 47870,
+      "mem_free": 55,
+      "time_real": 3.5247,
+      "time_thread": 3.512254,
+      "type": "DAQSource"
+    },
+    {
+      "events": 30,
+      "label": "TriggerResults",
+      "mem_alloc": 5,
+      "mem_free": 0,
+      "time_real": 0.062425,
+      "time_thread": 0.062532,
+      "type": "TriggerResultInserter"
+    },
+    {
+      "events": 30,
+      "label": "p_sc4Alpaka",
+      "mem_alloc": 2,
+      "mem_free": 0,
+      "time_real": 0.069936,
+      "time_thread": 0.06969499999999999,
+      "type": "PathStatusInserter"
+    },
+    {
+      "events": 30,
+      "label": "scPhase2PFRawToDigiAlpaka",
+      "mem_alloc": 37349,
+      "mem_free": 18130,
+      "time_real": 33.389273,
+      "time_thread": 33.112967,
+      "type": "l1sc::L1TScPhase2PuppiRawToDigi@alpaka"
+    },
+    {
+      "events": 30,
+      "label": "scPhase2VertexRawToDigiAlpaka",
+      "mem_alloc": 7972,
+      "mem_free": 7840,
+      "time_real": 6.530937,
+      "time_thread": 6.504267,
+      "type": "l1sc::L1TScPhase2VertexRawToDigi@alpaka"
+    },
+    {
+      "events": 30,
+      "label": "goodOrbitsByNBX",
+      "mem_alloc": 2,
+      "mem_free": 2,
+      "time_real": 0.168813,
+      "time_thread": 0.169536,
+      "type": "GoodOrbitNBxSelector"
+    },
+    {
+      "events": 30,
+      "label": "scPhase2SC4PFAlpaka",
+      "mem_alloc": 512,
+      "mem_free": 309,
+      "time_real": 24.749823,
+      "time_thread": 24.654616,
+      "type": "l1sc::L1TScPhase2SCJets@alpaka"
+    },
+    {
+      "events": 30,
+      "label": "SoftJetIdSC4",
+      "mem_alloc": 10948,
+      "mem_free": 3277,
+      "time_real": 9.029651,
+      "time_thread": 8.985312,
+      "type": "GraphInferenceProducer@alpaka"
+    },
+    {
+      "events": 30,
+      "label": "cleanup",
+      "mem_alloc": 81,
+      "mem_free": 48119,
+      "time_real": 20746.663402,
+      "time_thread": 6.250151,
+      "type": "cleanup"
+    },
+    {
+      "events": 30,
+      "label": "other",
+      "mem_alloc": 8500679,
+      "mem_free": 51692,
+      "time_real": 518.621131,
+      "time_thread": 294.427182,
+      "type": "other"
+    },
+    {
+      "events": 30,
+      "label": "eventsetup",
+      "mem_alloc": 0,
+      "mem_free": 0,
+      "time_real": 0.0,
+      "time_thread": 0.0,
+      "type": "eventsetup"
+    },
+    {
+      "events": 30,
+      "label": "idle",
+      "mem_alloc": 33,
+      "mem_free": 33,
+      "time_real": 2.180652,
+      "time_thread": 1.043988,
+      "type": "idle"
+    }
+  ],
+  "resources": [
+    {
+      "description": "real time",
+      "name": "time_real",
+      "title": "Time",
+      "unit": "ms"
+    },
+    {
+      "description": "cpu time",
+      "name": "time_thread",
+      "title": "Time",
+      "unit": "ms"
+    },
+    {
+      "description": "allocated memory",
+      "name": "mem_alloc",
+      "title": "Memory",
+      "unit": "kB"
+    },
+    {
+      "description": "deallocated memory",
+      "name": "mem_free",
+      "title": "Memory",
+      "unit": "kB"
+    }
+  ],
+  "total": {
+    "events": 30,
+    "label": "SCPU",
+    "mem_alloc": 8605459,
+    "mem_free": 129462,
+    "time_real": 21344.990743,
+    "time_thread": 378.7925,
+    "type": "Job"
+  }
+}
