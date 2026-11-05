@@ -52,6 +52,33 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
       descriptions.addWithDefaultLabel(desc);
     }
 
+    void beginStream(edm::StreamID, Queue queue) {
+        // Warming up the model with dummy data. This allows for fast inference since the first iteration
+        // and should ensure a more homogeneous memory balance
+
+        SoftJetNewInputDeviceTensor input_tensor(queue, max_batch_size_);
+        SoftJetOutputDeviceTensor output_tensor(queue, max_batch_size_);
+        auto input_records = input_tensor.view().records();
+        auto output_records = output_tensor.view().records();
+
+        for (auto ii = 0; ii < warmupIterations_; ++ii) {
+          cms::torch::alpakatools::TensorCollection<Queue> inputs_d, outputs_d;
+
+          // register inputs
+          inputs_d.add<SoftJetNewInputTensorSoA>("pf_points", input_records.points());
+          inputs_d.add<SoftJetNewInputTensorSoA>("pf_features", input_records.features());
+          inputs_d.add<SoftJetNewInputTensorSoA>("pf_mask", input_records.mask());
+          inputs_d.add<SoftJetNewInputTensorSoA>("jet_features", input_records.jet_features());
+
+          // register outputs
+          outputs_d.add<SoftJetOutputTensorSoA>("softmax", output_records.output());
+      
+          // inference on dummy data
+          model_.forward(queue, inputs_d, outputs_d);
+          // model_.forward(queue, inputs_d, outputs_d);
+        }
+      }
+
     void produce(device::Event& event, const device::EventSetup& event_setup) override {
       const auto& pf = event.get(pf_token_);
       const auto& jets = event.get(jets_token_);
@@ -72,40 +99,25 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
       // The inputs are registered directly from the SoA records (no manual copy), and the
       // model runs batched over the jets via the TensorCollection / AlpakaModel interface.
       const auto batch_size = std::min<uint32_t>(job_size, max_batch_size_);
-      auto num_batches = job_size == 0 ? 0 : (job_size + batch_size - 1) / batch_size;
 
       // records
       auto input_records = input_tensor.view().records();
       auto output_records = output_tensor.view().records();
 
-      std::deque<BatchIO> batches;
-      for (uint32_t batch_idx = 0; batch_idx < num_batches; ++batch_idx) {
-        BatchIO batch{cms::torch::alpakatools::TensorCollection<Queue>(batch_size, job_size),
-                      cms::torch::alpakatools::TensorCollection<Queue>(batch_size, job_size)};
+      cms::torch::alpakatools::BatchedTensorCollection<Queue> inputs, outputs;
 
-        batch.inputs.add<SoftJetNewInputTensorSoA>("pf_points", batch_idx, input_records.points());
-        batch.inputs.add<SoftJetNewInputTensorSoA>("pf_features", batch_idx, input_records.features());
-        batch.inputs.add<SoftJetNewInputTensorSoA>("pf_mask", batch_idx, input_records.mask());
-        batch.inputs.add<SoftJetNewInputTensorSoA>("jet_features", batch_idx, input_records.jet_features());
+      inputs.addBatched<SoftJetNewInputTensorSoA>("pf_points", batch_size, input_records.points());
+      inputs.addBatched<SoftJetNewInputTensorSoA>("pf_features", batch_size, input_records.features());
+      inputs.addBatched<SoftJetNewInputTensorSoA>("pf_mask", batch_size, input_records.mask());
+      inputs.addBatched<SoftJetNewInputTensorSoA>("jet_features", batch_size, input_records.jet_features());
 
-        batch.outputs.add<SoftJetOutputTensorSoA>("softmax", batch_idx, output_records.output());
+      outputs.addBatched<SoftJetOutputTensorSoA>("softmax", batch_size, output_records.output());
 
-        batches.push_back(std::move(batch));
-      }
+      model_.forward(event.queue(), inputs, outputs);
 
-      for (auto& batch : batches) {
-        c10::InferenceMode guard(true);
-        model_.to(event.queue());
-        model_.forward(event.queue(), batch.inputs, batch.outputs);
-      }
-
-      // Synchronize the queue so that the device work (inference + deferred deallocation)
-      // is completed inside the module and attributed to it by the FastTimerService,
-      // rather than being deferred to the event-clear ("cleanup") stage.
-      alpaka::wait(event.queue());
-
-      // put device-side product into event
+      // // put device-side product into event
       event.emplace(soft_jet_token_, std::move(output_tensor));
+
     }
 
   private:
@@ -118,6 +130,8 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
     const device::EDPutToken<SoftJetOutputDeviceTensor> soft_jet_token_;
     torch::AlpakaModel model_;
     const uint32_t max_batch_size_;
+    // warmup iterations
+    const int warmupIterations_ = 10;
   };
 
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc

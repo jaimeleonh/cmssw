@@ -220,8 +220,8 @@ if "alpaka" in options.run.lower():
   #     l1sc_SoftTauIdML_alpaka,
   # )
   from L1TriggerScouting.JetTagging.modules import (
-      l1sc_SoftJetIdML_alpaka, l1sc_SoftJetIdONNX_alpaka
-      #l1sc_SoftJetIdML_alpaka, l1sc_SoftJetIdMLTorchScript_alpaka, l1sc_SoftJetIdONNX_alpaka
+      #l1sc_SoftJetIdML_alpaka, l1sc_SoftJetIdONNX_alpaka
+      l1sc_SoftJetIdML_alpaka, l1sc_SoftJetIdMLTorchScript_alpaka, l1sc_SoftJetIdONNX_alpaka
   )
   process.scPhase2PFRawToDigiAlpaka = l1sc_L1TScPhase2PuppiRawToDigi_alpaka(
       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
@@ -301,9 +301,9 @@ if "alpaka" in options.run.lower():
   # from PhysicsTools.ParticleTransformerAlpaka.modules import GraphInferenceProducer_alpaka, DeepSetsProducer_alpaka, ParticleTransformerProducer_alpaka
 
   # process.SoftJetIdSC4 = cms.EDProducer('SoftJetIdMLTorchScript@alpaka',
-  # process.SoftJetIdSC4 = l1sc_SoftJetIdMLTorchScript_alpaka(
+  process.SoftJetIdSC4 = l1sc_SoftJetIdMLTorchScript_alpaka(
   # process.SoftJetIdSC4 = l1sc_SoftJetIdONNX_alpaka(
-  process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
+  #process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
       pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
       clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
@@ -313,7 +313,7 @@ if "alpaka" in options.run.lower():
     #   model = cms.FileInPath("L1TriggerScouting/JetTagging/data/part_2p5k_throughput.pt"),
       # model = cms.FileInPath(f"L1TriggerScouting/JetTagging/data/btagging/{options.jetTagModel}.onnx"),
       model = cms.FileInPath(f"L1TriggerScouting/JetTagging/data/btagging/{options.jetTagModel}.pt"),
-      # jets = cms.InputTag('scPhase2SC4PFAlpaka'),  # SoftJetIdMLTorchScript
+      jets = cms.InputTag('scPhase2SC4PFAlpaka'),  # SoftJetIdMLTorchScript
       # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_full_int8.pt"),
       # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique.pt"),
       # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique_cpu.pt"),

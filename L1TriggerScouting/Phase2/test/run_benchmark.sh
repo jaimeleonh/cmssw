@@ -1,11 +1,11 @@
 minConstituents=2
 
 #for model in deepset_cpp
-for model in softjet_part_unique
+#for model in softjet_part_unique
 # for model in part_int8 deepset_int8 model_deepsets #softjet_deepsets
 # for model in part_10k_12const
 # for model in  model_example_ParticleTransformer.bs512 # softjet_part_example
-#for model in part_2p5k part_10k deepsets_10k deepsets_2p5k  deepsets_50k   part_2p2m      part_300k      pnet_10k       pnet_2p5k      pnet_50k deepsets_2p2m  deepsets_300k  part_10k       part_2p5k      part_50k       pnet_2p2m      pnet_300k
+for model in part_2p5k #part_10k deepsets_10k deepsets_2p5k  deepsets_50k   part_2p2m      part_300k      pnet_10k       pnet_2p5k      pnet_50k deepsets_2p2m  deepsets_300k  part_10k       part_2p5k      part_50k       pnet_2p2m      pnet_300k
 do
 
     for backend in cuda_async # serial_sync # 
@@ -24,7 +24,7 @@ do
     # sm__warps_active.avg.pct_of_peak_sustained_active,\
     # smsp__average_warps_issue_stalled_barrier_per_issue_active.ratio \
                         mkdir -p results_${model}
-                        tmp="CUDA_VISIBLE_DEVICES=0 cmsRun runScoutingPhase2PF_SoftJets_cfg.py  buBaseDir=/mnt/ramdisk/gizago/raw fuBaseDir=/mnt/ramdisk/gizago/raw  buNumStreams=2 runNumber=82 maxEvents=20 run=sc4Alpaka backend=$backend   numThreads=$numThreads numFwkStreams=$numFwkStreams batchSize=$batchSize jetTagModel=${model} jetAlgo=SCNMSWeighted RSeed=0.4 RClu=0.4 minConstituents=${minConstituents} | tee log2026"
+                        tmp="CUDA_VISIBLE_DEVICES=0 cmsRun runScoutingPhase2PF_SoftJets_cfg.py  buBaseDir=/mnt/ramdisk/$USER/raw fuBaseDir=/mnt/ramdisk/$USER/raw  buNumStreams=2 runNumber=42 maxEvents=20 run=sc4Alpaka backend=$backend   numThreads=$numThreads numFwkStreams=$numFwkStreams batchSize=$batchSize jetTagModel=${model} jetAlgo=SCNMSWeighted RSeed=0.4 RClu=0.4 minConstituents=${minConstituents} | tee log2026"
                         #tmp='LD_PRELOAD="$CMSSW_BASE/src/L1TriggerScouting/JetTagging/data/softjet_part_full_int8_ops/libscouting_int8.so${LD_PRELOAD:+:$LD_PRELOAD}" cmsRun runScoutingPhase2PF_cfg.py  buBaseDir=/mnt/ramdisk/$USER/raw fuBaseDir=/mnt/ramdisk/$USER/raw  buNumStreams=2 runNumber=41 maxEvents=100  run=sc4Alpaka backend=$backend   numThreads=$numThreads numFwkStreams=$numFwkStreams batchSize=$batchSize | tee log2026'
                         #tmp="cmsRun runScoutingPhase2PF_cfg.py  buBaseDir=/mnt/ramdisk/$USER/raw fuBaseDir=/mnt/ramdisk/$USER/raw  buNumStreams=1 runNumber=39 maxEvents=100  run=sc4Alpaka backend=$backend   numThreads=$numThreads numFwkStreams=$numFwkStreams batchSize=$batchSize | tee log2026"
                         echo $tmp
