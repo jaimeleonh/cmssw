@@ -11,7 +11,7 @@
 <use name="HeterogeneousCore/AlpakaInterface"/>
 <use name="L1TriggerScouting/Phase2"/>
 
-<flags ALPAKA_BACKENDS="serial cuda"/>
+<flags ALPAKA_BACKENDS="1"/>
 <export>
   <lib name="1"/>
 </export>

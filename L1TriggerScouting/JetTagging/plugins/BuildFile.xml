@@ -22,7 +22,7 @@
   <use name="PhysicsTools/ONNXRuntimeAlpaka"/>
   <use name="PhysicsTools/PyTorchAlpaka"/>
   <use name="PerfTools/Perfetto"/>
-  <flags ALPAKA_BACKENDS="serial cuda"/>
+  <flags ALPAKA_BACKENDS="1"/>
   <flags EDM_PLUGIN="1"/>
 </library>
 
