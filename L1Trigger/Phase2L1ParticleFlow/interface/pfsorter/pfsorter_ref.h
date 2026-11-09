@@ -446,7 +446,6 @@ namespace l1ct {
         return;
       }
 
-
       reset();
       std::vector<std::vector<PFLinkItem>> links;
       makePFLinks(pfinputs, pfouts, links);
