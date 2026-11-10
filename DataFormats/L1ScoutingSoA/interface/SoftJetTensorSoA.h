@@ -7,7 +7,7 @@
 #include "DataFormats/SoATemplate/interface/SoACommon.h"
 #include "DataFormats/SoATemplate/interface/SoALayout.h"
 
-#define NUM_CANDIDATES_PER_JET 16
+#define NUM_CANDIDATES_PER_JET 32
 
 namespace l1sc {
 
@@ -25,7 +25,7 @@ namespace l1sc {
   using SoftJetNewPFPoints = Eigen::Matrix<float, NUM_CANDIDATES_PER_JET, 3>;
   using SoftJetNewPFFeatures = Eigen::Matrix<float, NUM_CANDIDATES_PER_JET, 14>;
   using SoftJetNewPaddingMask = Eigen::Vector<float, NUM_CANDIDATES_PER_JET>;
-  using SoftJetNewJetFeatures = Eigen::Vector<float, 4>;
+  using SoftJetNewJetFeatures = Eigen::Vector<float, 3>;
   GENERATE_SOA_LAYOUT(SoftJetNewInputTensorLayout,
                       SOA_EIGEN_COLUMN(SoftJetNewPFPoints, points),
                       SOA_EIGEN_COLUMN(SoftJetNewPFFeatures, features),

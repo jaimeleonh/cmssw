@@ -1,0 +1,19 @@
+<library file="JetClusteringTestModules.cc" name="L1ScoutingPhase2JetClusteringTests">
+  <use name="FWCore/Framework"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="FWCore/Utilities"/>
+  <use name="DataFormats/L1ScoutingSoA"/>
+  <flags EDM_PLUGIN="1"/>
+</library>
+<library file="alpaka/JetClusteringTestCopy.cc" name="L1ScoutingPhase2JetTestCopyPortable">
+  <use name="DataFormats/L1ScoutingSoA"/>
+  <use name="HeterogeneousCore/AlpakaCore"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="alpaka"/>
+  <flags ALPAKA_BACKENDS="serial cuda"/>
+  <flags EDM_PLUGIN="1"/>
+</library>
+<test name="testPhase2JetClustering" command="cmsRun ${SCRAM_TEST_PATH}/testJetClustering_cfg.py"/>
+<test name="testPhase2JetClusteringCUDA" command="cmsRun ${SCRAM_TEST_PATH}/testJetClustering_cfg.py backend=cuda_async">
+  <use name="cuda"/>
+</test>

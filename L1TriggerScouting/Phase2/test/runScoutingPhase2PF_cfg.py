@@ -7,19 +7,19 @@ options.register ('njets',
                   16,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
-                  'Number of jets to reconstruct with SCGreedy (iterative seeded cone)'
+                  'Number of jets to reconstruct with SeededCone (greedy seeded cone)'
 )
 options.register ('minSeedPt',
                   0.0,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.float,
-                  'Minimum pt cut for seed candidates (used by SCNMSWeightedMultiIter / LinkTree)'
+                  'Minimum pt cut for seed candidates (used by LinkTree and the CPU seeded cone)'
 )
 options.register ('jetR',
                   0.4,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.float,
-                  'Legacy single-radius parameter used by auto / SCGreedy fallback / demo modules'
+                  'SeededCone and CPU demo jet radius'
 )
 options.register ('dumpClusters',
                   False,
@@ -28,75 +28,50 @@ options.register ('dumpClusters',
                   'Dump clusters to options.outFile')
 
 
-# Additional algorithms
-# canonical names:
-#   SCGreedy                = iterative greedy seeded cone
-#   SCNMS                   = old non-iterative seeded cone with split radii:
-#                             RSeed for seed finding + old centroid accumulation,
-#                             RClu for final nearest-axis assignment
-#   SCNMSWeighted           = same old non-iterative seeded cone logic, but final
-#                             assignment uses old weighted metric
-#   SCNMSWeightedMultiIter  = newer weighted NMS-style seeded cone with explicit
-#                             centroid iterations and separate RCen
-#   LinkTree                = link-based clustering
-#
-# backward-compatible aliases kept:
-#   iterative               -> SCGreedy
-#   seededCone              -> SCNMS
-#   seededConeNMSWeighted   -> SCNMSWeighted
-#   linkTree                -> LinkTree
-options.register('jetAlgo',
-                 'SCGreedy',
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.string,
-                 'Jet algorithm: SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree')
-options.register('RSeed',
-                 0.3,
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.float,
-                 'Seed-finding radius; for SCNMS/SCNMSWeighted also used for old centroid accumulation')
-options.register('RCen',
-                 0.4,
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.float,
-                 'Centroid radius (used only by SCNMSWeightedMultiIter)')
-options.register('RClu',
-                 0.4,
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.float,
-                 'Final particle-assignment radius for SCNMS / SCNMSWeighted / SCNMSWeightedMultiIter')
-options.register('RLink',
-                 0.3,
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.float,
-                 'Link radius for LinkTree')
-options.register('alphaSeed',
-                 2.0,
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.float,
-                 'alpha in score = dr2 / pt_seed^alpha (used by SCNMSWeightedMultiIter)')
-options.register('nCentroidIters',
-                 1,
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.int,
-                 'Number of centroid iterations for SCNMSWeightedMultiIter: 0=use seed axis, >0 refine axis')
-options.register('minConstituents',
-                 0,
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.int,
-                 'Minimum number of constituents for a jet')
+# GPU jet algorithms. SCNMSW always recombines final assigned constituents.
+options.register('jetAlgo', 'SeededCone', VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string, 'GPU jet algorithm: SeededCone | SCNMSW | LinkTree')
+options.register('RSeed', 0.4, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float, 'SCNMSW seed-finding radius')
+options.register('RCen', 0.4, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float, 'SCNMSW protojet-centroid radius')
+options.register('RClu', 0.4, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float, 'SCNMSW particle-assignment radius')
+options.register('RLink', 0.36, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float, 'LinkTree parent-link radius')
+options.register('alphaSeed', 2.0, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.float, 'SCNMSW assignment exponent; 0 selects nearest axes')
+options.register('maxRounds', '1', VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string, 'SCNMSW rounds: positive integer, -1 or None for no cap')
+options.register('synchronizeGPU', False, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool, 'Wait at Alpaka module boundaries for completed-module profiling')
+
+# Retain the target branch's constituent cut and optional jet tagger.
+options.register('minConstituents', 0, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.int, 'Minimum constituents per reconstructed jet')
+options.register('runJetTagging', False, VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool, 'Run the target branch TorchScript tagger after clustering')
 options.register ('batchSize',
-                  32, 
+                  32,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                   'ParT batch size')
 options.register ('jetTagModel',
-                  'L1TriggerScouting/JetTagging/data/softjet_part_ptq_int8.pt',
+                  'L1TriggerScouting/JetTagging/data/btagging/softjet_part_ptq_int8.pt',
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                   'Jet tagger TorchScript model; custom operators must be preloaded at launch')
 
 options.parseArguments()
+maxRounds = -1 if options.maxRounds.lower() == 'none' else int(options.maxRounds)
+if options.jetAlgo not in ('SeededCone', 'SCNMSW', 'LinkTree'):
+    raise RuntimeError('jetAlgo must be SeededCone, SCNMSW or LinkTree')
+if maxRounds == 0 or maxRounds < -1:
+    raise RuntimeError('maxRounds must be -1, None or a positive integer')
+if options.minConstituents < 0:
+    raise RuntimeError('minConstituents must be nonnegative')
+if options.runJetTagging and options.run != 'sc4Alpaka':
+    raise RuntimeError('runJetTagging requires run=sc4Alpaka')
 
 if options.buNumStreams == []:
     options.buNumStreams.append(1)
@@ -148,7 +123,7 @@ process.FastMonitoringService = cms.Service("FastMonitoringService")
 process.load( "HLTrigger.Timer.FastTimerService_cfi" )
 process.FastTimerService.writeJSONSummary = cms.untracked.bool(True)
 process.FastTimerService.printEventSummary = cms.untracked.bool(True)
-process.FastTimerService.jsonFileName = cms.untracked.string(f'results_{options.jetTagModel}/resources.{os.uname()[1]}.{options.backend}.{options.numThreads}.{options.numFwkStreams}.{options.batchSize}.json')
+process.FastTimerService.jsonFileName = cms.untracked.string(f'resources.{os.uname()[1]}.{options.backend}.{options.numThreads}.{options.numFwkStreams}.{options.batchSize}.json')
 #process.MessageLogger.cerr.FastReport = cms.untracked.PSet( limit = cms.untracked.int32( 10000000 ) )
 
 fuDir = options.fuBaseDir+("/run%06d" % options.runNumber)
@@ -179,7 +154,8 @@ process.load("L1TriggerScouting.Phase2.unpackers_cff")
 
 if "alpaka" in options.run.lower():
   process.load("Configuration.StandardSequences.Accelerators_cff")
-process.PyTorchService = cms.Service("PyTorchService")
+if options.runJetTagging:
+  process.PyTorchService = cms.Service("PyTorchService")
 
 ## Configure unpackers
 process.scPhase2PFRawToDigiStruct = process.scPhase2PuppiRawToDigiStruct.clone(
@@ -218,11 +194,9 @@ if "alpaka" in options.run.lower():
   #     l1sc_CLUETaus_alpaka,
   #     l1sc_SoftTauIdML_alpaka,
   # )
-  from L1TriggerScouting.JetTagging.modules import (
-      l1sc_SoftJetIdML_alpaka, l1sc_SoftJetIdMLTorchScript_alpaka
-  )
   process.scPhase2PFRawToDigiAlpaka = l1sc_L1TScPhase2PuppiRawToDigi_alpaka(
-      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend),
+                                   synchronize = cms.untracked.bool(options.synchronizeGPU) ),
       streams = process.scPhase2PFRawToDigiStruct.fedIDs,
       splitFactor = cms.uint32(len(pfStreamIDs) // options.timeslices),
       src = process.scPhase2PFRawToDigiStruct.src,
@@ -230,7 +204,8 @@ if "alpaka" in options.run.lower():
   )
 
   process.scPhase2VertexRawToDigiAlpaka = l1sc_L1TScPhase2VertexRawToDigi_alpaka(
-      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend),
+                                   synchronize = cms.untracked.bool(options.synchronizeGPU) ),
       streams = process.scPhase2VertexRawToDigiStruct.fedIDs,
       splitFactor = 1,
       src = process.scPhase2VertexRawToDigiStruct.src,
@@ -242,7 +217,7 @@ if "alpaka" in options.run.lower():
   )
 
 #   process.CLUETaus = l1sc_CLUETaus_alpaka(
-#       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+#       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend),
 #       src = 'scPhase2PFRawToDigiAlpaka',
 #       dc = cms.double(0.2),
 #       rhoc = cms.double(5.0),
@@ -251,109 +226,57 @@ if "alpaka" in options.run.lower():
 #       run_scout = cms.bool(True),
 #   )
 
-  sc4Alpaka_kwargs = {
-      "alpaka": cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-      "src": cms.InputTag("scPhase2PFRawToDigiAlpaka"),
-      "algo": cms.string(options.jetAlgo),
-      "minConstituents": cms.uint32(options.minConstituents),
-  }
-
-  if options.jetAlgo == "SCGreedy":
-      sc4Alpaka_kwargs.update({
-          "rParam": cms.double(options.jetR),
-          "nJets": cms.uint32(options.njets),
-      })
-  elif options.jetAlgo == "SCNMS" or options.jetAlgo == "SCNMSWeighted":
-      sc4Alpaka_kwargs.update({
-          "RSeed": cms.double(options.RSeed),
-          "RClu": cms.double(options.RClu),
-      })
-  elif options.jetAlgo == "SCNMSWeightedMultiIter":
-      sc4Alpaka_kwargs.update({
-          "RSeed": cms.double(options.RSeed),
-          "RCen": cms.double(options.RCen),
-          "RClu": cms.double(options.RClu),
-          "alphaSeed": cms.double(options.alphaSeed),
-          "minSeedPt": cms.double(options.minSeedPt),
-          "nCentroidIters": cms.uint32(options.nCentroidIters),
-      })
-  elif options.jetAlgo == "LinkTree":
-      sc4Alpaka_kwargs.update({
-          "RLink": cms.double(options.RLink),
-          "minSeedPt": cms.double(options.minSeedPt),
-      })
-
   process.scPhase2SC4PFAlpaka = l1sc_L1TScPhase2SCJets_alpaka(
-      **sc4Alpaka_kwargs
+      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend),
+                                   synchronize = cms.untracked.bool(options.synchronizeGPU) ),
+      src = cms.InputTag("scPhase2PFRawToDigiAlpaka"),
+      rParam = cms.double(options.jetR),
+      nJets = cms.uint32(options.njets),
+
+      algo = cms.string(options.jetAlgo),
+      RSeed = cms.double(options.RSeed),
+      RCen = cms.double(options.RCen),
+      RClu = cms.double(options.RClu),
+      RLink = cms.double(options.RLink),
+      alphaSeed = cms.double(options.alphaSeed),
+      minSeedPt = cms.double(options.minSeedPt),
+      maxRounds = cms.int32(maxRounds),
+      minConstituents = cms.uint32(options.minConstituents),
   )
 
 #   process.SoftTauIdSC4 = l1sc_SoftTauIdML_alpaka(
-#       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
+#       alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend),
 #       pf = 'scPhase2PFRawToDigiAlpaka',
 #       clusters = 'scPhase2SC4PFAlpaka',
 #       model = cms.FileInPath("L1TriggerScouting/TauTagging/data/softtauid_sigmoid.pt"),
 #       maxBatchSize = cms.uint32(64),
 #   )
 
-  from PhysicsTools.ParticleTransformerAlpaka.modules import GraphInferenceProducer_alpaka, DeepSetsProducer_alpaka, ParticleTransformerProducer_alpaka
-
-  # process.SoftJetIdSC4 = l1sc_SoftJetIdMLTorchScript_alpaka(
-  # process.SoftJetIdSC4 = cms.EDProducer('SoftJetIdMLTorchScript@alpaka',
-  # process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
-  process.SoftJetIdSC4 = l1sc_SoftJetIdMLTorchScript_alpaka(
-  # process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
-      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-      pf = cms.InputTag('scPhase2PFRawToDigiAlpaka'),#, "candidates"),
-      clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
-      jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
-      vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka"),#, "candidates"),
-      vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
-    #   model = cms.FileInPath("L1TriggerScouting/JetTagging/data/part_2p5k_throughput.pt"),
-      model = cms.FileInPath(f"L1TriggerScouting/JetTagging/data/btagging/{options.jetTagModel}.pt"),
-      jets = cms.InputTag('scPhase2SC4PFAlpaka'),  # SoftJetIdMLTorchScript
-      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_full_int8.pt"),
-      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique.pt"),
-      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique_cpu.pt"),
-      #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_deepsets.pt"),
-      #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_minipart.pt"),
-      maxBatchSize = cms.uint32(options.batchSize),
-  )
-
-  # process.SoftJetIdSC4 = GraphInferenceProducer_alpaka(
-  #     alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-  #     pf = cms.InputTag('scPhase2PFRawToDigiAlpaka'),#, "candidates"),
-  #     clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
-  #     jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
-  #     vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka"),#, "candidates"),
-  #     vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
-  #   #   model = cms.FileInPath("L1TriggerScouting/JetTagging/data/part_2p5k_throughput.pt"),
-  #     modelFile = cms.string(f"PhysicsTools/ParticleTransformerAlpaka/data/{options.jetTagModel}.nnm"),
-  #     # jets = cms.InputTag('scPhase2SC4PFAlpaka'),  # SoftJetIdMLTorchScript
-  #     # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_full_int8.pt"),
-  #     # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique.pt"),
-  #     # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique_cpu.pt"),
-  #     #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_deepsets.pt"),
-  #     #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_minipart.pt"),
-  #     maxBlocks = cms.uint32(options.batchSize),
-  # )
-
-  # process.SoftJetIdSC4 = ParticleTransformerProducer_alpaka(
-  # process.SoftJetIdSC4 = DeepSetsProducer_alpaka(
-  #   alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend) ),
-  #   pf = cms.InputTag('scPhase2PFRawToDigiAlpaka'),#, "candidates"),
-  #   clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
-  #   jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
-  #   vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka"),#, "candidates"),
-  #   vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
-  #   maxBlocks = cms.uint32(options.batchSize),
-  # )
+  if options.runJetTagging:
+    from L1TriggerScouting.JetTagging.modules import l1sc_SoftJetIdMLTorchScript_alpaka
+    modelPath = options.jetTagModel
+    if '/' not in modelPath:
+      modelPath = 'L1TriggerScouting/JetTagging/data/btagging/' + modelPath
+    if not modelPath.endswith('.pt'):
+      modelPath += '.pt'
+    process.SoftJetIdSC4 = l1sc_SoftJetIdMLTorchScript_alpaka(
+        alpaka = cms.untracked.PSet(backend = cms.untracked.string(options.backend),
+                                    synchronize = cms.untracked.bool(options.synchronizeGPU)),
+        pf = cms.InputTag('scPhase2PFRawToDigiAlpaka'),
+        clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
+        jetBxLookup = cms.InputTag('scPhase2SC4PFAlpaka'),
+        vertices = cms.InputTag('scPhase2VertexRawToDigiAlpaka'),
+        vertexBxLookup = cms.InputTag('scPhase2VertexRawToDigiAlpaka', 'bxLookup'),
+        model = cms.FileInPath(modelPath),
+        jets = cms.InputTag('scPhase2SC4PFAlpaka'),
+        maxBatchSize = cms.uint32(options.batchSize),
+    )
 
   process.goodOrbitsByNBX.unpackersAlpaka = [ "scPhase2PFRawToDigiAlpaka" ]
   process.goodOrbitsByNBX.unpackers = []
 
   process.p_unpackAlpaka = cms.Path(
     process.scPhase2PFRawToDigiAlpaka +
-    process.scPhase2VertexRawToDigiAlpaka +
     process.goodOrbitsByNBX
   )
 #   process.p_clueAlpaka = cms.Path(
@@ -363,11 +286,13 @@ if "alpaka" in options.run.lower():
 #   )
   process.p_sc4Alpaka = cms.Path(
     process.scPhase2PFRawToDigiAlpaka +
-    process.scPhase2VertexRawToDigiAlpaka +
     process.goodOrbitsByNBX +
-    process.scPhase2SC4PFAlpaka +
-    process.SoftJetIdSC4
+    process.scPhase2SC4PFAlpaka
   )
+  if options.runJetTagging:
+    process.p_sc4Alpaka.insert(1, process.scPhase2VertexRawToDigiAlpaka)
+    process.p_sc4Alpaka += process.SoftJetIdSC4
+
 #   process.p_sc4AlpakaTaus = cms.Path(
 #     process.scPhase2PFRawToDigiAlpaka +
 #     process.goodOrbitsByNBX +
@@ -425,14 +350,16 @@ if options.run not in ("both","inclusive","selected"):
           name = cms.string("SC4AlpakaJets"),
           doc = cms.string(""),
       )
-      process.softJetTable = cms.EDProducer("ScPhase2SoftJetOutputTensorToOrbitFlatTable",
-          srcBxClustersMap = cms.InputTag("scPhase2SC4PFAlpaka"),
-          srcOutput = cms.InputTag("SoftJetIdSC4"), 
-          # name = process.dumpJets.name, 
-          name = cms.string("SC4AlpakaJetsScore"),
-          doc = cms.string(""),
-      )
-      process.p_dump = cms.Path(process.dumpClusters + process.dumpJets + process.softJetTable)
+      process.p_dump = cms.Path(process.dumpClusters + process.dumpJets)
+      if options.runJetTagging:
+        process.softJetTable = cms.EDProducer("ScPhase2SoftJetOutputTensorToOrbitFlatTable",
+            srcBxClustersMap = cms.InputTag("scPhase2SC4PFAlpaka"),
+            srcOutput = cms.InputTag("SoftJetIdSC4"),
+            # name = process.dumpJets.name,
+            name = cms.string("SC4AlpakaJetsScore"),
+            doc = cms.string(""),
+        )
+        process.p_dump += process.softJetTable
       sched.append(process.p_dump)
 
     if options.run in ("clueAlpaka",):

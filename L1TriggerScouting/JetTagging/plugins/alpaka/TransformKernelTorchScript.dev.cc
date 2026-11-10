@@ -139,9 +139,9 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels::torchscript {
           // The model was trained on the clustered jet's own pt/eta/phi, so use those
           // directly from the ClusterObj collection. The jet SoA has no mass column, so
           // the mass is recomputed from the constituent 4-vector sum accumulated above.
-          float const jetEnergy = jet4[3];
-          float const jetMass2 = jetEnergy * jetEnergy - (jet4[0] * jet4[0] + jet4[1] * jet4[1] + jet4[2] * jet4[2]);
-          float const jetMass = alpaka::math::sqrt(acc, alpaka::math::max(acc, jetMass2, 0.f));
+          // float const jetEnergy = jet4[3];
+          // float const jetMass2 = jetEnergy * jetEnergy - (jet4[0] * jet4[0] + jet4[1] * jet4[1] + jet4[2] * jet4[2]);
+          // float const jetMass = alpaka::math::sqrt(acc, alpaka::math::max(acc, jetMass2, 0.f));
 
           float const jetPt = jets.pt()[jet];
           float const jetEta = jets.eta()[jet];
@@ -156,7 +156,7 @@ namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc::kernels::torchscript {
             output.jet_features()(0) = logClamped(acc, jetPt + 1.f);
             output.jet_features()(1) = jetEta;
             // output.jet_features()(2) = logClamped(acc, jetMass + 1.f);
-            output.jet_features()(2) = 0.f; // FIXME after comparison
+            // output.jet_features()(2) = 0.f; // FIXME after comparison
           }
 
           // Sort constituent indices by decreasing pt (bitonic sort on shared memory).
