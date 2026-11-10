@@ -1,265 +1,103 @@
-// Alpaka EDProducer wrapper around clustering kernels
-
-// includes for types, function/class declarations, utilities/macros
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/BxLookupDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/PuppiDeviceCollection.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/ClustersDeviceCollection.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
-#include "FWCore/ParameterSet/interface/EmptyGroupDescription.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/EDPutToken.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/Event.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/EventSetup.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/MakerMacros.h"
 #include "HeterogeneousCore/AlpakaCore/interface/alpaka/stream/EDProducer.h"
-#include "HeterogeneousCore/AlpakaInterface/interface/config.h"
-#include "L1TriggerScouting/Phase2/interface/L1TScPhase2Common.h"
 #include "L1TriggerScouting/Phase2/plugins/alpaka/L1TScPhase2SCJetsKernels.h"
-
-#include <algorithm>
 #include <cmath>
 #include <string>
-
-namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {  // place module in backend-specific Alpaka namespace
-
+namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc {
   using namespace ::l1sc;
-
-  class L1TScPhase2SCJets
-      : public stream::
-            EDProducer<> {  // new class inheriting from stream::EDProducer -> construct once per stream, call produce() each event/orbit
+  class L1TScPhase2SCJets : public stream::EDProducer<> {
   public:
-    // constructor (declare consumed & produced products; read config param at job start & store in member variables)
-    L1TScPhase2SCJets(const edm::ParameterSet& params)
-        : EDProducer<>(params),
-
-          src_candidates_token_{consumes(params.getParameter<edm::InputTag>("srcCandidates"))},
-          bx_lookup_token_{consumes(params.getParameter<edm::InputTag>("srcBxLookup"))},
-
-          clusters_token_{produces()},
-          jetBXs_token_{produces()},
-          jets_token_{produces()},
-          map_token_{produces()},
-
-          algo_{params.getParameter<std::string>("algo")},
-
-          // safe defaults; real values are filled below depending on algo_
-          R2_{0.0},
-          nJets_{0},
-          RSeed2_{0.0},
-          RCen2_{0.0},
-          RClu2_{0.0},
-          RLink2_{0.0},
-          alphaSeed_{0.0},
-          minSeedPt_{0.0},
-          nCentroidIters_{0},
-          minConstituents_{params.getParameter<unsigned int>("minConstituents")} {
-      if (algo_ == "SCGreedy") {
-        R2_ = std::pow(params.getParameter<double>("rParam"), 2);
-        nJets_ = params.getParameter<unsigned int>("nJets");
-
-      } else if (algo_ == "SCNMS" || algo_ == "SCNMSWeighted") {
-        RSeed2_ = std::pow(params.getParameter<double>("RSeed"), 2);
-        RClu2_ = std::pow(params.getParameter<double>("RClu"), 2);
-
-      } else if (algo_ == "SCNMSWeightedMultiIter") {
-        RSeed2_ = std::pow(params.getParameter<double>("RSeed"), 2);
-        RCen2_ = std::pow(params.getParameter<double>("RCen"), 2);
-        RClu2_ = std::pow(params.getParameter<double>("RClu"), 2);
-        alphaSeed_ = params.getParameter<double>("alphaSeed");
-        minSeedPt_ = params.getParameter<double>("minSeedPt");
-        nCentroidIters_ = params.getParameter<unsigned int>("nCentroidIters");
-
-      } else if (algo_ == "LinkTree") {
-        RLink2_ = std::pow(params.getParameter<double>("RLink"), 2);
-        minSeedPt_ = params.getParameter<double>("minSeedPt");
-
-      } else {
-        throw cms::Exception("Configuration") << "Unsupported algo '" << algo_ << "'";
+    explicit L1TScPhase2SCJets(edm::ParameterSet const& p)
+        : EDProducer<>(p),
+          src_{consumes(p.getParameter<edm::InputTag>("srcCandidates"))},
+          bx_{consumes(p.getParameter<edm::InputTag>("srcBxLookup"))},
+          clusters_{produces()},
+          jetBx_{produces()},
+          jets_{produces()},
+          map_{produces()},
+          kernels_{p.getParameter<unsigned int>("minConstituents")},
+          algo_{p.getParameter<std::string>("algo")},
+          nJets_{p.getParameter<unsigned int>("nJets")},
+          r2_{std::pow(p.getParameter<double>("rParam"), 2)},
+          rSeed2_{std::pow(p.getParameter<double>("RSeed"), 2)},
+          rCen2_{std::pow(p.getParameter<double>("RCen"), 2)},
+          rClu2_{std::pow(p.getParameter<double>("RClu"), 2)},
+          rLink2_{std::pow(p.getParameter<double>("RLink"), 2)},
+          alpha_{p.getParameter<double>("alphaSeed")},
+          minPt_{p.getParameter<double>("minSeedPt")},
+          maxRounds_{p.getParameter<int>("maxRounds")} {
+      if (algo_ != "SeededCone" && algo_ != "SCNMSW" && algo_ != "LinkTree")
+        throw cms::Exception("Configuration") << "algo must be SeededCone, SCNMSW or LinkTree";
+      if (algo_ == "SeededCone" && !nJets_)
+        throw cms::Exception("Configuration") << "SeededCone needs a positive nJets iteration limit";
+      if (maxRounds_ == 0 || maxRounds_ < -1)
+        throw cms::Exception("Configuration") << "maxRounds must be -1 or a positive integer";
+      for (auto radius : {"rParam", "RSeed", "RCen", "RClu", "RLink"}) {
+        double value = p.getParameter<double>(radius);
+        if (!(value > 0.) || !std::isfinite(value) || !std::isfinite(float(value * value)))
+          throw cms::Exception("Configuration") << radius << " must be finite and positive";
       }
+      if (!std::isfinite(float(alpha_)) || alpha_ < 0. || !std::isfinite(float(minPt_)) || minPt_ < 0.)
+        throw cms::Exception("Configuration") << "alphaSeed and minSeedPt must be finite and nonnegative";
     }
-
-    void produce(device::Event& event, const device::EventSetup& event_setup) override {
-      // fetch inputs using token (corresponding to consumes() declarations)
-      const auto& src = event.get(src_candidates_token_);
-      const auto& bx_lookup = event.get(bx_lookup_token_);
-
-      // create collection object clusters; allocate storage (on device/queue associated with this event -> event.queue) for nsrc entries
-      const auto nsrc = src.const_view().metadata().size();  // number of PF cands
-      auto clusters = ClustersDeviceCollection(event.queue(), nsrc);
-
-      // canonical names
-      const bool wantSCGreedy = (algo_ == "SCGreedy");
-      const bool wantSCNMS = (algo_ == "SCNMS");
-      const bool wantSCNMSWeighted = (algo_ == "SCNMSWeighted");
-      const bool wantSCNMSWeightedMultiIter = (algo_ == "SCNMSWeightedMultiIter");
-      const bool wantLinkTree = (algo_ == "LinkTree");
-
-      // validate algo string
-      if (!wantSCGreedy && !wantSCNMS && !wantSCNMSWeighted && !wantSCNMSWeightedMultiIter && !wantLinkTree) {
-        throw cms::Exception("Configuration")
-            << "L1TScPhase2SCJets: unknown algo='" << algo_ << "'. "
-            << "Allowed: SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree ";
-      }
-
-      // ----------------------------------------------------------------
-      // dispatch
-      //
-      // Algorithm mapping:
-      //
-      //   SCNMS:
-      //     old kernel logic, but with split radii
-      //       RSeed -> seed finding + old centroid accumulation
-      //       RClu  -> final nearest-axis assignment
-      //
-      //   SCNMSWeighted:
-      //     same as SCNMS, but final assignment uses the old weighted metric
-      //
-      //   SCNMSWeightedMultiIter:
-      //     newer generic NMS-style implementation with explicit
-      //     seed/centroid/assignment radii and forced >= 2 centroid iters
-      //
-      // So for SCNMS / SCNMSWeighted, RCen is intentionally ignored.
-      // ----------------------------------------------------------------
-      if (wantLinkTree) {
-        auto [jetBXs, jets, map] =
-            kernels_.runLinkTree(event.queue(), src, bx_lookup, float(RLink2_), float(minSeedPt_), minConstituents_, clusters);
-        event.emplace(jetBXs_token_, std::move(jetBXs));
-        event.emplace(jets_token_, std::move(jets));
-        event.emplace(map_token_, std::move(map));
-
-      } else if (wantSCNMSWeightedMultiIter) {
-        // force multiple centroid iterations here even if config forgot to set it
-        unsigned int nIters = std::max(2u, nCentroidIters_);
-
-        auto [jetBXs, jets, map] = kernels_.runSCNMSWeightedMultiIter(event.queue(),
-                                                                      src,
-                                                                      bx_lookup,
-                                                                      float(RSeed2_),
-                                                                      float(RCen2_),
-                                                                      float(RClu2_),
-                                                                      float(alphaSeed_),
-                                                                      float(minSeedPt_),
-                                                                      nIters,
-                                                                      minConstituents_,
-                                                                      clusters);
-        event.emplace(jetBXs_token_, std::move(jetBXs));
-        event.emplace(jets_token_, std::move(jets));
-        event.emplace(map_token_, std::move(map));
-
-      } else if (wantSCNMSWeighted) {
-        auto [jetBXs, jets, map] =
-            kernels_.runSCNMSWeighted(event.queue(), src, bx_lookup, float(RSeed2_), float(RClu2_), minConstituents_, clusters);
-        event.emplace(jetBXs_token_, std::move(jetBXs));
-        event.emplace(jets_token_, std::move(jets));
-        event.emplace(map_token_, std::move(map));
-
-      } else if (wantSCNMS) {
-        auto [jetBXs, jets, map] =
-            kernels_.runSCNMS(event.queue(), src, bx_lookup, float(RSeed2_), float(RClu2_), minConstituents_, clusters);
-        event.emplace(jetBXs_token_, std::move(jetBXs));
-        event.emplace(jets_token_, std::move(jets));
-        event.emplace(map_token_, std::move(map));
-
-      } else {
-        // old behaviour for SCGreedy:
-        // if nJets != 0 -> iterative SCGreedy
-        // if nJets == 0 -> legacy single-radius non-iterative seeded cone
-        const bool doIter = (nJets_ != 0);
-
-        if (doIter) {
-          auto [jetBXs, jets, map] = kernels_.run(event.queue(), src, bx_lookup, float(R2_), nJets_, minConstituents_, clusters);
-          event.emplace(jetBXs_token_, std::move(jetBXs));
-          event.emplace(jets_token_, std::move(jets));
-          event.emplace(map_token_, std::move(map));
-        } else {
-          auto [jetBXs, jets, map] = kernels_.run(event.queue(), src, bx_lookup, float(R2_), minConstituents_, clusters);
-          event.emplace(jetBXs_token_, std::move(jetBXs));
-          event.emplace(jets_token_, std::move(jets));
-          event.emplace(map_token_, std::move(map));
-        }
-      }
-
-      // move clustering results to event storage
-      event.emplace(clusters_token_, std::move(clusters));
+    void produce(device::Event& event, device::EventSetup const&) override {
+      auto const& src = event.get(src_);
+      auto const& bx = event.get(bx_);
+      auto clusters = ClustersDeviceCollection(event.queue(), src.const_view().metadata().size());
+      auto result = [&]() {
+        if (algo_ == "SeededCone")
+          return kernels_.runSeededCone(event.queue(), src, bx, float(r2_), nJets_, clusters);
+        if (algo_ == "LinkTree")
+          return kernels_.runLinkTree(event.queue(), src, bx, float(rLink2_), float(minPt_), clusters);
+        return kernels_.runSCNMSW(
+            event.queue(), src, bx, float(rSeed2_), float(rCen2_), float(rClu2_), float(alpha_), maxRounds_, clusters);
+      }();
+      auto [jetBx, jets, map] = std::move(result);
+      event.emplace(jetBx_, std::move(jetBx));
+      event.emplace(jets_, std::move(jets));
+      event.emplace(map_, std::move(map));
+      event.emplace(clusters_, std::move(clusters));
     }
-
-    // define config schema for module (which params accepted, types, defaults)
-    static void fillDescriptions(
-        edm::ConfigurationDescriptions& descriptions) {  // called during config validation before job start
-      // create object holding definition of one config set
-      edm::ParameterSetDescription desc;
-
-      // define input parameters
-      desc.add<edm::InputTag>("srcCandidates");
-      desc.add<edm::InputTag>("srcBxLookup");
-
-      // minimum number of constituents for a jet to be kept (applied in the
-      // common finalize step for all algorithms; 1 keeps everything)
-      desc.add<unsigned int>("minConstituents", 1);
-
-      // canonical names:
-      // SCGreedy | SCNMS | SCNMSWeighted | SCNMSWeightedMultiIter | LinkTree
-      desc.ifValue(
-          edm::ParameterDescription<std::string>(
-              "algo",
-              "None",
-              true,
-              edm::Comment("Allowed values: SCGreedy, SCNMS, SCNMSWeighted, SCNMSWeightedMultiIter, LinkTree")),
-          "SCGreedy" >> (edm::ParameterDescription<double>("rParam", 0.3, true) and
-                         edm::ParameterDescription<unsigned int>("nJets", 0, true)) or
-
-              "SCNMS" >> (edm::ParameterDescription<double>("RSeed", 0.3, true) and
-                          edm::ParameterDescription<double>("RClu", 0.4, true)) or
-
-              "SCNMSWeighted" >> (edm::ParameterDescription<double>("RSeed", 0.3, true) and
-                                  edm::ParameterDescription<double>("RClu", 0.4, true)) or
-
-              "SCNMSWeightedMultiIter" >> (edm::ParameterDescription<double>("RSeed", 0.3, true) and
-                                           edm::ParameterDescription<double>("RCen", 0.4, true) and
-                                           edm::ParameterDescription<double>("RClu", 0.4, true) and
-                                           edm::ParameterDescription<double>("alphaSeed", 2.0, true) and
-                                           edm::ParameterDescription<double>("minSeedPt", 0.0, true) and
-                                           edm::ParameterDescription<unsigned int>("nCentroidIters", 1, true)) or
-
-              "LinkTree" >> (edm::ParameterDescription<double>("RLink", 0.3, true) and
-                             edm::ParameterDescription<double>("minSeedPt", 0.0, true)) or
-
-              "None" >> edm::EmptyGroupDescription());
-
-      // register this config schema for the default instance of the module -> python can now use these params
-      descriptions.addWithDefaultLabel(desc);
+    static void fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+      edm::ParameterSetDescription d;
+      d.add<edm::InputTag>("srcCandidates");
+      d.add<edm::InputTag>("srcBxLookup");
+      d.add<std::string>("algo", "SeededCone");
+      d.add<double>("rParam", .4);
+      d.add<unsigned int>("nJets", 16);
+      d.add<double>("RSeed", .4);
+      d.add<double>("RCen", .4);
+      d.add<double>("RClu", .4);
+      d.add<double>("RLink", .36);
+      d.add<double>("alphaSeed", 2.);
+      d.add<double>("minSeedPt", 0.);
+      d.add<int>("maxRounds", 1);
+      d.add<unsigned int>("minConstituents", 0);
+      descriptions.addWithDefaultLabel(d);
     }
 
   private:
-    // get device pf data
-    const device::EDGetToken<PuppiDeviceCollection> src_candidates_token_;
-    // get BX lookup from same input tag
-    const device::EDGetToken<BxLookupDevice> bx_lookup_token_;
-
-    // put device clustering data
-    const device::EDPutToken<ClustersDeviceCollection> clusters_token_;
-    const device::EDPutToken<BxLookupDevice> jetBXs_token_;
-    const device::EDPutToken<ClusterObjDeviceCollection> jets_token_;
-    const device::EDPutToken<AssociationMapDevice> map_token_;
-
-    // kernels
+    device::EDGetToken<PuppiDeviceCollection> src_;
+    device::EDGetToken<BxLookupDevice> bx_;
+    device::EDPutToken<ClustersDeviceCollection> clusters_;
+    device::EDPutToken<BxLookupDevice> jetBx_;
+    device::EDPutToken<ClusterObjDeviceCollection> jets_;
+    device::EDPutToken<AssociationMapDevice> map_;
     kernels::L1TScPhase2SCJetsKernels kernels_;
-
-    // params
     std::string algo_;
-    double R2_;
     unsigned int nJets_;
-
-    double RSeed2_, RCen2_, RClu2_, RLink2_;
-    double alphaSeed_;
-    double minSeedPt_;
-    unsigned int nCentroidIters_;
-    unsigned int minConstituents_;
+    double r2_, rSeed2_, rCen2_, rClu2_, rLink2_, alpha_, minPt_;
+    int maxRounds_;
   };
-
 }  // namespace ALPAKA_ACCELERATOR_NAMESPACE::l1sc
-
-// register class as Alpaka EDProducer module
 DEFINE_FWK_ALPAKA_MODULE(l1sc::L1TScPhase2SCJets);
