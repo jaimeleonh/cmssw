@@ -33,6 +33,12 @@
 #ifndef NWRITE240
 #define NWRITE240 6
 #endif
+#ifndef NMAXCANDIDATESPERRAM
+#define NMAXCANDIDATESPERRAM 63
+#endif
+#ifndef NREGIONS
+#define NREGIONS 18
+#endif
 
 namespace l1ct {
   namespace pfsorter {
@@ -44,6 +50,8 @@ namespace l1ct {
     constexpr unsigned int nSlotsCharged = NSLOTCHARGED;
     constexpr unsigned int nSlotsNeutral = NSLOTNEUTRAL;
     constexpr unsigned int nWrite240 = NWRITE240;
+    constexpr unsigned int nMaxCandidatesPerRAM = NMAXCANDIDATESPERRAM;
+    constexpr unsigned int nRegions = NREGIONS;
 
     // One particle coming out of the ParticleFlow algorithm, as seen on one input link of
     // the sorter. PF particles come in two flavours, charged (l1ct::PFChargedObjEmu, also

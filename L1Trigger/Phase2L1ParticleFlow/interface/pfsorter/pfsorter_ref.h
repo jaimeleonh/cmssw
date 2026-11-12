@@ -4,6 +4,7 @@
 #include "DataFormats/L1TParticleFlow/interface/layer1_emulator.h"
 #include "L1Trigger/Phase2L1ParticleFlow/interface/pfsorter/pfsorter_tree_elements_ref.h"
 #include "L1Trigger/Phase2L1ParticleFlow/interface/pfsorter/pfsorter_inputs_ref.h"
+#include "L1Trigger/Phase2L1ParticleFlow/interface/dbgPrintf.h"
 
 #include <algorithm>
 #include <vector>
@@ -69,7 +70,11 @@ namespace l1ct {
       }
       assert(inputs.size() == buffer_.nfifos());
       for (unsigned int i = 0, n = inputs.size(); i < n; ++i) {
-        buffer_.maybe_push(i, inputs[i]);
+        if (buffer_.fifoSize(i) < l1ct::pfsorter::nMaxCandidatesPerRAM)
+          buffer_.maybe_push(i, inputs[i]);
+        else
+          dbgCout() << "In PFSorter, Link " << i << " trying to exceed maximum amount of candidates ("
+                    << l1ct::pfsorter::nMaxCandidatesPerRAM << ") per FIFO. Skipping candidate." << std::endl;
       }
       out = buffer_.pop();
       return out.hwPt != 0;
@@ -465,6 +470,17 @@ namespace l1ct {
         }
         step(newevt, pfregions, pfin, outObj);
       }
+
+      // Check the occupancy of the fifos after the last clock cycle to find oveflows.
+      size_t total_candidates_in_memory = 0;
+      for (unsigned int l = 0; l < nlinks; ++l) {
+        total_candidates_in_memory += buffer().fifoSize(l);
+      }
+      if (total_candidates_in_memory > l1ct::pfsorter::nObjPerLink * l1ct::pfsorter::nRegions)
+        dbgCout() << "In PFSorter, total candidates in memory " << total_candidates_in_memory << " exceeds maximum ("
+                  << l1ct::pfsorter::nObjPerLink * l1ct::pfsorter::nRegions
+                  << "). Some candidates from the final links may be lost." << std::endl;
+
       // "new event": restarting the clock to output the candidates
       for (unsigned int iclock = 0; iclock < nclk; ++iclock) {
         bool newevt = (iclock == 0);
