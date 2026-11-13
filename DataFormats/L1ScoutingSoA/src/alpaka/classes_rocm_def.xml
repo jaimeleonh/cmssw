@@ -71,11 +71,6 @@
   <class name="edm::DeviceProduct<alpaka_rocm_async::l1sc::VertexDeviceCollection>" persistent="false"/>
   <class name="edm::Wrapper<edm::DeviceProduct<alpaka_rocm_async::l1sc::VertexDeviceCollection>>" persistent="false"/>
 
-  <!-- SoftJetONNXInputDeviceTensor -->
-  <class name="alpaka_rocm_async::l1sc::SoftJetONNXInputDeviceTensor" persistent="false"/>
-  <class name="edm::DeviceProduct<alpaka_rocm_async::l1sc::SoftJetONNXInputDeviceTensor>" persistent="false"/>
-  <class name="edm::Wrapper<edm::DeviceProduct<alpaka_rocm_async::l1sc::SoftJetONNXInputDeviceTensor>>" persistent="false"/>
-
   <!-- SoftJetOutputDeviceTensor -->
   <class name="alpaka_rocm_async::l1sc::SoftJetOutputDeviceTensor" persistent="false"/>
   <class name="edm::DeviceProduct<alpaka_rocm_async::l1sc::SoftJetOutputDeviceTensor>" persistent="false"/>

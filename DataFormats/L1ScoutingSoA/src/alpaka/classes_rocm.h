@@ -29,7 +29,6 @@
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/CounterDevice.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/SoftTauDeviceTensor.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/VertexDeviceCollection.h"
-#include "DataFormats/L1ScoutingSoA/interface/alpaka/SoftJetONNXDeviceTensor.h"
 #include "DataFormats/L1ScoutingSoA/interface/alpaka/SoftJetDeviceTensor.h"
 
 #endif  // DataFormats_L1ScoutingSoA_src_alpaka_classes_rocm_h

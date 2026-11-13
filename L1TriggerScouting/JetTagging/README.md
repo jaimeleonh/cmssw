@@ -7,7 +7,7 @@ scouting, with two implementations living side by side:
 |---|---|---|
 | Model format | TorchScript (`.pt`) | ONNX (`.onnx`) |
 | Inference | `PhysicsTools/PyTorchAlpaka` (`torch::AlpakaModel`) | `PhysicsTools/ONNXRuntimeAlpaka` (`ort::AlpakaSession`) |
-| Input tensor SoA | `SoftJetInputTensorSoA` (particle-major) | `SoftJetONNXInputTensorSoA` (feature-major) |
+| Input tensor SoA | `SoftJetInputTensorSoA` (particle-major) | `SoftJetInputTensorSoA` (particle-major) (identical)
 | Output | `SoftJetOutputDeviceTensor` | `SoftJetOutputDeviceTensor` (identical) |
 
 Both are alpaka modules (serial + cuda backends) and produce the same output
@@ -36,18 +36,7 @@ Replicates `SoftJetIdML` using ONNXRuntimeAlpaka:
 The exported ONNX models expect feature-major tensors, e.g.
 `pf_features [batch, 15, n_particles]`. In `SoftJetInputTensorSoA` the eigen
 blocks are `[16 particles, 15 features]`, which would arrive at ONNX Runtime
-transposed. `DataFormats/L1ScoutingSoA/interface/SoftJetONNXTensorSoA.h`
-defines the same content with the eigen blocks transposed
-(`[15 features, 16 particles]`, `[4, 16]`, `[1, 16]`), so after the
-`PackKernels` gather the contiguous buffer is exactly what the model expects —
-no transpose pass, no points column (the model derives pairwise coordinates
-from the vectors).
-
-The `softmax [batch, 2]` output is staged in a local two-column SoA
-(`SoftJetONNXScoresSoA` in `TransformKernelONNX.h`) and `extractScores`
-copies the signal-class score into the final tensor. Class 0 is the b score
-(the training uses `labels: [jet_isB, jet_isnotB]`).
-
+transposed.
 ### Batch size = 1
 
 The current exports (``model_example_ParticleTransformer.onnx``) contain a
