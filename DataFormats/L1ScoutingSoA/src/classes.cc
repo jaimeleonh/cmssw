@@ -12,7 +12,6 @@
 #include "DataFormats/L1ScoutingSoA/interface/CounterHost.h"
 #include "DataFormats/L1ScoutingSoA/interface/SoftTauHostTensor.h"
 #include "DataFormats/L1ScoutingSoA/interface/VertexHostCollection.h"
-#include "DataFormats/L1ScoutingSoA/interface/SoftJetONNXHostTensor.h"
 
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::AssociationMapHost);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::BxLookupHost);
@@ -27,5 +26,4 @@ SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftTauInputHostTensor);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftTauOutputHostTensor);
 SET_PORTABLEHOSTOBJECT_READ_RULES(l1sc::CounterHost);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::VertexHostCollection);
-SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftJetONNXInputHostTensor);
 SET_PORTABLEHOSTCOLLECTION_READ_RULES(l1sc::SoftJetOutputHostTensor);

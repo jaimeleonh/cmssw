@@ -17,7 +17,6 @@
 #include "DataFormats/L1ScoutingSoA/interface/W3PiTable.h"
 #include "DataFormats/L1ScoutingSoA/interface/SoftTauTensorSoA.h"
 #include "DataFormats/L1ScoutingSoA/interface/SoftJetTensorSoA.h"
-#include "DataFormats/L1ScoutingSoA/interface/SoftJetONNXTensorSoA.h"
 
 #include "DataFormats/L1ScoutingSoA/interface/AssociationMapHost.h"
 #include "DataFormats/L1ScoutingSoA/interface/BxLookupHost.h"
@@ -32,6 +31,5 @@
 #include "DataFormats/L1ScoutingSoA/interface/CounterHost.h"
 #include "DataFormats/L1ScoutingSoA/interface/SoftTauHostTensor.h"
 #include "DataFormats/L1ScoutingSoA/interface/SoftJetHostTensor.h"
-#include "DataFormats/L1ScoutingSoA/interface/SoftJetONNXHostTensor.h"
 
 #endif  // DataFormats_L1ScoutingSoA_src_classes_h

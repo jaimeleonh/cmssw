@@ -114,10 +114,4 @@
   <!-- ROOT R/W recipies -->
   <class name="edm::Wrapper<l1sc::SoftJetOutputHostTensor>" splitLevel="0"/>
 
-  <!-- SoftJetONNXInputHostTensor -->
-  <class name="l1sc::SoftJetONNXInputHostTensor" rntupleStreamerMode="true"/>
-  <!-- Layouts -->
-  <class name="l1sc::SoftJetONNXInputHostTensor::Layout"/>
-  <!-- ROOT R/W recipies -->
-  <class name="edm::Wrapper<l1sc::SoftJetONNXInputHostTensor>" splitLevel="0"/>
 </lcgdict>
