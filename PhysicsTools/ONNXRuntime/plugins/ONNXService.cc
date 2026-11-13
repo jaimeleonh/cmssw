@@ -135,9 +135,9 @@ namespace cms::Ort {
       cuda_.devices =
           registerExecutionProvider(env_, kCudaExecutionProvider, ORT_TSTR("libonnxruntime_providers_cuda.so"));
 
-      tensorrt_.number_of_devices = cuda_.number_of_devices;
-      tensorrt_.devices =
-          registerExecutionProvider(env_, kTensorRTExecutionProvider, ORT_TSTR("libonnxruntime_ep_tensorrt.so"));
+      // tensorrt_.number_of_devices = cuda_.number_of_devices;
+      // tensorrt_.devices =
+      //     registerExecutionProvider(env_, kTensorRTExecutionProvider, ORT_TSTR("libonnxruntime_ep_tensorrt.so"));
     }
 
     if (amd and rocm_enabled) {

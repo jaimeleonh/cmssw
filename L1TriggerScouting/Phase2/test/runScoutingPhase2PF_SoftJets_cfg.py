@@ -59,6 +59,8 @@ options.register ('jetTagModel',
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                   'Jet tagger TorchScript model; custom operators must be preloaded at launch')
+options.register('mlbackend', 'pytorch', VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string, 'GPU jet algorithm: pytorch | onnx')
 
 options.parseArguments()
 maxRounds = -1 if options.maxRounds.lower() == 'none' else int(options.maxRounds)
@@ -68,6 +70,9 @@ if maxRounds == 0 or maxRounds < -1:
     raise RuntimeError('maxRounds must be -1, None or a positive integer')
 if options.minConstituents < 0:
     raise RuntimeError('minConstituents must be nonnegative')
+
+mlbackend = options.mlbackend.lower()
+assert mlbackend in ["pytorch", "onnx"]
 
 if options.buNumStreams == []:
     options.buNumStreams.append(1)
@@ -150,8 +155,11 @@ process.load("L1TriggerScouting.Phase2.unpackers_cff")
 
 if "alpaka" in options.run.lower():
   process.load("Configuration.StandardSequences.Accelerators_cff")
-process.PyTorchService = cms.Service("PyTorchService")
-# process.ONNXService = cms.Service("ONNXService")   # required by ONNXRuntimeAlpaka
+
+if mlbackend == "pytorch":
+  process.PyTorchService = cms.Service("PyTorchService")
+elif mlbackend == "onnx":
+  process.ONNXService = cms.Service("ONNXService")
 
 ## Configure unpackers
 process.scPhase2PFRawToDigiStruct = process.scPhase2PuppiRawToDigiStruct.clone(
@@ -255,24 +263,30 @@ if "alpaka" in options.run.lower():
   # process.SoftJetIdSC4 = cms.EDProducer('SoftJetIdMLTorchScript@alpaka',
   # process.SoftJetIdSC4 = l1sc_SoftJetIdMLTorchScript_alpaka(
   # process.SoftJetIdSC4 = l1sc_SoftJetIdONNX_alpaka(
-  process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
-      alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend), synchronize = cms.untracked.bool(options.synchronizeGPU) ),
-      pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
-      clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
-      jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
-      vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka"),
-      vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
-    #   model = cms.FileInPath("L1TriggerScouting/JetTagging/data/part_2p5k_throughput.pt"),
-      # model = cms.FileInPath(f"L1TriggerScouting/JetTagging/data/btagging/{options.jetTagModel}.onnx"),
-      model = cms.FileInPath(f"L1TriggerScouting/JetTagging/data/btagging/{options.jetTagModel}.pt"),
-      # jets = cms.InputTag('scPhase2SC4PFAlpaka'),  # SoftJetIdMLTorchScript
-      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_full_int8.pt"),
-      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique.pt"),
-      # model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_part_unique_cpu.pt"),
-      #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_deepsets.pt"),
-      #model = cms.FileInPath("L1TriggerScouting/JetTagging/data/softjet_minipart.pt"),
-      maxBatchSize = cms.uint32(options.batchSize),
-  )
+
+
+  if mlbackend == "pytorch":
+    process.SoftJetIdSC4 = l1sc_SoftJetIdML_alpaka(
+        alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend), synchronize = cms.untracked.bool(options.synchronizeGPU) ),
+        pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
+        clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
+        jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
+        vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka"),
+        vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
+        model = cms.FileInPath(f"L1TriggerScouting/JetTagging/data/btagging/{options.jetTagModel}.pt"),
+        maxBatchSize = cms.uint32(options.batchSize),
+    )
+  elif mlbackend == "onnx":
+    process.SoftJetIdSC4 = l1sc_SoftJetIdONNX_alpaka(
+        alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend), synchronize = cms.untracked.bool(options.synchronizeGPU) ),
+        pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
+        clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
+        jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
+        vertices = cms.InputTag("scPhase2VertexRawToDigiAlpaka"),
+        vertexBxLookup = cms.InputTag("scPhase2VertexRawToDigiAlpaka", "bxLookup"),
+        model = cms.FileInPath(f"L1TriggerScouting/JetTagging/data/btagging/{options.jetTagModel}.onnx"),
+        maxBatchSize = cms.uint32(options.batchSize),
+    )
 
   # process.SoftJetIdSC4 = GraphInferenceProducer_alpaka(
   #     alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend), synchronize = cms.untracked.bool(options.synchronizeGPU) ),
