@@ -61,6 +61,9 @@ options.register ('jetTagModel',
                   'Jet tagger TorchScript model; custom operators must be preloaded at launch')
 options.register('mlbackend', 'pytorch', VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string, 'GPU jet algorithm: pytorch | onnx')
+options.register('onnxBackend', 'cuda', VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 'ONNX Runtime execution provider of SoftJetIdONNX: cpu | cuda | tensorrt | rocm')
 
 options.parseArguments()
 maxRounds = -1 if options.maxRounds.lower() == 'none' else int(options.maxRounds)
@@ -73,6 +76,8 @@ if options.minConstituents < 0:
 
 mlbackend = options.mlbackend.lower()
 assert mlbackend in ["pytorch", "onnx"]
+if options.onnxBackend not in ("cpu", "cuda", "tensorrt", "rocm"):
+    raise RuntimeError('onnxBackend must be cpu, cuda, tensorrt or rocm')
 
 if options.buNumStreams == []:
     options.buNumStreams.append(1)
@@ -279,6 +284,7 @@ if "alpaka" in options.run.lower():
   elif mlbackend == "onnx":
     process.SoftJetIdSC4 = l1sc_SoftJetIdONNX_alpaka(
         alpaka = cms.untracked.PSet( backend = cms.untracked.string(options.backend), synchronize = cms.untracked.bool(options.synchronizeGPU) ),
+        backend = cms.string(options.onnxBackend),
         pf = cms.InputTag('scPhase2PFRawToDigiAlpaka', "candidates"),
         clusters = cms.InputTag('scPhase2SC4PFAlpaka'),
         jetBxLookup = cms.InputTag("scPhase2SC4PFAlpaka"),
