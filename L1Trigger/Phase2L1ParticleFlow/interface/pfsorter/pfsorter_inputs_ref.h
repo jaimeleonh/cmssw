@@ -39,6 +39,14 @@
 #ifndef NREGIONS
 #define NREGIONS 18
 #endif
+// the forward calo streams: NCALOFWDSORTED candidates per region over NCALOFWDSTREAM
+// links, 6 of them per link per region (PFII240) in a 9 cycle region slot (PFII360)
+#ifndef NLINKFWDCALO
+#define NLINKFWDCALO 2
+#endif
+#ifndef NSLOTFWDCALO
+#define NSLOTFWDCALO 12
+#endif
 
 namespace l1ct {
   namespace pfsorter {
@@ -52,6 +60,8 @@ namespace l1ct {
     constexpr unsigned int nWrite240 = NWRITE240;
     constexpr unsigned int nMaxCandidatesPerRAM = NMAXCANDIDATESPERRAM;
     constexpr unsigned int nRegions = NREGIONS;
+    constexpr unsigned int nLinksFwdCalo = NLINKFWDCALO;
+    constexpr unsigned int nSlotsFwdCalo = NSLOTFWDCALO;
 
     // One particle coming out of the ParticleFlow algorithm, as seen on one input link of
     // the sorter. PF particles come in two flavours, charged (l1ct::PFChargedObjEmu, also
@@ -143,6 +153,32 @@ namespace l1ct {
     inline l1ct::PuppiObjEmu toPuppi(const l1ct::PFRegionEmu &region, const PFParticleEmu &in) {
       l1ct::PuppiObjEmu ret;
       toPuppi(region, in, ret);
+      return ret;
+    }
+
+    // Same for one forward calo candidate (the input links of PFSorterFwdEmulator): an
+    // empty candidate (hwPt == 0) gives an empty object, and so does one that is not
+    // fiducial in its region: the forward regions are padded by etaExtra/phiExtra, so a
+    // candidate sitting in the pad is reconstructed a second time by the neighbouring
+    // region that holds it as fiducial, and keeping both copies would duplicate it in the
+    // sorter output. This is the same cut applied to the PF candidates above (pf_to_puppi
+    // does it in firmware), and the weight is only recorded in the payload, not applied
+    // to the pt, as for a neutral PF candidate.
+    inline void toPuppi(const l1ct::PFRegionEmu &region,
+                        const l1ct::HadCaloObjEmu &in,
+                        l1ct::PuppiObjEmu &out,
+                        l1ct::puppiWgt_t wgt = 1.0) {
+      if (in.hwPt == 0 || !region.isFiducial(in)) {
+        out.clear();
+      } else {
+        out.fill(region, in, in.hwPt, wgt);
+      }
+    }
+    inline l1ct::PuppiObjEmu toPuppi(const l1ct::PFRegionEmu &region,
+                                     const l1ct::HadCaloObjEmu &in,
+                                     l1ct::puppiWgt_t wgt = 1.0) {
+      l1ct::PuppiObjEmu ret;
+      toPuppi(region, in, ret, wgt);
       return ret;
     }
 

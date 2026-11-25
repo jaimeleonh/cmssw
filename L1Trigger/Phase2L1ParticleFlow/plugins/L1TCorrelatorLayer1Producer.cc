@@ -109,7 +109,6 @@ private:
 
   // region of interest debugging
   float debugEta_, debugPhi_, debugR_;
-  bool isEndcap;
 
   // these are used to link items back
   std::unordered_map<const l1t::L1Candidate *, edm::Ptr<l1t::L1Candidate>> clusterRefMap_;
@@ -243,8 +242,7 @@ L1TCorrelatorLayer1Producer::L1TCorrelatorLayer1Producer(const edm::ParameterSet
       patternWriterConfigs_(iConfig.getUntrackedParameter<edm::VParameterSet>("patternWriters")),
       debugEta_(iConfig.getUntrackedParameter<double>("debugEta")),
       debugPhi_(iConfig.getUntrackedParameter<double>("debugPhi")),
-      debugR_(iConfig.getUntrackedParameter<double>("debugR")),
-      isEndcap(false) {
+      debugR_(iConfig.getUntrackedParameter<double>("debugR")) {
   produces<l1t::PFCandidateCollection>("PF");
   produces<l1t::PFCandidateCollection>("Puppi");
   produces<l1t::PFCandidateCollection>("SortedPF");
@@ -339,15 +337,23 @@ L1TCorrelatorLayer1Producer::L1TCorrelatorLayer1Producer(const edm::ParameterSet
   if (algo == "PFAlgo3") {
     l1pfalgo_ = std::make_unique<l1ct::PFAlgo3Emulator>(iConfig.getParameter<edm::ParameterSet>("pfAlgoParameters"));
   } else if (algo == "PFAlgo2HGC") {
-    isEndcap = true;
     l1pfalgo_ = std::make_unique<l1ct::PFAlgo2HGCEmulator>(iConfig.getParameter<edm::ParameterSet>("pfAlgoParameters"));
-    l1pfsorter_ =
-        std::make_unique<l1ct::PFSorterEmulator>(iConfig.getParameter<edm::ParameterSet>("pfSorterParameters"));
   } else if (algo == "PFAlgoDummy") {
     l1pfalgo_ =
         std::make_unique<l1ct::PFAlgoDummyEmulator>(iConfig.getParameter<edm::ParameterSet>("pfAlgoParameters"));
   } else
     throw cms::Exception("Configuration", "Unsupported pfAlgo");
+
+  const std::string &pfSorterAlgo = iConfig.getParameter<std::string>("pfSorterAlgo");
+  if (pfSorterAlgo == "Endcap") {
+    l1pfsorter_ =
+        std::make_unique<l1ct::PFSorterEmulator>(iConfig.getParameter<edm::ParameterSet>("pfSorterParameters"));
+  } else if (pfSorterAlgo == "Fwd") {
+    l1pfsorter_ = std::make_unique<l1ct::PFSorterFwdEmulator>();
+  } else if (pfSorterAlgo == "Barrel") {
+    l1pfsorter_ = std::make_unique<l1ct::PFSorterBarrelEmulator>();
+  } else if (pfSorterAlgo != "None")
+    throw cms::Exception("Configuration", "Unsupported pfSorterAlgo");
 
   const std::string &pualgo = iConfig.getParameter<std::string>("puAlgo");
   if (pualgo == "LinearizedPuppi") {
@@ -465,9 +471,13 @@ void L1TCorrelatorLayer1Producer::fillDescriptions(edm::ConfigurationDescription
                "PFAlgo3" >> getParDesc<l1ct::PFAlgo3Emulator>("pfAlgo") or
                    "PFAlgo2HGC" >> getParDesc<l1ct::PFAlgo2HGCEmulator>("pfAlgo") or
                    "PFAlgoDummy" >> getParDesc<l1ct::PFAlgoDummyEmulator>("pfAlgo"));
-  // PF sorter (only used by PFAlgo2HGC, but declared as optional so other algos don't need it)
-  desc.addOptional<edm::ParameterSetDescription>("pfSorterParameters",
-                                                 l1ct::PFSorterEmulator::getParameterSetDescription());
+  // PF sorter: which one runs (if any) is chosen by pfSorterAlgo, since pfAlgo can't tell
+  // apart all the regions (the forward and HF ones both use PFAlgoDummy). The endcap one
+  // is configured with pfSorterParameters; the forward one follows the fixed link layout
+  // of the fwdcalo streams and the barrel one is not written yet, so neither takes any.
+  desc.ifValue(edm::ParameterDescription<std::string>("pfSorterAlgo", "None", true),
+               "None" >> emptyGroup or "Endcap" >> getParDesc<l1ct::PFSorterEmulator>("pfSorter") or
+                   "Fwd" >> emptyGroup or "Barrel" >> emptyGroup);
   // Puppi
   desc.ifValue(edm::ParameterDescription<std::string>("puAlgo", "LinearizedPuppi", true),
                "LinearizedPuppi" >> getParDesc<l1ct::LinPuppiEmulator>("puAlgo"));
@@ -684,7 +694,7 @@ void L1TCorrelatorLayer1Producer::produce(edm::Event &iEvent, const edm::EventSe
     l1tkegalgo_->runIso(event_.pfinputs[ir], event_.pvs, event_.out[ir]);
   }
 
-  if (isEndcap) {
+  if (l1pfsorter_) {
     l1pfsorter_->run(event_);
   }
 
@@ -712,7 +722,7 @@ void L1TCorrelatorLayer1Producer::produce(edm::Event &iEvent, const edm::EventSe
 
   // and save puppi
   putPuppi(iEvent);
-  if (isEndcap) {
+  if (l1pfsorter_) {
     putSortedPF(iEvent, event_.sortedpf);
   }
 

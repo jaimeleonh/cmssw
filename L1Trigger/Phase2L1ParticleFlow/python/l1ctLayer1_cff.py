@@ -63,6 +63,7 @@ l1tLayer1Barrel = cms.EDProducer("L1TCorrelatorLayer1Producer",
     ),
     regionizerAlgo = cms.string("Ideal"),
     pfAlgo = cms.string("PFAlgo3"),
+    pfSorterAlgo = cms.string("Barrel"),
     pfAlgoParameters = cms.PSet(
         nTrack = cms.uint32(25),
         nCalo = cms.uint32(18),
@@ -286,6 +287,7 @@ l1tLayer1HGCal = cms.EDProducer("L1TCorrelatorLayer1Producer",
         useMLAssociation = switchOnNNAssoc, #Enable Association Network
         NNVtxAssociation = NNVtxAssociationPSet,
     ),
+    pfSorterAlgo = cms.string("Endcap"),
     pfSorterParameters = cms.PSet(
         nLinksCharged = cms.uint32(4),
         nLinksNeutral = cms.uint32(3),
@@ -409,6 +411,7 @@ l1tLayer1HGCalNoTK = cms.EDProducer("L1TCorrelatorLayer1Producer",
             )
         ),
     pfAlgo = cms.string("PFAlgoDummy"),
+    pfSorterAlgo = cms.string("Fwd"),
     pfAlgoParameters = cms.PSet(
         nCalo = cms.uint32(12),
         nMu = cms.uint32(4), # unused
@@ -479,6 +482,7 @@ l1tLayer1HF = cms.EDProducer("L1TCorrelatorLayer1Producer",
     hadPtCut = cms.double(15.0),
     trkPtCut = cms.double(2.0),
     pfAlgo = cms.string("PFAlgoDummy"),
+    pfSorterAlgo = cms.string("None"),
     pfAlgoParameters = cms.PSet(
         nCalo = cms.uint32(18),
         nMu = cms.uint32(4), # unused
