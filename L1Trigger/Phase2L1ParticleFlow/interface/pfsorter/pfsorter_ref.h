@@ -629,7 +629,7 @@ namespace l1ct {
     // The base class keeps its endcap split of the links into charged and neutral ones:
     // all the forward links are equivalent, so they go in its first group.
     PFSorterFwdEmulator(unsigned int nlinks = l1ct::pfsorter::nLinksFwdCalo,
-                        unsigned int noutputs = 3,
+                        unsigned int noutputs = 1,
                         unsigned int nclocks = 162,
                         unsigned int nobjperlink = l1ct::pfsorter::nObjPerLink,
                         unsigned int nslots = l1ct::pfsorter::nSlotsFwdCalo)
